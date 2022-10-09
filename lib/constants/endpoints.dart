@@ -14,6 +14,6 @@ class PromajaEndpoints {
   static const forecastWeather = 'data/2.5/forecast';
 
   /// https://openweathermap.org/api/geocoding-api
-  static const geocoding = '/geo/1.0/direct';
-  static const reverseGeocoding = '/geo/1.0/reverse';
+  static const geocoding = 'geo/1.0/direct';
+  static const reverseGeocoding = 'geo/1.0/reverse';
 }
