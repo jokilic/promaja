@@ -7,7 +7,7 @@ class WeatherScreen extends GetView<WeatherController> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(controller.someString),
+          title: Text(controller.langQueryParameter ?? ''),
         ),
         body: Scaffold(
           body: Center(
