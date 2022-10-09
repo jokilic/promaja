@@ -7,12 +7,12 @@ class WeatherScreen extends GetView<WeatherController> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(controller.langQueryParameter ?? ''),
+          title: const Text('Hello'),
         ),
         body: Scaffold(
           body: Center(
             child: ElevatedButton.icon(
-              onPressed: controller.fetchCurrentWeather,
+              onPressed: () {},
               icon: const Icon(Icons.backup_rounded),
               label: const Text('Fetch weather'),
             ),
