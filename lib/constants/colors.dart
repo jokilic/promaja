@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///
 /// This is a class where all colors are stored
-/// You can then reference them in code with `MyColors.someColor`
+/// You can then reference them in code with `PromajaColors.someColor`
 ///
 
 class PromajaColors {

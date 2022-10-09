@@ -5,7 +5,7 @@ import 'colors.dart';
 
 ///
 /// This is a class where all text styles are stored
-/// You can then reference them in code with `MyTextStyles.someTextStyle`
+/// You can then reference them in code with `PromajaTextStyles.someTextStyle`
 ///
 
 class PromajaTextStyles {

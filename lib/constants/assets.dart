@@ -1,6 +1,6 @@
 ///
 /// This is a class where all assets are stored
-/// You can then reference them in code with `MyAssets.someAsset`
+/// You can then reference them in code with `PromajaAssets.someAsset`
 ///
 
 class PromajaAssets {
