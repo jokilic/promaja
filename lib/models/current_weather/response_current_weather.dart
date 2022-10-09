@@ -1,4 +1,8 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 
 import 'clouds.dart';
 import 'coord.dart';
@@ -9,7 +13,7 @@ import 'wind.dart';
 
 class ResponseCurrentWeather {
   final Coord coord;
-  final Weather weather;
+  final List<Weather> weather;
   final String base;
   final Main main;
   final int visibility;
@@ -40,7 +44,7 @@ class ResponseCurrentWeather {
 
   ResponseCurrentWeather copyWith({
     Coord? coord,
-    Weather? weather,
+    List<Weather>? weather,
     String? base,
     Main? main,
     int? visibility,
@@ -71,7 +75,7 @@ class ResponseCurrentWeather {
 
   Map<String, dynamic> toMap() => {
         'coord': coord.toMap(),
-        'weather': weather.toMap(),
+        'weather': weather.map((x) => x.toMap()).toList(),
         'base': base,
         'main': main.toMap(),
         'visibility': visibility,
@@ -87,7 +91,7 @@ class ResponseCurrentWeather {
 
   factory ResponseCurrentWeather.fromMap(Map<String, dynamic> map) => ResponseCurrentWeather(
         coord: Coord.fromMap(map['coord']),
-        weather: Weather.fromMap(map['weather']),
+        weather: List<Weather>.from(map['weather']?.map((x) => Weather.fromMap(x))),
         base: map['base'] ?? '',
         main: Main.fromMap(map['main']),
         visibility: map['visibility']?.toInt() ?? 0,
@@ -117,7 +121,7 @@ class ResponseCurrentWeather {
 
     return other is ResponseCurrentWeather &&
         other.coord == coord &&
-        other.weather == weather &&
+        listEquals(other.weather, weather) &&
         other.base == base &&
         other.main == main &&
         other.visibility == visibility &&

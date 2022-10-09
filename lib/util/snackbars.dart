@@ -6,10 +6,10 @@ import '../constants/colors.dart';
 
 ///
 /// Class which will trigger various snackbars
-/// Can be used throughout the app with `MySnackbars.showSomeSnackbar`
+/// Can be used throughout the app with `PromajaSnackbars.showSomeSnackbar`
 ///
 
-class MySnackbars {
+class PromajaSnackbars {
   /// Snackbar shown if some success happens
   static void showSuccessSnackbar({
     required String message,

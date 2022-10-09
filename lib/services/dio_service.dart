@@ -56,15 +56,15 @@ class DioService extends GetxService {
   /// METHODS
   ///
 
-  Future<void> request<T>({
+  Future<T?> request<T>({
     required String endpoint,
     required HttpMethod httpMethod,
-    required T Function(dynamic responseData) onSuccess,
+    required Future<T> Function(dynamic responseData) onSuccess,
     Function(String error)? onError,
-    Map<String, dynamic>? data,
+    Map<String, dynamic>? parameters,
   }) async {
-    /// Encode passed data to `json`
-    final jsonData = jsonEncode(data);
+    /// Encode passed parameters to `json`
+    final jsonData = jsonEncode(parameters);
 
     try {
       /// Create `Options` with proper `headers` and other data
@@ -85,7 +85,7 @@ class DioService extends GetxService {
           response = await dio.get(
             endpoint,
             options: options,
-            queryParameters: data,
+            queryParameters: parameters,
           );
           break;
 
@@ -133,25 +133,26 @@ class DioService extends GetxService {
             ..e('--------------------\n');
       }
 
+      ///
       /// Response successfully fetched
+      ///
+
+      /// Log the successful response
       logger
         ..v('DIO SERVICE')
         ..v('--------------------')
         ..v('Response successfully fetched')
         ..v('Endpoint: $endpoint')
-        ..e('HTTP Method: ${httpMethod.name}')
+        ..v('HTTP Method: ${httpMethod.name}')
         ..v('Status code: ${response.statusCode}')
         ..v('Request:')
         ..logJson(jsonData)
         ..v('Response:')
-        ..logJson(response.data)
+        ..logJson(jsonEncode(response.data))
         ..v('--------------------\n');
 
-      /// Decode passed response to `json`
-      final jsonResponse = jsonDecode(response.data);
-
       /// Return `onSuccess` and pass the response to it
-      onSuccess(jsonResponse);
+      return onSuccess(response.data);
     } on DioError catch (e) {
       /// Error fetching response
       logger
@@ -183,5 +184,7 @@ class DioService extends GetxService {
         ..logJson(jsonData, isError: true)
         ..e('--------------------\n');
     }
+
+    return null;
   }
 }
