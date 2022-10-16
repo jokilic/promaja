@@ -1,24 +1,13 @@
-import 'package:get/get.dart';
-
-class HiveService extends GetxService {
-  /// ------------------------
+class HiveService {
+  ///
   /// VARIABLES
-  /// ------------------------
+  ///
 
   var someString = '';
 
-  /// ------------------------
-  /// INIT
-  /// ------------------------
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  /// ------------------------
+  ///
   /// METHODS
-  /// ------------------------
+  ///
 
   void someMethod() {}
 }

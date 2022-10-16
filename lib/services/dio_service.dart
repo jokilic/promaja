@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart' hide FormData, Response;
 
 import 'alice_service.dart';
 import 'logger_service.dart';
@@ -23,34 +22,28 @@ enum HttpMethod {
 /// Contains methods that ease our networking logic
 ///
 
-class DioService extends GetxService {
+class DioService {
   ///
-  /// DEPENDENCIES
+  /// CONSTRUCTOR
   ///
 
-  final logger = Get.find<LoggerService>();
-  final alice = Get.find<AliceService>().alice;
+  final LoggerService logger;
+  final AliceService alice;
+
+  DioService({
+    required this.logger,
+    required this.alice,
+  });
 
   ///
   /// VARIABLES
   ///
 
-  late final Dio dio;
-
-  ///
-  /// INIT
-  ///
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
-    dio = Dio(
-      BaseOptions(
-        connectTimeout: kDebugMode ? 30000 : 5000,
-      ),
-    )..interceptors.add(alice.getDioInterceptor());
-  }
+  late final dio = Dio(
+    BaseOptions(
+      connectTimeout: kDebugMode ? 30000 : 5000,
+    ),
+  )..interceptors.add(alice.alice.getDioInterceptor());
 
   ///
   /// METHODS

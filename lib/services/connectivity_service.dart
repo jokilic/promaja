@@ -1,5 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:get/get.dart';
 
 import 'logger_service.dart';
 
@@ -8,12 +7,16 @@ import 'logger_service.dart';
 /// trigger a method when internet connectivity changes
 ///
 
-class ConnectivityService extends GetxService {
+class ConnectivityService {
   ///
-  /// DEPENDENCIES
+  /// CONSTRUCTOR
   ///
 
-  final logger = Get.find<LoggerService>();
+  final LoggerService logger;
+
+  ConnectivityService({
+    required this.logger,
+  });
 
   ///
   /// VARIABLES

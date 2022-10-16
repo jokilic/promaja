@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:logger_flutter_fork/logger_flutter_fork.dart';
 import 'package:logger_fork/logger_fork.dart';
 
@@ -10,21 +9,12 @@ import 'package:logger_fork/logger_fork.dart';
 /// helper methods to easily log stuff to the console
 ///
 
-class LoggerService extends GetxService {
+class LoggerService {
   ///
-  /// VARIABLES
-  ///
-
-  late final Logger logger;
-
-  ///
-  /// INIT
+  /// CONSTRUCTOR
   ///
 
-  @override
-  void onInit() {
-    super.onInit();
-
+  LoggerService() {
     logger = Logger(
       printer: PrettyPrinter(
         methodCount: 0,
@@ -36,6 +26,12 @@ class LoggerService extends GetxService {
 
     LogConsole.init();
   }
+
+  ///
+  /// VARIABLES
+  ///
+
+  late final Logger logger;
 
   ///
   /// METHODS

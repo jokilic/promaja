@@ -1,24 +1,20 @@
-import 'package:get/get.dart';
-
 import '../constants/endpoints.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../util/isolates.dart';
-import '../util/language.dart';
-import '../util/snackbars.dart';
 import 'dio_service.dart';
 
-class ApiService extends GetxService {
+class ApiService {
   ///
-  /// DEPENDENCIES
-  ///
-
-  final dio = Get.find<DioService>();
-
-  ///
-  /// VARIABLES
+  /// CONSTRUCTOR
   ///
 
-  late final langQueryParameter = getLangQueryParameter();
+  final DioService dio;
+  final String? langQueryParameter;
+
+  ApiService({
+    required this.dio,
+    required this.langQueryParameter,
+  });
 
   ///
   /// METHODS
@@ -44,9 +40,7 @@ class ApiService extends GetxService {
       parameters: queryParameters,
       httpMethod: HttpMethod.get,
       onSuccess: computeCurrentWeather,
-      onError: (error) => PromajaSnackbars.showErrorSnackbar(
-        message: 'Parsing current weather failed',
-      ),
+      onError: (error) {},
     );
   }
 }

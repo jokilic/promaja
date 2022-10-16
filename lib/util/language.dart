@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 import '../constants/enums.dart';
 
@@ -6,17 +6,7 @@ import '../constants/enums.dart';
 /// Checks device language code against `OpenWeatherMap` language codes
 /// If language code is found, it's used as a query parameter when fetching weather
 ///
-String? getLangQueryParameter() {
-  late String? lang;
-
-  try {
-    if (Get.deviceLocale != null) {
-      final languageCode = Get.deviceLocale!.languageCode;
-      lang = ResponseLanguage.values.byName(languageCode).name;
-    }
-  } catch (e) {
-    lang = null;
-  }
-
-  return lang;
+String? getLangQueryParameter(BuildContext context) {
+  final languageCode = Localizations.localeOf(context).languageCode;
+  return ResponseLanguage.values.byName(languageCode).name;
 }

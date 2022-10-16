@@ -1,30 +1,39 @@
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers.dart';
 import '../../services/api_service.dart';
 import '../../services/logger_service.dart';
 
-class CitiesController extends GetxController {
+final citiesProvider = Provider.family<CitiesController, BuildContext>(
+  (ref, context) => CitiesController(
+    logger: ref.watch(loggerProvider),
+    api: ref.watch(
+      apiServiceProvider(context),
+    ),
+  ),
+);
+
+class CitiesController {
   ///
-  /// DEPENDENCIES
+  /// CONSTRUCTOR
   ///
 
-  final logger = Get.find<LoggerService>();
-  final api = Get.find<ApiService>();
+  final LoggerService logger;
+  final ApiService api;
+
+  CitiesController({
+    required this.logger,
+    required this.api,
+  }) {
+    fetchWeathers();
+  }
 
   ///
   /// VARIABLES
   ///
 
   var someString = '';
-
-  ///
-  /// INIT
-  ///
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   ///
   /// METHODS

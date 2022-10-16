@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 
 import 'logger_service.dart';
 
@@ -8,12 +10,18 @@ import 'logger_service.dart';
 /// which is running the app
 ///
 
-class DeviceInfoService extends GetxService {
+class DeviceInfoService {
   ///
-  /// DEPENDENCIES
+  /// CONSTRUCTOR
   ///
 
-  final logger = Get.find<LoggerService>();
+  final LoggerService logger;
+
+  DeviceInfoService({
+    required this.logger,
+  }) {
+    initProperInfo();
+  }
 
   ///
   /// VARIABLES
@@ -26,22 +34,12 @@ class DeviceInfoService extends GetxService {
   WebBrowserInfo? webBrowserInfo;
 
   ///
-  /// INIT
-  ///
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    await initProperInfo();
-  }
-
-  ///
   /// METHODS
   ///
 
   /// Logs proper info depending on the platform running the app
   Future<void> initProperInfo() async {
-    if (GetPlatform.isAndroid) {
+    if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
       logger
         ..v('DEVICE INFO')
@@ -49,7 +47,7 @@ class DeviceInfoService extends GetxService {
         ..v('Platform: Android')
         ..v('--------------------\n');
     }
-    if (GetPlatform.isIOS) {
+    if (Platform.isIOS) {
       iOSInfo = await deviceInfo.iosInfo;
       logger
         ..v('DEVICE INFO')
@@ -57,7 +55,7 @@ class DeviceInfoService extends GetxService {
         ..v('Platform: iOS')
         ..v('--------------------\n');
     }
-    if (GetPlatform.isWeb) {
+    if (kIsWeb) {
       webBrowserInfo = await deviceInfo.webBrowserInfo;
       logger
         ..v('DEVICE INFO')

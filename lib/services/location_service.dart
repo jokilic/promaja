@@ -1,5 +1,4 @@
 import 'package:geolocator/geolocator.dart' as geolocator;
-import 'package:get/get.dart';
 import 'package:location/location.dart' as location;
 
 import 'logger_service.dart';
@@ -9,12 +8,16 @@ import 'logger_service.dart';
 /// Has methods for two plugins - `Location` and `Geolocator`
 ///
 
-class LocationService extends GetxService {
+class LocationService {
   ///
   /// DEPENDENCIES
   ///
 
-  final logger = Get.find<LoggerService>();
+  final LoggerService logger;
+
+  LocationService({
+    required this.logger,
+  });
 
   ///
   /// METHODS

@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'logger_service.dart';
@@ -8,12 +7,18 @@ import 'logger_service.dart';
 /// (app name, version, etc.)
 ///
 
-class PackageInfoService extends GetxService {
+class PackageInfoService {
   ///
   /// DEPENDENCIES
   ///
 
-  final logger = Get.find<LoggerService>();
+  final LoggerService logger;
+
+  PackageInfoService({
+    required this.logger,
+  }) {
+    initPackageInfo();
+  }
 
   ///
   /// VARIABLES
@@ -27,13 +32,10 @@ class PackageInfoService extends GetxService {
   late final String buildNumber;
 
   ///
-  /// INIT
+  /// METHODS
   ///
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
+  Future<void> initPackageInfo() async {
     packageInfo = await PackageInfo.fromPlatform();
 
     appName = packageInfo.appName;

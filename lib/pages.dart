@@ -1,28 +1,14 @@
-import 'package:get/get.dart';
-
-import 'screens/cities/cities_binding.dart';
 import 'screens/cities/cities_screen.dart';
-import 'screens/weather/weather_binding.dart';
 import 'screens/weather/weather_screen.dart';
 
 ///
-/// All pages used in the application
-/// Also linked to the relevant bindings in order to
-/// initialize / dispose proper controllers when neccesarry
+/// All routes used in the application
 ///
 
-final pages = [
-  GetPage(
-    name: MyRoutes.weatherScreen,
-    page: WeatherScreen.new,
-    binding: WeatherBinding(),
-  ),
-  GetPage(
-    name: MyRoutes.citiesScreen,
-    page: CitiesScreen.new,
-    binding: CitiesBinding(),
-  ),
-];
+final routes = {
+  MyRoutes.weatherScreen: (context) => WeatherScreen(),
+  MyRoutes.citiesScreen: (context) => CitiesScreen(),
+};
 
 ///
 /// All pages have their designated names which can be found here

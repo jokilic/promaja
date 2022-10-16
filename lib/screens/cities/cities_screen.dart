@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'cities_controller.dart';
-
-class CitiesScreen extends GetView<CitiesController> {
+class CitiesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Scaffold();
 }
