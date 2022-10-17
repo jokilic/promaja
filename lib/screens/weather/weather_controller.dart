@@ -7,7 +7,7 @@ import '../../services/api_service.dart';
 import '../../services/location_service.dart';
 import '../../services/logger_service.dart';
 
-final weatherProvider = Provider.family<WeatherController, BuildContext>(
+final weatherProvider = StateNotifierProvider.family<WeatherController, AsyncValue<ResponseCurrentWeather?>, BuildContext>(
   (ref, context) => WeatherController(
     logger: ref.watch(loggerProvider),
     locationService: ref.watch(locationProvider),
@@ -16,12 +16,7 @@ final weatherProvider = Provider.family<WeatherController, BuildContext>(
   name: 'WeatherProvider',
 );
 
-final fetchWeatherProvider = FutureProvider.autoDispose.family<ResponseCurrentWeather?, BuildContext>(
-  (ref, context) => ref.watch(weatherProvider(context)).fetchWeather(),
-  name: 'FetchWeatherProvider',
-);
-
-class WeatherController {
+class WeatherController extends StateNotifier<AsyncValue<ResponseCurrentWeather?>> {
   ///
   /// CONSTRUCTOR
   ///
@@ -34,22 +29,18 @@ class WeatherController {
     required this.logger,
     required this.locationService,
     required this.api,
-  });
+  }) : super(const AsyncLoading()) {
+    fetchWeather();
+  }
 
   ///
   /// METHODS
   ///
 
-  Future<ResponseCurrentWeather?> fetchWeather() async {
-    final position = await locationService.getLocationWithGeolocatorPackage();
-
-    if (position != null) {
-      return api.fetchCurrentWeather(
-        lat: position.latitude,
-        lon: position.longitude,
+  Future<AsyncValue<ResponseCurrentWeather?>> fetchWeather() async => state = await AsyncValue.guard<ResponseCurrentWeather?>(
+        () => api.fetchCurrentWeather(
+          lat: 45.8150,
+          lon: 15.9819,
+        ),
       );
-    }
-
-    return null;
-  }
 }

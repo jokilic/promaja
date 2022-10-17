@@ -7,6 +7,7 @@ final onboardingProvider = Provider(
   (ref) => OnboardingController(
     loggerService: ref.watch(loggerProvider),
   ),
+  name: 'OnboardingProvider',
 );
 
 class OnboardingController {

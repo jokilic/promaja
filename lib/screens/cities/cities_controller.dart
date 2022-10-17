@@ -12,6 +12,7 @@ final citiesProvider = Provider.family<CitiesController, BuildContext>(
       apiServiceProvider(context),
     ),
   ),
+  name: 'CitiesProvider',
 );
 
 class CitiesController {

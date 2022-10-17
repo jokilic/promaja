@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'weather_controller.dart';
+import 'widgets/weather_content.dart';
 
 class WeatherScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchWeather = ref.watch(fetchWeatherProvider(context));
+    final weatherState = ref.watch(weatherProvider(context));
 
     return Scaffold(
       appBar: AppBar(
@@ -24,8 +25,8 @@ class WeatherScreen extends ConsumerWidget {
                 label: const Text('Fetch weather'),
               ),
               SizedBox(height: 24.h),
-              fetchWeather.when(
-                data: (weather) => Text('${weather?.main.temp}'),
+              weatherState.when(
+                data: (weather) => WeatherContent(weather: weather!),
                 error: (error, stackTrace) => Text('$error'),
                 loading: () => const CircularProgressIndicator(color: Colors.red),
               ),
