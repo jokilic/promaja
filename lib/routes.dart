@@ -9,7 +9,7 @@ import 'screens/weather/weather_screen.dart';
 ///
 
 final router = GoRouter(
-  initialLocation: MyRoutes.onboardingScreen,
+  initialLocation: MyRoutes.weatherScreen,
   routes: [
     GoRoute(
       path: MyRoutes.onboardingScreen,

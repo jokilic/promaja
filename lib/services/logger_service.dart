@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger_flutter_fork/logger_flutter_fork.dart';
 import 'package:logger_fork/logger_fork.dart';
 
@@ -64,4 +65,27 @@ class LoggerService {
 
   /// Opens [Logger] screen
   void openLogger(BuildContext context) => LogConsole.open(context);
+}
+
+/// Logger used for `Riverpod`
+class RiverpodLogger extends ProviderObserver {
+  final LoggerService logger;
+
+  RiverpodLogger({
+    required this.logger,
+  });
+
+  @override
+  void didUpdateProvider(
+    ProviderBase provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) =>
+      logger
+        ..v('RIVERPOD LOGGER')
+        ..v('--------------------')
+        ..v('Provider: ${provider.name ?? provider.runtimeType}')
+        ..v('Value: $newValue')
+        ..v('--------------------\n');
 }

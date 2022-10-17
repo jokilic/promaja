@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'providers.dart';
 import 'routes.dart';
+import 'services/logger_service.dart';
 import 'theme.dart';
 
 ///
@@ -18,6 +19,11 @@ Future<void> main() async {
   /// Run the `PromajaApp` app
   runApp(
     ProviderScope(
+      observers: [
+        RiverpodLogger(
+          logger: LoggerService(),
+        ),
+      ],
       child: PromajaApp(),
     ),
   );

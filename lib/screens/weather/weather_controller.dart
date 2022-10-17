@@ -13,10 +13,12 @@ final weatherProvider = Provider.family<WeatherController, BuildContext>(
     locationService: ref.watch(locationProvider),
     api: ref.watch(apiServiceProvider(context)),
   ),
+  name: 'WeatherProvider',
 );
 
 final fetchWeatherProvider = FutureProvider.autoDispose.family<ResponseCurrentWeather?, BuildContext>(
   (ref, context) => ref.watch(weatherProvider(context)).fetchWeather(),
+  name: 'FetchWeatherProvider',
 );
 
 class WeatherController {
