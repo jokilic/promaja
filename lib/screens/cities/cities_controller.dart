@@ -5,6 +5,10 @@ import '../../providers.dart';
 import '../../services/api_service.dart';
 import '../../services/logger_service.dart';
 
+///
+/// PROVIDER
+///
+
 final citiesProvider = Provider.family<CitiesController, BuildContext>(
   (ref, context) => CitiesController(
     logger: ref.watch(loggerProvider),

@@ -5,11 +5,19 @@ import 'package:dio/dio.dart';
 import '../services/logger_service.dart';
 
 class LoggerInterceptor implements Interceptor {
+  ///
+  /// CONSTRUCTOR
+  ///
+
   final LoggerService logger;
 
   LoggerInterceptor({
     required this.logger,
   });
+
+  ///
+  /// METHODS
+  ///
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {

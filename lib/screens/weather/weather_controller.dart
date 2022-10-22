@@ -7,6 +7,10 @@ import '../../services/api_service.dart';
 import '../../services/location_service.dart';
 import '../../services/logger_service.dart';
 
+///
+/// PROVIDER
+///
+
 final weatherProvider = StateNotifierProvider.family<WeatherController, AsyncValue<ResponseCurrentWeather?>, BuildContext>(
   (ref, context) => WeatherController(
     logger: ref.watch(loggerProvider),
