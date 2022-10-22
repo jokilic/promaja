@@ -13,7 +13,7 @@ final theme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: Colors.indigo,
   ),
-  scaffoldBackgroundColor: PromajaColors.white,
+  scaffoldBackgroundColor: Colors.blue[700],
   textTheme: GoogleFonts.robotoTextTheme(),
   cardTheme: const CardTheme(
     color: PromajaColors.white,

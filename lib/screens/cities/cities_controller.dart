@@ -26,9 +26,7 @@ class CitiesController {
   CitiesController({
     required this.logger,
     required this.api,
-  }) {
-    fetchWeathers();
-  }
+  });
 
   ///
   /// VARIABLES

@@ -1,6 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
 ///
+/// Screens that are shown in `MainScreen`,
+/// changed through navigation buttons
+///
+
+enum NavigationScreen {
+  weather,
+  cities,
+  settings,
+}
+
+///
 /// Checks if devices language corresponds to any of the languages from this list
 /// If it does, it appends a `lang` parameter to all requests
 ///

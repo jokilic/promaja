@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'cities_controller.dart';
+import 'settings_controller.dart';
 
-class CitiesScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final citiesController = ref.watch(citiesProvider(context));
+    final settingsController = ref.watch(settingsProvider);
 
     return const Scaffold(
       body: Center(
-        child: Text('CitiesScreen'),
+        child: Text('SettingsScreen'),
       ),
     );
   }

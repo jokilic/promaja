@@ -11,7 +11,9 @@ class WeatherContent extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
-  }
+  Widget build(BuildContext context, WidgetRef ref) => Column(
+        children: [
+          Text(weather.name),
+        ],
+      );
 }

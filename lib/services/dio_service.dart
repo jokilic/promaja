@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_annotating_with_dynamic
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -33,17 +34,23 @@ class DioService {
   DioService({
     required this.logger,
     required this.alice,
-  });
+  }) {
+    dio = Dio(
+      BaseOptions(
+        connectTimeout: kDebugMode ? 30000 : 5000,
+      ),
+    );
+
+    if (!Platform.isMacOS) {
+      dio.interceptors.add(alice.alice.getDioInterceptor());
+    }
+  }
 
   ///
   /// VARIABLES
   ///
 
-  late final dio = Dio(
-    BaseOptions(
-      connectTimeout: kDebugMode ? 30000 : 5000,
-    ),
-  )..interceptors.add(alice.alice.getDioInterceptor());
+  late final Dio dio;
 
   ///
   /// METHODS
