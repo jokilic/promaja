@@ -8,9 +8,7 @@ import '../../services/logger_service.dart';
 final citiesProvider = Provider.family<CitiesController, BuildContext>(
   (ref, context) => CitiesController(
     logger: ref.watch(loggerProvider),
-    api: ref.watch(
-      apiServiceProvider(context),
-    ),
+    api: ref.watch(apiServiceProvider(context)),
   ),
   name: 'CitiesProvider',
 );
