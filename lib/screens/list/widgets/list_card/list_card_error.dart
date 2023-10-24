@@ -5,7 +5,6 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
-import '../../../../widgets/fade_animation.dart';
 
 class ListCardError extends StatelessWidget {
   final String locationName;
@@ -45,61 +44,59 @@ class ListCardError extends StatelessWidget {
             child: Container(
               height: 136,
               padding: const EdgeInsets.fromLTRB(32, 16, 24, 8),
-              child: FadeAnimation(
-                child: Row(
-                  children: [
-                    ///
-                    /// LOCATION & ERROR
-                    ///
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Location
-                          Text(
-                            locationName,
-                            style: PromajaTextStyles.listLocation,
-                          ),
+              child: Row(
+                children: [
+                  ///
+                  /// LOCATION & ERROR
+                  ///
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Location
+                        Text(
+                          locationName,
+                          style: PromajaTextStyles.listLocation,
+                        ),
 
-                          /// Error data
-                          Text(
-                            error,
-                            style: PromajaTextStyles.listErrorData,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                        /// Error data
+                        Text(
+                          error,
+                          style: PromajaTextStyles.listErrorData,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
+                  ),
 
-                    ///
-                    /// ERROR ICON
-                    ///
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Animate(
-                        onPlay: (controller) => controller.loop(reverse: true),
-                        delay: 10.seconds,
-                        effects: [
-                          ScaleEffect(
-                            curve: Curves.easeIn,
-                            end: const Offset(1.5, 1.5),
-                            duration: 60.seconds,
-                          ),
-                        ],
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: Image.asset(
-                            PromajaIcons.tornado,
-                            height: 88,
-                            width: 88,
-                          ),
+                  ///
+                  /// ERROR ICON
+                  ///
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Animate(
+                      onPlay: (controller) => controller.loop(reverse: true),
+                      delay: 10.seconds,
+                      effects: [
+                        ScaleEffect(
+                          curve: Curves.easeIn,
+                          end: const Offset(1.5, 1.5),
+                          duration: 60.seconds,
+                        ),
+                      ],
+                      child: Transform.scale(
+                        scale: 1.2,
+                        child: Image.asset(
+                          PromajaIcons.tornado,
+                          height: 88,
+                          width: 88,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

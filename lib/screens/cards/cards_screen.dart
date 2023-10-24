@@ -9,7 +9,6 @@ import '../../constants/colors.dart';
 import '../../models/location/location.dart';
 import '../../notifiers/weather_notifier.dart';
 import '../../services/hive_service.dart';
-import '../../widgets/fade_animation.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'widgets/card/card_error.dart';
 import 'widgets/card/card_widget.dart';
@@ -41,77 +40,75 @@ class CardsScreen extends ConsumerWidget {
 
     return Scaffold(
       bottomNavigationBar: PromajaNavigationBar(),
-      body: FadeAnimation(
-        child: Stack(
-          children: [
-            ///
-            /// WEATHER
-            ///
-            AppinioSwiper(
-              loop: true,
-              padding: const EdgeInsets.only(bottom: 24),
-              isDisabled: cardsCount <= 1,
-              duration: const Duration(milliseconds: 300),
-              backgroundCardsCount: min(cardsCount - 1, 3),
-              cardsCount: cardsCount,
-              onSwiping: (_) => ref.read(cardMovingProvider.notifier).state = true,
-              onSwipeCancelled: () => ref.read(cardMovingProvider.notifier).state = false,
-              onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
-              cardsBuilder: (_, cardIndex) {
-                final location = locations.elementAtOrNull(cardIndex);
+      body: Stack(
+        children: [
+          ///
+          /// WEATHER
+          ///
+          AppinioSwiper(
+            loop: true,
+            padding: const EdgeInsets.only(bottom: 24),
+            isDisabled: cardsCount <= 1,
+            duration: const Duration(milliseconds: 300),
+            backgroundCardsCount: min(cardsCount - 1, 3),
+            cardsCount: cardsCount,
+            onSwiping: (_) => ref.read(cardMovingProvider.notifier).state = true,
+            onSwipeCancelled: () => ref.read(cardMovingProvider.notifier).state = false,
+            onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
+            cardsBuilder: (_, cardIndex) {
+              final location = locations.elementAtOrNull(cardIndex);
 
-                /// Return proper [CardWidget]
-                if (location != null) {
-                  return CardWidget(
-                    location: location,
-                    useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                  );
-                }
-
-                /// This should never happen, but if it does, return [CardError]
-                return ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(40),
-                  ),
-                  child: CardError(
-                    location: Location(
-                      country: '---',
-                      lat: 0,
-                      lon: 0,
-                      name: '---',
-                      region: '---',
-                    ),
-                    error: 'No more locations',
-                    useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                  ),
+              /// Return proper [CardWidget]
+              if (location != null) {
+                return CardWidget(
+                  location: location,
+                  useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
                 );
-              },
-            ),
+              }
 
-            ///
-            /// DOTS
-            ///
-            Positioned(
-              right: 16,
-              top: -64,
-              bottom: 0,
-              child: Align(
-                child: AnimatedSmoothIndicator(
-                  activeIndex: index,
-                  count: cardsCount,
-                  effect: WormEffect(
-                    activeDotColor: PromajaColors.white,
-                    dotHeight: 8,
-                    dotWidth: 8,
-                    dotColor: PromajaColors.black.withOpacity(0.25),
-                  ),
-                  axisDirection: Axis.vertical,
-                  curve: Curves.easeIn,
+              /// This should never happen, but if it does, return [CardError]
+              return ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(40),
                 ),
+                child: CardError(
+                  location: Location(
+                    country: '---',
+                    lat: 0,
+                    lon: 0,
+                    name: '---',
+                    region: '---',
+                  ),
+                  error: 'No more locations',
+                  useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                ),
+              );
+            },
+          ),
+
+          ///
+          /// DOTS
+          ///
+          Positioned(
+            right: 16,
+            top: -64,
+            bottom: 0,
+            child: Align(
+              child: AnimatedSmoothIndicator(
+                activeIndex: index,
+                count: cardsCount,
+                effect: WormEffect(
+                  activeDotColor: PromajaColors.white,
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  dotColor: PromajaColors.black.withOpacity(0.25),
+                ),
+                axisDirection: Axis.vertical,
+                curve: Curves.easeIn,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
-import '../../../../widgets/fade_animation.dart';
 
 class ListCardLoading extends StatelessWidget {
   final String locationName;
@@ -42,45 +41,43 @@ class ListCardLoading extends StatelessWidget {
             child: Container(
               height: 136,
               padding: const EdgeInsets.fromLTRB(32, 16, 24, 8),
-              child: FadeAnimation(
-                child: Row(
-                  children: [
-                    ///
-                    /// LOCATION & LOADING
-                    ///
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Location
-                          Text(
-                            locationName,
-                            style: PromajaTextStyles.listLocation,
-                          ),
+              child: Row(
+                children: [
+                  ///
+                  /// LOCATION & LOADING
+                  ///
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Location
+                        Text(
+                          locationName,
+                          style: PromajaTextStyles.listLocation,
+                        ),
 
-                          /// Loading
-                          AnimatedShimmer(
-                            height: 48,
-                            width: 80,
-                            startColor: PromajaColors.white.withOpacity(0.5),
-                            endColor: PromajaColors.white.withOpacity(0.25),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ],
-                      ),
+                        /// Loading
+                        AnimatedShimmer(
+                          height: 48,
+                          width: 80,
+                          startColor: PromajaColors.white.withOpacity(0.5),
+                          endColor: PromajaColors.white.withOpacity(0.25),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ],
                     ),
+                  ),
 
-                    ///
-                    /// LOADING ICON
-                    ///
-                    AnimatedShimmer.round(
-                      size: 96,
-                      startColor: PromajaColors.white.withOpacity(0.5),
-                      endColor: PromajaColors.white.withOpacity(0.25),
-                    ),
-                  ],
-                ),
+                  ///
+                  /// LOADING ICON
+                  ///
+                  AnimatedShimmer.round(
+                    size: 96,
+                    startColor: PromajaColors.white.withOpacity(0.5),
+                    endColor: PromajaColors.white.withOpacity(0.25),
+                  ),
+                ],
               ),
             ),
           ),

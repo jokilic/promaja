@@ -12,7 +12,6 @@ import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../notifiers/weather_notifier.dart';
-import '../../../../widgets/fade_animation.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
 import '../weather_card_hour/weather_card_hour_error.dart';
@@ -130,156 +129,154 @@ class WeatherSuccess extends ConsumerWidget {
       ),
     );
 
-    return FadeAnimation(
-      child: ListView(
-        controller: ref.watch(weatherCardControllerProvider),
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
-        children: [
-          ///
-          /// MAIN CONTENT
-          ///
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height,
-            child: Stack(
-              children: [
-                ///
-                /// CARD
-                ///
-                Stack(
-                  children: [
-                    ///
-                    /// WEATHER
-                    ///
-                    AppinioSwiper(
-                      loop: true,
-                      padding: const EdgeInsets.only(bottom: 140),
-                      isDisabled: cardsCount <= 1,
-                      duration: const Duration(milliseconds: 300),
-                      backgroundCardsCount: min(cardsCount - 1, 3),
-                      cardsCount: cardsCount,
-                      onSwiping: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
-                      onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
-                      onSwipe: (index, __) => cardSwiped(
-                        index: index,
-                        ref: ref,
-                        screenWidth: MediaQuery.sizeOf(context).width,
-                      ),
-                      cardsBuilder: (_, cardIndex) {
-                        final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
+    return ListView(
+      controller: ref.watch(weatherCardControllerProvider),
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
+      children: [
+        ///
+        /// MAIN CONTENT
+        ///
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          child: Stack(
+            children: [
+              ///
+              /// CARD
+              ///
+              Stack(
+                children: [
+                  ///
+                  /// WEATHER
+                  ///
+                  AppinioSwiper(
+                    loop: true,
+                    padding: const EdgeInsets.only(bottom: 140),
+                    isDisabled: cardsCount <= 1,
+                    duration: const Duration(milliseconds: 300),
+                    backgroundCardsCount: min(cardsCount - 1, 3),
+                    cardsCount: cardsCount,
+                    onSwiping: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
+                    onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
+                    onSwipe: (index, __) => cardSwiped(
+                      index: index,
+                      ref: ref,
+                      screenWidth: MediaQuery.sizeOf(context).width,
+                    ),
+                    cardsBuilder: (_, cardIndex) {
+                      final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
 
-                        /// Return proper [ForecastSuccess]
-                        if (forecast != null) {
-                          return WeatherCardSuccess(
-                            location: location,
-                            forecast: forecast,
-                            useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                          );
-                        }
-
-                        /// This should never happen, but if it does, return [ForecastError]
-                        return ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(40),
-                          ),
-                          child: WeatherCardError(
-                            location: location,
-                            error: 'No more forecasts',
-                            useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                          ),
+                      /// Return proper [ForecastSuccess]
+                      if (forecast != null) {
+                        return WeatherCardSuccess(
+                          location: location,
+                          forecast: forecast,
+                          useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
                         );
-                      },
-                    ),
+                      }
 
-                    ///
-                    /// DOTS
-                    ///
-                    Positioned(
-                      right: 16,
-                      top: -160,
-                      bottom: 0,
-                      child: Align(
-                        child: AnimatedSmoothIndicator(
-                          activeIndex: index,
-                          count: cardsCount,
-                          effect: WormEffect(
-                            activeDotColor: PromajaColors.white,
-                            dotHeight: 8,
-                            dotWidth: 8,
-                            dotColor: PromajaColors.black.withOpacity(0.25),
-                          ),
-                          axisDirection: Axis.vertical,
-                          curve: Curves.easeIn,
+                      /// This should never happen, but if it does, return [ForecastError]
+                      return ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(40),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                ///
-                /// DAYS
-                ///
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: SafeArea(
-                    top: false,
-                    child: SizedBox(
-                      height: 88,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: weatherForecastDay.hours.length,
-                        controller: ref.watch(
-                          weatherDaysControllerProvider(
-                            MediaQuery.sizeOf(context).width,
-                          ),
+                        child: WeatherCardError(
+                          location: location,
+                          error: 'No more forecasts',
+                          useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
                         ),
-                        physics: const PageScrollPhysics(
-                          parent: BouncingScrollPhysics(),
+                      );
+                    },
+                  ),
+
+                  ///
+                  /// DOTS
+                  ///
+                  Positioned(
+                    right: 16,
+                    top: -160,
+                    bottom: 0,
+                    child: Align(
+                      child: AnimatedSmoothIndicator(
+                        activeIndex: index,
+                        count: cardsCount,
+                        effect: WormEffect(
+                          activeDotColor: PromajaColors.white,
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          dotColor: PromajaColors.black.withOpacity(0.25),
                         ),
-                        itemBuilder: (context, hourIndex) {
-                          final hourWeather = weatherForecastDay.hours.elementAtOrNull(hourIndex);
-
-                          /// Return proper [ForecastHourSuccess]
-                          if (hourWeather != null) {
-                            return WeatherCardHourSuccess(
-                              hourWeather: hourWeather,
-                              useOpacity: ref.watch(weatherCardMovingProvider),
-                              isActive: activeHourWeather == hourWeather,
-                              onPressed: () => weatherCardHourPressed(
-                                activeHourWeather: activeHourWeather,
-                                hourWeather: hourWeather,
-                                ref: ref,
-                              ),
-                            );
-                          }
-
-                          /// This should never happen, but if it does, return [ForecastHourError]
-                          return WeatherCardHourError(
-                            useOpacity: ref.watch(weatherCardMovingProvider),
-                            onPressed: () {},
-                          );
-                        },
+                        axisDirection: Axis.vertical,
+                        curve: Curves.easeIn,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
 
-          ///
-          /// INDIVIDUAL HOUR
-          ///
-          WeatherCardIndividualHour(
-            hourWeather: activeHourWeather,
-            useOpacity: ref.watch(weatherCardMovingProvider),
-            key: ValueKey(activeHourWeather),
+              ///
+              /// DAYS
+              ///
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: SafeArea(
+                  top: false,
+                  child: SizedBox(
+                    height: 88,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: weatherForecastDay.hours.length,
+                      controller: ref.watch(
+                        weatherDaysControllerProvider(
+                          MediaQuery.sizeOf(context).width,
+                        ),
+                      ),
+                      physics: const PageScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      itemBuilder: (context, hourIndex) {
+                        final hourWeather = weatherForecastDay.hours.elementAtOrNull(hourIndex);
+
+                        /// Return proper [ForecastHourSuccess]
+                        if (hourWeather != null) {
+                          return WeatherCardHourSuccess(
+                            hourWeather: hourWeather,
+                            useOpacity: ref.watch(weatherCardMovingProvider),
+                            isActive: activeHourWeather == hourWeather,
+                            onPressed: () => weatherCardHourPressed(
+                              activeHourWeather: activeHourWeather,
+                              hourWeather: hourWeather,
+                              ref: ref,
+                            ),
+                          );
+                        }
+
+                        /// This should never happen, but if it does, return [ForecastHourError]
+                        return WeatherCardHourError(
+                          useOpacity: ref.watch(weatherCardMovingProvider),
+                          onPressed: () {},
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+
+        ///
+        /// INDIVIDUAL HOUR
+        ///
+        WeatherCardIndividualHour(
+          hourWeather: activeHourWeather,
+          useOpacity: ref.watch(weatherCardMovingProvider),
+          key: ValueKey(activeHourWeather),
+        ),
+      ],
     );
   }
 }

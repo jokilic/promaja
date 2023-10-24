@@ -6,7 +6,6 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
-import '../../../../widgets/fade_animation.dart';
 
 class ListCardSuccess extends StatelessWidget {
   final String locationName;
@@ -57,60 +56,58 @@ class ListCardSuccess extends StatelessWidget {
           child: Container(
             height: 136,
             padding: const EdgeInsets.fromLTRB(32, 16, 24, 8),
-            child: FadeAnimation(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ///
-                  /// LOCATION & TEMPERATURE
-                  ///
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Location
-                        Text(
-                          locationName,
-                          style: PromajaTextStyles.listLocation,
-                        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ///
+                /// LOCATION & TEMPERATURE
+                ///
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Location
+                      Text(
+                        locationName,
+                        style: PromajaTextStyles.listLocation,
+                      ),
 
-                        /// Temperature
-                        Text(
-                          '${currentWeather.tempC.round()}°',
-                          style: PromajaTextStyles.listTemperature,
-                        ),
-                      ],
-                    ),
+                      /// Temperature
+                      Text(
+                        '${currentWeather.tempC.round()}°',
+                        style: PromajaTextStyles.listTemperature,
+                      ),
+                    ],
                   ),
+                ),
 
-                  ///
-                  /// WEATHER ICON
-                  ///
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Animate(
-                      onPlay: (controller) => controller.loop(reverse: true),
-                      delay: 10.seconds,
-                      effects: [
-                        ScaleEffect(
-                          curve: Curves.easeIn,
-                          end: const Offset(1.5, 1.5),
-                          duration: 60.seconds,
-                        ),
-                      ],
-                      child: Transform.scale(
-                        scale: 1.2,
-                        child: Image.asset(
-                          weatherIcon,
-                          height: 88,
-                          width: 88,
-                        ),
+                ///
+                /// WEATHER ICON
+                ///
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Animate(
+                    onPlay: (controller) => controller.loop(reverse: true),
+                    delay: 10.seconds,
+                    effects: [
+                      ScaleEffect(
+                        curve: Curves.easeIn,
+                        end: const Offset(1.5, 1.5),
+                        duration: 60.seconds,
+                      ),
+                    ],
+                    child: Transform.scale(
+                      scale: 1.2,
+                      child: Image.asset(
+                        weatherIcon,
+                        height: 88,
+                        width: 88,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
