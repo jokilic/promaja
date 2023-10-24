@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
@@ -65,130 +64,119 @@ class WeatherCardSuccess extends ConsumerWidget {
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeIn,
             opacity: useOpacity ? 0 : 1,
-            child: AnimationLimiter(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: AnimationConfiguration.toStaggeredList(
-                  duration: const Duration(milliseconds: 400),
-                  childAnimationBuilder: (widget) => FadeInAnimation(
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeIn,
-                    child: widget,
-                  ),
+            child: Column(
+              children: [
+                const SizedBox.shrink(),
+
+                ///
+                /// DATE & LOCATION
+                ///
+                Column(
                   children: [
-                    const SizedBox.shrink(),
+                    const SizedBox(height: 24),
+                    Text(
+                      getForecastDate(dateEpoch: forecast.dateEpoch),
+                      style: PromajaTextStyles.weatherCardLastUpdated,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      location.name,
+                      style: PromajaTextStyles.currentLocation,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
 
-                    ///
-                    /// DATE & LOCATION
-                    ///
-                    Column(
+                ///
+                /// WEATHER ICON
+                ///
+                Animate(
+                  onPlay: (controller) => controller.loop(reverse: true),
+                  delay: 10.seconds,
+                  effects: [
+                    ScaleEffect(
+                      curve: Curves.easeIn,
+                      end: const Offset(1.5, 1.5),
+                      duration: 60.seconds,
+                    ),
+                  ],
+                  child: Transform.scale(
+                    scale: 1.2,
+                    child: Image.asset(
+                      weatherIcon,
+                      height: 176,
+                      width: 176,
+                    ),
+                  ),
+                ),
+
+                ///
+                /// TEMPERATURE & WEATHER
+                ///
+                Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        const SizedBox(height: 24),
                         Text(
-                          getForecastDate(dateEpoch: forecast.dateEpoch),
-                          style: PromajaTextStyles.weatherCardLastUpdated,
+                          '${forecast.day.avgTempC.round()}',
+                          style: PromajaTextStyles.currentTemperature,
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          location.name,
-                          style: PromajaTextStyles.currentLocation,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-
-                    ///
-                    /// WEATHER ICON
-                    ///
-                    Animate(
-                      onPlay: (controller) => controller.loop(reverse: true),
-                      delay: 10.seconds,
-                      effects: [
-                        ScaleEffect(
-                          curve: Curves.easeIn,
-                          end: const Offset(1.5, 1.5),
-                          duration: 60.seconds,
-                        ),
-                      ],
-                      child: Transform.scale(
-                        scale: 1.2,
-                        child: Image.asset(
-                          weatherIcon,
-                          height: 176,
-                          width: 176,
-                        ),
-                      ),
-                    ),
-
-                    ///
-                    /// TEMPERATURE & WEATHER
-                    ///
-                    Column(
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Text(
-                              '${forecast.day.avgTempC.round()}',
-                              style: PromajaTextStyles.currentTemperature,
-                              textAlign: TextAlign.center,
-                            ),
-                            const Positioned(
-                              right: -24,
-                              top: 2,
-                              child: Text(
-                                '°',
-                                style: PromajaTextStyles.currentTemperatureDegrees,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 80),
+                        const Positioned(
+                          right: -24,
+                          top: 2,
                           child: Text(
-                            weatherDescription,
-                            style: PromajaTextStyles.currentWeather,
+                            '°',
+                            style: PromajaTextStyles.currentTemperatureDegrees,
                             textAlign: TextAlign.center,
                           ),
                         ),
                       ],
                     ),
-
-                    ///
-                    /// ADDITIONAL INFO
-                    ///
-                    SizedBox(
-                      height: 144,
-                      child: PageView(
-                        controller: ref.watch(weatherCardAdditionalControllerProvider),
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          ///
-                          /// WIND, HUMIDITY, PRECIPITATION
-                          ///
-                          AdditionalWHP(
-                            windKph: forecast.day.maxWindKph,
-                            humidity: forecast.day.avgHumidity.round(),
-                            precipitation: forecast.day.totalPrecipMm,
-                          ),
-
-                          ///
-                          /// MIN/MAX TEMPERATURE, UV
-                          ///
-                          AdditionalTU(
-                            minTemp: forecast.day.minTempC,
-                            maxTemp: forecast.day.maxTempC,
-                            uv: forecast.day.uv,
-                          ),
-                        ],
+                    const SizedBox(height: 2),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: Text(
+                        weatherDescription,
+                        style: PromajaTextStyles.currentWeather,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
                 ),
-              ),
+
+                ///
+                /// ADDITIONAL INFO
+                ///
+                SizedBox(
+                  height: 144,
+                  child: PageView(
+                    controller: ref.watch(weatherCardAdditionalControllerProvider),
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      ///
+                      /// WIND, HUMIDITY, PRECIPITATION
+                      ///
+                      AdditionalWHP(
+                        windKph: forecast.day.maxWindKph,
+                        humidity: forecast.day.avgHumidity.round(),
+                        precipitation: forecast.day.totalPrecipMm,
+                      ),
+
+                      ///
+                      /// MIN/MAX TEMPERATURE, UV
+                      ///
+                      AdditionalTU(
+                        minTemp: forecast.day.minTempC,
+                        maxTemp: forecast.day.maxTempC,
+                        uv: forecast.day.uv,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
