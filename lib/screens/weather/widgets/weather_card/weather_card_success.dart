@@ -65,6 +65,7 @@ class WeatherCardSuccess extends ConsumerWidget {
             curve: Curves.easeIn,
             opacity: useOpacity ? 0 : 1,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox.shrink(),
 

@@ -66,6 +66,7 @@ class ListCards extends ConsumerWidget {
           ///
           if (index == locations.length) {
             return const Padding(
+              key: ValueKey('add_location'),
               padding: EdgeInsets.only(top: 16),
               child: AddLocationResult(),
             );
@@ -77,6 +78,7 @@ class ListCards extends ConsumerWidget {
           final location = locations[index];
 
           return ListCardWidget(
+            key: ValueKey(location),
             location: location,
             index: index,
             onTap: () => Navigator.of(context).push(
