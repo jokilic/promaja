@@ -4,12 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
+import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../notifiers/weather_notifier.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
-import '../../../../widgets/additional/additional_tu.dart';
-import '../../../../widgets/additional/additional_whp.dart';
+import '../weather/weather_success.dart';
+import '../weather_card_hour/weather_card_hour_error.dart';
+import '../weather_card_hour/weather_card_hour_success.dart';
 
 // TODO: Finish this
 class WeatherCardSuccess extends ConsumerWidget {
@@ -23,8 +25,43 @@ class WeatherCardSuccess extends ConsumerWidget {
     required this.useOpacity,
   });
 
+  void weatherCardHourPressed({
+    required WidgetRef ref,
+    required HourWeather? activeHourWeather,
+    required HourWeather hourWeather,
+  }) {
+    /// User pressed already active hour
+    /// Disable active hour and scroll up
+    if (activeHourWeather == hourWeather) {
+      ref.read(activeHourWeatherProvider.notifier).state = null;
+      ref.read(weatherCardControllerProvider).animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+    }
+
+    /// User pressed inactive hour
+    /// Enable active hour and scroll down
+    else {
+      ref.read(activeHourWeatherProvider.notifier).state = hourWeather;
+      if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
+        ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
+      }
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(weatherCardControllerProvider).animateTo(
+              ref.read(weatherCardControllerProvider).position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn,
+            ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activeHourWeather = ref.watch(activeHourWeatherProvider);
+
     final backgroundColor = getWeatherColor(
       code: forecast.day.condition.code,
       isDay: true,
@@ -149,32 +186,47 @@ class WeatherCardSuccess extends ConsumerWidget {
                 ),
 
                 ///
-                /// ADDITIONAL INFO
+                /// HOURS
                 ///
                 SizedBox(
                   height: 144,
-                  child: PageView(
-                    controller: ref.watch(weatherCardAdditionalControllerProvider),
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      ///
-                      /// WIND, HUMIDITY, PRECIPITATION
-                      ///
-                      AdditionalWHP(
-                        windKph: forecast.day.maxWindKph,
-                        humidity: forecast.day.avgHumidity.round(),
-                        precipitation: forecast.day.totalPrecipMm,
+                  width: MediaQuery.sizeOf(context).width - 32,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: forecast.hours.length,
+                    controller: ref.watch(
+                      weatherDaysControllerProvider(
+                        MediaQuery.sizeOf(context).width,
                       ),
+                    ),
+                    physics: const PageScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    itemBuilder: (context, hourIndex) {
+                      final hourWeather = forecast.hours.elementAtOrNull(hourIndex);
 
-                      ///
-                      /// MIN/MAX TEMPERATURE, UV
-                      ///
-                      AdditionalTU(
-                        minTemp: forecast.day.minTempC,
-                        maxTemp: forecast.day.maxTempC,
-                        uv: forecast.day.uv,
-                      ),
-                    ],
+                      /// Return proper [ForecastHourSuccess]
+                      if (hourWeather != null) {
+                        return WeatherCardHourSuccess(
+                          hourWeather: hourWeather,
+                          useOpacity: ref.watch(weatherCardMovingProvider),
+                          isActive: activeHourWeather == hourWeather,
+                          borderColor: backgroundColor,
+                          onPressed: () => weatherCardHourPressed(
+                            hourWeather: hourWeather,
+                            activeHourWeather: activeHourWeather,
+                            ref: ref,
+                          ),
+                        );
+                      }
+
+                      /// This should never happen, but if it does, return [ForecastHourError]
+                      return WeatherCardHourError(
+                        useOpacity: ref.watch(weatherCardMovingProvider),
+                        onPressed: () {},
+                      );
+                    },
                   ),
                 ),
               ],
