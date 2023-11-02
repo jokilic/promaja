@@ -61,7 +61,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                   style: PromajaTextStyles.currentLastUpdated,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 56),
+                const SizedBox(height: 40),
               ],
             ),
 
@@ -79,7 +79,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 ),
               ],
               child: Transform.scale(
-                scale: 1.5,
+                scale: 1.35,
                 child: Image.asset(
                   weatherIcon,
                   height: 120,
@@ -87,7 +87,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
 
             ///
             /// TEMPERATURE & WEATHER
@@ -125,7 +125,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
             ///
             /// ADDITIONAL INFO
