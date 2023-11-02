@@ -30,7 +30,7 @@ class WeatherCardHourError extends StatelessWidget {
               ///
               Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32),
                   gradient: LinearGradient(
