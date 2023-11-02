@@ -21,7 +21,7 @@ class WeatherCardHourError extends StatelessWidget {
         curve: Curves.easeIn,
         opacity: useOpacity ? 0 : 1,
         child: Container(
-          width: MediaQuery.sizeOf(context).width / 4 - 8,
+          width: MediaQuery.sizeOf(context).width / 4 - 16,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           child: Stack(
             children: [

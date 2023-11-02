@@ -199,7 +199,8 @@ class WeatherCardSuccess extends ConsumerWidget {
                 ///
                 /// HOURS
                 ///
-                SizedBox(
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 144,
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16),
