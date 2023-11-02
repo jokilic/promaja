@@ -49,13 +49,15 @@ class WeatherCardHourSuccess extends StatelessWidget {
             ///
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: borderColor,
-                  width: 2,
-                ),
+                borderRadius: BorderRadius.circular(16),
+                border: isActive
+                    ? null
+                    : Border.all(
+                        color: borderColor,
+                        width: 2,
+                      ),
                 gradient: isActive
                     ? LinearGradient(
                         colors: [
