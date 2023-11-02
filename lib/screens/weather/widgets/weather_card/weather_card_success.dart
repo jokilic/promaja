@@ -27,6 +27,7 @@ class WeatherCardSuccess extends ConsumerWidget {
     required this.forecast,
     required this.useOpacity,
     required this.index,
+    super.key,
   });
 
   void weatherCardHourPressed({
