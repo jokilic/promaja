@@ -40,7 +40,7 @@ class WeatherCardHourSuccess extends StatelessWidget {
       curve: Curves.easeIn,
       opacity: useOpacity ? 0 : 1,
       child: Container(
-        width: MediaQuery.sizeOf(context).width / 4 - 16,
+        width: MediaQuery.sizeOf(context).width / 4 - 8,
         margin: const EdgeInsets.symmetric(horizontal: 4),
         child: Stack(
           children: [
@@ -52,12 +52,10 @@ class WeatherCardHourSuccess extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                border: isActive
-                    ? null
-                    : Border.all(
-                        color: borderColor,
-                        width: 2,
-                      ),
+                border: Border.all(
+                  color: borderColor,
+                  width: 2,
+                ),
                 gradient: isActive
                     ? LinearGradient(
                         colors: [

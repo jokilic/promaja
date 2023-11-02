@@ -7,34 +7,39 @@ import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../notifiers/weather_notifier.dart';
+import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../weather/weather_success.dart';
 import '../weather_card_hour/weather_card_hour_error.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
+import '../weather_card_hour/weather_card_individual_hour.dart';
 
 // TODO: Finish this
 class WeatherCardSuccess extends ConsumerWidget {
   final Location location;
   final ForecastDayWeather forecast;
   final bool useOpacity;
+  final int index;
 
   const WeatherCardSuccess({
     required this.location,
     required this.forecast,
     required this.useOpacity,
+    required this.index,
   });
 
   void weatherCardHourPressed({
     required WidgetRef ref,
     required HourWeather? activeHourWeather,
     required HourWeather hourWeather,
+    required int index,
   }) {
     /// User pressed already active hour
     /// Disable active hour and scroll up
     if (activeHourWeather == hourWeather) {
       ref.read(activeHourWeatherProvider.notifier).state = null;
-      ref.read(weatherCardControllerProvider).animateTo(
+      ref.read(weatherCardControllerProvider(index)).animateTo(
             0,
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeIn,
@@ -44,13 +49,15 @@ class WeatherCardSuccess extends ConsumerWidget {
     /// User pressed inactive hour
     /// Enable active hour and scroll down
     else {
+      ref.read(loggerProvider).f(ref.read(weatherCardControllerProvider(index)).position.maxScrollExtent);
+
       ref.read(activeHourWeatherProvider.notifier).state = hourWeather;
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(weatherCardControllerProvider).animateTo(
-              ref.read(weatherCardControllerProvider).position.maxScrollExtent,
+        (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
+              ref.read(weatherCardControllerProvider(index)).position.maxScrollExtent,
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeIn,
             ),
@@ -101,17 +108,17 @@ class WeatherCardSuccess extends ConsumerWidget {
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeIn,
             opacity: useOpacity ? 0 : 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ListView(
+              controller: ref.watch(weatherCardControllerProvider(index)),
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
               children: [
-                const SizedBox.shrink(),
-
                 ///
                 /// DATE & LOCATION
                 ///
                 Column(
                   children: [
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 64),
                     Text(
                       getForecastDate(dateEpoch: forecast.dateEpoch),
                       style: PromajaTextStyles.weatherCardLastUpdated,
@@ -125,6 +132,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 56),
 
                 ///
                 /// WEATHER ICON
@@ -148,6 +156,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 56),
 
                 ///
                 /// TEMPERATURE & WEATHER
@@ -184,13 +193,13 @@ class WeatherCardSuccess extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 40),
 
                 ///
                 /// HOURS
                 ///
                 SizedBox(
                   height: 144,
-                  width: MediaQuery.sizeOf(context).width - 32,
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     scrollDirection: Axis.horizontal,
@@ -217,6 +226,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                             hourWeather: hourWeather,
                             activeHourWeather: activeHourWeather,
                             ref: ref,
+                            index: index,
                           ),
                         );
                       }
@@ -228,6 +238,15 @@ class WeatherCardSuccess extends ConsumerWidget {
                       );
                     },
                   ),
+                ),
+
+                ///
+                /// INDIVIDUAL HOUR
+                ///
+                WeatherCardIndividualHour(
+                  hourWeather: activeHourWeather,
+                  useOpacity: ref.watch(weatherCardMovingProvider),
+                  key: ValueKey(activeHourWeather),
                 ),
               ],
             ),
