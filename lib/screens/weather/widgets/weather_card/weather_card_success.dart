@@ -27,7 +27,6 @@ class WeatherCardSuccess extends ConsumerWidget {
     required this.forecast,
     required this.useOpacity,
     required this.index,
-    super.key,
   });
 
   void weatherCardHourPressed({
@@ -139,6 +138,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                 /// WEATHER ICON
                 ///
                 Animate(
+                  key: UniqueKey(),
                   onPlay: (controller) => controller.loop(reverse: true),
                   delay: 10.seconds,
                   effects: [

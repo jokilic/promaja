@@ -58,6 +58,7 @@ class WeatherCardHourError extends StatelessWidget {
                     /// WEATHER ICON
                     ///
                     Animate(
+                      key: UniqueKey(),
                       onPlay: (controller) => controller.loop(reverse: true),
                       delay: 10.seconds,
                       effects: [

@@ -18,7 +18,6 @@ class CardError extends StatelessWidget {
     required this.location,
     required this.useOpacity,
     required this.error,
-    super.key,
   });
 
   @override
@@ -71,6 +70,7 @@ class CardError extends StatelessWidget {
                 /// ERROR ICON
                 ///
                 Animate(
+                  key: UniqueKey(),
                   onPlay: (controller) => controller.loop(reverse: true),
                   delay: 10.seconds,
                   effects: [

@@ -12,7 +12,6 @@ class WeatherCardError extends StatelessWidget {
     required this.location,
     required this.useOpacity,
     required this.error,
-    super.key,
   });
 
   @override

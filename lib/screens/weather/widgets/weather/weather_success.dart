@@ -107,7 +107,6 @@ class WeatherSuccess extends ConsumerWidget {
             /// Return proper [ForecastSuccess]
             if (forecast != null) {
               return WeatherCardSuccess(
-                key: ValueKey(cardIndex),
                 location: location,
                 forecast: forecast,
                 useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
@@ -121,7 +120,6 @@ class WeatherSuccess extends ConsumerWidget {
                 bottom: Radius.circular(40),
               ),
               child: WeatherCardError(
-                key: ValueKey(cardIndex),
                 location: location,
                 error: 'No more forecasts',
                 useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),

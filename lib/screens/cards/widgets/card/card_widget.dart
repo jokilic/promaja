@@ -14,7 +14,6 @@ class CardWidget extends ConsumerWidget {
   const CardWidget({
     required this.location,
     required this.useOpacity,
-    super.key,
   });
 
   @override

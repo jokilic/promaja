@@ -61,7 +61,6 @@ class CardsScreen extends ConsumerWidget {
               /// Return proper [CardWidget]
               if (location != null) {
                 return CardWidget(
-                  key: ValueKey(cardIndex),
                   location: location,
                   useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
                 );
@@ -73,7 +72,6 @@ class CardsScreen extends ConsumerWidget {
                   bottom: Radius.circular(40),
                 ),
                 child: CardError(
-                  key: ValueKey(cardIndex),
                   location: Location(
                     country: '---',
                     lat: 0,
