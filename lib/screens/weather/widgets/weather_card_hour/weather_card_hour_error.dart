@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
@@ -17,7 +18,7 @@ class WeatherCardHourError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
+        duration: PromajaDurations.opacityAnimation,
         curve: Curves.easeIn,
         opacity: useOpacity ? 0 : 1,
         child: Container(

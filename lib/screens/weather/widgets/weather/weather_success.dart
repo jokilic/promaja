@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
@@ -67,7 +68,7 @@ class WeatherSuccess extends ConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
               0,
-              duration: const Duration(milliseconds: 300),
+              duration: PromajaDurations.scrollAnimation,
               curve: Curves.easeIn,
             ),
       );
@@ -91,7 +92,7 @@ class WeatherSuccess extends ConsumerWidget {
           loop: true,
           padding: const EdgeInsets.only(bottom: 24),
           isDisabled: cardsCount <= 1,
-          duration: const Duration(milliseconds: 300),
+          duration: PromajaDurations.cardSwiperAnimation,
           backgroundCardsCount: min(cardsCount - 1, 3),
           cardsCount: cardsCount,
           onSwiping: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,

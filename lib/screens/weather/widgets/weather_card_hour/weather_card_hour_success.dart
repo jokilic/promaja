@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../util/color.dart';
@@ -36,7 +37,7 @@ class WeatherCardHourSuccess extends StatelessWidget {
     );
 
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 200),
+      duration: PromajaDurations.opacityAnimation,
       curve: Curves.easeIn,
       opacity: useOpacity ? 0 : 1,
       child: Container(

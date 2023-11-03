@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/colors.dart';
+import '../constants/durations.dart';
 import '../constants/icons.dart';
 import '../screens/cards/cards_screen.dart';
 import '../services/hive_service.dart';
@@ -39,7 +40,7 @@ class PromajaNavigationBar extends ConsumerWidget {
             ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
           }
         },
-        animationDuration: const Duration(milliseconds: 300),
+        animationDuration: PromajaDurations.navigationAnimation,
         destinations: [
           ///
           /// CARDS
@@ -76,7 +77,7 @@ class PromajaNavigationBar extends ConsumerWidget {
               width: 20,
               color: PromajaColors.white,
             ),
-            label: 'Search',
+            label: 'Weather',
           ),
 
           ///

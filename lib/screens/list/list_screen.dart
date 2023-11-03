@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/durations.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'widgets/list_cards.dart';
@@ -13,17 +15,26 @@ class ListScreen extends ConsumerWidget {
 
     return Scaffold(
       bottomNavigationBar: PromajaNavigationBar(),
-      body: SafeArea(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeIn,
-          child: locations.isEmpty
-              ? ListEmpty()
-              : ListCards(
-                  locations: locations,
-                  mainContext: context,
-                ),
+      body: Animate(
+        key: UniqueKey(),
+        effects: [
+          FadeEffect(
+            curve: Curves.easeIn,
+            duration: PromajaDurations.fadeAnimation,
+          ),
+        ],
+        child: SafeArea(
+          child: AnimatedSwitcher(
+            duration: PromajaDurations.cardSwiperAnimation,
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeIn,
+            child: locations.isEmpty
+                ? ListEmpty()
+                : ListCards(
+                    locations: locations,
+                    mainContext: context,
+                  ),
+          ),
         ),
       ),
     );

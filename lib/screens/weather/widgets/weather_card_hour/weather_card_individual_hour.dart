@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../notifiers/weather_notifier.dart';
@@ -34,7 +35,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
     );
 
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 200),
+      duration: PromajaDurations.opacityAnimation,
       curve: Curves.easeIn,
       opacity: useOpacity ? 0 : 1,
       child: Container(

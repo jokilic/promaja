@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/durations.dart';
 import '../../models/location/location.dart';
 import '../../notifiers/weather_notifier.dart';
 import '../../widgets/promaja_navigation_bar.dart';
@@ -18,42 +20,54 @@ class WeatherScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         bottomNavigationBar: PromajaNavigationBar(),
-        body: location != null
-            ? ref.watch(getForecastWeatherProvider((location: location!, days: 3))).when(
-                  data: (data) {
-                    ///
-                    /// DATA SUCCESSFULLY FETCHED
-                    ///
-                    if (data.response != null && data.error == null) {
-                      final location = data.response!.location;
-                      final currentWeather = data.response!.current;
-                      final forecastWeather = data.response!.forecast;
+        body: Animate(
+          key: UniqueKey(),
+          effects: [
+            FadeEffect(
+              curve: Curves.easeIn,
+              duration: PromajaDurations.fadeAnimation,
+            ),
+          ],
+          child: location != null
+              ? ref.watch(getForecastWeatherProvider((location: location!, days: 3))).when(
+                    data: (data) {
+                      ///
+                      /// DATA SUCCESSFULLY FETCHED
+                      ///
+                      if (data.response != null && data.error == null) {
+                        final location = data.response!.location;
+                        final currentWeather = data.response!.current;
+                        final forecastWeather = data.response!.forecast;
 
-                      return WeatherSuccess(
-                        location: location,
-                        currentWeather: currentWeather,
-                        forecastWeather: forecastWeather,
+                        return WeatherSuccess(
+                          location: location,
+                          currentWeather: currentWeather,
+                          forecastWeather: forecastWeather,
+                        );
+                      }
+
+                      ///
+                      /// ERROR WHILE FETCHING
+                      ///
+                      return WeatherError(
+                        location: location!,
+                        error: data.error ?? 'Some weird error happened',
                       );
-                    }
-
-                    ///
-                    /// ERROR WHILE FETCHING
-                    ///
-                    return WeatherError(
+                    },
+                    error: (error, stackTrace) => WeatherError(
                       location: location!,
-                      error: data.error ?? 'Some weird error happened',
-                    );
-                  },
-                  error: (error, stackTrace) => WeatherError(
-                    location: location!,
-                    error: '$error',
-                  ),
-                  loading: () => WeatherLoading(
-                    location: location!,
-                  ),
-                )
-            : Container(
-                color: Colors.pink,
-              ),
+                      error: '$error',
+                    ),
+                    loading: () => WeatherLoading(
+                      location: location!,
+                    ),
+                  )
+              :
+
+              // TODO: Finish this
+              Container(
+                  color: Colors.pink,
+                ),
+        ),
       );
 }

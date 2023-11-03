@@ -2,6 +2,7 @@ import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 
@@ -16,7 +17,7 @@ class CardLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
+        duration: PromajaDurations.opacityAnimation,
         curve: Curves.easeIn,
         opacity: useOpacity ? 0.45 : 1,
         child: Container(
@@ -32,7 +33,7 @@ class CardLoading extends StatelessWidget {
             ),
           ),
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
+            duration: PromajaDurations.opacityAnimation,
             curve: Curves.easeIn,
             opacity: useOpacity ? 0 : 1,
             child: Column(

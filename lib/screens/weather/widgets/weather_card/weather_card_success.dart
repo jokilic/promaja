@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
@@ -41,7 +42,7 @@ class WeatherCardSuccess extends ConsumerWidget {
       ref.read(activeHourWeatherProvider.notifier).state = null;
       ref.read(weatherCardControllerProvider(index)).animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
+            duration: PromajaDurations.scrollAnimation,
             curve: Curves.easeIn,
           );
     }
@@ -58,7 +59,7 @@ class WeatherCardSuccess extends ConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
               ref.read(weatherCardControllerProvider(index)).position.maxScrollExtent,
-              duration: const Duration(milliseconds: 300),
+              duration: PromajaDurations.scrollAnimation,
               curve: Curves.easeIn,
             ),
       );
@@ -89,7 +90,7 @@ class WeatherCardSuccess extends ConsumerWidget {
         bottom: Radius.circular(40),
       ),
       child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
+        duration: PromajaDurations.opacityAnimation,
         curve: Curves.easeIn,
         opacity: useOpacity ? 0.45 : 1,
         child: Container(
@@ -105,7 +106,7 @@ class WeatherCardSuccess extends ConsumerWidget {
             ),
           ),
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
+            duration: PromajaDurations.opacityAnimation,
             curve: Curves.easeIn,
             opacity: useOpacity ? 0 : 1,
             child: ListView(

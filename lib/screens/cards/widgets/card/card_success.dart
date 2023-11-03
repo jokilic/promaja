@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/location/location.dart';
@@ -42,7 +43,7 @@ class CardSuccess extends ConsumerWidget {
     );
 
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 200),
+      duration: PromajaDurations.opacityAnimation,
       curve: Curves.easeIn,
       opacity: useOpacity ? 0.45 : 1,
       child: Container(
@@ -58,7 +59,7 @@ class CardSuccess extends ConsumerWidget {
           ),
         ),
         child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 200),
+          duration: PromajaDurations.opacityAnimation,
           curve: Curves.easeIn,
           opacity: useOpacity ? 0 : 1,
           child: Column(
