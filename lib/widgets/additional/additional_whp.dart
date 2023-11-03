@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import 'additional_value_widget.dart';
 
@@ -30,53 +32,63 @@ class AdditionalWHP extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ///
-            /// WIND
-            ///
-            Expanded(
-              child: AdditionalValueWidget(
-                icon: PromajaIcons.wind,
-                value: '${windKph.round()} km/h',
-                description: 'Wind',
-                rotation: windDegree,
+          children: AnimateList(
+            delay: PromajaDurations.additionalWeatherDataAnimationDelay,
+            interval: PromajaDurations.additionalWeatherListInterval,
+            effects: [
+              FadeEffect(
+                curve: Curves.easeIn,
+                duration: PromajaDurations.fadeAnimation,
               ),
-            ),
-
-            Container(
-              height: 40,
-              width: 0.5,
-              color: PromajaColors.white.withOpacity(0.4),
-            ),
-
-            ///
-            /// HUMIDITY
-            ///
-            Expanded(
-              child: AdditionalValueWidget(
-                icon: PromajaIcons.humidity,
-                value: '$humidity%',
-                description: 'Humidity',
+            ],
+            children: [
+              ///
+              /// WIND
+              ///
+              Expanded(
+                child: AdditionalValueWidget(
+                  icon: PromajaIcons.wind,
+                  value: '${windKph.round()} km/h',
+                  description: 'Wind',
+                  rotation: windDegree,
+                ),
               ),
-            ),
 
-            Container(
-              height: 40,
-              width: 0.5,
-              color: PromajaColors.white.withOpacity(0.4),
-            ),
-
-            ///
-            /// PRECIPITATION
-            ///
-            Expanded(
-              child: AdditionalValueWidget(
-                icon: PromajaIcons.precipitation,
-                value: '${precipitation.round()} mm',
-                description: 'Precipitation',
+              Container(
+                height: 40,
+                width: 0.5,
+                color: PromajaColors.white.withOpacity(0.4),
               ),
-            ),
-          ],
+
+              ///
+              /// HUMIDITY
+              ///
+              Expanded(
+                child: AdditionalValueWidget(
+                  icon: PromajaIcons.humidity,
+                  value: '$humidity%',
+                  description: 'Humidity',
+                ),
+              ),
+
+              Container(
+                height: 40,
+                width: 0.5,
+                color: PromajaColors.white.withOpacity(0.4),
+              ),
+
+              ///
+              /// PRECIPITATION
+              ///
+              Expanded(
+                child: AdditionalValueWidget(
+                  icon: PromajaIcons.precipitation,
+                  value: '${precipitation.round()} mm',
+                  description: 'Precipitation',
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }
