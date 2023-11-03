@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:nirikshak/nirikshak.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
@@ -40,9 +41,13 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Dio] & [Hive]
+  /// Initialize [Logger], [Nirikshak], [Dio] & [Hive]
   final logger = LoggerService();
-  final dio = DioService(logger);
+  final nirikshak = Nirikshak();
+  final dio = DioService(
+    loggerService: logger,
+    nirikshak: nirikshak,
+  );
   final hive = HiveService(logger);
   await hive.init();
 

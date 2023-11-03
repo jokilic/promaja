@@ -512,6 +512,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  nirikshak:
+    dependency: "direct main"
+    description:
+      name: nirikshak
+      sha256: "9452bad32572d82811fe6ef3f39f24c9fba6d94c85c3f310173fb56526fd3e7c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   package_config:
     dependency: transitive
     description:
