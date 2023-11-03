@@ -41,13 +41,9 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Nirikshak], [Dio] & [Hive]
+  /// Initialize [Logger], [Dio] & [Hive]
   final logger = LoggerService();
-  final nirikshak = Nirikshak();
-  final dio = DioService(
-    loggerService: logger,
-    nirikshak: nirikshak,
-  );
+  final dio = DioService(logger);
   final hive = HiveService(logger);
   await hive.init();
 

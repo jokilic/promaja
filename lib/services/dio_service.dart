@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nirikshak/nirikshak.dart';
 
 import 'logger_service.dart';
 
@@ -22,12 +20,8 @@ class DioService {
   ///
 
   final LoggerService loggerService;
-  final Nirikshak nirikshak;
 
-  DioService({
-    required this.loggerService,
-    required this.nirikshak,
-  })
+  DioService(this.loggerService)
 
   ///
   /// INIT
@@ -38,12 +32,8 @@ class DioService {
       BaseOptions(
         baseUrl: 'http://api.weatherapi.com/v1',
       ),
-    )
-      ..interceptors.add(
+    )..interceptors.add(
         DioLoggerInterceptor(loggerService),
-      )
-      ..interceptors.add(
-        nirikshak.getDioInterceptor(),
       );
   }
 
@@ -52,10 +42,4 @@ class DioService {
   ///
 
   late final Dio dio;
-
-  ///
-  /// METHODS
-  ///
-
-  void showNirikshak(BuildContext context) => nirikshak.showNirikshak(context);
 }
