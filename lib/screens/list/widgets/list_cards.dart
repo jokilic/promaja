@@ -5,7 +5,7 @@ import '../../../constants/colors.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
-import '../../weather/weather_screen.dart';
+import '../../../widgets/promaja_navigation_bar.dart';
 import '../notifiers/add_location_notifier.dart';
 import 'add_location/add_location_result.dart';
 import 'list_card/list_card_widget.dart';
@@ -53,6 +53,11 @@ class ListCards extends ConsumerWidget {
     );
   }
 
+  Future<void> openWeatherScreen({required WidgetRef ref, required int index}) async {
+    await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: index);
+    ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(1);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => ReorderableListView.builder(
         onReorder: ref.read(hiveProvider.notifier).reorderLocations,
@@ -81,12 +86,9 @@ class ListCards extends ConsumerWidget {
             key: ValueKey(location),
             location: location,
             index: index,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => WeatherScreen(
-                  location: location,
-                ),
-              ),
+            onTap: () => openWeatherScreen(
+              index: index,
+              ref: ref,
             ),
             onTapDelete: () => deleteLocation(
               ref: ref,

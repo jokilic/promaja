@@ -18,9 +18,9 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 
   PromajaNavigationBarController({
     required this.hiveService,
-  }) : super(hiveService.getLocationsFromBox().isEmpty ? 1 : 0);
+  }) : super(hiveService.getLocationsFromBox().isEmpty ? 2 : 0);
 
-  void changeNavigationBarIndex(int newIndex) => state = hiveService.getLocationsFromBox().isEmpty ? 1 : newIndex;
+  void changeNavigationBarIndex(int newIndex) => state = hiveService.getLocationsFromBox().isEmpty ? 2 : newIndex;
 }
 
 class PromajaNavigationBar extends ConsumerWidget {
@@ -39,6 +39,9 @@ class PromajaNavigationBar extends ConsumerWidget {
         },
         animationDuration: const Duration(milliseconds: 300),
         destinations: [
+          ///
+          /// CARDS
+          ///
           NavigationDestination(
             icon: Image.asset(
               PromajaIcons.cards,
@@ -54,6 +57,29 @@ class PromajaNavigationBar extends ConsumerWidget {
             ),
             label: 'Home',
           ),
+
+          ///
+          /// WEATHER
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.pressure,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white.withOpacity(0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.pressure,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white,
+            ),
+            label: 'Search',
+          ),
+
+          ///
+          /// LIST
+          ///
           NavigationDestination(
             icon: Image.asset(
               PromajaIcons.search,

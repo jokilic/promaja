@@ -19,6 +19,7 @@ class HiveService extends StateNotifier<List<Location>> {
   ///
 
   late final Box<Location> locationsBox;
+  late final Box<int> activeLocationIndexBox;
 
   ///
   /// INIT
@@ -28,6 +29,7 @@ class HiveService extends StateNotifier<List<Location>> {
     await Hive.initFlutter();
     Hive.registerAdapter(LocationAdapter());
     locationsBox = await Hive.openBox<Location>('locationsBox');
+    activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     state = getLocationsFromBox();
   }
 
@@ -39,12 +41,18 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> dispose() async {
     super.dispose();
     await locationsBox.close();
+    await activeLocationIndexBox.close();
     await Hive.close();
   }
 
   ///
   /// METHODS
   ///
+
+  /// Called to add a new active [Location] index to [Hive]
+  Future<void> addActiveLocationIndexToBox({required int index}) async {
+    await activeLocationIndexBox.put(0, index);
+  }
 
   /// Called to add a new [Location] value to [Hive]
   Future<void> addLocationToBox({required Location location, required int index}) async {
@@ -85,6 +93,7 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> deleteAllLocationsFromBox() async {
     state = [];
     await locationsBox.clear();
+    await activeLocationIndexBox.clear();
   }
 
   /// Triggered when reordering locations in [ListScreen]

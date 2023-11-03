@@ -89,7 +89,7 @@ class WeatherSuccess extends ConsumerWidget {
         ///
         AppinioSwiper(
           loop: true,
-          padding: const EdgeInsets.only(bottom: 140),
+          padding: const EdgeInsets.only(bottom: 24),
           isDisabled: cardsCount <= 1,
           duration: const Duration(milliseconds: 300),
           backgroundCardsCount: min(cardsCount - 1, 3),

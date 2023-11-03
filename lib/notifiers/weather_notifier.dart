@@ -6,7 +6,9 @@ import '../models/forecast_weather/response_forecast_weather.dart';
 import '../models/location/location.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
+import '../screens/weather/weather_screen.dart';
 import '../services/api_service.dart';
+import '../services/hive_service.dart';
 import '../widgets/promaja_navigation_bar.dart';
 
 final cardAdditionalControllerProvider = Provider.autoDispose<PageController>(
@@ -67,7 +69,22 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
   name: 'GetForecastWeatherProvider',
 );
 
-final screenProvider = StateProvider<Widget>(
-  (ref) => ref.watch(navigationBarIndexProvider) == 0 ? CardsScreen() : ListScreen(),
+final activeWeatherProvider = StateProvider.autoDispose<Location?>(
+  (ref) {
+    final weatherIndex = ref.watch(hiveProvider.notifier).activeLocationIndexBox.get(0) ?? 0;
+    final weatherList = ref.watch(hiveProvider);
+    return weatherList[weatherIndex];
+  },
+  name: 'ActiveWeatherProvider',
+);
+
+final screenProvider = StateProvider.autoDispose<Widget>(
+  (ref) => switch (ref.watch(navigationBarIndexProvider)) {
+    0 => CardsScreen(),
+    1 => WeatherScreen(
+        location: ref.watch(activeWeatherProvider),
+      ),
+    _ => ListScreen(),
+  },
   name: 'ScreenProvider',
 );
