@@ -100,7 +100,6 @@ class CardSuccess extends ConsumerWidget {
                 /// WEATHER ICON
                 ///
                 Animate(
-                  key: ValueKey(location),
                   onPlay: (controller) => controller.loop(reverse: true),
                   delay: 10.seconds,
                   effects: [
@@ -111,7 +110,6 @@ class CardSuccess extends ConsumerWidget {
                     ),
                   ],
                   child: Animate(
-                    key: ValueKey(location),
                     delay: PromajaDurations.cardWeatherIconAnimationDelay,
                     effects: [
                       FlipEffect(
