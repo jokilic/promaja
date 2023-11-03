@@ -13,14 +13,16 @@ final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarCon
   name: 'NavigationBarIndexProvider',
 );
 
+enum NavigationBarItems { cards, weather, list }
+
 class PromajaNavigationBarController extends StateNotifier<int> {
   final HiveService hiveService;
 
   PromajaNavigationBarController({
     required this.hiveService,
-  }) : super(hiveService.getLocationsFromBox().isEmpty ? 2 : 0);
+  }) : super(hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.cards.index);
 
-  void changeNavigationBarIndex(int newIndex) => state = hiveService.getLocationsFromBox().isEmpty ? 2 : newIndex;
+  void changeNavigationBarIndex(int newIndex) => state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
 }
 
 class PromajaNavigationBar extends ConsumerWidget {
@@ -34,7 +36,7 @@ class PromajaNavigationBar extends ConsumerWidget {
         onDestinationSelected: (newIndex) {
           if (ref.read(navigationBarIndexProvider) != newIndex) {
             ref.read(cardIndexProvider.notifier).state = 0;
-            ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(newIndex);
+            ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
           }
         },
         animationDuration: const Duration(milliseconds: 300),

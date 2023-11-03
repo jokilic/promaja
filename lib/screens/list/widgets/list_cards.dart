@@ -55,7 +55,7 @@ class ListCards extends ConsumerWidget {
 
   Future<void> openWeatherScreen({required WidgetRef ref, required int index}) async {
     await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: index);
-    ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(1);
+    ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
   }
 
   @override
