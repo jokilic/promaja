@@ -9,4 +9,3 @@ Weather app made in Flutter.
 - [ ] Use flutter_animate for animating stuff
 - [ ] Update Flutter & dependencies
 - [ ] Finish TODOs and test error & loading widgets
-- [ ] Think about some other UI for the WeatherScreen

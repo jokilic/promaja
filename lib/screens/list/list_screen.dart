@@ -16,7 +16,7 @@ class ListScreen extends ConsumerWidget {
     return Scaffold(
       bottomNavigationBar: PromajaNavigationBar(),
       body: Animate(
-        key: UniqueKey(),
+        key: ValueKey(ref.read(navigationBarIndexProvider)),
         effects: [
           FadeEffect(
             curve: Curves.easeIn,

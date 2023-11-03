@@ -43,7 +43,7 @@ class CardsScreen extends ConsumerWidget {
     return Scaffold(
       bottomNavigationBar: PromajaNavigationBar(),
       body: animate.Animate(
-        key: UniqueKey(),
+        key: ValueKey(ref.read(navigationBarIndexProvider)),
         effects: [
           animate.FadeEffect(
             curve: Curves.easeIn,

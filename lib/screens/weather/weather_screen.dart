@@ -21,7 +21,7 @@ class WeatherScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         bottomNavigationBar: PromajaNavigationBar(),
         body: Animate(
-          key: UniqueKey(),
+          key: ValueKey(ref.read(navigationBarIndexProvider)),
           effects: [
             FadeEffect(
               curve: Curves.easeIn,
