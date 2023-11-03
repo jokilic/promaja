@@ -62,11 +62,15 @@ class WeatherScreen extends ConsumerWidget {
                       location: location!,
                     ),
                   )
-              :
-
-              // TODO: Finish this
-              Container(
-                  color: Colors.pink,
+              : WeatherError(
+                  location: Location(
+                    country: '---',
+                    lat: 0,
+                    lon: 0,
+                    name: '---',
+                    region: '---',
+                  ),
+                  error: 'No more locations',
                 ),
         ),
       );

@@ -113,145 +113,165 @@ class WeatherCardSuccess extends ConsumerWidget {
               controller: ref.watch(weatherCardControllerProvider(index)),
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              children: [
-                ///
-                /// DATE & LOCATION
-                ///
-                Column(
-                  children: [
-                    const SizedBox(height: 64),
-                    Text(
-                      getForecastDate(dateEpoch: forecast.dateEpoch),
-                      style: PromajaTextStyles.weatherCardLastUpdated,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      location.name,
-                      style: PromajaTextStyles.currentLocation,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 56),
-
-                ///
-                /// WEATHER ICON
-                ///
-                Animate(
-                  key: UniqueKey(),
-                  onPlay: (controller) => controller.loop(reverse: true),
-                  delay: 10.seconds,
-                  effects: [
-                    ScaleEffect(
-                      curve: Curves.easeIn,
-                      end: const Offset(1.5, 1.5),
-                      duration: 60.seconds,
-                    ),
-                  ],
-                  child: Transform.scale(
-                    scale: 1.2,
-                    child: Image.asset(
-                      weatherIcon,
-                      height: 176,
-                      width: 176,
-                    ),
+              children: AnimateList(
+                delay: PromajaDurations.weatherDataAnimationDelay,
+                interval: PromajaDurations.weatherDataAnimationDelay,
+                effects: [
+                  FadeEffect(
+                    curve: Curves.easeIn,
+                    duration: PromajaDurations.fadeAnimation,
                   ),
-                ),
-                const SizedBox(height: 56),
-
-                ///
-                /// TEMPERATURE & WEATHER
-                ///
-                Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Text(
-                          '${forecast.day.avgTempC.round()}',
-                          style: PromajaTextStyles.currentTemperature,
-                          textAlign: TextAlign.center,
-                        ),
-                        const Positioned(
-                          right: -24,
-                          top: 2,
-                          child: Text(
-                            '°',
-                            style: PromajaTextStyles.currentTemperatureDegrees,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 80),
-                      child: Text(
-                        weatherDescription,
-                        style: PromajaTextStyles.currentWeather,
+                ],
+                children: [
+                  ///
+                  /// DATE & LOCATION
+                  ///
+                  Column(
+                    children: [
+                      const SizedBox(height: 72),
+                      Text(
+                        getForecastDate(dateEpoch: forecast.dateEpoch),
+                        style: PromajaTextStyles.weatherCardLastUpdated,
                         textAlign: TextAlign.center,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
+                      const SizedBox(height: 2),
+                      Text(
+                        location.name,
+                        style: PromajaTextStyles.currentLocation,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
 
-                ///
-                /// HOURS
-                ///
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 144,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: forecast.hours.length,
-                    controller: ref.watch(
-                      weatherDaysControllerProvider(
-                        MediaQuery.sizeOf(context).width,
+                  ///
+                  /// WEATHER ICON
+                  ///
+                  Animate(
+                    key: ValueKey(location),
+                    onPlay: (controller) => controller.loop(reverse: true),
+                    delay: 10.seconds,
+                    effects: [
+                      ScaleEffect(
+                        curve: Curves.easeIn,
+                        end: const Offset(1.5, 1.5),
+                        duration: 60.seconds,
+                      ),
+                    ],
+                    child: Animate(
+                      key: ValueKey(location),
+                      delay: PromajaDurations.weatherIconAnimationDelay,
+                      effects: [
+                        FlipEffect(
+                          curve: Curves.easeIn,
+                          duration: PromajaDurations.fadeAnimation,
+                        ),
+                      ],
+                      child: Transform.scale(
+                        scale: 1.2,
+                        child: Image.asset(
+                          weatherIcon,
+                          height: 176,
+                          width: 176,
+                        ),
                       ),
                     ),
-                    physics: const PageScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    itemBuilder: (context, hourIndex) {
-                      final hourWeather = forecast.hours.elementAtOrNull(hourIndex);
-
-                      /// Return proper [ForecastHourSuccess]
-                      if (hourWeather != null) {
-                        return WeatherCardHourSuccess(
-                          hourWeather: hourWeather,
-                          useOpacity: ref.watch(weatherCardMovingProvider),
-                          isActive: activeHourWeather == hourWeather,
-                          borderColor: backgroundColor,
-                          onPressed: () => weatherCardHourPressed(
-                            hourWeather: hourWeather,
-                            activeHourWeather: activeHourWeather,
-                            ref: ref,
-                            index: index,
-                          ),
-                        );
-                      }
-
-                      /// This should never happen, but if it does, return [ForecastHourError]
-                      return WeatherCardHourError(
-                        useOpacity: ref.watch(weatherCardMovingProvider),
-                        onPressed: () {},
-                      );
-                    },
                   ),
-                ),
+                  const SizedBox(height: 56),
 
-                ///
-                /// INDIVIDUAL HOUR
-                ///
-                WeatherCardIndividualHour(
-                  hourWeather: activeHourWeather,
-                  useOpacity: ref.watch(weatherCardMovingProvider),
-                  key: ValueKey(activeHourWeather),
-                ),
-              ],
+                  ///
+                  /// TEMPERATURE & WEATHER
+                  ///
+                  Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            '${forecast.day.avgTempC.round()}',
+                            style: PromajaTextStyles.currentTemperature,
+                            textAlign: TextAlign.center,
+                          ),
+                          const Positioned(
+                            right: -24,
+                            top: 2,
+                            child: Text(
+                              '°',
+                              style: PromajaTextStyles.currentTemperatureDegrees,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        child: Text(
+                          weatherDescription,
+                          style: PromajaTextStyles.currentWeather,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+
+                  ///
+                  /// HOURS
+                  ///
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 144,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: forecast.hours.length,
+                      controller: ref.watch(
+                        weatherDaysControllerProvider(
+                          MediaQuery.sizeOf(context).width,
+                        ),
+                      ),
+                      physics: const PageScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      itemBuilder: (context, hourIndex) {
+                        final hourWeather = forecast.hours.elementAtOrNull(hourIndex);
+
+                        /// Return proper [ForecastHourSuccess]
+                        if (hourWeather != null) {
+                          return WeatherCardHourSuccess(
+                            hourWeather: hourWeather,
+                            useOpacity: ref.watch(weatherCardMovingProvider),
+                            isActive: activeHourWeather == hourWeather,
+                            borderColor: backgroundColor,
+                            onPressed: () => weatherCardHourPressed(
+                              hourWeather: hourWeather,
+                              activeHourWeather: activeHourWeather,
+                              ref: ref,
+                              index: index,
+                            ),
+                          );
+                        }
+
+                        /// This should never happen, but if it does, return [ForecastHourError]
+                        return WeatherCardHourError(
+                          useOpacity: ref.watch(weatherCardMovingProvider),
+                          onPressed: () {},
+                        );
+                      },
+                    ),
+                  ),
+
+                  ///
+                  /// INDIVIDUAL HOUR
+                  ///
+                  WeatherCardIndividualHour(
+                    hourWeather: activeHourWeather,
+                    useOpacity: ref.watch(weatherCardMovingProvider),
+                    key: ValueKey(activeHourWeather),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

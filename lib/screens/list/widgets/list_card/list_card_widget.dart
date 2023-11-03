@@ -20,7 +20,6 @@ class ListCardWidget extends ConsumerWidget {
     required this.index,
     required this.onTap,
     required this.onTapDelete,
-    super.key,
   });
 
   @override
