@@ -20,6 +20,7 @@ class HiveService extends StateNotifier<List<Location>> {
 
   late final Box<Location> locationsBox;
   late final Box<int> activeLocationIndexBox;
+  late final Box<int> activeNavigationValueIndexToBox;
 
   ///
   /// INIT
@@ -30,6 +31,7 @@ class HiveService extends StateNotifier<List<Location>> {
     Hive.registerAdapter(LocationAdapter());
     locationsBox = await Hive.openBox<Location>('locationsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
+    activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
     state = getLocationsFromBox();
   }
 
@@ -42,12 +44,16 @@ class HiveService extends StateNotifier<List<Location>> {
     super.dispose();
     await locationsBox.close();
     await activeLocationIndexBox.close();
+    await activeNavigationValueIndexToBox.close();
     await Hive.close();
   }
 
   ///
   /// METHODS
   ///
+
+  /// Called to add a new active navigation value index to [Hive]
+  Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);

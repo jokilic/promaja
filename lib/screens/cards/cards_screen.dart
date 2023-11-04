@@ -101,7 +101,7 @@ class CardsScreen extends ConsumerWidget {
             ///
             Positioned(
               right: 16,
-              top: -64,
+              top: -160,
               bottom: 0,
               child: Align(
                 child: AnimatedSmoothIndicator(

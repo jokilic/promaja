@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
@@ -83,7 +82,7 @@ class CardSuccess extends ConsumerWidget {
                   children: [
                     const SizedBox(height: 24),
                     Text(
-                      DateFormat.yMMMMd().format(currentWeather.lastUpdatedEpoch),
+                      'Current weather',
                       style: PromajaTextStyles.currentLastUpdated,
                       textAlign: TextAlign.center,
                     ),

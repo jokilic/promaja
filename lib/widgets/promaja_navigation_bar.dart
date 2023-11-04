@@ -21,9 +21,14 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 
   PromajaNavigationBarController({
     required this.hiveService,
-  }) : super(hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.cards.index);
+  }) : super(
+          hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.activeNavigationValueIndexToBox.get(0) ?? 0,
+        );
 
-  void changeNavigationBarIndex(int newIndex) => state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
+  Future<void> changeNavigationBarIndex(int newIndex) async {
+    state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
+    await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
+  }
 }
 
 class PromajaNavigationBar extends ConsumerWidget {
