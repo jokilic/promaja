@@ -11,12 +11,14 @@ class AdditionalWHP extends StatelessWidget {
   final double windKph;
   final int humidity;
   final double precipitation;
+  final bool useAnimations;
 
   const AdditionalWHP({
     required this.windKph,
     required this.humidity,
     required this.precipitation,
     this.windDegree,
+    this.useAnimations = true,
   });
 
   @override
@@ -33,12 +35,12 @@ class AdditionalWHP extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: AnimateList(
-            delay: PromajaDurations.additionalWeatherDataAnimationDelay,
-            interval: PromajaDurations.additionalWeatherListInterval,
+            delay: useAnimations ? PromajaDurations.additionalWeatherDataAnimationDelay : Duration.zero,
+            interval: useAnimations ? PromajaDurations.additionalWeatherListInterval : Duration.zero,
             effects: [
               FadeEffect(
                 curve: Curves.easeIn,
-                duration: PromajaDurations.fadeAnimation,
+                duration: useAnimations ? PromajaDurations.fadeAnimation : Duration.zero,
               ),
             ],
             children: [

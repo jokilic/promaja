@@ -147,6 +147,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                           windKph: hourWeather!.windKph,
                           humidity: hourWeather!.humidity,
                           precipitation: hourWeather!.precipMm,
+                          useAnimations: false,
                         ),
 
                         ///

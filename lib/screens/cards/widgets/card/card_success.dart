@@ -12,6 +12,7 @@ import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_fug.dart';
 import '../../../../widgets/additional/additional_pcv.dart';
 import '../../../../widgets/additional/additional_whp.dart';
+import '../../../../widgets/keep_alive_widget.dart';
 
 class CardSuccess extends ConsumerWidget {
   final Location location;
@@ -175,11 +176,13 @@ class CardSuccess extends ConsumerWidget {
                       ///
                       /// WIND, HUMIDITY, PRECIPITATION
                       ///
-                      AdditionalWHP(
-                        windDegree: currentWeather.windDegree,
-                        windKph: currentWeather.windKph,
-                        humidity: currentWeather.humidity,
-                        precipitation: currentWeather.precipMm,
+                      KeepAlivePage(
+                        child: AdditionalWHP(
+                          windDegree: currentWeather.windDegree,
+                          windKph: currentWeather.windKph,
+                          humidity: currentWeather.humidity,
+                          precipitation: currentWeather.precipMm,
+                        ),
                       ),
 
                       ///
