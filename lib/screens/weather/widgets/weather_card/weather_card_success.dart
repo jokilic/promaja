@@ -16,8 +16,7 @@ import '../weather_card_hour/weather_card_hour_error.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
-// TODO: Finish this
-class WeatherCardSuccess extends ConsumerWidget {
+class WeatherCardSuccess extends ConsumerStatefulWidget {
   final Location location;
   final ForecastDayWeather forecast;
   final bool useOpacity;
@@ -29,6 +28,21 @@ class WeatherCardSuccess extends ConsumerWidget {
     required this.useOpacity,
     required this.index,
   });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherCardSuccessState();
+}
+
+class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast.hours.firstWhere(
+        (hour) => hour.timeEpoch.hour == DateTime.now().hour,
+      ),
+    );
+  }
 
   void weatherCardHourPressed({
     required WidgetRef ref,
@@ -65,21 +79,21 @@ class WeatherCardSuccess extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final activeHourWeather = ref.watch(activeHourWeatherProvider);
 
     final backgroundColor = getWeatherColor(
-      code: forecast.day.condition.code,
+      code: widget.forecast.day.condition.code,
       isDay: true,
     );
 
     final weatherIcon = getWeatherIcon(
-      code: forecast.day.condition.code,
+      code: widget.forecast.day.condition.code,
       isDay: true,
     );
 
     final weatherDescription = getWeatherDescription(
-      code: forecast.day.condition.code,
+      code: widget.forecast.day.condition.code,
       isDay: true,
     );
 
@@ -90,7 +104,7 @@ class WeatherCardSuccess extends ConsumerWidget {
       child: AnimatedOpacity(
         duration: PromajaDurations.opacityAnimation,
         curve: Curves.easeIn,
-        opacity: useOpacity ? 0.45 : 1,
+        opacity: widget.useOpacity ? 0.45 : 1,
         child: Container(
           width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
@@ -106,9 +120,9 @@ class WeatherCardSuccess extends ConsumerWidget {
           child: AnimatedOpacity(
             duration: PromajaDurations.opacityAnimation,
             curve: Curves.easeIn,
-            opacity: useOpacity ? 0 : 1,
+            opacity: widget.useOpacity ? 0 : 1,
             child: ListView(
-              controller: ref.watch(weatherCardControllerProvider(index)),
+              controller: ref.watch(weatherCardControllerProvider(widget.index)),
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               children: [
@@ -138,13 +152,13 @@ class WeatherCardSuccess extends ConsumerWidget {
                           children: [
                             const SizedBox(height: 24),
                             Text(
-                              getForecastDate(dateEpoch: forecast.dateEpoch),
+                              getForecastDate(dateEpoch: widget.forecast.dateEpoch),
                               style: PromajaTextStyles.weatherCardLastUpdated,
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              location.name,
+                              widget.location.name,
                               style: PromajaTextStyles.currentLocation,
                               textAlign: TextAlign.center,
                             ),
@@ -197,7 +211,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                                 ///
                                 Flexible(
                                   child: Text(
-                                    '${forecast.day.maxTempC.round()}°',
+                                    '${widget.forecast.day.maxTempC.round()}°',
                                     style: PromajaTextStyles.weatherTemperature,
                                     textAlign: TextAlign.right,
                                   ),
@@ -221,7 +235,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                                 ///
                                 Flexible(
                                   child: Text(
-                                    '${forecast.day.minTempC.round()}°',
+                                    '${widget.forecast.day.minTempC.round()}°',
                                     style: PromajaTextStyles.weatherTemperature,
                                     textAlign: TextAlign.left,
                                   ),
@@ -249,7 +263,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                           child: ListView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             scrollDirection: Axis.horizontal,
-                            itemCount: forecast.hours.length,
+                            itemCount: widget.forecast.hours.length,
                             controller: ref.watch(
                               weatherDaysControllerProvider(
                                 MediaQuery.sizeOf(context).width,
@@ -259,7 +273,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                               parent: BouncingScrollPhysics(),
                             ),
                             itemBuilder: (context, hourIndex) {
-                              final hourWeather = forecast.hours.elementAtOrNull(hourIndex);
+                              final hourWeather = widget.forecast.hours.elementAtOrNull(hourIndex);
 
                               /// Return proper [ForecastHourSuccess]
                               if (hourWeather != null) {
@@ -272,7 +286,7 @@ class WeatherCardSuccess extends ConsumerWidget {
                                     hourWeather: hourWeather,
                                     activeHourWeather: activeHourWeather,
                                     ref: ref,
-                                    index: index,
+                                    index: widget.index,
                                   ),
                                 );
                               }
@@ -306,3 +320,5 @@ class WeatherCardSuccess extends ConsumerWidget {
     );
   }
 }
+
+// TODO: Finish this
