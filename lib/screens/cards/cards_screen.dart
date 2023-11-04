@@ -9,21 +9,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../models/location/location.dart';
-import '../../notifiers/weather_notifier.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
+import 'cards_notifiers.dart';
 import 'widgets/card/card_error.dart';
 import 'widgets/card/card_widget.dart';
-
-final cardIndexProvider = StateProvider<int>(
-  (_) => 0,
-  name: 'CardIndexProvider',
-);
-
-final cardMovingProvider = StateProvider<bool>(
-  (_) => false,
-  name: 'CardMovingProvider',
-);
 
 class CardsScreen extends ConsumerWidget {
   void cardSwiped({required int index, required WidgetRef ref}) {

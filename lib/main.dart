@@ -6,10 +6,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
-import 'notifiers/weather_notifier.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
+import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

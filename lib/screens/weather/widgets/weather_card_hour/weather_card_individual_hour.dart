@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
-import '../../../../notifiers/weather_notifier.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_fug.dart';
 import '../../../../widgets/additional/additional_pcv.dart';
 import '../../../../widgets/additional/additional_whp.dart';
+import '../../weather_notifiers.dart';
 
 class WeatherCardIndividualHour extends ConsumerWidget {
   final HourWeather? hourWeather;

@@ -4,7 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../constants/icons.dart';
+import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
+import '../screens/list/list_screen.dart';
+import '../screens/weather/weather_notifiers.dart';
+import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
 
 final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
@@ -12,6 +16,17 @@ final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarCon
     hiveService: ref.watch(hiveProvider.notifier),
   ),
   name: 'NavigationBarIndexProvider',
+);
+
+final screenProvider = StateProvider.autoDispose<Widget>(
+  (ref) => switch (ref.watch(navigationBarIndexProvider)) {
+    0 => CardsScreen(),
+    1 => WeatherScreen(
+        location: ref.watch(activeWeatherProvider),
+      ),
+    _ => ListScreen(),
+  },
+  name: 'ScreenProvider',
 );
 
 enum NavigationBarItems { cards, weather, list }

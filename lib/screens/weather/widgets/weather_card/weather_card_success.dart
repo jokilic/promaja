@@ -8,10 +8,10 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../notifiers/weather_notifier.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
-import '../weather/weather_success.dart';
+import '../../../cards/cards_notifiers.dart';
+import '../../weather_notifiers.dart';
 import '../weather_card_hour/weather_card_hour_error.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
@@ -320,5 +320,3 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     );
   }
 }
-
-// TODO: Finish this

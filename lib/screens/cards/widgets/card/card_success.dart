@@ -6,13 +6,13 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../notifiers/weather_notifier.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_fug.dart';
 import '../../../../widgets/additional/additional_pcv.dart';
 import '../../../../widgets/additional/additional_whp.dart';
 import '../../../../widgets/keep_alive_widget.dart';
+import '../../cards_notifiers.dart';
 
 class CardSuccess extends ConsumerWidget {
   final Location location;

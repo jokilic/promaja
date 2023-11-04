@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/durations.dart';
 import '../../models/location/location.dart';
-import '../../notifiers/weather_notifier.dart';
 import '../../widgets/promaja_navigation_bar.dart';
+import 'weather_notifiers.dart';
 import 'widgets/weather/weather_error.dart';
 import 'widgets/weather/weather_loading.dart';
 import 'widgets/weather/weather_success.dart';

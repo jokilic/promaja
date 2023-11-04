@@ -4,7 +4,7 @@ import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../models/location/location.dart';
-import '../../../../notifiers/weather_notifier.dart';
+import '../../../cards/cards_notifiers.dart';
 import 'list_card_error.dart';
 import 'list_card_loading.dart';
 import 'list_card_success.dart';

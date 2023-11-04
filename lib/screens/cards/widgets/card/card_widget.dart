@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/location/location.dart';
-import '../../../../notifiers/weather_notifier.dart';
+import '../../cards_notifiers.dart';
 import 'card_error.dart';
 import 'card_loading.dart';
 import 'card_success.dart';
