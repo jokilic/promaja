@@ -24,6 +24,11 @@ class PromajaTextStyles {
     fontSize: 88,
     height: 1,
   );
+  static const weatherTemperature = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 56,
+    height: 1,
+  );
   static const currentHourTemperature = TextStyle(
     color: PromajaColors.white,
     fontSize: 80,

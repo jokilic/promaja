@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
@@ -187,26 +188,47 @@ class WeatherCardSuccess extends ConsumerWidget {
                         ///
                         Column(
                           children: [
-                            Stack(
-                              clipBehavior: Clip.none,
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  '${forecast.day.avgTempC.round()}',
-                                  style: PromajaTextStyles.currentTemperature,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const Positioned(
-                                  right: -24,
-                                  top: 2,
+                                ///
+                                /// MAX TEMP
+                                ///
+                                Flexible(
                                   child: Text(
-                                    '°',
-                                    style: PromajaTextStyles.currentTemperatureDegrees,
-                                    textAlign: TextAlign.center,
+                                    '${forecast.day.maxTempC.round()}°',
+                                    style: PromajaTextStyles.weatherTemperature,
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+
+                                ///
+                                /// DIVIDER
+                                ///
+                                Container(
+                                  height: 10,
+                                  width: 10,
+                                  margin: const EdgeInsets.only(left: 7, right: 14),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: PromajaColors.white,
+                                  ),
+                                ),
+
+                                ///
+                                /// MIN TEMP
+                                ///
+                                Flexible(
+                                  child: Text(
+                                    '${forecast.day.minTempC.round()}°',
+                                    style: PromajaTextStyles.weatherTemperature,
+                                    textAlign: TextAlign.left,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 4),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 80),
                               child: Text(

@@ -152,7 +152,7 @@ class CardSuccess extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 80),
                       child: Text(
