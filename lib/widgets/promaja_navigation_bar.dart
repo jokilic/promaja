@@ -67,13 +67,13 @@ class PromajaNavigationBar extends ConsumerWidget {
           ///
           NavigationDestination(
             icon: Image.asset(
-              PromajaIcons.cards,
+              PromajaIcons.globe,
               height: 20,
               width: 20,
               color: PromajaColors.white.withOpacity(0.15),
             ),
             selectedIcon: Image.asset(
-              PromajaIcons.cards,
+              PromajaIcons.globe,
               height: 20,
               width: 20,
               color: PromajaColors.white,
@@ -86,13 +86,13 @@ class PromajaNavigationBar extends ConsumerWidget {
           ///
           NavigationDestination(
             icon: Image.asset(
-              PromajaIcons.pressure,
+              PromajaIcons.temperature,
               height: 20,
               width: 20,
               color: PromajaColors.white.withOpacity(0.15),
             ),
             selectedIcon: Image.asset(
-              PromajaIcons.pressure,
+              PromajaIcons.temperature,
               height: 20,
               width: 20,
               color: PromajaColors.white,
@@ -105,13 +105,13 @@ class PromajaNavigationBar extends ConsumerWidget {
           ///
           NavigationDestination(
             icon: Image.asset(
-              PromajaIcons.search,
+              PromajaIcons.list,
               height: 20,
               width: 20,
               color: PromajaColors.white.withOpacity(0.15),
             ),
             selectedIcon: Image.asset(
-              PromajaIcons.search,
+              PromajaIcons.list,
               height: 20,
               width: 20,
               color: PromajaColors.white,
