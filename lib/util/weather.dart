@@ -17,9 +17,9 @@ String getForecastDate({required DateTime dateEpoch}) {
   final passedDate = DateTime(dateEpoch.year, dateEpoch.month, dateEpoch.day);
 
   if (passedDate.isAtSameMomentAs(today)) {
-    return 'Today';
+    return 'today'.tr();
   } else if (passedDate.isAtSameMomentAs(tomorrow)) {
-    return 'Tomorrow';
+    return 'tomorrow'.tr();
   } else {
     return DateFormat.yMMMMd().format(dateEpoch);
   }

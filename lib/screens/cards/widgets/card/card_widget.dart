@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,7 +43,7 @@ class CardWidget extends ConsumerWidget {
                 ///
                 return CardError(
                   location: location,
-                  error: data.error ?? 'Some weird error happened',
+                  error: data.error ?? 'weirdErrorHappened'.tr(),
                   useOpacity: useOpacity,
                 );
               },

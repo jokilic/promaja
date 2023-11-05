@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
@@ -36,7 +37,7 @@ class AdditionalFUG extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.feelsLike,
                 value: '${feelsLikeTemperature.round()}°',
-                description: 'Feels like',
+                description: 'feelsLike'.tr(),
               ),
             ),
 
@@ -53,7 +54,7 @@ class AdditionalFUG extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.uv,
                 value: '${uv.round()}',
-                description: 'UV index',
+                description: 'uvIndex'.tr(),
               ),
             ),
 
@@ -70,7 +71,7 @@ class AdditionalFUG extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.gust,
                 value: '${gust.round()} km/h',
-                description: 'Gust',
+                description: 'gust'.tr(),
               ),
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,7 +84,7 @@ class CardSuccess extends ConsumerWidget {
                   children: [
                     const SizedBox(height: 24),
                     Text(
-                      'Current weather',
+                      'currentWeather'.tr(),
                       style: PromajaTextStyles.currentLastUpdated,
                       textAlign: TextAlign.center,
                     ),

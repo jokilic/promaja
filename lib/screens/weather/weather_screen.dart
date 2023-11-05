@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +52,7 @@ class WeatherScreen extends ConsumerWidget {
                       ///
                       return WeatherError(
                         location: location!,
-                        error: data.error ?? 'Some weird error happened',
+                        error: data.error ?? 'weirdErrorHappened'.tr(),
                       );
                     },
                     error: (error, stackTrace) => WeatherError(
@@ -70,7 +71,7 @@ class WeatherScreen extends ConsumerWidget {
                     name: '---',
                     region: '---',
                   ),
-                  error: 'No more locations',
+                  error: 'noMoreLocations'.tr(),
                 ),
         ),
       );

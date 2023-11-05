@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -51,7 +52,7 @@ class AdditionalWHP extends StatelessWidget {
                 child: AdditionalValueWidget(
                   icon: PromajaIcons.wind,
                   value: '${windKph.round()} km/h',
-                  description: 'Wind',
+                  description: 'wind'.tr(),
                   rotation: windDegree,
                 ),
               ),
@@ -69,7 +70,7 @@ class AdditionalWHP extends StatelessWidget {
                 child: AdditionalValueWidget(
                   icon: PromajaIcons.humidity,
                   value: '$humidity%',
-                  description: 'Humidity',
+                  description: 'humidity'.tr(),
                 ),
               ),
 
@@ -86,7 +87,7 @@ class AdditionalWHP extends StatelessWidget {
                 child: AdditionalValueWidget(
                   icon: PromajaIcons.precipitation,
                   value: '${precipitation.round()} mm',
-                  description: 'Precipitation',
+                  description: 'precipitation'.tr(),
                 ),
               ),
             ],

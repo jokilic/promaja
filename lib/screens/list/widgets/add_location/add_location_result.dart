@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,7 +26,7 @@ class AddLocationResult extends ConsumerWidget {
           }
 
           if (state.response?.isEmpty ?? false) {
-            text = 'No locations found';
+            text = 'noLocationsFound'.tr();
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +68,7 @@ class AddLocationResult extends ConsumerWidget {
               hintStyle: MaterialStateProperty.all(
                 PromajaTextStyles.searchTextFieldHint,
               ),
-              hintText: 'Search for a place...',
+              hintText: 'searchForPlace'.tr(),
               padding: MaterialStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 12),
               ),
@@ -100,8 +101,8 @@ class AddLocationResult extends ConsumerWidget {
                   Icons.hourglass_top_rounded,
                   color: PromajaColors.black,
                 ),
-                title: const Text(
-                  'Loading...',
+                title: Text(
+                  'loading'.tr(),
                   style: PromajaTextStyles.searchResult,
                 ),
               ),
@@ -133,7 +134,7 @@ class AddLocationResult extends ConsumerWidget {
                       style: PromajaTextStyles.searchResult,
                     ),
                     subtitle: Text(
-                      'Tap to add',
+                      'tapToAdd'.tr(),
                       style: PromajaTextStyles.searchResultSubtitle,
                     ),
                   );
@@ -155,8 +156,8 @@ class AddLocationResult extends ConsumerWidget {
                   Icons.public_off_rounded,
                   color: PromajaColors.black,
                 ),
-                title: const Text(
-                  'No location found',
+                title: Text(
+                  'noLocationFound'.tr(),
                   style: PromajaTextStyles.searchResult,
                 ),
               ),

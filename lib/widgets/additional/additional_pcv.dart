@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
@@ -36,7 +37,7 @@ class AdditionalPCV extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.pressure,
                 value: '${pressure.round()} hPa',
-                description: 'Pressure',
+                description: 'pressure'.tr(),
               ),
             ),
 
@@ -53,7 +54,7 @@ class AdditionalPCV extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.cloudiness,
                 value: '$cloud%',
-                description: 'Cloud',
+                description: 'cloud'.tr(),
               ),
             ),
 
@@ -70,7 +71,7 @@ class AdditionalPCV extends StatelessWidget {
               child: AdditionalValueWidget(
                 icon: PromajaIcons.visibility,
                 value: '${visibility.round()} km',
-                description: 'Visibility',
+                description: 'visibility'.tr(),
               ),
             ),
           ],

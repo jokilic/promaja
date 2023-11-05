@@ -78,7 +78,7 @@ class PromajaNavigationBar extends ConsumerWidget {
               width: 20,
               color: PromajaColors.white,
             ),
-            label: 'Home',
+            label: '',
           ),
 
           ///
@@ -97,7 +97,7 @@ class PromajaNavigationBar extends ConsumerWidget {
               width: 20,
               color: PromajaColors.white,
             ),
-            label: 'Weather',
+            label: '',
           ),
 
           ///
@@ -116,7 +116,7 @@ class PromajaNavigationBar extends ConsumerWidget {
               width: 20,
               color: PromajaColors.white,
             ),
-            label: 'Search',
+            label: '',
           ),
         ],
       );

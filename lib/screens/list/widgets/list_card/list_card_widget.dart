@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
@@ -71,7 +72,7 @@ class ListCardWidget extends ConsumerWidget {
                   ///
                   return ListCardError(
                     locationName: location.name,
-                    error: data.error ?? 'Some weird error happened',
+                    error: data.error ?? 'weirdErrorHappened'.tr(),
                     onTap: onTap,
                   );
                 },

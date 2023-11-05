@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -50,7 +51,7 @@ class WeatherCardHourError extends StatelessWidget {
                     /// ERROR
                     ///
                     Text(
-                      'Error',
+                      'error'.tr(),
                       style: PromajaTextStyles.weatherCardHourLastUpdated,
                       textAlign: TextAlign.center,
                     ),

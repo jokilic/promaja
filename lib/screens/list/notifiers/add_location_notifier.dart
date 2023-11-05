@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -86,7 +87,9 @@ class AddLocationController extends StateNotifier<({List<Location>? response, St
     if (ref.read(hiveProvider).length >= locationLimit) {
       state = (
         response: null,
-        error: "You can't have more than $locationLimit locations",
+        error: 'noMoreThanXLocations'.tr(
+          args: ['$locationLimit'],
+        ),
         loading: false,
       );
       return;
@@ -99,7 +102,9 @@ class AddLocationController extends StateNotifier<({List<Location>? response, St
     if (locationExists) {
       state = (
         response: null,
-        error: '${location.name}, ${location.country} already exists.',
+        error: 'locationAlreadyExists'.tr(
+          args: [location.name, location.country],
+        ),
         loading: false,
       );
       return;

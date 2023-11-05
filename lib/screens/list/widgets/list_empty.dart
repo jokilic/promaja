@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/icons.dart';
@@ -21,17 +22,17 @@ class ListEmpty extends StatelessWidget {
                 width: 200,
               ),
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(text: 'Start using '),
+                      TextSpan(text: 'startUsing1'.tr()),
                       TextSpan(
-                        text: 'Promaja',
+                        text: 'startUsing2'.tr(),
                         style: PromajaTextStyles.noLocationsPromaja,
                       ),
-                      TextSpan(text: ' by adding some places...'),
+                      TextSpan(text: 'startUsing3'.tr()),
                     ],
                   ),
                   style: PromajaTextStyles.noLocations,

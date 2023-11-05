@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,11 +38,13 @@ class ListCards extends ConsumerWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '${location.name}, ${location.country} is deleted.',
+          'locationDeleted'.tr(
+            args: [location.name, location.country],
+          ),
           style: PromajaTextStyles.snackbar,
         ),
         action: SnackBarAction(
-          label: 'Undo'.toUpperCase(),
+          label: 'undo'.tr().toUpperCase(),
           textColor: PromajaColors.white,
           onPressed: () => ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete),
         ),

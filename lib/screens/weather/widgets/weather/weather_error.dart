@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -90,8 +90,8 @@ class WeatherError extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 80),
                 child: Column(
                   children: [
-                    const Text(
-                      'Error',
+                    Text(
+                      'error'.tr(),
                       style: PromajaTextStyles.errorFetching,
                       textAlign: TextAlign.center,
                     ),
