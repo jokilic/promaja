@@ -4,6 +4,7 @@ class PromajaIcons {
   static const temperature = 'assets/icons/temperature.png';
   static const list = 'assets/icons/list.png';
   static const search = 'assets/icons/search.png';
+  static const location = 'assets/icons/location.png';
   static const wind = 'assets/icons/wind.png';
   static const humidity = 'assets/icons/humidity.png';
   static const precipitation = 'assets/icons/precipitation.png';

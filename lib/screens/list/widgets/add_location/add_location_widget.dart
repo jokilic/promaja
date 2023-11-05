@@ -6,10 +6,9 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../notifiers/add_location_notifier.dart';
+import '../../notifiers/phone_location_notifier.dart';
 
-class AddLocationResult extends ConsumerWidget {
-  const AddLocationResult({super.key});
-
+class AddLocationWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(addLocationProvider).loading;
@@ -78,6 +77,17 @@ class AddLocationResult extends ConsumerWidget {
                 width: 20,
                 color: PromajaColors.black,
               ),
+              trailing: [
+                IconButton(
+                  onPressed: ref.read(phoneLocationProvider.notifier).getPosition,
+                  icon: Image.asset(
+                    PromajaIcons.location,
+                    height: 24,
+                    width: 24,
+                    color: PromajaColors.black,
+                  ),
+                ),
+              ],
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),

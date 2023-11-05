@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/icons.dart';
 import '../../../constants/text_styles.dart';
-import 'add_location/add_location_result.dart';
+import 'add_location/add_location_widget.dart';
 
 class ListEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 12),
-            child: AddLocationResult(),
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: AddLocationWidget(),
           ),
           Column(
             children: [

@@ -40,6 +40,10 @@ class PromajaNavigationBarController extends StateNotifier<int> {
           hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.activeNavigationValueIndexToBox.get(0) ?? 0,
         );
 
+  ///
+  /// METHODS
+  ///
+
   Future<void> changeNavigationBarIndex(int newIndex) async {
     state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
     await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);

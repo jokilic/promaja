@@ -8,9 +8,9 @@ import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 
-final addLocationProvider = StateNotifierProvider<AddLocationController, ({List<Location>? response, String? error, bool loading})>(
+final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Location>? response, String? error, bool loading})>(
   (ref) {
-    final addLocationController = AddLocationController(
+    final addLocationController = AddLocationNotifier(
       hiveService: ref.watch(hiveProvider.notifier),
       ref: ref,
     );
@@ -26,11 +26,11 @@ final getSearchProvider = FutureProvider.family<({List<Location>? response, Stri
   name: 'GetSearchProvider',
 );
 
-class AddLocationController extends StateNotifier<({List<Location>? response, String? error, bool loading})> {
+class AddLocationNotifier extends StateNotifier<({List<Location>? response, String? error, bool loading})> {
   final HiveService hiveService;
   final Ref ref;
 
-  AddLocationController({
+  AddLocationNotifier({
     required this.hiveService,
     required this.ref,
   }) : super((
@@ -39,8 +39,9 @@ class AddLocationController extends StateNotifier<({List<Location>? response, St
           loading: false,
         ));
 
-  /// Limiting locations because of free API
-  final locationLimit = 5;
+  ///
+  /// DISPOSE
+  ///
 
   @override
   void dispose() {
@@ -49,9 +50,21 @@ class AddLocationController extends StateNotifier<({List<Location>? response, St
     super.dispose();
   }
 
+  ///
+  /// VARIABLES
+  ///
+
+  /// Limiting locations because of free API
+  final locationLimit = 5;
+
   late final textEditingController = TextEditingController();
   late final scrollController = ScrollController();
 
+  ///
+  /// METHODS
+  ///
+
+  /// Searches for a place and returns `List<Location>`
   Future<void> searchPlace(String value) async {
     if (value.isNotEmpty) {
       state = (
@@ -80,6 +93,8 @@ class AddLocationController extends StateNotifier<({List<Location>? response, St
     }
   }
 
+  /// Checks location limit is met or if place exists
+  /// Adds place in `Hive`
   Future<void> addPlace({required Location location}) async {
     textEditingController.clear();
 

@@ -10,7 +10,7 @@ import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
 import '../../../widgets/promaja_navigation_bar.dart';
 import '../notifiers/add_location_notifier.dart';
-import 'add_location/add_location_result.dart';
+import 'add_location/add_location_widget.dart';
 import 'list_card/list_card_widget.dart';
 
 class ListCards extends ConsumerWidget {
@@ -84,9 +84,9 @@ class ListCards extends ConsumerWidget {
                   duration: PromajaDurations.fadeAnimation,
                 ),
               ],
-              child: const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: AddLocationResult(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: AddLocationWidget(),
               ),
             );
           }
