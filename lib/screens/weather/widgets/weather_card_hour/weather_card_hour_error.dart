@@ -7,7 +7,6 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
-// TODO: Finish this
 class WeatherCardHourError extends StatelessWidget {
   final Function() onPressed;
   final bool useOpacity;
@@ -34,7 +33,7 @@ class WeatherCardHourError extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32),
+                  borderRadius: BorderRadius.circular(16),
                   gradient: LinearGradient(
                     colors: [
                       lightenColor(PromajaColors.red),

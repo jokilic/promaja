@@ -13,4 +13,5 @@ class PromajaDurations {
   static final additionalWeatherDataAnimationDelay = 750.milliseconds;
   static final cardWeatherIconAnimationDelay = 1250.milliseconds;
   static final weatherIconAnimationDelay = 1000.milliseconds;
+  static final errorFadeAnimation = 400.milliseconds;
 }
