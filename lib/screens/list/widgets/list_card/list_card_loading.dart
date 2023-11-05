@@ -2,15 +2,18 @@ import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
 class ListCardLoading extends StatelessWidget {
   final String locationName;
+  final bool isPhoneLocation;
   final Function() onTap;
 
   const ListCardLoading({
     required this.locationName,
+    required this.isPhoneLocation,
     required this.onTap,
   });
 
@@ -52,9 +55,24 @@ class ListCardLoading extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// Location
-                        Text(
-                          locationName,
-                          style: PromajaTextStyles.listLocation,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                locationName,
+                                style: PromajaTextStyles.listLocation,
+                              ),
+                            ),
+                            if (isPhoneLocation) ...[
+                              const SizedBox(width: 8),
+                              Image.asset(
+                                PromajaIcons.location,
+                                height: 24,
+                                width: 24,
+                                color: PromajaColors.white,
+                              ),
+                            ],
+                          ],
                         ),
 
                         /// Loading

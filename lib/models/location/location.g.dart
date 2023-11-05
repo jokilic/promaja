@@ -22,13 +22,14 @@ class LocationAdapter extends TypeAdapter<Location> {
       country: fields[3] as String,
       lat: fields[4] as double,
       lon: fields[5] as double,
+      isPhoneLocation: fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Location obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
@@ -38,7 +39,9 @@ class LocationAdapter extends TypeAdapter<Location> {
       ..writeByte(4)
       ..write(obj.lat)
       ..writeByte(5)
-      ..write(obj.lon);
+      ..write(obj.lon)
+      ..writeByte(6)
+      ..write(obj.isPhoneLocation);
   }
 
   @override

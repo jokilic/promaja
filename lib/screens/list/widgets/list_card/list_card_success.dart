@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../util/color.dart';
@@ -9,11 +10,13 @@ import '../../../../util/weather.dart';
 
 class ListCardSuccess extends StatelessWidget {
   final String locationName;
+  final bool isPhoneLocation;
   final CurrentWeather currentWeather;
   final Function() onTap;
 
   const ListCardSuccess({
     required this.locationName,
+    required this.isPhoneLocation,
     required this.currentWeather,
     required this.onTap,
   });
@@ -68,9 +71,24 @@ class ListCardSuccess extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// Location
-                      Text(
-                        locationName,
-                        style: PromajaTextStyles.listLocation,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              locationName,
+                              style: PromajaTextStyles.listLocation,
+                            ),
+                          ),
+                          if (isPhoneLocation) ...[
+                            const SizedBox(width: 8),
+                            Image.asset(
+                              PromajaIcons.location,
+                              height: 24,
+                              width: 24,
+                              color: PromajaColors.white,
+                            ),
+                          ],
+                        ],
                       ),
 
                       /// Temperature

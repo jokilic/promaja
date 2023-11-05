@@ -16,6 +16,8 @@ class Location extends HiveObject {
   final double lat;
   @HiveField(5)
   final double lon;
+  @HiveField(6)
+  final bool isPhoneLocation;
 
   Location({
     required this.name,
@@ -23,6 +25,7 @@ class Location extends HiveObject {
     required this.country,
     required this.lat,
     required this.lon,
+    this.isPhoneLocation = false,
   });
 
   Location copyWith({
@@ -31,6 +34,7 @@ class Location extends HiveObject {
     String? country,
     double? lat,
     double? lon,
+    bool? isPhoneLocation,
   }) =>
       Location(
         name: name ?? this.name,
@@ -38,6 +42,7 @@ class Location extends HiveObject {
         country: country ?? this.country,
         lat: lat ?? this.lat,
         lon: lon ?? this.lon,
+        isPhoneLocation: isPhoneLocation ?? this.isPhoneLocation,
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -61,7 +66,7 @@ class Location extends HiveObject {
   factory Location.fromJson(String source) => Location.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Location(name: $name, region: $region, country: $country, lat: $lat, lon: $lon)';
+  String toString() => 'Location(name: $name, region: $region, country: $country, lat: $lat, lon: $lon, isPhoneLocation: $isPhoneLocation)';
 
   @override
   bool operator ==(covariant Location other) {
@@ -69,9 +74,9 @@ class Location extends HiveObject {
       return true;
     }
 
-    return other.name == name && other.region == region && other.country == country && other.lat == lat && other.lon == lon;
+    return other.name == name && other.region == region && other.country == country && other.lat == lat && other.lon == lon && other.isPhoneLocation == isPhoneLocation;
   }
 
   @override
-  int get hashCode => name.hashCode ^ region.hashCode ^ country.hashCode ^ lat.hashCode ^ lon.hashCode;
+  int get hashCode => name.hashCode ^ region.hashCode ^ country.hashCode ^ lat.hashCode ^ lon.hashCode ^ isPhoneLocation.hashCode;
 }

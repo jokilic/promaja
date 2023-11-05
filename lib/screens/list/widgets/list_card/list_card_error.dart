@@ -8,11 +8,13 @@ import '../../../../util/color.dart';
 
 class ListCardError extends StatelessWidget {
   final String locationName;
+  final bool isPhoneLocation;
   final String error;
   final Function() onTap;
 
   const ListCardError({
     required this.locationName,
+    required this.isPhoneLocation,
     required this.error,
     required this.onTap,
   });
@@ -55,9 +57,24 @@ class ListCardError extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// Location
-                        Text(
-                          locationName,
-                          style: PromajaTextStyles.listLocation,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                locationName,
+                                style: PromajaTextStyles.listLocation,
+                              ),
+                            ),
+                            if (isPhoneLocation) ...[
+                              const SizedBox(width: 8),
+                              Image.asset(
+                                PromajaIcons.location,
+                                height: 24,
+                                width: 24,
+                                color: PromajaColors.white,
+                              ),
+                            ],
+                          ],
                         ),
 
                         /// Error data

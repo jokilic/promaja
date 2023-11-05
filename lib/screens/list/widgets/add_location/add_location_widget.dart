@@ -13,38 +13,61 @@ class AddLocationWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(addLocationProvider).loading;
     final locations = ref.watch(addLocationProvider).response;
+    final isLoadingPhone = ref.watch(phoneLocationProvider).loading;
 
-    ref.listen(
-      addLocationProvider,
-      (_, state) {
-        if (state.error != null || (state.response?.isEmpty ?? false)) {
-          late String text;
+    ref
+      ..listen(
+        addLocationProvider,
+        (_, state) {
+          if (state.error != null || (state.response?.isEmpty ?? false)) {
+            late String text;
 
+            if (state.error != null) {
+              text = '${state.error}';
+            }
+
+            if (state.response?.isEmpty ?? false) {
+              text = 'noLocationsFound'.tr();
+            }
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  text,
+                  style: PromajaTextStyles.snackbar,
+                ),
+                backgroundColor: PromajaColors.indigo,
+                behavior: SnackBarBehavior.floating,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            );
+          }
+        },
+      )
+      ..listen(
+        phoneLocationProvider,
+        (_, state) {
           if (state.error != null) {
-            text = '${state.error}';
-          }
-
-          if (state.response?.isEmpty ?? false) {
-            text = 'noLocationsFound'.tr();
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                text,
-                style: PromajaTextStyles.snackbar,
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${state.error}',
+                  style: PromajaTextStyles.snackbar,
+                ),
+                backgroundColor: PromajaColors.indigo,
+                behavior: SnackBarBehavior.floating,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              backgroundColor: PromajaColors.indigo,
-              behavior: SnackBarBehavior.floating,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+      );
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -79,13 +102,18 @@ class AddLocationWidget extends ConsumerWidget {
               ),
               trailing: [
                 IconButton(
-                  onPressed: ref.read(phoneLocationProvider.notifier).getPosition,
-                  icon: Image.asset(
-                    PromajaIcons.location,
-                    height: 24,
-                    width: 24,
-                    color: PromajaColors.black,
-                  ),
+                  onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).getPosition : null,
+                  icon: isLoadingPhone
+                      ? const Icon(
+                          Icons.hourglass_top_rounded,
+                          color: PromajaColors.black,
+                        )
+                      : Image.asset(
+                          PromajaIcons.location,
+                          height: 24,
+                          width: 24,
+                          color: PromajaColors.black,
+                        ),
                 ),
               ],
               shape: MaterialStateProperty.all(
