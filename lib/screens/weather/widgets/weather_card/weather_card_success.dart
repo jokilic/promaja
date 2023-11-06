@@ -160,25 +160,25 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 2),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
+                            Stack(
+                              clipBehavior: Clip.none,
                               children: [
-                                Flexible(
-                                  child: Text(
-                                    widget.location.name,
-                                    style: PromajaTextStyles.currentLocation,
-                                    textAlign: TextAlign.center,
-                                  ),
+                                Text(
+                                  widget.location.name,
+                                  style: PromajaTextStyles.currentLocation,
+                                  textAlign: TextAlign.center,
                                 ),
-                                if (widget.isPhoneLocation) ...[
-                                  const SizedBox(width: 8),
-                                  Image.asset(
-                                    PromajaIcons.location,
-                                    height: 24,
-                                    width: 24,
-                                    color: PromajaColors.white,
+                                if (widget.isPhoneLocation)
+                                  Positioned(
+                                    left: -32,
+                                    top: 2,
+                                    child: Image.asset(
+                                      PromajaIcons.location,
+                                      height: 24,
+                                      width: 24,
+                                      color: PromajaColors.white,
+                                    ),
                                   ),
-                                ],
                               ],
                             ),
                           ],
