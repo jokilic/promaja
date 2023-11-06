@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
+import '../../../../services/hive_service.dart';
 import '../../notifiers/add_location_notifier.dart';
 import '../../notifiers/phone_location_notifier.dart';
 
@@ -13,7 +14,11 @@ class AddLocationWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(addLocationProvider).loading;
     final locations = ref.watch(addLocationProvider).response;
+
     final isLoadingPhone = ref.watch(phoneLocationProvider).loading;
+    final hasPhoneLocation = ref.watch(hiveProvider).any(
+          (location) => location.isPhoneLocation,
+        );
 
     ref
       ..listen(
@@ -101,20 +106,21 @@ class AddLocationWidget extends ConsumerWidget {
                 color: PromajaColors.black,
               ),
               trailing: [
-                IconButton(
-                  onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).getPosition : null,
-                  icon: isLoadingPhone
-                      ? const Icon(
-                          Icons.hourglass_top_rounded,
-                          color: PromajaColors.black,
-                        )
-                      : Image.asset(
-                          PromajaIcons.location,
-                          height: 24,
-                          width: 24,
-                          color: PromajaColors.black,
-                        ),
-                ),
+                if (!hasPhoneLocation)
+                  IconButton(
+                    onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).getPosition : null,
+                    icon: isLoadingPhone
+                        ? const Icon(
+                            Icons.hourglass_top_rounded,
+                            color: PromajaColors.black,
+                          )
+                        : Image.asset(
+                            PromajaIcons.location,
+                            height: 24,
+                            width: 24,
+                            color: PromajaColors.black,
+                          ),
+                  ),
               ],
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
