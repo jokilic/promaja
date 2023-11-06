@@ -62,7 +62,7 @@ class CardsScreen extends ConsumerWidget {
                 /// Return proper [CardWidget]
                 if (location != null) {
                   return CardWidget(
-                    location: location,
+                    originalLocation: location,
                     useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
                   );
                 }
@@ -82,6 +82,7 @@ class CardsScreen extends ConsumerWidget {
                     ),
                     error: 'noMoreLocations'.tr(),
                     useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                    isPhoneLocation: false,
                   ),
                 );
               },

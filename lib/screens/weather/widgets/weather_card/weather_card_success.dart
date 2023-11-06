@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
@@ -21,12 +22,14 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
   final ForecastDayWeather forecast;
   final bool useOpacity;
   final int index;
+  final bool isPhoneLocation;
 
   const WeatherCardSuccess({
     required this.location,
     required this.forecast,
     required this.useOpacity,
     required this.index,
+    required this.isPhoneLocation,
   });
 
   @override
@@ -157,10 +160,26 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 2),
-                            Text(
-                              widget.location.name,
-                              style: PromajaTextStyles.currentLocation,
-                              textAlign: TextAlign.center,
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    widget.location.name,
+                                    style: PromajaTextStyles.currentLocation,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                if (widget.isPhoneLocation) ...[
+                                  const SizedBox(width: 8),
+                                  Image.asset(
+                                    PromajaIcons.location,
+                                    height: 24,
+                                    width: 24,
+                                    color: PromajaColors.white,
+                                  ),
+                                ],
+                              ],
                             ),
                           ],
                         ),

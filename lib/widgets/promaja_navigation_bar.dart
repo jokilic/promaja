@@ -22,7 +22,7 @@ final screenProvider = StateProvider.autoDispose<Widget>(
   (ref) => switch (ref.watch(navigationBarIndexProvider)) {
     0 => CardsScreen(),
     1 => WeatherScreen(
-        location: ref.watch(activeWeatherProvider),
+        originalLocation: ref.watch(activeWeatherProvider),
       ),
     _ => ListScreen(),
   },

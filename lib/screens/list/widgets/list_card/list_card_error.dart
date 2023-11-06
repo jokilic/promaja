@@ -58,6 +58,7 @@ class ListCardError extends StatelessWidget {
                       children: [
                         /// Location
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Flexible(
                               child: Text(

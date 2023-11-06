@@ -12,10 +12,10 @@ import 'widgets/weather/weather_loading.dart';
 import 'widgets/weather/weather_success.dart';
 
 class WeatherScreen extends ConsumerWidget {
-  final Location? location;
+  final Location? originalLocation;
 
   const WeatherScreen({
-    required this.location,
+    required this.originalLocation,
   });
 
   @override
@@ -29,8 +29,8 @@ class WeatherScreen extends ConsumerWidget {
               duration: PromajaDurations.fadeAnimation,
             ),
           ],
-          child: location != null
-              ? ref.watch(getForecastWeatherProvider((location: location!, days: 3))).when(
+          child: originalLocation != null
+              ? ref.watch(getForecastWeatherProvider((location: originalLocation!, days: 3))).when(
                     data: (data) {
                       ///
                       /// DATA SUCCESSFULLY FETCHED
@@ -44,6 +44,7 @@ class WeatherScreen extends ConsumerWidget {
                           location: location,
                           currentWeather: currentWeather,
                           forecastWeather: forecastWeather,
+                          isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                         );
                       }
 
@@ -51,16 +52,18 @@ class WeatherScreen extends ConsumerWidget {
                       /// ERROR WHILE FETCHING
                       ///
                       return WeatherError(
-                        location: location!,
+                        location: originalLocation!,
                         error: data.error ?? 'weirdErrorHappened'.tr(),
+                        isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                       );
                     },
                     error: (error, stackTrace) => WeatherError(
-                      location: location!,
+                      location: originalLocation!,
                       error: '$error',
+                      isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                     ),
                     loading: () => WeatherLoading(
-                      location: location!,
+                      location: originalLocation!,
                     ),
                   )
               : WeatherError(
@@ -72,6 +75,7 @@ class WeatherScreen extends ConsumerWidget {
                     region: '---',
                   ),
                   error: 'noMoreLocations'.tr(),
+                  isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                 ),
         ),
       );

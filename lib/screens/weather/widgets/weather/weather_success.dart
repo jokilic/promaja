@@ -20,11 +20,13 @@ class WeatherSuccess extends ConsumerWidget {
   final Location location;
   final CurrentWeather currentWeather;
   final ForecastWeather forecastWeather;
+  final bool isPhoneLocation;
 
   const WeatherSuccess({
     required this.location,
     required this.currentWeather,
     required this.forecastWeather,
+    required this.isPhoneLocation,
   });
 
   void cardSwiped({
@@ -89,6 +91,7 @@ class WeatherSuccess extends ConsumerWidget {
                 forecast: forecast,
                 useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
                 index: cardIndex,
+                isPhoneLocation: isPhoneLocation,
               );
             }
 
@@ -101,6 +104,7 @@ class WeatherSuccess extends ConsumerWidget {
                 location: location,
                 error: 'noMoreForecasts'.tr(),
                 useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                isPhoneLocation: isPhoneLocation,
               ),
             );
           },

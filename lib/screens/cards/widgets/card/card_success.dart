@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/location/location.dart';
@@ -19,11 +21,13 @@ class CardSuccess extends ConsumerWidget {
   final Location location;
   final CurrentWeather currentWeather;
   final bool useOpacity;
+  final bool isPhoneLocation;
 
   const CardSuccess({
     required this.location,
     required this.currentWeather,
     required this.useOpacity,
+    required this.isPhoneLocation,
   });
 
   @override
@@ -89,10 +93,26 @@ class CardSuccess extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      location.name,
-                      style: PromajaTextStyles.currentLocation,
-                      textAlign: TextAlign.center,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            location.name,
+                            style: PromajaTextStyles.currentLocation,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        if (isPhoneLocation) ...[
+                          const SizedBox(width: 8),
+                          Image.asset(
+                            PromajaIcons.location,
+                            height: 24,
+                            width: 24,
+                            color: PromajaColors.white,
+                          ),
+                        ],
+                      ],
                     ),
                   ],
                 ),

@@ -9,11 +9,11 @@ import 'card_loading.dart';
 import 'card_success.dart';
 
 class CardWidget extends ConsumerWidget {
-  final Location location;
+  final Location originalLocation;
   final bool useOpacity;
 
   const CardWidget({
-    required this.location,
+    required this.originalLocation,
     required this.useOpacity,
   });
 
@@ -22,7 +22,7 @@ class CardWidget extends ConsumerWidget {
         borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(40),
         ),
-        child: ref.watch(getCurrentWeatherProvider(location)).when(
+        child: ref.watch(getCurrentWeatherProvider(originalLocation)).when(
               data: (data) {
                 ///
                 /// DATA SUCCESSFULLY FETCHED
@@ -35,6 +35,7 @@ class CardWidget extends ConsumerWidget {
                     location: location,
                     currentWeather: currentWeather,
                     useOpacity: useOpacity,
+                    isPhoneLocation: originalLocation.isPhoneLocation,
                   );
                 }
 
@@ -42,9 +43,10 @@ class CardWidget extends ConsumerWidget {
                 /// ERROR WHILE FETCHING
                 ///
                 return CardError(
-                  location: location,
+                  location: originalLocation,
                   error: data.error ?? 'weirdErrorHappened'.tr(),
                   useOpacity: useOpacity,
+                  isPhoneLocation: originalLocation.isPhoneLocation,
                 );
               },
 
@@ -52,16 +54,17 @@ class CardWidget extends ConsumerWidget {
               /// ERROR STATE
               ///
               error: (error, _) => CardError(
-                location: location,
+                location: originalLocation,
                 error: '$error',
                 useOpacity: useOpacity,
+                isPhoneLocation: originalLocation.isPhoneLocation,
               ),
 
               ///
               /// LOADING STATE
               ///
               loading: () => CardLoading(
-                location: location,
+                location: originalLocation,
                 useOpacity: useOpacity,
               ),
             ),
