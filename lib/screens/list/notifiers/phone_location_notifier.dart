@@ -36,7 +36,7 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
   ///
 
   /// Gets phone position
-  Future<void> getPosition() async {
+  Future<void> enablePhoneLocation() async {
     /// Loading state
     state = (
       position: null,
@@ -55,6 +55,9 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
 
     /// Position is properly calculated
     if (position.position != null) {
+      /// Remove phone location if it's active
+      await removeActivePhoneLocation();
+
       /// Add location to [Hive]
       await hiveService.writeAllLocationsToHive(
         locations: [
@@ -71,10 +74,33 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
       );
     }
 
-    state = (
-      position: position.position,
-      error: position.error,
-      loading: false,
+    if (mounted) {
+      state = (
+        position: position.position,
+        error: position.error,
+        loading: false,
+      );
+    }
+  }
+
+  /// Checks if phone location is active and removes it
+  Future<void> removeActivePhoneLocation() async {
+    final hasPhoneLocation = hiveService.state.any(
+      (location) => location.isPhoneLocation,
     );
+
+    if (hasPhoneLocation) {
+      final phoneLocation = hiveService.state.firstWhere(
+        (location) => location.isPhoneLocation,
+      );
+      final phoneLocationIndex = hiveService.state.indexWhere(
+        (location) => location.isPhoneLocation,
+      );
+
+      await hiveService.deleteLocationFromBox(
+        passedLocation: phoneLocation,
+        index: phoneLocationIndex,
+      );
+    }
   }
 }

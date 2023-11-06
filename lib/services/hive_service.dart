@@ -93,13 +93,6 @@ class HiveService extends StateNotifier<List<Location>> {
     state = locations;
   }
 
-  /// Deletes all [Location] values from [Hive]
-  Future<void> deleteAllLocationsFromBox() async {
-    state = [];
-    await locationsBox.clear();
-    await activeLocationIndexBox.clear();
-  }
-
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
     final hasPhoneLocation = state.any((location) => location.isPhoneLocation);

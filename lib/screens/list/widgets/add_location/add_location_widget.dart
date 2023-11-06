@@ -108,7 +108,7 @@ class AddLocationWidget extends ConsumerWidget {
               trailing: [
                 if (!hasPhoneLocation)
                   IconButton(
-                    onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).getPosition : null,
+                    onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).enablePhoneLocation : null,
                     icon: isLoadingPhone
                         ? const Icon(
                             Icons.hourglass_top_rounded,
