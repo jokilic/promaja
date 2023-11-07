@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../util/weather.dart';
@@ -33,6 +35,8 @@ class WeatherCardIndividualHour extends ConsumerWidget {
       code: hourWeather?.condition.code ?? 0,
       isDay: hourWeather?.isDay == 1,
     );
+
+    final showRain = hourWeather?.willItRain == 1;
 
     return AnimatedOpacity(
       duration: PromajaDurations.opacityAnimation,
@@ -69,25 +73,56 @@ class WeatherCardIndividualHour extends ConsumerWidget {
             ///
             /// WEATHER ICON
             ///
-            Animate(
-              key: UniqueKey(),
-              onPlay: (controller) => controller.loop(reverse: true),
-              delay: 10.seconds,
-              effects: [
-                ScaleEffect(
-                  curve: Curves.easeIn,
-                  end: const Offset(1.25, 1.25),
-                  duration: 60.seconds,
+            Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                Animate(
+                  key: UniqueKey(),
+                  onPlay: (controller) => controller.loop(reverse: true),
+                  delay: 10.seconds,
+                  effects: [
+                    ScaleEffect(
+                      curve: Curves.easeIn,
+                      end: const Offset(1.25, 1.25),
+                      duration: 60.seconds,
+                    ),
+                  ],
+                  child: Transform.scale(
+                    scale: 1.35,
+                    child: Image.asset(
+                      weatherIcon,
+                      height: 120,
+                      width: 120,
+                    ),
+                  ),
                 ),
+
+                ///
+                /// CHANCE OF RAIN
+                ///
+                if (showRain)
+                  Positioned(
+                    right: -80,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          PromajaIcons.umbrella,
+                          color: PromajaColors.white,
+                          height: 40,
+                          width: 40,
+                        ),
+                        Text(
+                          '${hourWeather?.chanceOfRain}%',
+                          style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
               ],
-              child: Transform.scale(
-                scale: 1.35,
-                child: Image.asset(
-                  weatherIcon,
-                  height: 120,
-                  width: 120,
-                ),
-              ),
             ),
             const SizedBox(height: 8),
 
@@ -98,6 +133,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
               children: [
                 const SizedBox(height: 32),
                 Stack(
+                  alignment: Alignment.center,
                   clipBehavior: Clip.none,
                   children: [
                     Text(

@@ -72,6 +72,7 @@ class CardError extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Stack(
+                        alignment: Alignment.center,
                         clipBehavior: Clip.none,
                         children: [
                           Text(

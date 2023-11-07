@@ -124,4 +124,9 @@ class PromajaTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w700,
   );
+  static const weatherCardIndividualHourChanceOfRain = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+  );
 }
