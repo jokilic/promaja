@@ -77,6 +77,9 @@ class WeatherCardIndividualHour extends ConsumerWidget {
               alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
+                ///
+                /// ICON
+                ///
                 Animate(
                   key: UniqueKey(),
                   onPlay: (controller) => controller.loop(reverse: true),
@@ -103,7 +106,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 ///
                 if (showRain)
                   Positioned(
-                    right: -80,
+                    left: -80,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
