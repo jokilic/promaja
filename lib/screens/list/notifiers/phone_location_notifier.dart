@@ -29,16 +29,14 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
           position: null,
           error: null,
           loading: false,
-        )) {
-    init();
-  }
+        ));
 
   ///
   /// INIT
   ///
 
   /// Refreshes phone location if it's active
-  Future<void> init() async {
+  Future<void> refreshPhoneLocation() async {
     /// Check if phone location is active
     final hasPhoneLocation = hiveService.state.any(
       (location) => location.isPhoneLocation,

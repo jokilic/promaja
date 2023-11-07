@@ -6,7 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
-import 'screens/list/notifiers/phone_location_notifier.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
@@ -64,29 +63,24 @@ Future<void> main() async {
 
 class PromajaApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    /// Refreshes phone location if it's active
-    ref.watch(phoneLocationProvider);
-
-    return EasyLocalization(
-      useOnlyLangCode: true,
-      supportedLocales: const [Locale('hr'), Locale('en')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('hr'),
-      child: Builder(
-        builder: (context) => MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          home: ref.watch(screenProvider),
-          onGenerateTitle: (_) => 'appNameString'.tr(),
-          theme: ThemeData(
-            useMaterial3: true,
-            fontFamily: 'Rubik',
-            scaffoldBackgroundColor: PromajaColors.black,
+  Widget build(BuildContext context, WidgetRef ref) => EasyLocalization(
+        useOnlyLangCode: true,
+        supportedLocales: const [Locale('hr'), Locale('en')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('hr'),
+        child: Builder(
+          builder: (context) => MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            home: ref.watch(screenProvider),
+            onGenerateTitle: (_) => 'appNameString'.tr(),
+            theme: ThemeData(
+              useMaterial3: true,
+              fontFamily: 'Rubik',
+              scaffoldBackgroundColor: PromajaColors.black,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

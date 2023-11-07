@@ -10,3 +10,4 @@ Weather app made in Flutter.
 - [ ] Weather - stavi nižu dolje, a višu gore
 - [ ] Weather - niža da ima malo transparentniju bijelu boju
 - [ ] Weather - kad se poziva endpoint, stavi 5 ili 7 dana
+- [ ] Weather & Individual hour - kišobran i postotak kiše stavi u gornji desni kut od glavne ikone
