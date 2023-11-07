@@ -5,13 +5,13 @@ import '../../constants/colors.dart';
 import '../../constants/icons.dart';
 import 'additional_value_widget.dart';
 
-class AdditionalFUG extends StatelessWidget {
-  final double feelsLikeTemperature;
+class AdditionalPUG extends StatelessWidget {
+  final double pressure;
   final double uv;
   final double gust;
 
-  const AdditionalFUG({
-    required this.feelsLikeTemperature,
+  const AdditionalPUG({
+    required this.pressure,
     required this.uv,
     required this.gust,
   });
@@ -31,13 +31,13 @@ class AdditionalFUG extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ///
-            /// FEELS LIKE
+            /// PRESSURE
             ///
             Expanded(
               child: AdditionalValueWidget(
-                icon: PromajaIcons.feelsLike,
-                value: '${feelsLikeTemperature.round()}°',
-                description: 'feelsLike'.tr(),
+                icon: PromajaIcons.pressure,
+                value: '${pressure.round()} hPa',
+                description: 'pressure'.tr(),
               ),
             ),
 

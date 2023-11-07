@@ -7,9 +7,9 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../util/weather.dart';
-import '../../../../widgets/additional/additional_fug.dart';
-import '../../../../widgets/additional/additional_pcv.dart';
-import '../../../../widgets/additional/additional_whp.dart';
+import '../../../../widgets/additional/additional_cvh.dart';
+import '../../../../widgets/additional/additional_pug.dart';
+import '../../../../widgets/additional/additional_wpf.dart';
 import '../../weather_notifiers.dart';
 
 class WeatherCardIndividualHour extends ConsumerWidget {
@@ -140,30 +140,30 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 children: hourWeather != null
                     ? [
                         ///
-                        /// WIND, HUMIDITY, PRECIPITATION
+                        /// WIND, PRECIPITATION, FEELS LIKE
                         ///
-                        AdditionalWHP(
+                        AdditionalWPF(
                           windDegree: hourWeather!.windDegree,
                           windKph: hourWeather!.windKph,
-                          humidity: hourWeather!.humidity,
                           precipitation: hourWeather!.precipMm,
+                          feelsLikeTemperature: hourWeather!.feelsLikeC,
                           useAnimations: false,
                         ),
 
                         ///
-                        /// PRESSURE, CLOUD, VISIBILITY
+                        /// CLOUD, VISIBILITY, HUMIDITY
                         ///
-                        AdditionalPCV(
-                          pressure: hourWeather!.pressurehPa,
+                        AdditionalCVH(
                           cloud: hourWeather!.cloud,
                           visibility: hourWeather!.visKm,
+                          humidity: hourWeather!.humidity,
                         ),
 
                         ///
-                        /// FEELS LIKE, UV, GUST
+                        /// PRESSURE, UV, GUST
                         ///
-                        AdditionalFUG(
-                          feelsLikeTemperature: hourWeather!.feelsLikeC,
+                        AdditionalPUG(
+                          pressure: hourWeather!.pressurehPa,
                           uv: hourWeather!.uv,
                           gust: hourWeather!.gustKph,
                         ),

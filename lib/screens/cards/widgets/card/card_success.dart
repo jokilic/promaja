@@ -11,9 +11,9 @@ import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
-import '../../../../widgets/additional/additional_fug.dart';
-import '../../../../widgets/additional/additional_pcv.dart';
-import '../../../../widgets/additional/additional_whp.dart';
+import '../../../../widgets/additional/additional_cvh.dart';
+import '../../../../widgets/additional/additional_pug.dart';
+import '../../../../widgets/additional/additional_wpf.dart';
 import '../../../../widgets/keep_alive_widget.dart';
 import '../../cards_notifiers.dart';
 
@@ -195,31 +195,31 @@ class CardSuccess extends ConsumerWidget {
                     physics: const BouncingScrollPhysics(),
                     children: [
                       ///
-                      /// WIND, HUMIDITY, PRECIPITATION
+                      /// WIND, PRECIPITATION, FEELS LIKE
                       ///
                       KeepAlivePage(
-                        child: AdditionalWHP(
+                        child: AdditionalWPF(
                           windDegree: currentWeather.windDegree,
                           windKph: currentWeather.windKph,
-                          humidity: currentWeather.humidity,
                           precipitation: currentWeather.precipMm,
+                          feelsLikeTemperature: currentWeather.feelsLikeC,
                         ),
                       ),
 
                       ///
-                      /// PRESSURE, CLOUD, VISIBILITY
+                      /// CLOUD, VISIBILITY, HUMIDITY
                       ///
-                      AdditionalPCV(
-                        pressure: currentWeather.pressurehPa,
+                      AdditionalCVH(
                         cloud: currentWeather.cloud,
                         visibility: currentWeather.visKm,
+                        humidity: currentWeather.humidity,
                       ),
 
                       ///
-                      /// FEELS LIKE, UV, GUST
+                      /// PRESSURE, UV, GUST
                       ///
-                      AdditionalFUG(
-                        feelsLikeTemperature: currentWeather.feelsLikeC,
+                      AdditionalPUG(
+                        pressure: currentWeather.pressurehPa,
                         uv: currentWeather.uv,
                         gust: currentWeather.gustKph,
                       ),

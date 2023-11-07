@@ -5,15 +5,15 @@ import '../../constants/colors.dart';
 import '../../constants/icons.dart';
 import 'additional_value_widget.dart';
 
-class AdditionalPCV extends StatelessWidget {
-  final double pressure;
+class AdditionalCVH extends StatelessWidget {
   final int cloud;
   final double visibility;
+  final int humidity;
 
-  const AdditionalPCV({
-    required this.pressure,
+  const AdditionalCVH({
     required this.cloud,
     required this.visibility,
+    required this.humidity,
   });
 
   @override
@@ -30,23 +30,6 @@ class AdditionalPCV extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ///
-            /// PRESSURE
-            ///
-            Expanded(
-              child: AdditionalValueWidget(
-                icon: PromajaIcons.pressure,
-                value: '${pressure.round()} hPa',
-                description: 'pressure'.tr(),
-              ),
-            ),
-
-            Container(
-              height: 40,
-              width: 0.5,
-              color: PromajaColors.white.withOpacity(0.4),
-            ),
-
             ///
             /// CLOUD
             ///
@@ -72,6 +55,23 @@ class AdditionalPCV extends StatelessWidget {
                 icon: PromajaIcons.visibility,
                 value: '${visibility.round()} km',
                 description: 'visibility'.tr(),
+              ),
+            ),
+
+            Container(
+              height: 40,
+              width: 0.5,
+              color: PromajaColors.white.withOpacity(0.4),
+            ),
+
+            ///
+            /// HUMIDITY
+            ///
+            Expanded(
+              child: AdditionalValueWidget(
+                icon: PromajaIcons.humidity,
+                value: '$humidity%',
+                description: 'humidity'.tr(),
               ),
             ),
           ],

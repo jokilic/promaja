@@ -7,17 +7,17 @@ import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import 'additional_value_widget.dart';
 
-class AdditionalWHP extends StatelessWidget {
+class AdditionalWPF extends StatelessWidget {
   final int? windDegree;
   final double windKph;
-  final int humidity;
   final double precipitation;
+  final double feelsLikeTemperature;
   final bool useAnimations;
 
-  const AdditionalWHP({
+  const AdditionalWPF({
     required this.windKph,
-    required this.humidity,
     required this.precipitation,
+    required this.feelsLikeTemperature,
     this.windDegree,
     this.useAnimations = true,
   });
@@ -64,13 +64,13 @@ class AdditionalWHP extends StatelessWidget {
               ),
 
               ///
-              /// HUMIDITY
+              /// PRECIPITATION
               ///
               Expanded(
                 child: AdditionalValueWidget(
-                  icon: PromajaIcons.humidity,
-                  value: '$humidity%',
-                  description: 'humidity'.tr(),
+                  icon: PromajaIcons.precipitation,
+                  value: '${precipitation.round()} mm',
+                  description: 'precipitation'.tr(),
                 ),
               ),
 
@@ -81,13 +81,13 @@ class AdditionalWHP extends StatelessWidget {
               ),
 
               ///
-              /// PRECIPITATION
+              /// FEELS LIKE
               ///
               Expanded(
                 child: AdditionalValueWidget(
-                  icon: PromajaIcons.precipitation,
-                  value: '${precipitation.round()} mm',
-                  description: 'precipitation'.tr(),
+                  icon: PromajaIcons.feelsLike,
+                  value: '${feelsLikeTemperature.round()}°',
+                  description: 'feelsLike'.tr(),
                 ),
               ),
             ],
