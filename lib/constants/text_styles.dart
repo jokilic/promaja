@@ -24,7 +24,12 @@ class PromajaTextStyles {
     fontSize: 88,
     height: 1,
   );
-  static const weatherTemperature = TextStyle(
+  static final weatherTemperatureMin = TextStyle(
+    color: PromajaColors.white.withOpacity(0.5),
+    fontSize: 64,
+    height: 1,
+  );
+  static const weatherTemperatureMax = TextStyle(
     color: PromajaColors.white,
     fontSize: 64,
     height: 1,
@@ -126,7 +131,7 @@ class PromajaTextStyles {
   );
   static const weatherCardIndividualHourChanceOfRain = TextStyle(
     color: PromajaColors.white,
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: FontWeight.w700,
   );
 }

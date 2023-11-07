@@ -73,64 +73,30 @@ class WeatherCardIndividualHour extends ConsumerWidget {
             ///
             /// WEATHER ICON
             ///
-            Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              children: [
-                ///
-                /// ICON
-                ///
-                Animate(
-                  key: UniqueKey(),
-                  onPlay: (controller) => controller.loop(reverse: true),
-                  delay: 10.seconds,
-                  effects: [
-                    ScaleEffect(
-                      curve: Curves.easeIn,
-                      end: const Offset(1.25, 1.25),
-                      duration: 60.seconds,
-                    ),
-                  ],
-                  child: Transform.scale(
-                    scale: 1.35,
-                    child: Image.asset(
-                      weatherIcon,
-                      height: 120,
-                      width: 120,
-                    ),
-                  ),
+            Animate(
+              key: UniqueKey(),
+              onPlay: (controller) => controller.loop(reverse: true),
+              delay: 10.seconds,
+              effects: [
+                ScaleEffect(
+                  curve: Curves.easeIn,
+                  end: const Offset(1.25, 1.25),
+                  duration: 60.seconds,
                 ),
-
-                ///
-                /// CHANCE OF RAIN
-                ///
-                if (showRain)
-                  Positioned(
-                    left: -80,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          PromajaIcons.umbrella,
-                          color: PromajaColors.white,
-                          height: 40,
-                          width: 40,
-                        ),
-                        Text(
-                          '${hourWeather?.chanceOfRain}%',
-                          style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
               ],
+              child: Transform.scale(
+                scale: 1.35,
+                child: Image.asset(
+                  weatherIcon,
+                  height: 120,
+                  width: 120,
+                ),
+              ),
             ),
             const SizedBox(height: 8),
 
             ///
-            /// TEMPERATURE & WEATHER
+            /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
             ///
             Column(
               children: [
@@ -158,10 +124,44 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 const SizedBox(height: 2),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 80),
-                  child: Text(
-                    weatherDescription,
-                    style: PromajaTextStyles.currentWeather,
-                    textAlign: TextAlign.center,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: [
+                      ///
+                      /// WEATHER DESCRIPTION
+                      ///
+                      Text(
+                        weatherDescription,
+                        style: PromajaTextStyles.currentWeather,
+                        textAlign: TextAlign.center,
+                      ),
+
+                      ///
+                      /// CHANCE OF RAIN
+                      ///
+                      if (showRain)
+                        Positioned(
+                          right: -36,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                PromajaIcons.umbrella,
+                                color: PromajaColors.white,
+                                height: 24,
+                                width: 24,
+                              ),
+                              Text(
+                                '${hourWeather?.chanceOfRain}%',
+                                style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],

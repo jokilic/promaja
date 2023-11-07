@@ -61,14 +61,12 @@ class WeatherCardHourSuccess extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: showRain ? PromajaColors.blue : borderColor,
-                  width: isActive
-                      ? 0
-                      : showRain
-                          ? 4
-                          : 2,
-                ),
+                border: isActive
+                    ? null
+                    : Border.all(
+                        color: showRain ? PromajaColors.blue : borderColor,
+                        width: showRain ? 4 : 2,
+                      ),
                 gradient: isActive
                     ? LinearGradient(
                         colors: [
