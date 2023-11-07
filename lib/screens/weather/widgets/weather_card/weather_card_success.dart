@@ -171,7 +171,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                 if (widget.isPhoneLocation)
                                   Positioned(
                                     left: -32,
-                                    top: 2,
+                                    top: 4,
                                     child: Image.asset(
                                       PromajaIcons.location,
                                       height: 24,
@@ -278,9 +278,9 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                         ///
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 144,
+                          height: 160,
                           child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.only(top: 24, bottom: 16),
                             scrollDirection: Axis.horizontal,
                             itemCount: widget.forecast.hours.length,
                             controller: ref.watch(

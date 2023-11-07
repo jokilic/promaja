@@ -104,7 +104,7 @@ class CardSuccess extends ConsumerWidget {
                         if (isPhoneLocation)
                           Positioned(
                             left: -32,
-                            top: 2,
+                            top: 4,
                             child: Image.asset(
                               PromajaIcons.location,
                               height: 24,

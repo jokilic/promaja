@@ -26,6 +26,7 @@ class WeatherCardHourError extends StatelessWidget {
           width: MediaQuery.sizeOf(context).width / 4 - 16,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           child: Stack(
+            alignment: Alignment.center,
             children: [
               ///
               /// MAIN CONTENT
@@ -52,7 +53,7 @@ class WeatherCardHourError extends StatelessWidget {
                     ///
                     Text(
                       'error'.tr(),
-                      style: PromajaTextStyles.weatherCardHourLastUpdated,
+                      style: PromajaTextStyles.weatherCardHourHour,
                       textAlign: TextAlign.center,
                     ),
 
@@ -71,7 +72,7 @@ class WeatherCardHourError extends StatelessWidget {
                         ),
                       ],
                       child: Transform.scale(
-                        scale: 1.2,
+                        scale: 1.35,
                         child: Image.asset(
                           PromajaIcons.tornado,
                           height: 32,

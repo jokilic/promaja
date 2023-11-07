@@ -4,11 +4,8 @@ class PromajaColors {
   static const white = Color(0xFFF0F4EF);
   static const black = Color(0xFF17181E);
   static const indigo = Color(0xFF344966);
-  static const pink = Color(0xFFE6AACE);
   static const red = Color(0xFFEF3E36);
-  static const green = Color(0xFF48A9A6);
-  static const blue = Color(0xFF4357AD);
-  static const yellow = Color(0xFFD4B483);
+  static const blue = Color(0xFFADD7F6);
 
   /// Weather
   static const sun = Color(0xFFF4B266);

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
+import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../util/color.dart';
@@ -36,6 +37,8 @@ class WeatherCardHourSuccess extends StatelessWidget {
       isDay: hourWeather.isDay == 1,
     );
 
+    final showRain = hourWeather.willItRain == 1;
+
     return AnimatedOpacity(
       duration: PromajaDurations.opacityAnimation,
       curve: Curves.easeIn,
@@ -44,21 +47,28 @@ class WeatherCardHourSuccess extends StatelessWidget {
         width: MediaQuery.sizeOf(context).width / 4 - 16,
         margin: const EdgeInsets.symmetric(horizontal: 4),
         child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
             ///
             /// MAIN CONTENT
             ///
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                border: isActive
-                    ? null
-                    : Border.all(
-                        color: borderColor,
-                        width: 2,
-                      ),
+                border: Border.all(
+                  color: showRain ? PromajaColors.blue : borderColor,
+                  width: isActive
+                      ? 0
+                      : showRain
+                          ? 4
+                          : 2,
+                ),
                 gradient: isActive
                     ? LinearGradient(
                         colors: [
@@ -78,7 +88,7 @@ class WeatherCardHourSuccess extends StatelessWidget {
                   ///
                   Text(
                     DateFormat.Hm().format(hourWeather.timeEpoch),
-                    style: PromajaTextStyles.weatherCardHourLastUpdated,
+                    style: PromajaTextStyles.weatherCardHourHour,
                     textAlign: TextAlign.center,
                   ),
 
@@ -97,7 +107,7 @@ class WeatherCardHourSuccess extends StatelessWidget {
                       ),
                     ],
                     child: Transform.scale(
-                      scale: 1.2,
+                      scale: 1.35,
                       child: Image.asset(
                         weatherIcon,
                         height: 32,
@@ -117,6 +127,31 @@ class WeatherCardHourSuccess extends StatelessWidget {
                 ],
               ),
             ),
+
+            ///
+            /// CHANCE OF RAIN
+            ///
+            if (showRain)
+              Positioned(
+                top: -24,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      PromajaIcons.umbrella,
+                      color: PromajaColors.white,
+                      height: 20,
+                      width: 20,
+                    ),
+                    Text(
+                      '${hourWeather.chanceOfRain}%',
+                      style: PromajaTextStyles.weatherCardHourChanceOfRain,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
 
             ///
             /// INKWELL RIPPLE

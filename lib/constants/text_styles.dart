@@ -111,12 +111,17 @@ class PromajaTextStyles {
     fontSize: 24,
     height: 1,
   );
-  static final weatherCardHourLastUpdated = TextStyle(
+  static final weatherCardHourHour = TextStyle(
     color: PromajaColors.white.withOpacity(0.8),
     fontSize: 12,
   );
   static final weatherCardLastUpdated = TextStyle(
     color: PromajaColors.white.withOpacity(0.8),
     fontSize: 16,
+  );
+  static const weatherCardHourChanceOfRain = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 12,
+    fontWeight: FontWeight.w700,
   );
 }
