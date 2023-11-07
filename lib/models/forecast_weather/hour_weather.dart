@@ -14,6 +14,8 @@ class HourWeather {
   final int humidity;
   final int cloud;
   final double feelsLikeC;
+  final int willItRain;
+  final int chanceOfRain;
   final double visKm;
   final double gustKph;
   final double uv;
@@ -30,6 +32,8 @@ class HourWeather {
     required this.humidity,
     required this.cloud,
     required this.feelsLikeC,
+    required this.willItRain,
+    required this.chanceOfRain,
     required this.visKm,
     required this.gustKph,
     required this.uv,
@@ -47,6 +51,8 @@ class HourWeather {
     int? humidity,
     int? cloud,
     double? feelsLikeC,
+    int? willItRain,
+    int? chanceOfRain,
     double? visKm,
     double? gustKph,
     double? uv,
@@ -63,6 +69,8 @@ class HourWeather {
         humidity: humidity ?? this.humidity,
         cloud: cloud ?? this.cloud,
         feelsLikeC: feelsLikeC ?? this.feelsLikeC,
+        willItRain: willItRain ?? this.willItRain,
+        chanceOfRain: chanceOfRain ?? this.chanceOfRain,
         visKm: visKm ?? this.visKm,
         gustKph: gustKph ?? this.gustKph,
         uv: uv ?? this.uv,
@@ -80,6 +88,8 @@ class HourWeather {
         'humidity': humidity,
         'cloud': cloud,
         'feelslike_c': feelsLikeC,
+        'will_it_rain': willItRain,
+        'chance_of_rain': chanceOfRain,
         'vis_km': visKm,
         'gust_kph': gustKph,
         'uv': uv,
@@ -97,6 +107,8 @@ class HourWeather {
         humidity: map['humidity'] as int,
         cloud: map['cloud'] as int,
         feelsLikeC: map['feelslike_c'] as double,
+        willItRain: map['will_it_rain'] as int,
+        chanceOfRain: map['chance_of_rain'] as int,
         visKm: map['vis_km'] as double,
         gustKph: map['gust_kph'] as double,
         uv: map['uv'] as double,
@@ -108,7 +120,7 @@ class HourWeather {
 
   @override
   String toString() =>
-      'HourWeather(timeEpoch: $timeEpoch, tempC: $tempC, isDay: $isDay, condition: $condition, windKph: $windKph, windDegree: $windDegree, pressurehPa: $pressurehPa, precipMm: $precipMm, humidity: $humidity, cloud: $cloud, feelsLikeC: $feelsLikeC, visKm: $visKm, gustKph: $gustKph, uv: $uv)';
+      'HourWeather(timeEpoch: $timeEpoch, tempC: $tempC, isDay: $isDay, condition: $condition, windKph: $windKph, windDegree: $windDegree, pressurehPa: $pressurehPa, precipMm: $precipMm, humidity: $humidity, cloud: $cloud, feelsLikeC: $feelsLikeC, willItRain: $willItRain, chanceOfRain: $chanceOfRain, visKm: $visKm, gustKph: $gustKph, uv: $uv)';
 
   @override
   bool operator ==(covariant HourWeather other) {
@@ -127,6 +139,8 @@ class HourWeather {
         other.humidity == humidity &&
         other.cloud == cloud &&
         other.feelsLikeC == feelsLikeC &&
+        other.willItRain == willItRain &&
+        other.chanceOfRain == chanceOfRain &&
         other.visKm == visKm &&
         other.gustKph == gustKph &&
         other.uv == uv;
@@ -145,6 +159,8 @@ class HourWeather {
       humidity.hashCode ^
       cloud.hashCode ^
       feelsLikeC.hashCode ^
+      willItRain.hashCode ^
+      chanceOfRain.hashCode ^
       visKm.hashCode ^
       gustKph.hashCode ^
       uv.hashCode;

@@ -6,4 +6,3 @@ Weather app made in Flutter.
 - [ ] Find user location and show weather
 - [ ] Widget for showing weather
 - [ ] Ako je aktivna phone lokacija, neka forecast uvijek prvo prikaže nju
-- [ ] Probaj naći ako backend vraća postotak vjerojatnosti kiše
