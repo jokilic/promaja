@@ -10,6 +10,9 @@ import workmanager
   ) -> Bool {
     WorkmanagerPlugin.registerTask(withIdentifier: "task-identifier")
     UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(60*60))
+    WorkmanagerPlugin.setPluginRegistrantCallback { registry in
+      GeneratedPluginRegistrant.register(with: registry)
+    }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
