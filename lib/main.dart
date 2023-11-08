@@ -9,6 +9,7 @@ import 'constants/colors.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
+import 'services/work_manager_service.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
@@ -40,9 +41,10 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Dio] & [Hive]
+  /// Initialize [Logger], [Dio], [WorkManager] & [Hive]
   final logger = LoggerService();
   final dio = DioService(logger);
+  final workManager = WorkManagerService(logger);
   final hive = HiveService(logger);
   await hive.init();
 
@@ -50,8 +52,9 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         loggerProvider.overrideWithValue(logger),
-        hiveProvider.overrideWith((_) => hive),
         dioProvider.overrideWithValue(dio),
+        workManagerProvider.overrideWithValue(workManager),
+        hiveProvider.overrideWith((_) => hive),
       ],
       observers: [
         RiverpodLogger(logger),
