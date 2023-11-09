@@ -28,9 +28,7 @@ class HomeWidgetService {
   ///
 
   {
-    logger.f('Initializing');
-    HomeWidget.setAppGroupId('group.com.josipkilic.promaja');
-    logger.f('Done');
+    HomeWidget.setAppGroupId('group.promaja.widget');
   }
 
   ///
@@ -48,7 +46,7 @@ class HomeWidgetService {
     try {
       await HomeWidget.renderFlutterWidget(
         widget,
-        key: 'widgetFile',
+        key: 'filePath',
       );
     } catch (e) {
       final error = 'renderWidget - $e';
