@@ -223,37 +223,40 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                         /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
                         ///
                         Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
                               height: 104,
-                              width: MediaQuery.sizeOf(context).width - 184,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                clipBehavior: Clip.none,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   ///
                                   /// MIN TEMP
                                   ///
-                                  Positioned(
-                                    bottom: 4,
-                                    left: 8,
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
                                     child: Text(
                                       '${widget.forecast.day.minTempC.round()}°',
                                       style: PromajaTextStyles.weatherTemperatureMin,
-                                      textAlign: TextAlign.left,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
 
                                   ///
+                                  /// SPACING
+                                  ///
+                                  const SizedBox(width: 8),
+
+                                  ///
                                   /// MAX TEMP
                                   ///
-                                  Positioned(
-                                    top: 4,
-                                    right: 8,
+                                  Align(
+                                    alignment: Alignment.topRight,
                                     child: Text(
                                       '${widget.forecast.day.maxTempC.round()}°',
                                       style: PromajaTextStyles.weatherTemperatureMax,
-                                      textAlign: TextAlign.right,
+                                      textAlign: TextAlign.left,
                                     ),
                                   ),
                                 ],
