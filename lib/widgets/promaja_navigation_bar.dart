@@ -10,10 +10,12 @@ import '../screens/list/list_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
+import '../services/home_widget_service.dart';
 
 final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
   (ref) => PromajaNavigationBarController(
     hiveService: ref.watch(hiveProvider.notifier),
+    homeWidgetService: ref.watch(homeWidgetProvider),
   ),
   name: 'NavigationBarIndexProvider',
 );
@@ -33,9 +35,11 @@ enum NavigationBarItems { cards, weather, list }
 
 class PromajaNavigationBarController extends StateNotifier<int> {
   final HiveService hiveService;
+  final HomeWidgetService homeWidgetService;
 
   PromajaNavigationBarController({
     required this.hiveService,
+    required this.homeWidgetService,
   }) : super(
           hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.activeNavigationValueIndexToBox.get(0) ?? 0,
         );
@@ -44,6 +48,7 @@ class PromajaNavigationBarController extends StateNotifier<int> {
   /// METHODS
   ///
 
+  /// Triggered when navigation bar needs changing
   Future<void> changeNavigationBarIndex(int newIndex) async {
     state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
     await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);

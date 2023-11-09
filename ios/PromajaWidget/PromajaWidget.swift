@@ -37,7 +37,7 @@ struct PromajaWidgetEntryView : View {
            if let uiImage = UIImage(contentsOfFile: entry.filePath) {
                let image = Image(uiImage: uiImage)
                    .resizable()
-                   .frame(width: entry.displaySize.height*0.5, height: entry.displaySize.height*0.5, alignment: .center)
+                   .frame(width: entry.displaySize.height, height: entry.displaySize.height, alignment: .center)
                return AnyView(image)
            }
            print("The image file could not be loaded")
@@ -50,12 +50,13 @@ struct PromajaWidgetEntryView : View {
         
     }
     
-    
-    
     var body: some View {
         VStack.init(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-            Text(entry.title).bold().font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-            PromajaImage
+            if(filePath == nil) {
+                Text(entry.title).bold().font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).frame(width: entry.displaySize.height, height: entry.displaySize.height, alignment: .center).background(Color(hex: 0x344966)).foregroundColor(Color.white)
+            } else {
+                PromajaImage
+            }
         }
         )
     }
@@ -79,5 +80,14 @@ struct PromajaWidget_Previews: PreviewProvider {
         PromajaWidgetEntryView(entry: PromajaWidgetEntry(date: Date(), title: "Promaja", filePath:  "No file path", displaySize: CGSize(width: 200, height: 200)
 ))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
+    }
+}
+
+extension Color {
+    init(hex: Int, opacity: Double = 1.0) {
+        let red = Double((hex & 0xff0000) >> 16) / 255.0
+        let green = Double((hex & 0xff00) >> 8) / 255.0
+        let blue = Double((hex & 0xff) >> 0) / 255.0
+        self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
     }
 }
