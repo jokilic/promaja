@@ -8,6 +8,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'constants/colors.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
+import 'services/home_widget_service.dart';
 import 'services/logger_service.dart';
 import 'services/work_manager_service.dart';
 import 'widgets/promaja_navigation_bar.dart';
@@ -41,10 +42,11 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Dio], [WorkManager] & [Hive]
+  /// Initialize [Logger], [Dio], [WorkManager], [HomeWidget] & [Hive]
   final logger = LoggerService();
   final dio = DioService(logger);
   final workManager = WorkManagerService(logger);
+  final homeWidget = HomeWidgetService(logger);
   final hive = HiveService(logger);
   await hive.init();
 
@@ -54,6 +56,7 @@ Future<void> main() async {
         loggerProvider.overrideWithValue(logger),
         dioProvider.overrideWithValue(dio),
         workManagerProvider.overrideWithValue(workManager),
+        homeWidgetProvider.overrideWithValue(homeWidget),
         hiveProvider.overrideWith((_) => hive),
       ],
       observers: [
