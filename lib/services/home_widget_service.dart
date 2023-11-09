@@ -28,7 +28,9 @@ class HomeWidgetService {
   ///
 
   {
+    logger.f('Initializing');
     HomeWidget.setAppGroupId('group.com.josipkilic.promaja');
+    logger.f('Done');
   }
 
   ///
