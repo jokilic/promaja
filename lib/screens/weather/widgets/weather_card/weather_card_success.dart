@@ -236,27 +236,54 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                   ///
                                   Align(
                                     alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      '${widget.forecast.day.minTempC.round()}°',
-                                      style: PromajaTextStyles.weatherTemperatureMin,
-                                      textAlign: TextAlign.center,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Text(
+                                          '${widget.forecast.day.minTempC.round()}',
+                                          style: PromajaTextStyles.weatherTemperatureMin,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Positioned(
+                                          top: 0,
+                                          right: -24,
+                                          child: Text(
+                                            '°',
+                                            style: PromajaTextStyles.weatherTemperatureMin,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
 
-                                  ///
-                                  /// SPACING
-                                  ///
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: 24),
 
                                   ///
                                   /// MAX TEMP
                                   ///
                                   Align(
                                     alignment: Alignment.topRight,
-                                    child: Text(
-                                      '${widget.forecast.day.maxTempC.round()}°',
-                                      style: PromajaTextStyles.weatherTemperatureMax,
-                                      textAlign: TextAlign.left,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Text(
+                                          '${widget.forecast.day.maxTempC.round()}',
+                                          style: PromajaTextStyles.weatherTemperatureMax,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const Positioned(
+                                          top: 0,
+                                          right: -24,
+                                          child: Text(
+                                            '°',
+                                            style: PromajaTextStyles.weatherTemperatureMax,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
