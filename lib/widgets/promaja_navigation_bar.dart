@@ -21,12 +21,16 @@ final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarCon
 );
 
 final screenProvider = StateProvider.autoDispose<Widget>(
-  (ref) => switch (ref.watch(navigationBarIndexProvider)) {
-    0 => CardsScreen(),
-    1 => WeatherScreen(
-        originalLocation: ref.watch(activeWeatherProvider),
-      ),
-    _ => ListScreen(),
+  (ref) {
+    final navigationBarIndex = ref.watch(navigationBarIndexProvider);
+
+    return switch (navigationBarIndex) {
+      0 => CardsScreen(),
+      1 => WeatherScreen(
+          originalLocation: ref.watch(activeWeatherProvider),
+        ),
+      _ => ListScreen(),
+    };
   },
   name: 'ScreenProvider',
 );

@@ -134,4 +134,9 @@ class PromajaTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w700,
   );
+  static const homeWidgetLocation = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+  );
 }

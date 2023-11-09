@@ -6,13 +6,11 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
-import 'services/api_service.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/home_widget_service.dart';
 import 'services/logger_service.dart';
 import 'services/work_manager_service.dart';
-import 'util/weather.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
@@ -69,76 +67,9 @@ Future<void> main() async {
   );
 }
 
-class PromajaApp extends ConsumerStatefulWidget {
+class PromajaApp extends ConsumerWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PromajaAppState();
-}
-
-class _PromajaAppState extends ConsumerState<PromajaApp> {
-  Future<void> fetchPrimaryLocationForecastAndUpdateHomeWidget() async {
-    /// Get primary location
-    final location = ref.read(hiveProvider).firstOrNull;
-
-    /// Primary location exists, fetch weather and update [HomeWidget]
-    if (location != null) {
-      /// Fetch forecast for primary location
-      final response = await ref.read(apiProvider).getForecastWeather(
-            query: '${location.lat},${location.lon}',
-          );
-
-      /// Response is successful
-      if (response.response != null && response.error == null) {
-        /// Store relevant values in variables
-        final locationName = response.response!.location.name;
-
-        final firstDayForecast = response.response!.forecast.forecastDays.first.day;
-
-        final minTemp = firstDayForecast.minTempC.round();
-        final maxTemp = firstDayForecast.maxTempC.round();
-        final conditionCode = firstDayForecast.condition.code;
-
-        final backgroundColor = getWeatherColor(
-          code: conditionCode,
-          isDay: true,
-        );
-        final weatherIcon = getWeatherIcon(
-          code: conditionCode,
-          isDay: true,
-        );
-        final weatherDescription = getWeatherDescription(
-          code: conditionCode,
-          isDay: true,
-        );
-
-        /// Create a Flutter widget to show in [HomeWidget]
-        final widget = Container(
-          height: 200,
-          width: 200,
-          color: Colors.yellow,
-          child: Text(locationName),
-        );
-
-        /// Update [HomeWidget]
-        await ref.read(homeWidgetProvider).createHomeWidget(widget);
-
-        ref.read(loggerProvider).f('WIDGET IS UPDATED: $locationName');
-      }
-    }
-
-    /// There are no locations, update [HomeWidget] with empty UI
-    else {
-      // TODO: Finish this
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchPrimaryLocationForecastAndUpdateHomeWidget();
-  }
-
-  @override
-  Widget build(BuildContext context) => EasyLocalization(
+  Widget build(BuildContext context, WidgetRef ref) => EasyLocalization(
         useOnlyLangCode: true,
         supportedLocales: const [Locale('hr'), Locale('en')],
         path: 'assets/translations',

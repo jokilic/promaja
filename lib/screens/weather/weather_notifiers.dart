@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,6 +7,7 @@ import '../../models/forecast_weather/response_forecast_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
+import '../../services/home_widget_service.dart';
 
 final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   (ref) {
@@ -50,9 +53,23 @@ final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageCon
 );
 
 final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, String? error}), ({Location location, int? days})>(
-  (ref, forecastParameters) async => ref.read(apiProvider).getForecastWeather(
-        query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
-        days: forecastParameters.days,
-      ),
+  (ref, forecastParameters) async {
+    final response = await ref.read(apiProvider).getForecastWeather(
+          query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
+          days: forecastParameters.days,
+        );
+
+    /// Response is successful, refresh [HomeWidget]
+    if (response.response != null && response.error == null) {
+      unawaited(
+        ref.read(homeWidgetProvider).refreshHomeWidget(
+              response: response.response!,
+              ref: ref,
+            ),
+      );
+    }
+
+    return response;
+  },
   name: 'GetForecastWeatherProvider',
 );
