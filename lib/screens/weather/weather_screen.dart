@@ -30,7 +30,13 @@ class WeatherScreen extends ConsumerWidget {
             ),
           ],
           child: originalLocation != null
-              ? ref.watch(getForecastWeatherProvider((location: originalLocation!, days: 7))).when(
+              ? ref
+                  .watch(getForecastWeatherProvider((
+                    location: originalLocation!,
+                    days: 7,
+                    context: context,
+                  )))
+                  .when(
                     data: (data) {
                       ///
                       /// DATA SUCCESSFULLY FETCHED

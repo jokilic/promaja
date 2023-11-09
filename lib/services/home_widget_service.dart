@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 
-import '../constants/text_styles.dart';
+import '../constants/icons.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
 import '../util/weather.dart';
+import '../widgets/home_widget.dart';
 import 'logger_service.dart';
 
 ///
@@ -76,9 +77,8 @@ class HomeWidgetService {
   Future<void> refreshHomeWidget({
     required ResponseForecastWeather response,
     required Ref ref,
+    required BuildContext context,
   }) async {
-    ref.read(loggerProvider).f('REFRESHING HOME WIDGET');
-
     /// Store relevant values in variables
     final locationName = response.location.name;
 
@@ -87,6 +87,9 @@ class HomeWidgetService {
     final minTemp = firstDayForecast.minTempC.round();
     final maxTemp = firstDayForecast.maxTempC.round();
     final conditionCode = firstDayForecast.condition.code;
+
+    final dailyWillItRain = firstDayForecast.dailyWillItRain;
+    final dailyChanceOfRain = firstDayForecast.dailyChanceOfRain;
 
     final backgroundColor = getWeatherColor(
       code: conditionCode,
@@ -101,17 +104,33 @@ class HomeWidgetService {
       isDay: true,
     );
 
+    final weatherIconWidget = Image.asset(
+      weatherIcon,
+      height: 72,
+      width: 72,
+    );
+
+    final promajaIconWidget = Image.asset(
+      PromajaIcons.icon,
+      height: 20,
+      width: 20,
+    );
+
+    /// Precache images
+    await precacheImage(weatherIconWidget.image, context);
+    await precacheImage(promajaIconWidget.image, context);
+
     /// Create a Flutter widget to show in [HomeWidget]
-    final widget = Container(
-      height: 200,
-      width: 200,
-      color: Colors.yellow,
-      child: Center(
-        child: Text(
-          locationName,
-          style: PromajaTextStyles.homeWidgetLocation,
-        ),
-      ),
+    final widget = PromajaHomeWidget(
+      locationName: locationName,
+      minTemp: minTemp,
+      maxTemp: maxTemp,
+      weatherDescription: weatherDescription,
+      backgroundColor: backgroundColor,
+      dailyWillItRain: dailyWillItRain,
+      dailyChanceOfRain: dailyChanceOfRain,
+      weatherIconWidget: weatherIconWidget,
+      promajaIconWidget: promajaIconWidget,
     );
 
     /// Update [HomeWidget]

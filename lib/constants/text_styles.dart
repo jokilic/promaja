@@ -136,7 +136,32 @@ class PromajaTextStyles {
   );
   static const homeWidgetLocation = TextStyle(
     color: PromajaColors.white,
-    fontSize: 24,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+  );
+  static final homeWidgetTemperatureMin = TextStyle(
+    color: PromajaColors.white.withOpacity(0.5),
+    fontSize: 36,
+    height: 1,
+  );
+  static const homeWidgetTemperatureMax = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 36,
+    height: 1,
+  );
+  static const homeWidgetDescription = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+  static const homeWidgetChanceOfRain = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 12,
+    fontWeight: FontWeight.w700,
+  );
+  static const homeWidgetPromaja = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 14,
     fontWeight: FontWeight.w700,
   );
 }

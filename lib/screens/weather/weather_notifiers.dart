@@ -52,7 +52,7 @@ final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageCon
   name: 'WeatherCardHourAdditionalControllerProvider',
 );
 
-final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, String? error}), ({Location location, int? days})>(
+final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, String? error}), ({Location location, int? days, BuildContext context})>(
   (ref, forecastParameters) async {
     final response = await ref.read(apiProvider).getForecastWeather(
           query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
@@ -65,6 +65,7 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
         ref.read(homeWidgetProvider).refreshHomeWidget(
               response: response.response!,
               ref: ref,
+              context: forecastParameters.context,
             ),
       );
     }
