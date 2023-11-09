@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetProvider
 
-class CustomHomeView : HomeWidgetProvider() {
+class WidgetView : HomeWidgetProvider() {
     override fun onUpdate(
             context: Context,
             appWidgetManager: AppWidgetManager,
@@ -18,7 +18,7 @@ class CustomHomeView : HomeWidgetProvider() {
     ) {
         for (appWidgetId in appWidgetIds) {
             val views = RemoteViews(context.packageName, R.layout.widget_layout).apply {
-                val imageName = widgetData.getString("widgetFile", null)
+                val imageName = widgetData.getString("filePath", null)
                 setImageViewBitmap(R.id.widget_image, BitmapFactory.decodeFile(imageName))
             }
 
