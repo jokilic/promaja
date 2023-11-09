@@ -60,23 +60,39 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
           await hive.init();
 
           /// Get location to fetch
-          final location = hive.getLocationsFromBox().first;
+          final location = hive.getLocationsFromBox().firstOrNull;
 
-          /// Fetch weather data for location
-          final response = await api.getForecastWeather(
-            query: '${location.lat},${location.lon}',
-            days: 3,
-          );
+          /// Location exists
+          if (location != null) {
+            /// Fetch weather data for location
+            final response = await api.getForecastWeather(
+              query: '${location.lat},${location.lon}',
+              days: 3,
+            );
 
-          /// Response is successful
-          if (response.response != null && response.error == null) {
-            return Future.value(true);
+            /// Response is successful
+            if (response.response != null && response.error == null) {
+              /// Update [HomeWidget]
+              await homeWidget.refreshHomeWidget(
+                response: response.response!,
+                homeWidget: homeWidget,
+              );
+
+              return Future.value(true);
+            }
+
+            /// There was an error fetching weather
+            else {
+              final error = 'callbackDispatcher -> error fetching weather -> ${response.error}';
+              Logger().e(error);
+              return Future.error(error);
+            }
           }
 
-          /// There was an error fetching weather
+          /// Location doesn't exist, don't do anything
           else {
-            final error = 'callbackDispatcher -> error fetching weather -> ${response.error}';
-            Logger().e(error);
+            const info = "callbackDispatcher -> location doesn't exist";
+            Logger().i(info);
             return Future.value(false);
           }
         } catch (e) {

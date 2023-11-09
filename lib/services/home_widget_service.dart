@@ -76,8 +76,8 @@ class HomeWidgetService {
   /// Checks if location exists and updates [HomeWidget]
   Future<void> refreshHomeWidget({
     required ResponseForecastWeather response,
-    required Ref ref,
-    required BuildContext context,
+    required HomeWidgetService homeWidget,
+    BuildContext? context,
   }) async {
     /// Store relevant values in variables
     final locationName = response.location.name;
@@ -117,8 +117,10 @@ class HomeWidgetService {
     );
 
     /// Precache images
-    await precacheImage(weatherIconWidget.image, context);
-    await precacheImage(promajaIconWidget.image, context);
+    if (context != null) {
+      await precacheImage(weatherIconWidget.image, context);
+      await precacheImage(promajaIconWidget.image, context);
+    }
 
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(
@@ -134,6 +136,6 @@ class HomeWidgetService {
     );
 
     /// Update [HomeWidget]
-    await ref.read(homeWidgetProvider).createHomeWidget(widget);
+    await homeWidget.createHomeWidget(widget);
   }
 }

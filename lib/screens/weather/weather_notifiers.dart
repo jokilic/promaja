@@ -64,7 +64,7 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
               response: response.response!,
-              ref: ref,
+              homeWidget: ref.watch(homeWidgetProvider),
               context: forecastParameters.context,
             ),
       );
