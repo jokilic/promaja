@@ -7,6 +7,7 @@ import '../constants/icons.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
+import '../screens/testing/testing_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
@@ -29,13 +30,15 @@ final screenProvider = StateProvider.autoDispose<Widget>(
       1 => WeatherScreen(
           originalLocation: ref.watch(activeWeatherProvider),
         ),
+      2 => ListScreen(),
+      3 => TestingScreen(),
       _ => ListScreen(),
     };
   },
   name: 'ScreenProvider',
 );
 
-enum NavigationBarItems { cards, weather, list }
+enum NavigationBarItems { cards, weather, list, test }
 
 class PromajaNavigationBarController extends StateNotifier<int> {
   final HiveService hiveService;
@@ -125,6 +128,25 @@ class PromajaNavigationBar extends ConsumerWidget {
             ),
             selectedIcon: Image.asset(
               PromajaIcons.list,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
+
+          ///
+          /// TEST
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.test,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white.withOpacity(0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.test,
               height: 20,
               width: 20,
               color: PromajaColors.white,
