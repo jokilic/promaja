@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
 import 'logger_service.dart';
 
@@ -19,6 +20,7 @@ class HiveService extends StateNotifier<List<Location>> {
   ///
 
   late final Box<Location> locationsBox;
+  late final Box<CustomColor> customColorsBox;
   late final Box<int> activeLocationIndexBox;
   late final Box<int> activeNavigationValueIndexToBox;
 
@@ -30,6 +32,7 @@ class HiveService extends StateNotifier<List<Location>> {
     await Hive.initFlutter();
     Hive.registerAdapter(LocationAdapter());
     locationsBox = await Hive.openBox<Location>('locationsBox');
+    customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
     state = getLocationsFromBox();
@@ -43,6 +46,7 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> dispose() async {
     super.dispose();
     await locationsBox.close();
+    await customColorsBox.close();
     await activeLocationIndexBox.close();
     await activeNavigationValueIndexToBox.close();
     await Hive.close();
@@ -58,6 +62,9 @@ class HiveService extends StateNotifier<List<Location>> {
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
 
+  /// Called to add [CustomColor] to [Hive]
+  Future<void> addCustomColorToBox({required CustomColor customColor}) async => customColorsBox.add(customColor);
+
   /// Called to add a new [Location] value to [Hive]
   Future<void> addLocationToBox({required Location location, required int index}) async {
     state = [...state, location];
@@ -67,6 +74,9 @@ class HiveService extends StateNotifier<List<Location>> {
   /// Called to get all [Location] values from [Hive]
   List<Location> getLocationsFromBox() => locationsBox.values.toList();
 
+  /// Called to get all [CustomColor] values from [Hive]
+  List<CustomColor> getCustomColorsFromBox() => customColorsBox.values.toList();
+
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {
     state = [
@@ -75,6 +85,9 @@ class HiveService extends StateNotifier<List<Location>> {
     ];
     await locationsBox.deleteAt(index);
   }
+
+  /// Called to delete [CustomColor] value from [Hive]
+  Future<void> deleteCustomColorFromBox({required int customColorCode}) async => locationsBox.delete(customColorCode);
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
