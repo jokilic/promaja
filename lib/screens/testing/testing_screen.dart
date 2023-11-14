@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +16,6 @@ class TestingScreen extends ConsumerStatefulWidget {
 }
 
 class _TestingScreenState extends ConsumerState<TestingScreen> {
-  /// Opens color picker
   Future<void> openColorPicker({
     required CustomColor customColor,
     required BuildContext context,
@@ -25,7 +25,6 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog.adaptive(
-        title: const Text('Choose a color'),
         content: Material(
           color: Colors.transparent,
           child: ColorPicker(
@@ -35,7 +34,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
             hexInputBar: true,
             labelTypes: const [],
             pickerAreaBorderRadius: BorderRadius.circular(8),
-            pickerAreaHeightPercent: 0.8,
+            pickerAreaHeightPercent: 0.9,
           ),
         ),
         actions: [
@@ -68,16 +67,28 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
       bottomNavigationBar: PromajaNavigationBar(),
       body: SafeArea(
         child: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           children: [
+            const SizedBox(height: 16),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'cardColors'.tr(),
+                style: PromajaTextStyles.testingTitle,
+              ),
+            ),
+            const SizedBox(height: 32),
+
             ///
             /// DAY TITLE
             ///
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                'Day',
-                style: PromajaTextStyles.testingTitle,
+                'day'.tr(),
+                style: PromajaTextStyles.testingSubtitle,
               ),
             ),
             const SizedBox(height: 8),
@@ -87,10 +98,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
             ///
             ListView.builder(
               shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               physics: const BouncingScrollPhysics(),
               itemCount: weatherCodes.length,
               itemBuilder: (_, index) {
@@ -134,11 +142,11 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
             ///
             /// NIGHT TITLE
             ///
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                'Night',
-                style: PromajaTextStyles.testingTitle,
+                'night'.tr(),
+                style: PromajaTextStyles.testingSubtitle,
               ),
             ),
             const SizedBox(height: 8),
@@ -148,10 +156,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
             ///
             ListView.builder(
               shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               physics: const BouncingScrollPhysics(),
               itemCount: weatherCodes.length,
               itemBuilder: (_, index) {

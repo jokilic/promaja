@@ -169,6 +169,11 @@ class PromajaTextStyles {
     fontSize: 32,
     fontWeight: FontWeight.w700,
   );
+  static const testingSubtitle = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+  );
   static const testingListTitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 22,

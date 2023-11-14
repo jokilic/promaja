@@ -1,6 +1,8 @@
-# promaja
+# Promaja
 
 Weather app made in Flutter.
 
-- [ ] Test screen gdje mogu mijenjati sve background boje za vrijeme
-- 
+- [ ] Create readme file
+- [ ] Create screenshots
+- [ ] Publish app on App Store
+- [ ] Publish app on Play Store
