@@ -16,13 +16,13 @@ class TestingScreen extends ConsumerStatefulWidget {
 
 class _TestingScreenState extends ConsumerState<TestingScreen> {
   /// Opens color picker
-  void openColorPicker({
+  Future<void> openColorPicker({
     required CustomColor customColor,
     required BuildContext context,
-  }) {
+  }) async {
     var color = customColor.color;
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog.adaptive(
         title: const Text('Choose a color'),
@@ -40,8 +40,8 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              ref.read(hiveProvider.notifier).addCustomColorToBox(
+            onPressed: () async {
+              await ref.read(hiveProvider.notifier).addCustomColorToBox(
                     customColor: CustomColor(
                       code: customColor.code,
                       isDay: customColor.isDay,

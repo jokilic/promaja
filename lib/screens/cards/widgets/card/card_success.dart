@@ -8,7 +8,9 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
+import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/location/location.dart';
+import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
@@ -32,10 +34,24 @@ class CardSuccess extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final backgroundColor = getWeatherColor(
-      code: currentWeather.condition.code,
-      isDay: currentWeather.isDay == 1,
-    );
+    final weatherCode = currentWeather.condition.code;
+    final isDay = currentWeather.isDay == 1;
+
+    final backgroundColor = ref
+        .watch(hiveProvider.notifier)
+        .getCustomColorsFromBox()
+        .firstWhere(
+          (customColor) => customColor.code == weatherCode && customColor.isDay == isDay,
+          orElse: () => CustomColor(
+            code: weatherCode,
+            isDay: isDay,
+            color: getWeatherColor(
+              code: weatherCode,
+              isDay: isDay,
+            ),
+          ),
+        )
+        .color;
 
     final weatherIcon = getWeatherIcon(
       code: currentWeather.condition.code,

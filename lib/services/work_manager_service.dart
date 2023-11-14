@@ -55,9 +55,12 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
             logger: logger,
             dio: dio.dio,
           );
-          final homeWidget = HomeWidgetService(logger);
           final hive = HiveService(logger);
           await hive.init();
+          final homeWidget = HomeWidgetService(
+            logger: logger,
+            hive: hive,
+          );
 
           /// Get location to fetch
           final location = hive.getLocationsFromBox().firstOrNull;

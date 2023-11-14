@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 
 import '../constants/icons.dart';
+import '../models/custom_color/custom_color.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
+import 'hive_service.dart';
 import 'logger_service.dart';
 
 ///
@@ -24,8 +26,12 @@ class HomeWidgetService {
   ///
 
   final LoggerService logger;
+  final HiveService hive;
 
-  HomeWidgetService(this.logger)
+  HomeWidgetService({
+    required this.logger,
+    required this.hive,
+  })
 
   ///
   /// INIT
@@ -91,14 +97,26 @@ class HomeWidgetService {
     final dailyWillItRain = firstDayForecast.dailyWillItRain;
     final dailyChanceOfRain = firstDayForecast.dailyChanceOfRain;
 
-    final backgroundColor = getWeatherColor(
-      code: conditionCode,
-      isDay: true,
-    );
+    final backgroundColor = hive
+        .getCustomColorsFromBox()
+        .firstWhere(
+          (customColor) => customColor.code == conditionCode && customColor.isDay,
+          orElse: () => CustomColor(
+            code: conditionCode,
+            isDay: true,
+            color: getWeatherColor(
+              code: conditionCode,
+              isDay: true,
+            ),
+          ),
+        )
+        .color;
+
     final weatherIcon = getWeatherIcon(
       code: conditionCode,
       isDay: true,
     );
+
     final weatherDescription = getWeatherDescription(
       code: conditionCode,
       isDay: true,

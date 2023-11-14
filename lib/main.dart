@@ -46,9 +46,12 @@ Future<void> main() async {
   final logger = LoggerService();
   final dio = DioService(logger);
   final workManager = WorkManagerService(logger);
-  final homeWidget = HomeWidgetService(logger);
   final hive = HiveService(logger);
   await hive.init();
+  final homeWidget = HomeWidgetService(
+    logger: logger,
+    hive: hive,
+  );
 
   runApp(
     ProviderScope(
