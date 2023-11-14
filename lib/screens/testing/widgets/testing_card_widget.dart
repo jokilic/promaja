@@ -53,11 +53,24 @@ class TestingCardWidget extends StatelessWidget {
                   /// DESCRIPTION
                   ///
                   Expanded(
-                    child: Text(
-                      description,
-                      style: PromajaTextStyles.testingListDescription,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          description,
+                          style: PromajaTextStyles.testingListTitle,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
+                        const SizedBox(height: 12),
+                        const Text(
+                          'Press to open color picker',
+                          style: PromajaTextStyles.testingListSubtitle,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
+                      ],
                     ),
                   ),
 

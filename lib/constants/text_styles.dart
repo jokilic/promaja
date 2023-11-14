@@ -169,10 +169,16 @@ class PromajaTextStyles {
     fontSize: 32,
     fontWeight: FontWeight.w700,
   );
-  static const testingListDescription = TextStyle(
+  static const testingListTitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 22,
     fontWeight: FontWeight.w500,
+    height: 1,
+  );
+  static const testingListSubtitle = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
     height: 1,
   );
 }

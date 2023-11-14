@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
@@ -30,11 +30,17 @@ class HiveService extends StateNotifier<List<Location>> {
 
   Future<void> init() async {
     await Hive.initFlutter();
-    Hive.registerAdapter(LocationAdapter());
+
+    Hive
+      ..registerAdapter(LocationAdapter())
+      ..registerAdapter(CustomColorAdapter())
+      ..registerAdapter(ColorAdapter());
+
     locationsBox = await Hive.openBox<Location>('locationsBox');
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
+
     state = getLocationsFromBox();
   }
 
@@ -45,10 +51,12 @@ class HiveService extends StateNotifier<List<Location>> {
   @override
   Future<void> dispose() async {
     super.dispose();
+
     await locationsBox.close();
     await customColorsBox.close();
     await activeLocationIndexBox.close();
     await activeNavigationValueIndexToBox.close();
+
     await Hive.close();
   }
 
@@ -63,7 +71,15 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
 
   /// Called to add [CustomColor] to [Hive]
-  Future<void> addCustomColorToBox({required CustomColor customColor}) async => customColorsBox.add(customColor);
+  Future<void> addCustomColorToBox({required CustomColor customColor}) async {
+    /// Generate `key`
+    final isDay = customColor.isDay ? 'day' : 'night';
+    final key = '${customColor.code}_$isDay';
+
+    /// Add value to [Hive]
+    await customColorsBox.delete(key);
+    await customColorsBox.put(key, customColor);
+  }
 
   /// Called to add a new [Location] value to [Hive]
   Future<void> addLocationToBox({required Location location, required int index}) async {

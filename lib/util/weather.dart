@@ -72,8 +72,6 @@ Color getWeatherColor({required int code, required bool isDay}) {
     case 1168:
     case 1201:
       return PromajaColors.cloudAngledRain;
-    case 1071:
-      return PromajaColors.cloudBigRain;
     case 1186:
       return isDay ? PromajaColors.sunCloudMidRain : PromajaColors.moonCloudMidRain;
     case 1189:
@@ -152,8 +150,6 @@ String getWeatherIcon({required int code, required bool isDay}) {
     case 1168:
     case 1201:
       return PromajaIcons.cloudAngledRain;
-    case 1071:
-      return PromajaIcons.cloudBigRain;
     case 1186:
       return isDay ? PromajaIcons.sunCloudMidRain : PromajaIcons.moonCloudMidRain;
     case 1189:
@@ -218,7 +214,6 @@ final weatherCodes = [
   1147,
   1168,
   1201,
-  1071,
   1186,
   1189,
   1243,
