@@ -31,6 +31,8 @@
     "day": "Day",
     "night": "Night",
     "cardColors": "Card colors",
+    "save": "Save",
+    "revert": "Revert",
     "1000Day": "Sunny",
     "1000Night": "Clear",
     "1003Day": "Partly cloudy",

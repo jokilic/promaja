@@ -38,7 +38,29 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
           ),
         ),
         actions: [
-          IconButton(
+          ///
+          /// REVERT
+          ///
+          ElevatedButton.icon(
+            onPressed: () async {
+              await ref.read(hiveProvider.notifier).deleteCustomColorFromBox(
+                    customColor: customColor,
+                  );
+              Navigator.of(context).pop();
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            icon: const Icon(Icons.undo_rounded),
+            label: Text('revert'.tr()),
+          ),
+
+          ///
+          /// SAVE
+          ///
+          ElevatedButton.icon(
             onPressed: () async {
               await ref.read(hiveProvider.notifier).addCustomColorToBox(
                     customColor: CustomColor(
@@ -50,9 +72,12 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               Navigator.of(context).pop();
               setState(() {});
             },
-            icon: const Icon(
-              Icons.done_rounded,
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
             ),
+            icon: const Icon(Icons.done_rounded),
+            label: Text('save'.tr()),
           ),
         ],
       ),

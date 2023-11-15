@@ -81,6 +81,16 @@ class HiveService extends StateNotifier<List<Location>> {
     await customColorsBox.put(key, customColor);
   }
 
+  /// Called to delete [CustomColor] from [Hive]
+  Future<void> deleteCustomColorFromBox({required CustomColor customColor}) async {
+    /// Generate `key`
+    final isDay = customColor.isDay ? 'day' : 'night';
+    final key = '${customColor.code}_$isDay';
+
+    /// Delete value from [Hive]
+    await customColorsBox.delete(key);
+  }
+
   /// Called to add a new [Location] value to [Hive]
   Future<void> addLocationToBox({required Location location, required int index}) async {
     state = [...state, location];
@@ -101,9 +111,6 @@ class HiveService extends StateNotifier<List<Location>> {
     ];
     await locationsBox.deleteAt(index);
   }
-
-  /// Called to delete [CustomColor] value from [Hive]
-  Future<void> deleteCustomColorFromBox({required int customColorCode}) async => locationsBox.delete(customColorCode);
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
