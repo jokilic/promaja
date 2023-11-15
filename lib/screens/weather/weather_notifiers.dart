@@ -8,6 +8,7 @@ import '../../models/location/location.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
 import '../../services/home_widget_service.dart';
+import '../../services/work_manager_service.dart';
 
 final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   (ref) {
@@ -59,7 +60,7 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
           days: forecastParameters.days,
         );
 
-    /// Response is successful, refresh [HomeWidget]
+    /// Response is successful, refresh [HomeWidget] & enable [WorkManager]
     if (response.response != null && response.error == null) {
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
@@ -68,6 +69,8 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
               context: forecastParameters.context,
             ),
       );
+
+      ref.read(workManagerProvider).registerTask();
     }
 
     return response;
