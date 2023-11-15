@@ -39,6 +39,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Promaja needs location access to show your city forecast.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Promaja needs location access to show your city forecast.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
