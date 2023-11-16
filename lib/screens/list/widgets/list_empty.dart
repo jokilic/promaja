@@ -55,7 +55,7 @@ class ListEmpty extends StatelessWidget {
             effects: [
               ScaleEffect(
                 curve: Curves.easeIn,
-                end: const Offset(1.25, 1.25),
+                end: const Offset(1.5, 1.5),
                 duration: 60.seconds,
               ),
             ],
