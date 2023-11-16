@@ -51,12 +51,7 @@ class ListCardWidget extends ConsumerWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 6),
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ref
-              .watch(getCurrentWeatherProvider((
-                location: location,
-                context: context,
-              )))
-              .when(
+          child: ref.watch(getCurrentWeatherProvider(location)).when(
                 data: (data) {
                   ///
                   /// DATA SUCCESSFULLY FETCHED

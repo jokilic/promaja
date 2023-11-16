@@ -80,10 +80,7 @@ class HomeWidgetService {
   }
 
   /// Checks if location exists and updates [HomeWidget]
-  Future<void> refreshHomeWidget({
-    required ResponseCurrentWeather response,
-    BuildContext? context,
-  }) async {
+  Future<void> refreshHomeWidget({required ResponseCurrentWeather response}) async {
     /// Store relevant values in variables
     final locationName = response.location.name;
 
@@ -130,16 +127,8 @@ class HomeWidgetService {
       width: 20,
     );
 
-    /// Precache images
-    if (context != null) {
-      await precacheImage(weatherIconWidget.image, context);
-      await precacheImage(promajaIconWidget.image, context);
-    }
-
-    /// No context, delay the logic for a moment
-    else {
-      await Future.delayed(const Duration(seconds: 3));
-    }
+    /// Delay the logic for a moment becuase images need to be rendered
+    await Future.delayed(const Duration(seconds: 1));
 
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(

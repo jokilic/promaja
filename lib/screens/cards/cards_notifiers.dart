@@ -30,10 +30,10 @@ final cardAdditionalControllerProvider = Provider.autoDispose<PageController>(
   name: 'CardAdditionalControllerProvider',
 );
 
-final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather? response, String? error}), ({Location location, BuildContext context})>(
-  (ref, currentParameters) async {
+final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather? response, String? error}), Location>(
+  (ref, location) async {
     /// Fetch current weather
-    final query = '${currentParameters.location.lat},${currentParameters.location.lon}';
+    final query = '${location.lat},${location.lon}';
     final response = await ref.read(apiProvider).getCurrentWeather(query: query);
 
     /// Get currently active location in [WeatherScreen] & check if it's fetched
@@ -48,7 +48,6 @@ final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
               response: response.response!,
-              context: currentParameters.context,
             ),
       );
 
