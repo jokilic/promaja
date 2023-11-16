@@ -97,6 +97,9 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
           children: [
             const SizedBox(height: 16),
 
+            ///
+            /// CARD COLORS TITLE
+            ///
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -105,6 +108,10 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               ),
             ),
             const SizedBox(height: 16),
+
+            ///
+            /// CARD COLORS DESCRIPTION
+            ///
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
