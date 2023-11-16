@@ -34,7 +34,6 @@ class WeatherScreen extends ConsumerWidget {
                   .watch(getForecastWeatherProvider((
                     location: originalLocation!,
                     days: 7,
-                    context: context,
                   )))
                   .when(
                     data: (data) {

@@ -22,7 +22,12 @@ class CardWidget extends ConsumerWidget {
         borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(40),
         ),
-        child: ref.watch(getCurrentWeatherProvider(originalLocation)).when(
+        child: ref
+            .watch(getCurrentWeatherProvider((
+              location: originalLocation,
+              context: context,
+            )))
+            .when(
               data: (data) {
                 ///
                 /// DATA SUCCESSFULLY FETCHED

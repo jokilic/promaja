@@ -96,9 +96,8 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
           /// Location exists
           if (location != null) {
             /// Fetch weather data for location
-            final response = await api.getForecastWeather(
+            final response = await api.getCurrentWeather(
               query: '${location.lat},${location.lon}',
-              days: 3,
             );
 
             /// Response is successful
@@ -106,7 +105,6 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
               /// Update [HomeWidget]
               await homeWidget.refreshHomeWidget(
                 response: response.response!,
-                homeWidget: homeWidget,
               );
 
               return Future.value(true);

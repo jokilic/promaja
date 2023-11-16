@@ -139,16 +139,12 @@ class PromajaTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w700,
   );
-  static final homeWidgetTemperatureMin = TextStyle(
-    color: PromajaColors.white.withOpacity(0.5),
-    fontSize: 36,
-    height: 1,
-  );
-  static const homeWidgetTemperatureMax = TextStyle(
+  static const homeWidgetTemperature = TextStyle(
     color: PromajaColors.white,
-    fontSize: 36,
+    fontSize: 40,
     height: 1,
   );
+
   static const homeWidgetDescription = TextStyle(
     color: PromajaColors.white,
     fontSize: 16,

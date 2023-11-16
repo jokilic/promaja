@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 
 import '../constants/icons.dart';
+import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
-import '../models/forecast_weather/response_forecast_weather.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
 import 'hive_service.dart';
@@ -81,21 +81,16 @@ class HomeWidgetService {
 
   /// Checks if location exists and updates [HomeWidget]
   Future<void> refreshHomeWidget({
-    required ResponseForecastWeather response,
-    required HomeWidgetService homeWidget,
+    required ResponseCurrentWeather response,
     BuildContext? context,
   }) async {
     /// Store relevant values in variables
     final locationName = response.location.name;
 
-    final firstDayForecast = response.forecast.forecastDays.first.day;
+    final currentWeather = response.current;
 
-    final minTemp = firstDayForecast.minTempC.round();
-    final maxTemp = firstDayForecast.maxTempC.round();
-    final conditionCode = firstDayForecast.condition.code;
-
-    final dailyWillItRain = firstDayForecast.dailyWillItRain;
-    final dailyChanceOfRain = firstDayForecast.dailyChanceOfRain;
+    final temp = currentWeather.tempC.round();
+    final conditionCode = currentWeather.condition.code;
 
     final backgroundColor = hive
         .getCustomColorsFromBox()
@@ -140,20 +135,22 @@ class HomeWidgetService {
       await precacheImage(promajaIconWidget.image, context);
     }
 
+    /// No context, delay the logic for a moment
+    else {
+      await Future.delayed(const Duration(seconds: 3));
+    }
+
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(
       locationName: locationName,
-      minTemp: minTemp,
-      maxTemp: maxTemp,
+      temp: temp,
       weatherDescription: weatherDescription,
       backgroundColor: backgroundColor,
-      dailyWillItRain: dailyWillItRain,
-      dailyChanceOfRain: dailyChanceOfRain,
       weatherIconWidget: weatherIconWidget,
       promajaIconWidget: promajaIconWidget,
     );
 
     /// Update [HomeWidget]
-    await homeWidget.createHomeWidget(widget);
+    await createHomeWidget(widget);
   }
 }

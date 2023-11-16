@@ -49,7 +49,7 @@ class PromajaNavigationBarController extends StateNotifier<int> {
     required this.hiveService,
     required this.homeWidgetService,
   }) : super(
-          hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.activeNavigationValueIndexToBox.get(0) ?? 0,
+          hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.getActiveNavigationValueIndexFromBox(),
         );
 
   ///

@@ -103,6 +103,12 @@ class HiveService extends StateNotifier<List<Location>> {
   /// Called to get all [CustomColor] values from [Hive]
   List<CustomColor> getCustomColorsFromBox() => customColorsBox.values.toList();
 
+  /// Called to get active location index from [Hive]
+  int getActiveLocationIndexFromBox() => activeLocationIndexBox.get(0) ?? 0;
+
+  /// Called to get active navigation value index from [Hive]
+  int getActiveNavigationValueIndexFromBox() => activeNavigationValueIndexToBox.get(0) ?? 0;
+
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {
     state = [
