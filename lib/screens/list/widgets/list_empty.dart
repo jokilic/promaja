@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../constants/colors.dart';
 import '../../../constants/durations.dart';
 import '../../../constants/icons.dart';
 import '../../../constants/text_styles.dart';
@@ -14,10 +15,40 @@ class ListEmpty extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: AddLocationWidget(),
+          ///
+          /// ADD LOCATION & ARROW TEXT
+          ///
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: AddLocationWidget(),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: 104,
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 32,
+                      color: PromajaColors.white,
+                    ),
+                    Text(
+                      'addLocation'.tr(),
+                      style: PromajaTextStyles.testingText,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+
+          ///
+          /// ICON & `START USING` TEXT
+          ///
           Column(
             children: [
               Animate(
@@ -72,28 +103,24 @@ class ListEmpty extends StatelessWidget {
           ///
           /// NAVIGATION DESCRIPTION
           ///
-          const Column(
+          Column(
             children: [
               ListDescriptionValue(
                 icon: PromajaIcons.globe,
-                // TODO: Localize
-                description: 'Opens cards which show current weather for all locations you added.',
+                description: 'navigationDescriptionCurrent'.tr(),
               ),
               ListDescriptionValue(
                 icon: PromajaIcons.temperature,
-                // TODO: Localize
-                description: 'Opens cards which show forecast weather for a specific location.',
+                description: 'navigationDescriptionWeather'.tr(),
               ),
               ListDescriptionValue(
                 icon: PromajaIcons.list,
-                // TODO: Localize
-                description: 'Opens a list where you can add, remove or reorder locations.',
+                description: 'navigationDescriptionList'.tr(),
               ),
               if (kDebugMode)
                 ListDescriptionValue(
                   icon: PromajaIcons.test,
-                  // TODO: Localize
-                  description: 'Opens a place where you can change background colors for cards.',
+                  description: 'navigationDescriptionTesting'.tr(),
                 ),
             ],
           ),
