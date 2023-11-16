@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
 import '../../models/custom_color/custom_color.dart';
 import '../../services/hive_service.dart';
@@ -22,62 +23,78 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
   }) async {
     var color = customColor.color;
 
-    await showDialog(
+    await showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog.adaptive(
-        content: Material(
-          color: Colors.transparent,
-          child: ColorPicker(
+      elevation: 0,
+      backgroundColor: PromajaColors.white,
+      builder: (context) => ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          const SizedBox(height: 24),
+
+          ///
+          /// COLOR PICKER
+          ///
+          ColorPicker(
             pickerColor: color,
             onColorChanged: (newColor) => color = newColor,
             enableAlpha: false,
             hexInputBar: true,
             labelTypes: const [],
             pickerAreaBorderRadius: BorderRadius.circular(8),
-            pickerAreaHeightPercent: 0.9,
-          ),
-        ),
-        actions: [
-          ///
-          /// REVERT
-          ///
-          ElevatedButton.icon(
-            onPressed: () async {
-              await ref.read(hiveProvider.notifier).deleteCustomColorFromBox(
-                    customColor: customColor,
-                  );
-              Navigator.of(context).pop();
-              setState(() {});
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            ),
-            icon: const Icon(Icons.undo_rounded),
-            label: Text('revert'.tr()),
+            pickerAreaHeightPercent: 0.85,
           ),
 
           ///
-          /// SAVE
+          /// BUTTONS
           ///
-          ElevatedButton.icon(
-            onPressed: () async {
-              await ref.read(hiveProvider.notifier).addCustomColorToBox(
-                    customColor: CustomColor(
-                      code: customColor.code,
-                      isDay: customColor.isDay,
-                      color: color,
-                    ),
-                  );
-              Navigator.of(context).pop();
-              setState(() {});
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            ),
-            icon: const Icon(Icons.done_rounded),
-            label: Text('save'.tr()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ///
+              /// REVERT
+              ///
+              ElevatedButton.icon(
+                onPressed: () async {
+                  await ref.read(hiveProvider.notifier).deleteCustomColorFromBox(
+                        customColor: customColor,
+                      );
+                  Navigator.of(context).pop();
+                  setState(() {});
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  foregroundColor: PromajaColors.black,
+                  backgroundColor: Colors.transparent,
+                ),
+                icon: const Icon(Icons.undo_rounded),
+                label: Text('revert'.tr()),
+              ),
+
+              ///
+              /// SAVE
+              ///
+              ElevatedButton.icon(
+                onPressed: () async {
+                  await ref.read(hiveProvider.notifier).addCustomColorToBox(
+                        customColor: CustomColor(
+                          code: customColor.code,
+                          isDay: customColor.isDay,
+                          color: color,
+                        ),
+                      );
+                  Navigator.of(context).pop();
+                  setState(() {});
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  foregroundColor: PromajaColors.black,
+                  backgroundColor: Colors.transparent,
+                ),
+                icon: const Icon(Icons.done_rounded),
+                label: Text('save'.tr()),
+              ),
+            ],
           ),
         ],
       ),
