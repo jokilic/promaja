@@ -47,57 +47,35 @@ class ListEmpty extends StatelessWidget {
           ),
 
           ///
-          /// ICON & `START USING` TEXT
+          /// PROMAJA ICON
           ///
-          Column(
-            children: [
-              Animate(
-                onPlay: (controller) => controller.loop(reverse: true),
-                delay: 10.seconds,
-                effects: [
-                  ScaleEffect(
-                    curve: Curves.easeIn,
-                    end: const Offset(1.5, 1.5),
-                    duration: 60.seconds,
-                  ),
-                ],
-                child: Animate(
-                  delay: PromajaDurations.cardWeatherIconAnimationDelay,
-                  effects: [
-                    FlipEffect(
-                      curve: Curves.easeIn,
-                      duration: PromajaDurations.fadeAnimation,
-                    ),
-                  ],
-                  child: Transform.scale(
-                    scale: 1.2,
-                    child: Image.asset(
-                      PromajaIcons.icon,
-                      height: 176,
-                      width: 176,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(text: 'startUsing1'.tr()),
-                      TextSpan(
-                        text: 'startUsing2'.tr(),
-                        style: PromajaTextStyles.noLocationsPromaja,
-                      ),
-                      TextSpan(text: 'startUsing3'.tr()),
-                    ],
-                  ),
-                  style: PromajaTextStyles.noLocations,
-                  textAlign: TextAlign.center,
-                ),
+          Animate(
+            onPlay: (controller) => controller.loop(reverse: true),
+            delay: 10.seconds,
+            effects: [
+              ScaleEffect(
+                curve: Curves.easeIn,
+                end: const Offset(1.25, 1.25),
+                duration: 60.seconds,
               ),
             ],
+            child: Animate(
+              delay: PromajaDurations.cardWeatherIconAnimationDelay,
+              effects: [
+                FlipEffect(
+                  curve: Curves.easeIn,
+                  duration: PromajaDurations.fadeAnimation,
+                ),
+              ],
+              child: Transform.scale(
+                scale: 1.2,
+                child: Image.asset(
+                  PromajaIcons.icon,
+                  height: 176,
+                  width: 176,
+                ),
+              ),
+            ),
           ),
 
           ///
