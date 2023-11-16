@@ -53,7 +53,11 @@ class WeatherSuccess extends ConsumerWidget {
       );
     }
     if (ref.read(weatherDaysControllerProvider(screenWidth)).hasClients) {
-      ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(0);
+      final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
+      );
     }
   }
 

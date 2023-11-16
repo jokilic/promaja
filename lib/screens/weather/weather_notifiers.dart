@@ -62,6 +62,7 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
 
     /// Response is successful, refresh [HomeWidget] & enable [WorkManager]
     if (response.response != null && response.error == null) {
+      /// Refresh [HomeWidget]
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
               response: response.response!,
@@ -70,6 +71,7 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
             ),
       );
 
+      /// Enable [WorkManager] task
       ref.read(workManagerProvider).registerTask();
     }
 
