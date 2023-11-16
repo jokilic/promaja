@@ -128,7 +128,7 @@ class HomeWidgetService {
     );
 
     /// Delay the logic for a moment becuase images need to be rendered
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
 
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(
