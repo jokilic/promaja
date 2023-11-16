@@ -91,6 +91,7 @@ class HomeWidgetService {
 
     final temp = currentWeather.tempC.round();
     final conditionCode = currentWeather.condition.code;
+    final isDay = currentWeather.isDay == 1;
 
     final backgroundColor = hive
         .getCustomColorsFromBox()
@@ -98,10 +99,10 @@ class HomeWidgetService {
           (customColor) => customColor.code == conditionCode && customColor.isDay,
           orElse: () => CustomColor(
             code: conditionCode,
-            isDay: true,
+            isDay: isDay,
             color: getWeatherColor(
               code: conditionCode,
-              isDay: true,
+              isDay: isDay,
             ),
           ),
         )
@@ -109,12 +110,12 @@ class HomeWidgetService {
 
     final weatherIcon = getWeatherIcon(
       code: conditionCode,
-      isDay: true,
+      isDay: isDay,
     );
 
     final weatherDescription = getWeatherDescription(
       code: conditionCode,
-      isDay: true,
+      isDay: isDay,
     );
 
     final weatherIconWidget = Image.asset(
