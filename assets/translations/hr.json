@@ -31,6 +31,8 @@
     "day": "Dan",
     "night": "Noć",
     "cardColors": "Boje kartica",
+    "cardColorsDescription1": "Odaberi neki od opisa vremena i promijeni pozadinsku boju na onu koju želiš.",
+    "cardColorsDescription2": "Kartice kroz cijelu Promaju će se promijeniti na novoodabranu boju.",
     "save": "Spremi",
     "revert": "Vrati",
     "1000Day": "Sunčano",

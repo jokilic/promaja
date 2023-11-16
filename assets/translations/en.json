@@ -31,6 +31,8 @@
     "day": "Day",
     "night": "Night",
     "cardColors": "Card colors",
+    "cardColorsDescription1": "Choose any of the weather descriptions and change the background color to whichever you desire.",
+    "cardColorsDescription2": "Cards throughout Promaja will be changed with the newly chosen color.",
     "save": "Save",
     "revert": "Revert",
     "1000Day": "Sunny",

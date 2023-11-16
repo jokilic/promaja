@@ -104,6 +104,23 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
                 style: PromajaTextStyles.testingTitle,
               ),
             ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'cardColorsDescription1'.tr(),
+                style: PromajaTextStyles.testingText,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'cardColorsDescription2'.tr(),
+                style: PromajaTextStyles.testingText,
+              ),
+            ),
+
             const SizedBox(height: 32),
 
             ///
