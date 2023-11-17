@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
@@ -5,11 +7,37 @@ import 'package:home_widget/home_widget.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
+import '../screens/weather/weather_notifiers.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
+import 'work_manager_service.dart';
+
+final updateHomeWidgetProvider = FutureProvider.family<void, ({String? error, ResponseCurrentWeather? response})>(
+  (ref, response) async {
+    /// Get currently active location in [WeatherScreen] & check if it's fetched
+    final activeLocation = ref.read(activeWeatherProvider);
+    final responseSuccessful = response.response != null && response.error == null;
+    final activeLocationFetched = response.response?.location.lat == activeLocation?.lat && response.response?.location.lon == activeLocation?.lon;
+
+    /// Response is successful and currently active location is fetched
+    /// Refresh [HomeWidget] & enable [WorkManager]
+    if (responseSuccessful && activeLocationFetched) {
+      /// Refresh [HomeWidget]
+      unawaited(
+        ref.read(homeWidgetProvider).refreshHomeWidget(
+              response: response.response!,
+            ),
+      );
+
+      /// Enable [WorkManager] task
+      ref.read(workManagerProvider).registerTask();
+    }
+  },
+  name: 'UpdateHomeWidgetProvider',
+);
 
 ///
 /// Service which initializes `HomeWidget`
