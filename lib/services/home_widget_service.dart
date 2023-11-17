@@ -55,10 +55,13 @@ class HomeWidgetService {
   /// Renders a Flutter widget  as a `HomeWidget`
   Future<void> renderHomeWidget(Widget widget) async {
     try {
-      await HomeWidget.renderFlutterWidget(
-        widget,
-        key: 'filePath',
-      );
+      /// Call this method three times because it sometimes doesn't update properly
+      for (var i = 0; i < 3; i++) {
+        await HomeWidget.renderFlutterWidget(
+          widget,
+          key: 'filePath',
+        );
+      }
     } catch (e) {
       final error = 'renderWidget - $e';
       logger.e(error);
@@ -68,12 +71,15 @@ class HomeWidgetService {
   /// Updates `HomeWidget`
   Future<void> updateHomeWidget() async {
     try {
-      await HomeWidget.updateWidget(
-        name: 'WidgetView',
-        androidName: 'WidgetView',
-        iOSName: 'PromajaWidget',
-        qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
-      );
+      /// Call this method three times because it sometimes doesn't update properly
+      for (var i = 0; i < 3; i++) {
+        await HomeWidget.updateWidget(
+          name: 'WidgetView',
+          androidName: 'WidgetView',
+          iOSName: 'PromajaWidget',
+          qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
+        );
+      }
     } catch (e) {
       final error = 'updateWidget - $e';
       logger.e(error);
