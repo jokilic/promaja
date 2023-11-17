@@ -11,8 +11,8 @@ class PromajaHomeWidget extends StatelessWidget {
   final int temp;
   final Color backgroundColor;
   final String weatherDescription;
-  final Image weatherIconWidget;
-  final Image promajaIconWidget;
+  final AssetImage weatherIconWidget;
+  final AssetImage promajaIconWidget;
 
   const PromajaHomeWidget({
     required this.locationName,
@@ -58,7 +58,11 @@ class PromajaHomeWidget extends StatelessWidget {
                 /// Icon
                 Transform.scale(
                   scale: 1.2,
-                  child: weatherIconWidget,
+                  child: Image(
+                    image: weatherIconWidget,
+                    height: 72,
+                    width: 72,
+                  ),
                 ),
 
                 /// Temperatures
@@ -111,7 +115,11 @@ class PromajaHomeWidget extends StatelessWidget {
                 angle: pi * 1.5,
                 child: Row(
                   children: [
-                    promajaIconWidget,
+                    Image(
+                      image: promajaIconWidget,
+                      height: 20,
+                      width: 20,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       'appNameString'.tr(),

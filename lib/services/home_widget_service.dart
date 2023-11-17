@@ -5,6 +5,7 @@ import 'package:home_widget/home_widget.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
+import '../util/preload_image.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
 import 'hive_service.dart';
@@ -115,20 +116,11 @@ class HomeWidgetService {
       isDay: isDay,
     );
 
-    final weatherIconWidget = Image.asset(
-      weatherIcon,
-      height: 72,
-      width: 72,
-    );
+    final weatherIconWidget = AssetImage(weatherIcon);
+    const promajaIconWidget = AssetImage(PromajaIcons.icon);
 
-    final promajaIconWidget = Image.asset(
-      PromajaIcons.icon,
-      height: 20,
-      width: 20,
-    );
-
-    /// Delay the logic for a moment becuase images need to be rendered
-    await Future.delayed(const Duration(seconds: 3));
+    await preloadImage(weatherIconWidget);
+    await preloadImage(promajaIconWidget);
 
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(
