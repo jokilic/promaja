@@ -6,7 +6,9 @@ import '../models/location/location.dart';
 import 'logger_service.dart';
 
 final hiveProvider = StateNotifierProvider<HiveService, List<Location>>(
-  (_) => throw UnimplementedError(),
+  (ref) => HiveService(
+    ref.watch(loggerProvider),
+  ),
   name: 'HiveProvider',
 );
 

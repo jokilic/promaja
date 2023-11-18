@@ -5,10 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'api_service.dart';
-import 'dio_service.dart';
+import '../screens/cards/cards_notifiers.dart';
+import '../screens/weather/weather_notifiers.dart';
 import 'hive_service.dart';
-import 'home_widget_service.dart';
 import 'logger_service.dart';
 
 ///
@@ -17,7 +16,9 @@ import 'logger_service.dart';
 ///
 
 final workManagerProvider = Provider<WorkManagerService>(
-  (_) => throw UnimplementedError(),
+  (ref) => WorkManagerService(
+    ref.watch(loggerProvider),
+  ),
   name: 'WorkManagerProvider',
 );
 
@@ -77,51 +78,24 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
       (task, inputData) async {
         try {
           /// Initialize services
-          final logger = LoggerService();
-          final dio = DioService(logger);
-          final api = APIService(
-            logger: logger,
-            dio: dio.dio,
-          );
-          final hive = HiveService(logger);
+          final container = ProviderContainer();
+          final logger = container.read(loggerProvider);
+          final hive = container.read(hiveProvider.notifier);
           await hive.init();
-          final homeWidget = HomeWidgetService(
-            logger: logger,
-            hive: hive,
-          );
 
           /// Get location to fetch
-          final location = hive.getLocationsFromBox().firstOrNull;
+          final location = container.read(activeWeatherProvider);
 
-          /// Location exists
+          /// Location exists, fetch data & update [HomeWidget]
           if (location != null) {
-            /// Fetch weather data for location
-            final response = await api.getCurrentWeather(
-              query: '${location.lat},${location.lon}',
-            );
-
-            /// Response is successful
-            if (response.response != null && response.error == null) {
-              /// Update [HomeWidget]
-              await homeWidget.refreshHomeWidget(
-                response: response.response!,
-              );
-
-              return Future.value(true);
-            }
-
-            /// There was an error fetching weather
-            else {
-              final error = 'callbackDispatcher -> error fetching weather -> ${response.error}';
-              Logger().e(error);
-              return Future.error(error);
-            }
+            await container.read(getCurrentWeatherProvider(location).future);
+            return Future.value(true);
           }
 
           /// Location doesn't exist, don't do anything
           else {
             const info = "callbackDispatcher -> location doesn't exist";
-            Logger().i(info);
+            logger.i(info);
             return Future.value(false);
           }
         } catch (e) {

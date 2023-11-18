@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
@@ -24,7 +25,7 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ({String? error, Re
 
     /// Response is successful and currently active location is fetched
     /// Refresh [HomeWidget] & enable [WorkManager]
-    if (responseSuccessful && activeLocationFetched) {
+    if (responseSuccessful && (activeLocationFetched || (activeLocation?.isPhoneLocation ?? false))) {
       /// Refresh [HomeWidget]
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
@@ -45,7 +46,10 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ({String? error, Re
 ///
 
 final homeWidgetProvider = Provider<HomeWidgetService>(
-  (_) => throw UnimplementedError(),
+  (ref) => HomeWidgetService(
+    logger: ref.watch(loggerProvider),
+    hive: ref.watch(hiveProvider.notifier),
+  ),
   name: 'HomeWidgetProvider',
 );
 
@@ -83,13 +87,10 @@ class HomeWidgetService {
   /// Renders a Flutter widget  as a `HomeWidget`
   Future<void> renderHomeWidget(Widget widget) async {
     try {
-      /// Call this method three times because it sometimes doesn't update properly
-      for (var i = 0; i < 3; i++) {
-        await HomeWidget.renderFlutterWidget(
-          widget,
-          key: 'filePath',
-        );
-      }
+      await HomeWidget.renderFlutterWidget(
+        widget,
+        key: 'filePath',
+      );
     } catch (e) {
       final error = 'renderWidget - $e';
       logger.e(error);
@@ -99,15 +100,12 @@ class HomeWidgetService {
   /// Updates `HomeWidget`
   Future<void> updateHomeWidget() async {
     try {
-      /// Call this method three times because it sometimes doesn't update properly
-      for (var i = 0; i < 3; i++) {
-        await HomeWidget.updateWidget(
-          name: 'WidgetView',
-          androidName: 'WidgetView',
-          iOSName: 'PromajaWidget',
-          qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
-        );
-      }
+      await HomeWidget.updateWidget(
+        name: 'WidgetView',
+        androidName: 'WidgetView',
+        iOSName: 'PromajaWidget',
+        qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
+      );
     } catch (e) {
       final error = 'updateWidget - $e';
       logger.e(error);
@@ -156,6 +154,8 @@ class HomeWidgetService {
     await preloadImage(weatherIconWidget);
     await preloadImage(promajaIconWidget);
 
+    final timestamp = DateFormat.Hm().format(DateTime.now());
+
     /// Create a Flutter widget to show in [HomeWidget]
     final widget = PromajaHomeWidget(
       locationName: locationName,
@@ -164,6 +164,7 @@ class HomeWidgetService {
       backgroundColor: backgroundColor,
       weatherIconWidget: weatherIconWidget,
       promajaIconWidget: promajaIconWidget,
+      timestamp: timestamp,
     );
 
     /// Update [HomeWidget]

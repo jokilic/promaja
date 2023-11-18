@@ -43,28 +43,19 @@ Future<void> main() async {
   );
 
   /// Initialize [Logger], [Dio], [WorkManager], [HomeWidget] & [Hive]
-  final logger = LoggerService();
-  final dio = DioService(logger);
-  final workManager = WorkManagerService(logger);
-  final hive = HiveService(logger);
+  final container = ProviderContainer(
+    observers: [RiverpodLogger(LoggerService())],
+  )
+    ..read(loggerProvider)
+    ..read(dioProvider)
+    ..read(workManagerProvider);
+  final hive = container.read(hiveProvider.notifier);
   await hive.init();
-  final homeWidget = HomeWidgetService(
-    logger: logger,
-    hive: hive,
-  );
+  container.read(homeWidgetProvider);
 
   runApp(
-    ProviderScope(
-      overrides: [
-        loggerProvider.overrideWithValue(logger),
-        dioProvider.overrideWithValue(dio),
-        workManagerProvider.overrideWithValue(workManager),
-        homeWidgetProvider.overrideWithValue(homeWidget),
-        hiveProvider.overrideWith((_) => hive),
-      ],
-      observers: [
-        RiverpodLogger(logger),
-      ],
+    UncontrolledProviderScope(
+      container: container,
       child: PromajaApp(),
     ),
   );

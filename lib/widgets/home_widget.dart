@@ -13,6 +13,7 @@ class PromajaHomeWidget extends StatelessWidget {
   final String weatherDescription;
   final AssetImage weatherIconWidget;
   final AssetImage promajaIconWidget;
+  final String timestamp;
 
   const PromajaHomeWidget({
     required this.locationName,
@@ -21,6 +22,7 @@ class PromajaHomeWidget extends StatelessWidget {
     required this.weatherDescription,
     required this.weatherIconWidget,
     required this.promajaIconWidget,
+    required this.timestamp,
   });
 
   @override
@@ -126,6 +128,20 @@ class PromajaHomeWidget extends StatelessWidget {
                       style: PromajaTextStyles.homeWidgetPromaja,
                     ),
                   ],
+                ),
+              ),
+            ),
+
+            ///
+            /// TIMESTAMP
+            ///
+            Positioned(
+              right: -36,
+              child: Transform.rotate(
+                angle: pi * 0.5,
+                child: Text(
+                  timestamp,
+                  style: PromajaTextStyles.homeWidgetPromaja,
                 ),
               ),
             ),

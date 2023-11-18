@@ -10,7 +10,7 @@ import 'logger_service.dart';
 ///
 
 final dioProvider = Provider<DioService>(
-  (_) => throw UnimplementedError(),
+  (ref) => DioService(ref.watch(loggerProvider)),
   name: 'DioProvider',
 );
 
