@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'package:workmanager/workmanager.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/weather/weather_notifiers.dart';
 import 'hive_service.dart';
+import 'home_widget_service.dart';
 import 'logger_service.dart';
 
 ///
@@ -86,20 +88,35 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
           /// Get location to fetch
           final location = container.read(activeWeatherProvider);
 
-          /// Location exists, fetch data & update [HomeWidget]
+          /// Location exists, fetch data
           if (location != null) {
-            await container.read(getCurrentWeatherProvider(location).future);
-            return Future.value(true);
+            final response = await container.read(getCurrentWeatherProvider(location).future);
+
+            /// Data fetch was successful, update [HomeWidget]
+            if (response.response != null && response.error == null) {
+              await container.read(updateHomeWidgetProvider(response.response!).future);
+              return Future.value(true);
+            }
+
+            /// Data fetch wasn't successfull, throw error
+            else {
+              const error = "callbackDispatcher -> data fetch wasn't successful";
+              logger.e(error);
+              return Future.error(error);
+            }
           }
 
-          /// Location doesn't exist, don't do anything
+          /// Location doesn't exist, throw error
           else {
-            const info = "callbackDispatcher -> location doesn't exist";
-            logger.i(info);
-            return Future.value(false);
+            const error = "callbackDispatcher -> location doesn't exist";
+            logger.e(error);
+            return Future.error(error);
           }
-        } catch (e) {
-          final error = 'callbackDispatcher - $e';
+        }
+
+        /// Some generic error happened, throw error
+        catch (e) {
+          final error = 'callbackDispatcher -> $e';
           Logger().e(error);
           return Future.error(error);
         }
