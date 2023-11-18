@@ -12,9 +12,9 @@ import '../screens/weather/weather_notifiers.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
+import 'background_fetch_service.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
-import 'work_manager_service.dart';
 
 final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeather>(
   (ref, response) async {
@@ -23,7 +23,7 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeat
 
     final activeLocationSameAsResponse = (activeLocation?.lat == response.location.lat) && (activeLocation?.lon == response.location.lon);
 
-    /// Update [HomeWidget] & [WorkManager] if `activeLocation` is being fetched
+    /// Update [HomeWidget] & [BackgroundFetch] if `activeLocation` is being fetched
     if (activeLocationSameAsResponse) {
       /// Refresh [HomeWidget]
       unawaited(
@@ -32,8 +32,8 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeat
             ),
       );
 
-      /// Enable [WorkManager]
-      ref.read(workManagerProvider).registerTask();
+      /// Enable [BackgroundFetch]
+      ref.read(backgroundFetchProvider).registerTask();
     }
   },
   name: 'UpdateHomeWidgetProvider',
