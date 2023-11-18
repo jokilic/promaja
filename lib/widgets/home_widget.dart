@@ -136,7 +136,7 @@ class PromajaHomeWidget extends StatelessWidget {
             /// TIMESTAMP
             ///
             Positioned(
-              right: -36,
+              right: -16,
               child: Transform.rotate(
                 angle: pi * 0.5,
                 child: Text(
