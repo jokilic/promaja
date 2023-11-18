@@ -12,7 +12,6 @@ import '../screens/weather/weather_notifiers.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
-import 'background_fetch_service.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
 
@@ -31,9 +30,6 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeat
               response: response,
             ),
       );
-
-      /// Enable [BackgroundFetch]
-      ref.read(backgroundFetchProvider).registerTask();
     }
   },
   name: 'UpdateHomeWidgetProvider',
@@ -91,7 +87,7 @@ class HomeWidgetService {
         key: 'filePath',
       );
     } catch (e) {
-      final error = 'renderWidget - $e';
+      final error = 'renderWidget -> $e';
       logger.e(error);
     }
   }
@@ -106,7 +102,7 @@ class HomeWidgetService {
         qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
       );
     } catch (e) {
-      final error = 'updateWidget - $e';
+      final error = 'updateWidget -> $e';
       logger.e(error);
     }
   }

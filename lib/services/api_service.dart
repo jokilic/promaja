@@ -45,12 +45,12 @@ class APIService {
         final parsedResponse = await computeCurrentWeather(response.data);
         return (response: parsedResponse, error: null);
       } else {
-        final error = 'getCurrentWeather - StatusCode ${response.statusCode}';
+        final error = 'getCurrentWeather -> StatusCode ${response.statusCode}';
         logger.e(error);
         return (response: null, error: error);
       }
     } catch (e) {
-      final error = 'getCurrentWeather - $e';
+      final error = 'getCurrentWeather -> $e';
       logger.e(error);
       return (response: null, error: error);
     }
@@ -74,12 +74,12 @@ class APIService {
         final parsedResponse = await computeForecastWeather(response.data);
         return (response: parsedResponse, error: null);
       } else {
-        final error = 'getForecastWeather - StatusCode ${response.statusCode}';
+        final error = 'getForecastWeather -> StatusCode ${response.statusCode}';
         logger.e(error);
         return (response: null, error: error);
       }
     } catch (e) {
-      final error = 'getForecastWeather - $e';
+      final error = 'getForecastWeather -> $e';
       logger.e(error);
       return (response: null, error: error);
     }
@@ -104,12 +104,12 @@ class APIService {
         );
         return (response: parsedResponse, error: null);
       } else {
-        final error = 'getSearch - StatusCode ${response.statusCode}';
+        final error = 'getSearch -> StatusCode ${response.statusCode}';
         logger.e(error);
         return (response: null, error: error);
       }
     } catch (e) {
-      final error = 'getSearch - $e';
+      final error = 'getSearch -> $e';
       logger.e(error);
       return (response: null, error: error);
     }

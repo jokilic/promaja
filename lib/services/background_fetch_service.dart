@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -10,36 +11,65 @@ import 'home_widget_service.dart';
 import 'logger_service.dart';
 
 ///
-/// Service which initializes `BackgroundFetch`
+/// Initializes `BackgroundFetch`
 /// Used for scheduling tasks
 ///
 
-final backgroundFetchProvider = Provider<BackgroundFetchService>(
-  (ref) => BackgroundFetchService(
-    ref.watch(loggerProvider),
-  ),
-  name: 'BackgroundFetchProvider',
+final backgroundFetchInitializeProvider = FutureProvider<void>(
+  (ref) async {
+    await BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 60,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: NetworkType.ANY,
+      ),
+
+      /// Runs when background event is triggered
+      (taskId) async {
+        await fetchWeatherAndUpdateHomeWidget();
+        BackgroundFetch.finish(taskId);
+      },
+
+      /// Runs when task timeout has occured
+      (taskId) async {
+        final error = 'backgroundFetchInitializeProvider -> Task timeout -> taskId - $taskId';
+        ref.read(loggerProvider).e(error);
+        BackgroundFetch.finish(taskId);
+      },
+    );
+
+    await BackgroundFetch.start();
+  },
+  name: 'BackgroundFetchInitializeProvider',
 );
 
-class BackgroundFetchService {
-  ///
-  /// CONSTRUCTOR
-  ///
+/// Headless task which is run on Android when the app is terminated
+@pragma('vm:entry-point')
+Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
+  final taskId = task.taskId;
+  final isTimeout = task.timeout;
 
-  final LoggerService logger;
+  /// This task has exceeded its allowed running-time, finish task
+  if (isTimeout) {
+    const error = "backgroundFetchHeadlessTask -> task has exceeded it's allowed running-time";
+    Logger().e(error);
+    BackgroundFetch.finish(taskId);
+    return;
+  }
 
-  BackgroundFetchService(this.logger);
-
-  ///
-  /// METHODS
-  ///
-
-  /// Registers [WorkManager] task
-  void registerTask() {}
+  /// Start working on the task
+  Logger().i('backgroundFetchHeadlessTask -> headless event received');
+  await fetchWeatherAndUpdateHomeWidget();
+  BackgroundFetch.finish(taskId);
 }
 
-@pragma('vm:entry-point')
-Future<void> callbackDispatcher() async {
+/// Logic to fetch weather and update active [HomeWidget]
+Future<void> fetchWeatherAndUpdateHomeWidget() async {
   Logger().f('[BACKGROUND] Running task');
 
   try {
@@ -73,7 +103,7 @@ Future<void> callbackDispatcher() async {
 
       /// Data fetch wasn't successfull, throw error
       else {
-        const error = "callbackDispatcher -> data fetch wasn't successful";
+        const error = "fetchWeatherAndUpdateHomeWidget -> data fetch wasn't successful";
         logger.e(error);
         return Future.error(error);
       }
@@ -81,7 +111,7 @@ Future<void> callbackDispatcher() async {
 
     /// Location doesn't exist, throw error
     else {
-      const error = "callbackDispatcher -> location doesn't exist";
+      const error = "fetchWeatherAndUpdateHomeWidget -> location doesn't exist";
       logger.e(error);
       return Future.error(error);
     }
@@ -89,7 +119,7 @@ Future<void> callbackDispatcher() async {
 
   /// Some generic error happened, throw error
   catch (e) {
-    final error = 'callbackDispatcher -> $e';
+    final error = 'fetchWeatherAndUpdateHomeWidget -> $e';
     Logger().e(error);
     return Future.error(error);
   }

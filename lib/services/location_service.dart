@@ -27,7 +27,7 @@ class LocationService {
 
     /// Location services are not enabled, return error
     if (!serviceEnabled) {
-      const error = 'Location services are not enabled';
+      const error = 'LocationService -> Location services are not enabled';
       logger.e(error);
       return (position: null, error: error);
     }
@@ -41,7 +41,7 @@ class LocationService {
 
       /// Permission is denied, return error
       if (permission == LocationPermission.denied) {
-        const error = 'Location permissions are denied';
+        const error = 'LocationService -> Location permissions are denied';
         logger.e(error);
         return (position: null, error: error);
       }
@@ -49,7 +49,7 @@ class LocationService {
 
     /// Permission are denied forever, return error
     if (permission == LocationPermission.deniedForever) {
-      const error = 'Location permissions are permanently denied';
+      const error = 'LocationService -> Location permissions are permanently denied';
       logger.e(error);
       return (position: null, error: error);
     }
