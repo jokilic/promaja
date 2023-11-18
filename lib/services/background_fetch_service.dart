@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:background_fetch/background_fetch.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -17,6 +19,7 @@ import 'logger_service.dart';
 
 final backgroundFetchInitializeProvider = FutureProvider<void>(
   (ref) async {
+    /// Initialization of background fetch
     await BackgroundFetch.configure(
       BackgroundFetchConfig(
         minimumFetchInterval: 60,
@@ -43,6 +46,10 @@ final backgroundFetchInitializeProvider = FutureProvider<void>(
       },
     );
 
+    /// Register to receive background events after app is terminated
+    await BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+
+    /// Start background fetch
     await BackgroundFetch.start();
   },
   name: 'BackgroundFetchInitializeProvider',
@@ -70,33 +77,27 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
 
 /// Logic to fetch weather and update active [HomeWidget]
 Future<void> fetchWeatherAndUpdateHomeWidget() async {
-  Logger().f('[BACKGROUND] Running task');
-
   try {
+    /// Initialize localization
+    WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+
     /// Initialize services
     final container = ProviderContainer();
     final logger = container.read(loggerProvider);
     final hive = container.read(hiveProvider.notifier);
     await hive.init();
 
-    logger.f('[BACKGROUND] Initialized services');
-
     /// Get location to fetch
     final location = container.read(activeWeatherProvider);
 
     /// Location exists, fetch data
     if (location != null) {
-      logger.f('[BACKGROUND] Location not null');
-
       final response = await container.read(getCurrentWeatherProvider(location).future);
 
       /// Data fetch was successful, update [HomeWidget]
       if (response.response != null && response.error == null) {
-        logger.f('[BACKGROUND] Response successful');
-
         await container.read(updateHomeWidgetProvider(response.response!).future);
-
-        logger.f('[BACKGROUND] HomeWidget updated');
 
         return Future.value(true);
       }

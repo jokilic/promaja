@@ -1,4 +1,3 @@
-import 'package:background_fetch/background_fetch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,9 +52,6 @@ Future<void> main() async {
   final hive = container.read(hiveProvider.notifier);
   await hive.init();
   container.read(homeWidgetProvider);
-
-  /// Register to receive background events after app is terminated
-  await BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 
   /// Run [Promaja]
   runApp(
