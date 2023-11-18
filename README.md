@@ -2,6 +2,7 @@
 
 Weather app made in Flutter.
 
+- [ ] Add `ScaleButton`
 - [ ] Create readme file
 - [ ] Create screenshots
 - [ ] Implement weather notifications

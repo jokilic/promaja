@@ -6,6 +6,7 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../services/hive_service.dart';
+import '../../../../widgets/scale_button.dart';
 import '../../notifiers/add_location_notifier.dart';
 import '../../notifiers/phone_location_notifier.dart';
 
@@ -107,19 +108,22 @@ class AddLocationWidget extends ConsumerWidget {
               ),
               trailing: [
                 if (!hasPhoneLocation)
-                  IconButton(
+                  ScaleButton(
                     onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).enablePhoneLocation : null,
-                    icon: isLoadingPhone
-                        ? const Icon(
-                            Icons.hourglass_top_rounded,
-                            color: PromajaColors.black,
-                          )
-                        : Image.asset(
-                            PromajaIcons.location,
-                            height: 24,
-                            width: 24,
-                            color: PromajaColors.black,
-                          ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: isLoadingPhone
+                          ? const Icon(
+                              Icons.hourglass_top_rounded,
+                              color: PromajaColors.black,
+                            )
+                          : Image.asset(
+                              PromajaIcons.location,
+                              height: 24,
+                              width: 24,
+                              color: PromajaColors.black,
+                            ),
+                    ),
                   ),
               ],
               shape: MaterialStateProperty.all(
