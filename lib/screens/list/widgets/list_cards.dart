@@ -15,11 +15,9 @@ import 'list_card/list_card_widget.dart';
 
 class ListCards extends ConsumerWidget {
   final List<Location> locations;
-  final BuildContext mainContext;
 
   const ListCards({
     required this.locations,
-    required this.mainContext,
   });
 
   Future<void> deleteLocation({

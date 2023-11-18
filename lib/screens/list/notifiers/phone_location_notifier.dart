@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/location_service.dart';
+import '../../cards/cards_notifiers.dart';
 
 final phoneLocationProvider = StateNotifierProvider<PhoneLocationNotifier, ({Position? position, String? error, bool loading})>(
   (ref) => PhoneLocationNotifier(
@@ -75,20 +76,29 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
       /// Remove phone location if it's active
       await removeActivePhoneLocation();
 
-      /// Add location to [Hive]
-      await hiveService.writeAllLocationsToHive(
-        locations: [
-          Location(
-            name: 'Current location',
-            country: '',
-            region: '',
-            lat: position.position!.latitude,
-            lon: position.position!.longitude,
-            isPhoneLocation: true,
-          ),
-          ...hiveService.state,
-        ],
+      /// Generate a [Location] model
+      final location = Location(
+        name: 'Current location',
+        country: '',
+        region: '',
+        lat: position.position!.latitude,
+        lon: position.position!.longitude,
+        isPhoneLocation: true,
       );
+
+      /// Fetch weather data
+      final response = await ref.read(getCurrentWeatherProvider(location).future);
+
+      /// Response successfully fetched
+      if (response.response != null && response.error == null) {
+        /// Add location to [Hive]
+        await hiveService.writeAllLocationsToHive(
+          locations: [
+            response.response?.location.copyWith(isPhoneLocation: true) ?? location,
+            ...hiveService.state,
+          ],
+        );
+      }
     }
 
     if (mounted) {

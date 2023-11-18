@@ -16,24 +16,23 @@ import 'hive_service.dart';
 import 'logger_service.dart';
 import 'work_manager_service.dart';
 
-final updateHomeWidgetProvider = FutureProvider.family<void, ({String? error, ResponseCurrentWeather? response})>(
+final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeather>(
   (ref, response) async {
-    /// Get currently active location in [WeatherScreen] & check if it's fetched
+    /// Get currently active location in [WeatherScreen]
     final activeLocation = ref.read(activeWeatherProvider);
-    final responseSuccessful = response.response != null && response.error == null;
-    final activeLocationFetched = response.response?.location.lat == activeLocation?.lat && response.response?.location.lon == activeLocation?.lon;
 
-    /// Response is successful and currently active location is fetched
-    /// Refresh [HomeWidget] & enable [WorkManager]
-    if (responseSuccessful && (activeLocationFetched || (activeLocation?.isPhoneLocation ?? false))) {
+    final activeLocationSameAsResponse = (activeLocation?.lat == response.location.lat) && (activeLocation?.lon == response.location.lon);
+
+    /// Update [HomeWidget] & [WorkManager] if `activeLocation` is being fetched
+    if (activeLocationSameAsResponse) {
       /// Refresh [HomeWidget]
       unawaited(
         ref.read(homeWidgetProvider).refreshHomeWidget(
-              response: response.response!,
+              response: response,
             ),
       );
 
-      /// Enable [WorkManager] task
+      /// Enable [WorkManager]
       ref.read(workManagerProvider).registerTask();
     }
   },

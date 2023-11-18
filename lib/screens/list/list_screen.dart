@@ -32,7 +32,6 @@ class ListScreen extends ConsumerWidget {
                 ? ListEmpty()
                 : ListCards(
                     locations: locations,
-                    mainContext: context,
                   ),
           ),
         ),
