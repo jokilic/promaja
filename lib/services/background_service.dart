@@ -33,14 +33,6 @@ final backgroundServiceInitializeProvider = FutureProvider<void>(
         onBackground: backgroundUpdate,
       ),
     );
-
-    final isRunning = await service.isRunning();
-    ref.read(loggerProvider).f('SERVICE IS RUNNING: $isRunning');
-
-    await service.startService();
-
-    final isRunningNow = await service.isRunning();
-    ref.read(loggerProvider).f('SERVICE IS RUNNING NOW: $isRunningNow');
   },
   name: 'BackgroundFetchInitializeProvider',
 );

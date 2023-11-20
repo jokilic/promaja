@@ -52,6 +52,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders['foregroundServiceType'] = 'dataSync'
     }
 
     buildTypes {
