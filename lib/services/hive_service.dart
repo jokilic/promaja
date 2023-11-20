@@ -33,10 +33,17 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> init() async {
     await Hive.initFlutter();
 
-    Hive
-      ..registerAdapter(LocationAdapter())
-      ..registerAdapter(CustomColorAdapter())
-      ..registerAdapter(ColorAdapter());
+    if (!Hive.isAdapterRegistered(LocationAdapter().typeId)) {
+      Hive.registerAdapter(LocationAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(CustomColorAdapter().typeId)) {
+      Hive.registerAdapter(CustomColorAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(ColorAdapter().typeId)) {
+      Hive.registerAdapter(ColorAdapter());
+    }
 
     locationsBox = await Hive.openBox<Location>('locationsBox');
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');

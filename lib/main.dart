@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
-import 'services/background_fetch_service.dart';
+import 'services/background_service.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/home_widget_service.dart';
@@ -44,11 +44,15 @@ Future<void> main() async {
 
   /// Initialize [Logger], [Dio], [BackgroundFetch], [HomeWidget] & [Hive]
   final container = ProviderContainer(
-    observers: [RiverpodLogger(LoggerService())],
+    observers: [
+      RiverpodLogger(
+        LoggerService(),
+      ),
+    ],
   )
     ..read(loggerProvider)
     ..read(dioProvider);
-  await container.read(backgroundFetchInitializeProvider.future);
+  await container.read(backgroundServiceInitializeProvider.future);
   final hive = container.read(hiveProvider.notifier);
   await hive.init();
   container.read(homeWidgetProvider);
