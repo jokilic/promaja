@@ -103,7 +103,7 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
 
             /// Data fetch wasn't successfull, throw error
             else {
-              const error = "backgroundUpdate -> data fetch wasn't successful";
+              const error = "callbackDispatcher -> data fetch wasn't successful";
               logger.e(error);
               return Future.value(false);
             }
@@ -111,7 +111,7 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
 
           /// Location doesn't exist, throw error
           else {
-            const error = "backgroundUpdate -> location doesn't exist";
+            const error = "callbackDispatcher -> location doesn't exist";
             logger.e(error);
             return Future.value(false);
           }
@@ -119,7 +119,7 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
 
         /// Some generic error happened, throw error
         catch (e) {
-          final error = 'backgroundUpdate -> $e';
+          final error = 'callbackDispatcher -> $e';
           Logger().e(error);
           return Future.value(false);
         }
