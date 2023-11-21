@@ -10,7 +10,8 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   (ref) {
     final weatherIndex = ref.watch(hiveProvider.notifier).getActiveLocationIndexFromBox();
     final weatherList = ref.watch(hiveProvider);
-    return weatherList[weatherIndex];
+
+    return weatherList.isNotEmpty ? weatherList[weatherIndex] : null;
   },
   name: 'ActiveWeatherProvider',
 );

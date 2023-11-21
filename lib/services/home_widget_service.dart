@@ -22,7 +22,7 @@ final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeat
 
     final activeLocationSameAsResponse = (activeLocation?.lat == response.location.lat) && (activeLocation?.lon == response.location.lon);
 
-    /// Update [HomeWidget] & [BackgroundFetch] if `activeLocation` is being fetched
+    /// Update [HomeWidget] if `activeLocation` is being fetched
     if (activeLocationSameAsResponse) {
       /// Refresh [HomeWidget]
       unawaited(
