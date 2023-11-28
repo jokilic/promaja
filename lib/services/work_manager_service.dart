@@ -43,8 +43,6 @@ final workManagerServiceInitializeProvider = FutureProvider<void>(
           constraints: Constraints(
             networkType: NetworkType.connected,
           ),
-          initialDelay: const Duration(hours: 1),
-          frequency: const Duration(hours: 1),
         );
       } catch (e) {
         final error = 'workManagerServiceInitialize -> register Android task -> $e';
@@ -62,7 +60,6 @@ final workManagerServiceInitializeProvider = FutureProvider<void>(
           constraints: Constraints(
             networkType: NetworkType.connected,
           ),
-          initialDelay: const Duration(hours: 1),
         );
       } catch (e) {
         final error = 'workManagerServiceInitialize -> register iOS task -> $e';
