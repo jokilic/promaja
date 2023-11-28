@@ -1,4 +1,4 @@
-![Header](https://raw.githubusercontent.com/jokilic/moderni_alias/master/screenshots/header-wide.png)
+![Header](https://raw.githubusercontent.com/jokilic/promaja/main/screenshots/header-wide.png)
 
 # Promaja 🌬️🍃
 
@@ -11,7 +11,7 @@ You can use a simple widget which shows current weather for the chosen location 
 ### Promaja can be downloaded from [HERE](https://play.google.com/store/apps/details?id=com.josipkilic.promaja).
 &nbsp;
 
-![Multi](https://raw.githubusercontent.com/jokilic/promaja/master/screenshots/multi.png)
+![Multi](https://raw.githubusercontent.com/jokilic/promaja/main/screenshots/multi.png)
 
 **Current weather** 🌤️
 
@@ -31,15 +31,9 @@ Here you can add new locations, delete unwanted ones and reorder them how you de
 You can also see current weather for them in one simple place.\
 Tapping on any location will bring you to Forecast weather.
 
-## Some screenshots
-
-![play](https://raw.githubusercontent.com/jokilic/promaja/master/screenshots/play.png)
-&nbsp;
-
 ## Things I still want to do 👷‍♂️
 
 - [ ] Add `ScaleButton`
-- [ ] Create screenshots
 - [ ] Widget should update automatically
 - [ ] Implement weather notifications
 - [ ] Publish app on App Store
