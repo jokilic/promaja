@@ -11,6 +11,8 @@ import 'package:workmanager/workmanager.dart';
 
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/weather/weather_notifiers.dart';
+import 'api_service.dart';
+import 'dio_service.dart';
 import 'hive_service.dart';
 import 'home_widget_service.dart';
 import 'logger_service.dart';
@@ -80,21 +82,44 @@ Future<void> callbackDispatcher() async => Workmanager().executeTask(
           await EasyLocalization.ensureInitialized();
 
           /// Initialize services
-          final container = ProviderContainer();
-          final logger = container.read(loggerProvider);
-          final hive = container.read(hiveProvider.notifier);
+          final logger = LoggerService();
+          final hive = HiveService(logger);
           await hive.init();
+          final dioService = DioService(logger);
+          final api = APIService(
+            logger: logger,
+            dio: dioService.dio,
+          );
+          final homeWidget = HomeWidgetService(
+            logger: logger,
+            hive: hive,
+          );
 
           /// Get location to fetch
-          final location = container.read(activeWeatherProvider);
+          final weatherIndex = hive.getActiveLocationIndexFromBox();
+          final weatherList = hive.getLocationsFromBox();
+          final location = weatherList.isNotEmpty ? weatherList[weatherIndex] : null;
 
           /// Location exists, fetch data
           if (location != null) {
-            final response = await container.read(getCurrentWeatherProvider(location).future);
+            final response = await api.getCurrentWeather(
+              query: '${location.lat},${location.lon}',
+            );
 
             /// Data fetch was successful, update [HomeWidget]
             if (response.response != null && response.error == null) {
-              await container.read(updateHomeWidgetProvider(response.response!).future);
+              /// Get currently active location in [WeatherScreen]
+              final activeLocationSameAsResponse = (location.lat == response.response!.location.lat) && (location.lon == response.response!.location.lon);
+
+              /// Update [HomeWidget] if `activeLocation` is being fetched
+              if (activeLocationSameAsResponse) {
+                /// Refresh [HomeWidget]
+
+                await homeWidget.refreshHomeWidget(
+                  response: response.response!,
+                );
+              }
+
               return Future.value(true);
             }
 
