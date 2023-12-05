@@ -9,8 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../screens/cards/cards_notifiers.dart';
-import '../screens/weather/weather_notifiers.dart';
 import 'api_service.dart';
 import 'dio_service.dart';
 import 'hive_service.dart';
