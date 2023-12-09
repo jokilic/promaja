@@ -15,6 +15,8 @@ import workmanager
       GeneratedPluginRegistrant.register(with: registry)
     }
     WorkmanagerPlugin.registerTask(withIdentifier: "com.josipkilic.promaja.task")
+    WorkmanagerPlugin.registerTask(withIdentifier: "com.josipkilic.promaja.periodicTask")
+
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
