@@ -4,8 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.josipkilic.promaja.task</string>
-		<string>com.josipkilic.promaja.periodicTask</string>
+		<string>com.transistorsoft.fetch</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>

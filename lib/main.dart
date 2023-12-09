@@ -1,3 +1,4 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,11 @@ import 'services/work_manager_service.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
+  // await backgroundFetchHeadlessTask(
+  //   HeadlessTask('com.transistorsoft.fetch', false),
+  // );
+  // return;
+
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Parsing of [StackTrace]
@@ -42,7 +48,7 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Dio], [WorkManager], [HomeWidget] & [Hive]
+  /// Initialize [Logger], [Dio], [BackgroundFetch], [HomeWidget] & [Hive]
   final container = ProviderContainer(
     observers: [
       RiverpodLogger(
@@ -52,7 +58,7 @@ Future<void> main() async {
   )
     ..read(loggerProvider)
     ..read(dioProvider);
-  await container.read(workManagerServiceInitializeProvider.future);
+  await container.read(backgroundFetchServiceInitializeProvider.future);
   final hive = container.read(hiveProvider.notifier);
   await hive.init();
   container.read(homeWidgetProvider);
