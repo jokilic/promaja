@@ -33,6 +33,5 @@ Tapping on any location will bring you to Forecast weather.
 
 ## Things I still want to do 👷‍♂️
 
-- [ ] Widget should update automatically
 - [ ] Implement weather notifications
 - [ ] Publish app on App Store
