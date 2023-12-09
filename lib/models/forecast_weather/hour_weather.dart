@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../current_weather/condition.dart';
+import '../condition/condition.dart';
 
 class HourWeather {
   final DateTime timeEpoch;
@@ -16,6 +16,8 @@ class HourWeather {
   final double feelsLikeC;
   final int willItRain;
   final int chanceOfRain;
+  final int willItSnow;
+  final int chanceOfSnow;
   final double visKm;
   final double gustKph;
   final double uv;
@@ -34,6 +36,8 @@ class HourWeather {
     required this.feelsLikeC,
     required this.willItRain,
     required this.chanceOfRain,
+    required this.willItSnow,
+    required this.chanceOfSnow,
     required this.visKm,
     required this.gustKph,
     required this.uv,
@@ -53,6 +57,8 @@ class HourWeather {
     double? feelsLikeC,
     int? willItRain,
     int? chanceOfRain,
+    int? willItSnow,
+    int? chanceOfSnow,
     double? visKm,
     double? gustKph,
     double? uv,
@@ -71,6 +77,8 @@ class HourWeather {
         feelsLikeC: feelsLikeC ?? this.feelsLikeC,
         willItRain: willItRain ?? this.willItRain,
         chanceOfRain: chanceOfRain ?? this.chanceOfRain,
+        willItSnow: willItSnow ?? this.willItSnow,
+        chanceOfSnow: chanceOfSnow ?? this.chanceOfSnow,
         visKm: visKm ?? this.visKm,
         gustKph: gustKph ?? this.gustKph,
         uv: uv ?? this.uv,
@@ -90,6 +98,8 @@ class HourWeather {
         'feelslike_c': feelsLikeC,
         'will_it_rain': willItRain,
         'chance_of_rain': chanceOfRain,
+        'will_it_snow': willItSnow,
+        'chance_of_snow': chanceOfSnow,
         'vis_km': visKm,
         'gust_kph': gustKph,
         'uv': uv,
@@ -109,6 +119,8 @@ class HourWeather {
         feelsLikeC: map['feelslike_c'] as double,
         willItRain: map['will_it_rain'] as int,
         chanceOfRain: map['chance_of_rain'] as int,
+        willItSnow: map['will_it_snow'] as int,
+        chanceOfSnow: map['chance_of_snow'] as int,
         visKm: map['vis_km'] as double,
         gustKph: map['gust_kph'] as double,
         uv: map['uv'] as double,
@@ -120,7 +132,7 @@ class HourWeather {
 
   @override
   String toString() =>
-      'HourWeather(timeEpoch: $timeEpoch, tempC: $tempC, isDay: $isDay, condition: $condition, windKph: $windKph, windDegree: $windDegree, pressurehPa: $pressurehPa, precipMm: $precipMm, humidity: $humidity, cloud: $cloud, feelsLikeC: $feelsLikeC, willItRain: $willItRain, chanceOfRain: $chanceOfRain, visKm: $visKm, gustKph: $gustKph, uv: $uv)';
+      'HourWeather(timeEpoch: $timeEpoch, tempC: $tempC, isDay: $isDay, condition: $condition, windKph: $windKph, windDegree: $windDegree, pressurehPa: $pressurehPa, precipMm: $precipMm, humidity: $humidity, cloud: $cloud, feelsLikeC: $feelsLikeC, willItRain: $willItRain, chanceOfRain: $chanceOfRain, willItSnow: $willItSnow, chanceOfSnow: $chanceOfSnow, visKm: $visKm, gustKph: $gustKph, uv: $uv)';
 
   @override
   bool operator ==(covariant HourWeather other) {
@@ -141,6 +153,8 @@ class HourWeather {
         other.feelsLikeC == feelsLikeC &&
         other.willItRain == willItRain &&
         other.chanceOfRain == chanceOfRain &&
+        other.willItSnow == willItSnow &&
+        other.chanceOfSnow == chanceOfSnow &&
         other.visKm == visKm &&
         other.gustKph == gustKph &&
         other.uv == uv;
@@ -161,6 +175,8 @@ class HourWeather {
       feelsLikeC.hashCode ^
       willItRain.hashCode ^
       chanceOfRain.hashCode ^
+      willItSnow.hashCode ^
+      chanceOfSnow.hashCode ^
       visKm.hashCode ^
       gustKph.hashCode ^
       uv.hashCode;

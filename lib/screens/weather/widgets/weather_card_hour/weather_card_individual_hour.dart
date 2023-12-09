@@ -37,6 +37,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
     );
 
     final showRain = hourWeather?.willItRain == 1;
+    final showSnow = hourWeather?.willItSnow == 1;
 
     return AnimatedOpacity(
       duration: PromajaDurations.opacityAnimation,
@@ -140,7 +141,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                       ///
                       /// CHANCE OF RAIN
                       ///
-                      if (showRain)
+                      if (showRain && !showSnow)
                         Positioned(
                           right: -36,
                           child: Column(
@@ -155,6 +156,31 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                               ),
                               Text(
                                 '${hourWeather?.chanceOfRain}%',
+                                style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ///
+                      /// CHANCE OF SNOW
+                      ///
+                      if (showSnow)
+                        Positioned(
+                          right: -36,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                PromajaIcons.snow,
+                                color: PromajaColors.white,
+                                height: 24,
+                                width: 24,
+                              ),
+                              Text(
+                                '${hourWeather?.chanceOfSnow}%',
                                 style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
                                 textAlign: TextAlign.center,
                               ),

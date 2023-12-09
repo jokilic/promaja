@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'condition.dart';
+import '../condition/condition.dart';
 
 class CurrentWeather {
   final DateTime lastUpdatedEpoch;

@@ -55,6 +55,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
     );
 
     final showRain = hourWeather.willItRain == 1;
+    final showSnow = hourWeather.willItSnow == 1;
 
     return AnimatedOpacity(
       duration: PromajaDurations.opacityAnimation,
@@ -81,8 +82,12 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                 border: isActive
                     ? null
                     : Border.all(
-                        color: showRain ? PromajaColors.blue : borderColor,
-                        width: showRain ? 4 : 2,
+                        color: showSnow
+                            ? PromajaColors.white
+                            : showRain
+                                ? PromajaColors.blue
+                                : borderColor,
+                        width: showRain || showSnow ? 4 : 2,
                       ),
                 gradient: isActive
                     ? LinearGradient(
@@ -146,24 +151,42 @@ class WeatherCardHourSuccess extends ConsumerWidget {
             ///
             /// CHANCE OF RAIN
             ///
-            if (showRain)
+            if (showRain || showSnow)
               Positioned(
                 top: -24,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      PromajaIcons.umbrella,
-                      color: PromajaColors.white,
-                      height: 20,
-                      width: 20,
-                    ),
-                    Text(
-                      '${hourWeather.chanceOfRain}%',
-                      style: PromajaTextStyles.weatherCardHourChanceOfRain,
-                      textAlign: TextAlign.center,
-                    ),
+                    /// Rain
+                    if (showRain && !showSnow) ...[
+                      Image.asset(
+                        PromajaIcons.umbrella,
+                        color: PromajaColors.white,
+                        height: 20,
+                        width: 20,
+                      ),
+                      Text(
+                        '${hourWeather.chanceOfRain}%',
+                        style: PromajaTextStyles.weatherCardHourChanceOfRain,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+
+                    /// Snow
+                    if (showSnow) ...[
+                      Image.asset(
+                        PromajaIcons.snow,
+                        color: PromajaColors.white,
+                        height: 20,
+                        width: 20,
+                      ),
+                      Text(
+                        '${hourWeather.chanceOfSnow}%',
+                        style: PromajaTextStyles.weatherCardHourChanceOfRain,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ],
                 ),
               ),

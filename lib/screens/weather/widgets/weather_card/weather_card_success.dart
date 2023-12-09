@@ -116,6 +116,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     );
 
     final showRain = widget.forecast.day.dailyWillItRain == 1;
+    final showSnow = widget.forecast.day.dailyWillItSnow == 1;
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
@@ -323,7 +324,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                   ///
                                   /// CHANCE OF RAIN
                                   ///
-                                  if (showRain)
+                                  if (showRain && !showSnow)
                                     Positioned(
                                       right: -36,
                                       child: Column(
@@ -338,6 +339,31 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                           ),
                                           Text(
                                             '${widget.forecast.day.dailyChanceOfRain}%',
+                                            style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                  ///
+                                  /// CHANCE OF SNOW
+                                  ///
+                                  if (showSnow)
+                                    Positioned(
+                                      right: -36,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            PromajaIcons.snow,
+                                            color: PromajaColors.white,
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                          Text(
+                                            '${widget.forecast.day.dailyChanceOfSnow}%',
                                             style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
                                             textAlign: TextAlign.center,
                                           ),
