@@ -11,14 +11,14 @@ import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/home_widget_service.dart';
 import 'services/logger_service.dart';
-import 'services/work_manager_service.dart';
+import 'services/background_fetch_service.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
-  // await backgroundFetchHeadlessTask(
-  //   HeadlessTask('com.transistorsoft.fetch', false),
-  // );
-  // return;
+  await backgroundFetchHeadlessTask(
+    HeadlessTask('com.transistorsoft.fetch', false),
+  );
+  return;
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -58,7 +58,7 @@ Future<void> main() async {
   )
     ..read(loggerProvider)
     ..read(dioProvider);
-  await container.read(backgroundFetchServiceInitializeProvider.future);
+  await container.read(backgroundFetchInitProvider.future);
   final hive = container.read(hiveProvider.notifier);
   await hive.init();
   container.read(homeWidgetProvider);

@@ -14,6 +14,7 @@ class ListScreen extends ConsumerWidget {
     final locations = ref.watch(hiveProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: PromajaNavigationBar(),
       body: Animate(
         key: ValueKey(ref.read(navigationBarIndexProvider)),

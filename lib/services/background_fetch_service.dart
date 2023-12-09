@@ -5,6 +5,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
 
 import 'api_service.dart';
@@ -18,7 +19,7 @@ import 'logger_service.dart';
 /// Used for scheduling tasks
 ///
 
-final backgroundFetchServiceInitializeProvider = FutureProvider<void>(
+final backgroundFetchInitProvider = FutureProvider<void>(
   (ref) async {
     /// Initialization of [BackgroundFetch]
     try {
@@ -44,7 +45,10 @@ final backgroundFetchServiceInitializeProvider = FutureProvider<void>(
           try {
             WidgetsFlutterBinding.ensureInitialized();
             DartPluginRegistrant.ensureInitialized();
+
             await EasyLocalization.ensureInitialized();
+            await initializeDateFormatting('en');
+            await initializeDateFormatting('hr');
 
             /// Initialize services
             final logger = LoggerService();
@@ -120,11 +124,11 @@ final backgroundFetchServiceInitializeProvider = FutureProvider<void>(
       /// Start [BackgroundFetch]
       await BackgroundFetch.start();
     } catch (e) {
-      final error = 'backgroundFetchServiceInitialize -> initialize -> $e';
+      final error = 'backgroundFetchInit -> initialize -> $e';
       Logger().e(error);
     }
   },
-  name: 'BackgroundFetchServiceInitializeProvider',
+  name: 'BackgroundFetchInitProvider',
 );
 
 @pragma('vm:entry-point')
@@ -145,7 +149,10 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();
+
     await EasyLocalization.ensureInitialized();
+    await initializeDateFormatting('en');
+    await initializeDateFormatting('hr');
 
     /// Initialize services
     final logger = LoggerService();

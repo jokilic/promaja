@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +5,6 @@ import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../models/location/location.dart';
-import '../../../../services/home_widget_service.dart';
 import '../../../cards/cards_notifiers.dart';
 import 'list_card_error.dart';
 import 'list_card_loading.dart';
@@ -60,9 +57,6 @@ class ListCardWidget extends ConsumerWidget {
                   /// DATA SUCCESSFULLY FETCHED
                   ///
                   if (data.response != null && data.error == null) {
-                    /// Update [HomeWidget]
-                    unawaited(ref.read(updateHomeWidgetProvider(data.response!).future));
-
                     final currentWeather = data.response!.current;
                     final fetchedLocation = data.response!.location;
 
