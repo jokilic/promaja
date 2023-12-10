@@ -29,7 +29,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       /// Configure [BackgroundFetch]
       await BackgroundFetch.configure(
         BackgroundFetchConfig(
-          minimumFetchInterval: 15,
+          minimumFetchInterval: 60,
           startOnBoot: true,
           stopOnTerminate: false,
           enableHeadless: true,
