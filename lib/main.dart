@@ -8,6 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
+import 'generated/codegen_loader.g.dart';
 import 'services/background_fetch_service.dart';
 import 'services/dio_service.dart';
 import 'services/hive_service.dart';
@@ -76,6 +77,7 @@ class PromajaApp extends ConsumerWidget {
         supportedLocales: const [Locale('hr'), Locale('en')],
         path: 'assets/translations',
         fallbackLocale: const Locale('hr'),
+        assetLoader: const CodegenLoader(),
         child: Builder(
           builder: (context) => MaterialApp(
             localizationsDelegates: context.localizationDelegates,
