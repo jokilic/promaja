@@ -50,7 +50,7 @@ class CardWidget extends ConsumerWidget {
                 ///
                 return CardError(
                   location: originalLocation,
-                  error: data.error ?? 'weirdErrorHappened'.tr(),
+                  error: data.error?.error.message ?? data.genericError ?? 'weirdErrorHappened'.tr(),
                   useOpacity: useOpacity,
                   isPhoneLocation: originalLocation.isPhoneLocation,
                 );

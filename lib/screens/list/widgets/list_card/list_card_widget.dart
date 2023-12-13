@@ -74,7 +74,7 @@ class ListCardWidget extends ConsumerWidget {
                   return ListCardError(
                     locationName: location.name,
                     isPhoneLocation: location.isPhoneLocation,
-                    error: data.error ?? 'weirdErrorHappened'.tr(),
+                    error: data.error?.error.message ?? data.genericError ?? 'weirdErrorHappened'.tr(),
                     onTap: onTap,
                   );
                 },

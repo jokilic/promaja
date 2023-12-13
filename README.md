@@ -35,3 +35,5 @@ Tapping on any location will bring you to Forecast weather.
 
 - [ ] Implement weather notifications
 - [ ] Publish app on App Store
+- [ ] Make a good looking settings screen with ListTiles and minimal design
+- [ ] Check everything that the API offers and implement it

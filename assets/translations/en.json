@@ -132,5 +132,16 @@
     "1279Day": "Patchy light snow with thunder",
     "1279Night": "Patchy light snow with thunder",
     "1282Day": "Moderate or heavy snow with thunder",
-    "1282Night": "Moderate or heavy snow with thunder"
+    "1282Night": "Moderate or heavy snow with thunder",
+    "1002Error": "API key not provided",
+    "1003Error": "Parameter 'q' not provided",
+    "1005Error": "API request URL is invalid",
+    "1006Error": "No location found matching parameter 'q'",
+    "2006Error": "API key provided is invalid",
+    "2007Error": "API key has exceeded calls per month quota",
+    "2008Error": "API key has been disabled",
+    "2009Error": "API key does not have access to the resource. Please check pricing page for what is allowed in your API subscription plan",
+    "9000Error": "JSON body passed in bulk request is invalid. Please make sure it is valid JSON with UTF-8 encoding",
+    "9001Error": "JSON body contains too many locations for bulk request. Please keep it below 50 in a single request",
+    "9999Error": "Internal application error"
 }

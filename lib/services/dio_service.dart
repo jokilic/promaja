@@ -31,6 +31,7 @@ class DioService {
     dio = Dio(
       BaseOptions(
         baseUrl: 'http://api.weatherapi.com/v1',
+        validateStatus: (_) => true,
       ),
     )..interceptors.add(
         DioLoggerInterceptor(loggerService),

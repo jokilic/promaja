@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/current_weather/response_current_weather.dart';
+import '../../models/error/response_error.dart';
 import '../../models/forecast_weather/hour_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
@@ -25,7 +26,7 @@ final cardAdditionalControllerProvider = Provider.autoDispose<PageController>(
   name: 'CardAdditionalControllerProvider',
 );
 
-final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather? response, String? error}), Location>(
+final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather? response, ResponseError? error, String? genericError}), Location>(
   (ref, location) async => ref.read(apiProvider).getCurrentWeather(query: '${location.lat},${location.lon}'),
   name: 'GetCurrentWeatherProvider',
 );

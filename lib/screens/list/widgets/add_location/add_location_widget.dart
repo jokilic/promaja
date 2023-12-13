@@ -20,21 +20,27 @@ class AddLocationWidget extends ConsumerWidget {
           (location) => location.isPhoneLocation,
         );
 
+    ///
+    /// ERROR HANDLING
+    ///
     ref
       ..listen(
         addLocationProvider,
         (_, state) {
-          if (state.error != null || (state.response?.isEmpty ?? false)) {
+          if (state.error != null || state.genericError != null || (state.response?.isEmpty ?? false)) {
             late String text;
 
-            if (state.error != null) {
-              text = '${state.error}';
+            /// Some error happened
+            if (state.error != null || state.genericError != null) {
+              text = state.error?.error.message ?? state.genericError ?? 'weirdErrorHappened'.tr();
             }
 
+            /// Response is empty, there is no locations
             if (state.response?.isEmpty ?? false) {
               text = 'noLocationsFound'.tr();
             }
 
+            /// Show snackbar
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -56,6 +62,7 @@ class AddLocationWidget extends ConsumerWidget {
         phoneLocationProvider,
         (_, state) {
           if (state.error != null) {
+            /// Show snackbar
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(

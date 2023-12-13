@@ -4,11 +4,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../models/error/response_error.dart';
 import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 
-final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Location>? response, String? error, bool loading})>(
+final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Location>? response, ResponseError? error, String? genericError, bool loading})>(
   (ref) {
     final addLocationController = AddLocationNotifier(
       hiveService: ref.watch(hiveProvider.notifier),
@@ -21,12 +22,12 @@ final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Lo
   name: 'AddLocationProvider',
 );
 
-final getSearchProvider = FutureProvider.family<({List<Location>? response, String? error}), String>(
+final getSearchProvider = FutureProvider.family<({List<Location>? response, ResponseError? error, String? genericError}), String>(
   (ref, query) async => ref.read(apiProvider).getSearch(query: query),
   name: 'GetSearchProvider',
 );
 
-class AddLocationNotifier extends StateNotifier<({List<Location>? response, String? error, bool loading})> {
+class AddLocationNotifier extends StateNotifier<({List<Location>? response, ResponseError? error, String? genericError, bool loading})> {
   final HiveService hiveService;
   final Ref ref;
 
@@ -36,6 +37,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
   }) : super((
           response: null,
           error: null,
+          genericError: null,
           loading: false,
         ));
 
@@ -70,6 +72,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
       state = (
         response: null,
         error: null,
+        genericError: null,
         loading: true,
       );
 
@@ -78,6 +81,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
       state = (
         response: response.response,
         error: response.error,
+        genericError: response.genericError,
         loading: false,
       );
 
@@ -102,7 +106,8 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
     if (ref.read(hiveProvider).length >= locationLimit) {
       state = (
         response: null,
-        error: 'noMoreThanXLocations'.tr(
+        error: null,
+        genericError: 'noMoreThanXLocations'.tr(
           args: ['$locationLimit'],
         ),
         loading: false,
@@ -117,7 +122,8 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
     if (locationExists) {
       state = (
         response: null,
-        error: 'locationAlreadyExists'.tr(
+        error: null,
+        genericError: 'locationAlreadyExists'.tr(
           args: [location.name, location.country],
         ),
         loading: false,
@@ -137,6 +143,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Stri
       state = (
         response: null,
         error: null,
+        genericError: null,
         loading: false,
       );
 

@@ -132,5 +132,16 @@
     "1279Day": "Mjestimični blagi snijeg s grmljavinom",
     "1279Night": "Mjestimični blagi snijeg s grmljavinom",
     "1282Day": "Umjereni ili jaki snijeg s grmljavinom",
-    "1282Night": "Umjereni ili jaki snijeg s grmljavinom"
+    "1282Night": "Umjereni ili jaki snijeg s grmljavinom",
+    "1002Error": "Ključ API-ja nije pružen",
+    "1003Error": "Parametar 'q' nije pružen",
+    "1005Error": "URL zahtjeva API-ja je nevažeći",
+    "1006Error": "Nije pronađena lokacija koja odgovara parametru 'q'",
+    "2006Error": "Pruženi ključ API-ja nije valjan",
+    "2007Error": "Ključ API-ja je premašio kvotu poziva mjesečno",
+    "2008Error": "Ključ API-ja je onemogućen",
+    "2009Error": "Ključ API-ja nema pristup resursu. Molimo provjerite stranicu s cijenama za dopušteno u vašem planu pretplate na API",
+    "9000Error": "JSON tijelo proslijeđeno u masovnom zahtjevu nije valjano. Molimo provjerite je li valjan JSON s UTF-8 kodiranjem",
+    "9001Error": "JSON tijelo sadrži previše lokacija za masovni zahtjev. Molimo zadržite ih ispod 50 u jednom zahtjevu",
+    "9999Error": "Interna pogreška aplikacije"
 }

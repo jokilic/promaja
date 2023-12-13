@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/error/response_error.dart';
 import '../../models/forecast_weather/response_forecast_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
@@ -50,7 +51,7 @@ final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageCon
   name: 'WeatherCardHourAdditionalControllerProvider',
 );
 
-final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, String? error}), ({Location location, int? days})>(
+final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int? days})>(
   (ref, forecastParameters) async => ref.read(apiProvider).getForecastWeather(
         query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
         days: forecastParameters.days,

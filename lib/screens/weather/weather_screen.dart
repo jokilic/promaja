@@ -30,12 +30,7 @@ class WeatherScreen extends ConsumerWidget {
             ),
           ],
           child: originalLocation != null
-              ? ref
-                  .watch(getForecastWeatherProvider((
-                    location: originalLocation!,
-                    days: 7,
-                  )))
-                  .when(
+              ? ref.watch(getForecastWeatherProvider((location: originalLocation!, days: 3))).when(
                     data: (data) {
                       ///
                       /// DATA SUCCESSFULLY FETCHED
@@ -58,7 +53,7 @@ class WeatherScreen extends ConsumerWidget {
                       ///
                       return WeatherError(
                         location: originalLocation!,
-                        error: data.error ?? 'weirdErrorHappened'.tr(),
+                        error: data.error?.error.message ?? data.genericError ?? 'weirdErrorHappened'.tr(),
                         isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                       );
                     },
