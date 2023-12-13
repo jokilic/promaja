@@ -30,7 +30,7 @@ class ListDescriptionValue extends StatelessWidget {
             Flexible(
               child: Text(
                 description,
-                style: PromajaTextStyles.testingText,
+                style: PromajaTextStyles.settingsText,
               ),
             ),
           ],

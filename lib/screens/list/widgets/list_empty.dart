@@ -37,7 +37,7 @@ class ListEmpty extends StatelessWidget {
                     ),
                     Text(
                       'addLocation'.tr(),
-                      style: PromajaTextStyles.testingText,
+                      style: PromajaTextStyles.settingsText,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -98,7 +98,7 @@ class ListEmpty extends StatelessWidget {
               if (kDebugMode)
                 ListDescriptionValue(
                   icon: PromajaIcons.test,
-                  description: 'navigationDescriptionTesting'.tr(),
+                  description: 'navigationDescriptionSettings'.tr(),
                 ),
             ],
           ),

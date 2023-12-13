@@ -160,28 +160,28 @@ class PromajaTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w700,
   );
-  static const testingTitle = TextStyle(
+  static const settingsTitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 32,
     fontWeight: FontWeight.w700,
   );
-  static const testingSubtitle = TextStyle(
+  static const settingsSubtitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 24,
     fontWeight: FontWeight.w700,
   );
-  static const testingText = TextStyle(
+  static const settingsText = TextStyle(
     color: PromajaColors.white,
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
-  static const testingListTitle = TextStyle(
+  static const settingsListTitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 22,
     fontWeight: FontWeight.w500,
     height: 1,
   );
-  static const testingListSubtitle = TextStyle(
+  static const settingsListSubtitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 16,
     fontWeight: FontWeight.w400,

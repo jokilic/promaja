@@ -36,7 +36,7 @@
     "navigationDescriptionCurrent": "Opens cards which show current weather for all locations you added.",
     "navigationDescriptionWeather": "Opens cards which show forecast weather for a single location.",
     "navigationDescriptionList": "Opens a list where you can add, remove or reorder locations.",
-    "navigationDescriptionTesting": "Opens a place where you can change background colors for cards.",
+    "navigationDescriptionSettings": "Opens a place where you can tweak app settings.",
     "1000Day": "Sunny",
     "1000Night": "Clear",
     "1003Day": "Partly cloudy",

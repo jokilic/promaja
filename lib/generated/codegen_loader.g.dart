@@ -52,7 +52,7 @@ class CodegenLoader extends AssetLoader{
   "navigationDescriptionCurrent": "Opens cards which show current weather for all locations you added.",
   "navigationDescriptionWeather": "Opens cards which show forecast weather for a single location.",
   "navigationDescriptionList": "Opens a list where you can add, remove or reorder locations.",
-  "navigationDescriptionTesting": "Opens a place where you can change background colors for cards.",
+  "navigationDescriptionSettings": "Opens a place where you can tweak app settings.",
   "1000Day": "Sunny",
   "1000Night": "Clear",
   "1003Day": "Partly cloudy",
@@ -148,7 +148,18 @@ class CodegenLoader extends AssetLoader{
   "1279Day": "Patchy light snow with thunder",
   "1279Night": "Patchy light snow with thunder",
   "1282Day": "Moderate or heavy snow with thunder",
-  "1282Night": "Moderate or heavy snow with thunder"
+  "1282Night": "Moderate or heavy snow with thunder",
+  "1002Error": "API key not provided",
+  "1003Error": "Parameter 'q' not provided",
+  "1005Error": "API request URL is invalid",
+  "1006Error": "No location found matching parameter 'q'",
+  "2006Error": "API key provided is invalid",
+  "2007Error": "API key has exceeded calls per month quota",
+  "2008Error": "API key has been disabled",
+  "2009Error": "API key does not have access to the resource. Please check pricing page for what is allowed in your API subscription plan",
+  "9000Error": "JSON body passed in bulk request is invalid. Please make sure it is valid JSON with UTF-8 encoding",
+  "9001Error": "JSON body contains too many locations for bulk request. Please keep it below 50 in a single request",
+  "9999Error": "Internal application error"
 };
 static const Map<String,dynamic> hr = {
   "appNameString": "Promaja",
@@ -188,7 +199,7 @@ static const Map<String,dynamic> hr = {
   "navigationDescriptionCurrent": "Otvara kartice koje prikazuju trenutno vrijeme za sve lokacije koje si dodao.",
   "navigationDescriptionWeather": "Otvara kartice koje prikazuju vremensku prognozu za jednu lokaciju.",
   "navigationDescriptionList": "Otvara popis gdje možeš dodati, maknuti ili pomaknuti lokacije.",
-  "navigationDescriptionTesting": "Otvara mjesto gdje možeš promijeniti pozadinske boje za kartice",
+  "navigationDescriptionSettings": "Otvara mjesto gdje možeš promijeniti postavke aplikacije.",
   "1000Day": "Sunčano",
   "1000Night": "Vedro",
   "1003Day": "Djelomično oblačno",
@@ -284,7 +295,18 @@ static const Map<String,dynamic> hr = {
   "1279Day": "Mjestimični blagi snijeg s grmljavinom",
   "1279Night": "Mjestimični blagi snijeg s grmljavinom",
   "1282Day": "Umjereni ili jaki snijeg s grmljavinom",
-  "1282Night": "Umjereni ili jaki snijeg s grmljavinom"
+  "1282Night": "Umjereni ili jaki snijeg s grmljavinom",
+  "1002Error": "Ključ API-ja nije pružen",
+  "1003Error": "Parametar 'q' nije pružen",
+  "1005Error": "URL zahtjeva API-ja je nevažeći",
+  "1006Error": "Nije pronađena lokacija koja odgovara parametru 'q'",
+  "2006Error": "Pruženi ključ API-ja nije valjan",
+  "2007Error": "Ključ API-ja je premašio kvotu poziva mjesečno",
+  "2008Error": "Ključ API-ja je onemogućen",
+  "2009Error": "Ključ API-ja nema pristup resursu. Molimo provjerite stranicu s cijenama za dopušteno u vašem planu pretplate na API",
+  "9000Error": "JSON tijelo proslijeđeno u masovnom zahtjevu nije valjano. Molimo provjerite je li valjan JSON s UTF-8 kodiranjem",
+  "9001Error": "JSON tijelo sadrži previše lokacija za masovni zahtjev. Molimo zadržite ih ispod 50 u jednom zahtjevu",
+  "9999Error": "Interna pogreška aplikacije"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "hr": hr};
 }

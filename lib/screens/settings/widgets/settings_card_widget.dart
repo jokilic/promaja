@@ -5,13 +5,13 @@ import '../../../constants/colors.dart';
 import '../../../constants/text_styles.dart';
 import '../../../util/color.dart';
 
-class TestingCardWidget extends StatelessWidget {
+class SettingsCardWidget extends StatelessWidget {
   final Color backgroundColor;
   final Function() onTap;
   final String weatherIcon;
   final String description;
 
-  const TestingCardWidget({
+  const SettingsCardWidget({
     required this.backgroundColor,
     required this.onTap,
     required this.weatherIcon,
@@ -59,14 +59,14 @@ class TestingCardWidget extends StatelessWidget {
                       children: [
                         Text(
                           description,
-                          style: PromajaTextStyles.testingListTitle,
+                          style: PromajaTextStyles.settingsListTitle,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                         ),
                         const SizedBox(height: 12),
                         const Text(
                           'Press to open color picker',
-                          style: PromajaTextStyles.testingListSubtitle,
+                          style: PromajaTextStyles.settingsListSubtitle,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                         ),

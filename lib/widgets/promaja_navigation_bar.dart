@@ -8,7 +8,7 @@ import '../constants/icons.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
-import '../screens/testing/testing_screen.dart';
+import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
@@ -32,7 +32,7 @@ final screenProvider = StateProvider.autoDispose<Widget>(
           originalLocation: ref.watch(activeWeatherProvider),
         ),
       2 => ListScreen(),
-      3 => TestingScreen(),
+      3 => SettingsScreen(),
       _ => ListScreen(),
     };
   },

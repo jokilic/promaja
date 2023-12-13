@@ -9,14 +9,14 @@ import '../../models/custom_color/custom_color.dart';
 import '../../services/hive_service.dart';
 import '../../util/weather.dart';
 import '../../widgets/promaja_navigation_bar.dart';
-import 'widgets/testing_card_widget.dart';
+import 'widgets/settings_card_widget.dart';
 
-class TestingScreen extends ConsumerStatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TestingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsScreenState();
 }
 
-class _TestingScreenState extends ConsumerState<TestingScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> openColorPicker({
     required CustomColor customColor,
     required BuildContext context,
@@ -121,7 +121,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'cardColors'.tr(),
-                style: PromajaTextStyles.testingTitle,
+                style: PromajaTextStyles.settingsTitle,
               ),
             ),
             const SizedBox(height: 16),
@@ -133,7 +133,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'cardColorsDescription1'.tr(),
-                style: PromajaTextStyles.testingText,
+                style: PromajaTextStyles.settingsText,
               ),
             ),
             const SizedBox(height: 16),
@@ -141,7 +141,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'cardColorsDescription2'.tr(),
-                style: PromajaTextStyles.testingText,
+                style: PromajaTextStyles.settingsText,
               ),
             ),
 
@@ -154,7 +154,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'day'.tr(),
-                style: PromajaTextStyles.testingSubtitle,
+                style: PromajaTextStyles.settingsSubtitle,
               ),
             ),
             const SizedBox(height: 8),
@@ -192,7 +192,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
                   isDay: true,
                 );
 
-                return TestingCardWidget(
+                return SettingsCardWidget(
                   onTap: () => openColorPicker(
                     customColor: customColor,
                     context: context,
@@ -212,7 +212,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'night'.tr(),
-                style: PromajaTextStyles.testingSubtitle,
+                style: PromajaTextStyles.settingsSubtitle,
               ),
             ),
             const SizedBox(height: 8),
@@ -250,7 +250,7 @@ class _TestingScreenState extends ConsumerState<TestingScreen> {
                   isDay: false,
                 );
 
-                return TestingCardWidget(
+                return SettingsCardWidget(
                   onTap: () => openColorPicker(
                     customColor: customColor,
                     context: context,
