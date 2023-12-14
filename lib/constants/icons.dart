@@ -19,6 +19,7 @@ class PromajaIcons {
   static const gust = 'assets/icons/gust.png';
   static const tempMaxMin = 'assets/icons/tempmaxmin.png';
   static const dontKnow = 'assets/icons/dontknow.png';
+  static const arrow = 'assets/icons/arrow.png';
 
   /// Weather
   static const bigRainDrops = 'assets/weather/big_rain_drops.png';

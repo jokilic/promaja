@@ -27,6 +27,7 @@
     "precipitation": "Precipitation",
     "day": "Day",
     "night": "Night",
+    "settingsTitle": "Settings",
     "cardColors": "Card colors",
     "cardColorsDescription1": "Choose any of the weather descriptions and change the background color to whichever you desire.",
     "cardColorsDescription2": "Cards throughout Promaja will be changed with the newly chosen color.",
