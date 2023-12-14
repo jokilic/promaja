@@ -38,3 +38,4 @@ Tapping on any location will bring you to Forecast weather.
 - [ ] Make a good looking settings screen with ListTiles and minimal design
     - [ ] Localization
 - [ ] Check everything that the API offers and implement it
+- [ ] Link back to WeatherAPI - https://www.weatherapi.com/docs/#credit
