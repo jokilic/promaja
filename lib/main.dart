@@ -14,6 +14,7 @@ import 'services/dio_service.dart';
 import 'services/hive_service.dart';
 import 'services/home_widget_service.dart';
 import 'services/logger_service.dart';
+import 'services/notification_service.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 Future<void> main() async {
@@ -46,7 +47,7 @@ Future<void> main() async {
     SystemUiOverlayStyle.light,
   );
 
-  /// Initialize [Logger], [Dio], [BackgroundFetch], [HomeWidget] & [Hive]
+  /// Initialize services & pass `container`
   final container = ProviderContainer(
     observers: [
       RiverpodLogger(
@@ -60,6 +61,8 @@ Future<void> main() async {
   final hive = container.read(hiveProvider.notifier);
   await hive.init();
   container.read(homeWidgetProvider);
+  final notifications = container.read(notificationProvider);
+  await notifications.init();
 
   /// Run [Promaja]
   runApp(

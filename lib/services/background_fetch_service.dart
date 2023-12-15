@@ -19,6 +19,7 @@ import 'dio_service.dart';
 import 'hive_service.dart';
 import 'home_widget_service.dart';
 import 'logger_service.dart';
+import 'notification_service.dart';
 
 ///
 /// Initializes `BackgroundFetch`
@@ -35,7 +36,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       /// Configure [BackgroundFetch]
       await BackgroundFetch.configure(
         BackgroundFetchConfig(
-          minimumFetchInterval: 60,
+          minimumFetchInterval: 15,
           startOnBoot: true,
           stopOnTerminate: false,
           enableHeadless: true,
@@ -79,9 +80,9 @@ final backgroundFetchInitProvider = FutureProvider<void>(
 
             /// Initialize services
             final logger = LoggerService();
+            final dioService = DioService(logger);
             final hive = HiveService(logger);
             await hive.init();
-            final dioService = DioService(logger);
             final api = APIService(
               logger: logger,
               dio: dioService.dio,
@@ -90,6 +91,8 @@ final backgroundFetchInitProvider = FutureProvider<void>(
               logger: logger,
               hive: hive,
             );
+            final notifications = NotificationService(logger);
+            await notifications.init();
 
             /// Get location to fetch
             final weatherIndex = hive.getActiveLocationIndexFromBox();
@@ -110,8 +113,12 @@ final backgroundFetchInitProvider = FutureProvider<void>(
                 /// Update [HomeWidget] if `activeLocation` is being fetched
                 if (activeLocationSameAsResponse) {
                   /// Refresh [HomeWidget]
-
                   await homeWidget.refreshHomeWidget(
+                    response: response.response!,
+                  );
+
+                  /// Show notification
+                  await notifications.showWeatherNotification(
                     response: response.response!,
                   );
                 }
@@ -204,9 +211,9 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
 
     /// Initialize services
     final logger = LoggerService();
+    final dioService = DioService(logger);
     final hive = HiveService(logger);
     await hive.init();
-    final dioService = DioService(logger);
     final api = APIService(
       logger: logger,
       dio: dioService.dio,
@@ -215,6 +222,8 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
       logger: logger,
       hive: hive,
     );
+    final notifications = NotificationService(logger);
+    await notifications.init();
 
     /// Get location to fetch
     final weatherIndex = hive.getActiveLocationIndexFromBox();
@@ -237,6 +246,11 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
           /// Refresh [HomeWidget]
 
           await homeWidget.refreshHomeWidget(
+            response: response.response!,
+          );
+
+          /// Show notification
+          await notifications.showWeatherNotification(
             response: response.response!,
           );
         }

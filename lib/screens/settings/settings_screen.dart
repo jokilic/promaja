@@ -7,6 +7,7 @@ import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import '../card_colors/card_colors_screen.dart';
+import '../notification/notification_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -80,7 +81,11 @@ class SettingsScreen extends StatelessWidget {
               /// NOTIFICATION
               ///
               SettingsListTile(
-                onTap: () {},
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
+                  ),
+                ),
                 title: 'Notification',
                 subtitle: 'Get a daily weather notification',
               ),
