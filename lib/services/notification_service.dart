@@ -31,7 +31,10 @@ class NotificationService {
   ///
 
   {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    () async {
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      await initializeNotifications();
+    }();
   }
 
   ///
@@ -44,6 +47,17 @@ class NotificationService {
   /// METHODS
   ///
 
+  /// Initializes [FlutterLocalNotifications] plugin
+  Future<bool> initializeNotifications() async {
+    try {
+      return true;
+    } catch (e) {
+      final error = 'NotificationService -> initializeNotifications() -> $e';
+      logger.e(error);
+      return false;
+    }
+  }
+
   /// Triggers notification permission dialog
   Future<bool> requestNotificationPermissions() async {
     try {
@@ -51,7 +65,7 @@ class NotificationService {
           await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
       return permissionGranted ?? false;
     } catch (e) {
-      const error = 'LocationService -> Location permissions are permanently denied';
+      final error = 'NotificationService -> requestNotificationPermissions() -> $e';
       logger.e(error);
       return false;
     }
