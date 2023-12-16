@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -137,24 +136,23 @@ class PromajaNavigationBar extends ConsumerWidget {
           ),
 
           ///
-          /// TEST
+          /// SETTINGS
           ///
-          if (kDebugMode)
-            NavigationDestination(
-              icon: Image.asset(
-                PromajaIcons.test,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white.withOpacity(0.15),
-              ),
-              selectedIcon: Image.asset(
-                PromajaIcons.test,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white,
-              ),
-              label: '',
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.settings,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white.withOpacity(0.15),
             ),
+            selectedIcon: Image.asset(
+              PromajaIcons.settings,
+              height: 20,
+              width: 20,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
         ],
       );
 }

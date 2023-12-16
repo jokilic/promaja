@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -95,11 +94,10 @@ class ListEmpty extends StatelessWidget {
                 icon: PromajaIcons.list,
                 description: 'navigationDescriptionList'.tr(),
               ),
-              if (kDebugMode)
-                ListDescriptionValue(
-                  icon: PromajaIcons.test,
-                  description: 'navigationDescriptionSettings'.tr(),
-                ),
+              ListDescriptionValue(
+                icon: PromajaIcons.settings,
+                description: 'navigationDescriptionSettings'.tr(),
+              ),
             ],
           ),
         ],
