@@ -105,7 +105,6 @@ class ListCards extends ConsumerWidget {
             ],
             child: ListCardWidget(
               location: location,
-              index: index,
               onTap: () => openWeatherScreen(
                 index: index,
                 ref: ref,

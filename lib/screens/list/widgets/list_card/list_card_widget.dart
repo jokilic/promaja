@@ -12,13 +12,11 @@ import 'list_card_success.dart';
 
 class ListCardWidget extends ConsumerWidget {
   final Location location;
-  final int index;
   final Function() onTap;
   final Function() onTapDelete;
 
   const ListCardWidget({
     required this.location,
-    required this.index,
     required this.onTap,
     required this.onTapDelete,
   });

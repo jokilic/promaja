@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
 import '../../models/custom_color/custom_color.dart';
 import '../../services/hive_service.dart';
@@ -110,168 +112,177 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            const SizedBox(height: 16),
-
-            ///
-            /// BACK BUTTON
-            ///
-            const Row(
-              children: [
-                PromajaBackButton(),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            ///
-            /// CARD COLORS TITLE
-            ///
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'Card colors',
-                style: PromajaTextStyles.settingsTitle,
+          children: AnimateList(
+            interval: PromajaDurations.settingsInterval,
+            effects: [
+              FadeEffect(
+                curve: Curves.easeIn,
+                duration: PromajaDurations.fadeAnimation,
               ),
-            ),
-            const SizedBox(height: 16),
+            ],
+            children: [
+              const SizedBox(height: 16),
 
-            ///
-            /// CARD COLORS DESCRIPTION
-            ///
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'Choose any of the weather descriptions and change the background color to whichever you desire.',
-                style: PromajaTextStyles.settingsText,
+              ///
+              /// BACK BUTTON
+              ///
+              const Row(
+                children: [
+                  PromajaBackButton(),
+                ],
               ),
-            ),
+              const SizedBox(height: 24),
 
-            ///
-            /// DIVIDER
-            ///
-            const SizedBox(height: 24),
-            const Divider(
-              indent: 120,
-              endIndent: 120,
-              color: PromajaColors.white,
-            ),
-            const SizedBox(height: 8),
-
-            ///
-            /// DAY TITLE
-            ///
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'day'.tr(),
-                style: PromajaTextStyles.settingsSubtitle,
+              ///
+              /// CARD COLORS TITLE
+              ///
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'Card colors',
+                  style: PromajaTextStyles.settingsTitle,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
-            ///
-            /// DAY VALUES
-            ///
-            ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              physics: const BouncingScrollPhysics(),
-              itemCount: weatherCodes.length,
-              itemBuilder: (_, index) {
-                final weatherCode = weatherCodes[index];
+              ///
+              /// CARD COLORS DESCRIPTION
+              ///
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'Choose any of the weather descriptions and change the background color to whichever you desire.',
+                  style: PromajaTextStyles.settingsText,
+                ),
+              ),
 
-                final customColor = customColors.firstWhere(
-                  (customColor) => customColor.code == weatherCode && customColor.isDay,
-                  orElse: () => CustomColor(
-                    code: weatherCode,
-                    isDay: true,
-                    color: getWeatherColor(
+              ///
+              /// DIVIDER
+              ///
+              const SizedBox(height: 24),
+              const Divider(
+                indent: 120,
+                endIndent: 120,
+                color: PromajaColors.white,
+              ),
+              const SizedBox(height: 8),
+
+              ///
+              /// DAY TITLE
+              ///
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'day'.tr(),
+                  style: PromajaTextStyles.settingsSubtitle,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              ///
+              /// DAY VALUES
+              ///
+              ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                physics: const BouncingScrollPhysics(),
+                itemCount: weatherCodes.length,
+                itemBuilder: (_, index) {
+                  final weatherCode = weatherCodes[index];
+
+                  final customColor = customColors.firstWhere(
+                    (customColor) => customColor.code == weatherCode && customColor.isDay,
+                    orElse: () => CustomColor(
                       code: weatherCode,
                       isDay: true,
+                      color: getWeatherColor(
+                        code: weatherCode,
+                        isDay: true,
+                      ),
                     ),
-                  ),
-                );
+                  );
 
-                final icon = getWeatherIcon(
-                  code: weatherCode,
-                  isDay: true,
-                );
-
-                final description = getWeatherDescription(
-                  code: weatherCode,
-                  isDay: true,
-                );
-
-                return SettingsCardWidget(
-                  onTap: () => openColorPicker(
-                    customColor: customColor,
-                    context: context,
-                  ),
-                  backgroundColor: customColor.color,
-                  weatherIcon: icon,
-                  description: description,
-                );
-              },
-            ),
-            const SizedBox(height: 32),
-
-            ///
-            /// NIGHT TITLE
-            ///
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'night'.tr(),
-                style: PromajaTextStyles.settingsSubtitle,
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            ///
-            /// NIGHT VALUES
-            ///
-            ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              physics: const BouncingScrollPhysics(),
-              itemCount: weatherCodes.length,
-              itemBuilder: (_, index) {
-                final weatherCode = weatherCodes[index];
-
-                final customColor = customColors.firstWhere(
-                  (customColor) => customColor.code == weatherCode && !customColor.isDay,
-                  orElse: () => CustomColor(
+                  final icon = getWeatherIcon(
                     code: weatherCode,
-                    isDay: false,
-                    color: getWeatherColor(
+                    isDay: true,
+                  );
+
+                  final description = getWeatherDescription(
+                    code: weatherCode,
+                    isDay: true,
+                  );
+
+                  return SettingsCardWidget(
+                    onTap: () => openColorPicker(
+                      customColor: customColor,
+                      context: context,
+                    ),
+                    backgroundColor: customColor.color,
+                    weatherIcon: icon,
+                    description: description,
+                  );
+                },
+              ),
+              const SizedBox(height: 32),
+
+              ///
+              /// NIGHT TITLE
+              ///
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'night'.tr(),
+                  style: PromajaTextStyles.settingsSubtitle,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              ///
+              /// NIGHT VALUES
+              ///
+              ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                physics: const BouncingScrollPhysics(),
+                itemCount: weatherCodes.length,
+                itemBuilder: (_, index) {
+                  final weatherCode = weatherCodes[index];
+
+                  final customColor = customColors.firstWhere(
+                    (customColor) => customColor.code == weatherCode && !customColor.isDay,
+                    orElse: () => CustomColor(
                       code: weatherCode,
                       isDay: false,
+                      color: getWeatherColor(
+                        code: weatherCode,
+                        isDay: false,
+                      ),
                     ),
-                  ),
-                );
+                  );
 
-                final icon = getWeatherIcon(
-                  code: weatherCode,
-                  isDay: false,
-                );
+                  final icon = getWeatherIcon(
+                    code: weatherCode,
+                    isDay: false,
+                  );
 
-                final description = getWeatherDescription(
-                  code: weatherCode,
-                  isDay: false,
-                );
+                  final description = getWeatherDescription(
+                    code: weatherCode,
+                    isDay: false,
+                  );
 
-                return SettingsCardWidget(
-                  onTap: () => openColorPicker(
-                    customColor: customColor,
-                    context: context,
-                  ),
-                  backgroundColor: customColor.color,
-                  weatherIcon: icon,
-                  description: description,
-                );
-              },
-            ),
-          ],
+                  return SettingsCardWidget(
+                    onTap: () => openColorPicker(
+                      customColor: customColor,
+                      context: context,
+                    ),
+                    backgroundColor: customColor.color,
+                    weatherIcon: icon,
+                    description: description,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
