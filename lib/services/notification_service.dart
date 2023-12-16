@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +10,6 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../constants/icons.dart';
-import '../constants/jokes.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../util/weather.dart';
 import 'logger_service.dart';
@@ -272,7 +273,7 @@ class NotificationService {
         await cancelNotifications();
         await showNotification(
           title: 'Promaja',
-          text: PromajaJokes.getRandomJoke(),
+          text: getRandomJoke(),
         );
       }
     } catch (e) {
@@ -280,6 +281,13 @@ class NotificationService {
       logger.e(error);
     }
   }
+}
+
+/// Returns a random weather joke
+String getRandomJoke() {
+  final random = Random();
+  final index = random.nextInt(15);
+  return 'weatherJoke$index'.tr();
 }
 
 @pragma('vm:entry-point')

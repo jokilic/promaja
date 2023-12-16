@@ -136,10 +136,10 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
               ///
               /// CARD COLORS TITLE
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Card colors',
+                  'cardColorsTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
@@ -148,10 +148,10 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
               ///
               /// CARD COLORS DESCRIPTION
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Choose any of the weather descriptions and change the background color to whichever you desire.',
+                  'cardColorsDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
                 ),
               ),

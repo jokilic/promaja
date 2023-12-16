@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -43,10 +44,10 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   /// SETTINGS TITLE
                   ///
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      'Settings',
+                      'settingsTitle'.tr(),
                       style: PromajaTextStyles.settingsTitle,
                     ),
                   ),
@@ -55,10 +56,10 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   /// SETTINGS DESCRIPTION
                   ///
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      'Here you can change settings related to Promaja.',
+                      'settingsSubtitle'.tr(),
                       style: PromajaTextStyles.settingsText,
                     ),
                   ),
@@ -83,8 +84,8 @@ class SettingsScreen extends ConsumerWidget {
                         builder: (context) => CardColorsScreen(),
                       ),
                     ),
-                    title: 'Card colors',
-                    subtitle: 'Change background color for any weather type',
+                    title: 'cardColorsTitle'.tr(),
+                    subtitle: 'cardColorsSubtitle'.tr(),
                   ),
 
                   ///
@@ -92,8 +93,8 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   SettingsListTile(
                     onTap: () {},
-                    title: 'Temperature',
-                    subtitle: 'Celsius or Fahrenheit?',
+                    title: 'temperatureTitle'.tr(),
+                    subtitle: 'temperatureSubtitle'.tr(),
                   ),
 
                   ///
@@ -105,8 +106,8 @@ class SettingsScreen extends ConsumerWidget {
                         builder: (context) => NotificationScreen(),
                       ),
                     ),
-                    title: 'Notification',
-                    subtitle: 'Get a daily weather notification',
+                    title: 'notificationTitle'.tr(),
+                    subtitle: 'notificationSubtitle'.tr(),
                   ),
 
                   ///
@@ -114,8 +115,8 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   SettingsListTile(
                     onTap: () {},
-                    title: 'Widget',
-                    subtitle: 'Choose location to be shown in home widget',
+                    title: 'widgetTitle'.tr(),
+                    subtitle: 'widgetSubtitle'.tr(),
                   ),
 
                   ///
@@ -123,8 +124,8 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   SettingsListTile(
                     onTap: () {},
-                    title: 'Contact',
-                    subtitle: 'Having some ideas regarding Promaja?',
+                    title: 'contactTitle'.tr(),
+                    subtitle: 'contactSubtitle'.tr(),
                   ),
 
                   ///
@@ -146,8 +147,8 @@ class SettingsScreen extends ConsumerWidget {
                     child: Text.rich(
                       TextSpan(
                         children: [
-                          const TextSpan(
-                            text: "Promaja wouldn't be possible without ",
+                          TextSpan(
+                            text: 'weatherAPIInfo'.tr(),
                             style: PromajaTextStyles.settingsText,
                           ),
                           TextSpan(

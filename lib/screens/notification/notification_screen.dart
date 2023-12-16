@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,10 +41,10 @@ class NotificationScreen extends ConsumerWidget {
                 ///
                 /// NOTIFICATIONS TITLE
                 ///
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    'Notifications',
+                    'notificationTitle'.tr(),
                     style: PromajaTextStyles.settingsTitle,
                   ),
                 ),
@@ -52,10 +53,10 @@ class NotificationScreen extends ConsumerWidget {
                 ///
                 /// NOTIFICATIONS DESCRIPTION
                 ///
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    "Change settings related to weather notifications which you can receive if you're so inclined.",
+                    'notificationDescription'.tr(),
                     style: PromajaTextStyles.settingsText,
                   ),
                 ),
@@ -76,8 +77,8 @@ class NotificationScreen extends ConsumerWidget {
                 ///
                 SettingsListTile(
                   onTap: () {},
-                  title: 'Schedule notification',
-                  subtitle: 'Show a weather notification each morning',
+                  title: 'scheduleNotificationTitle'.tr(),
+                  subtitle: 'scheduleNotificationSubtitle'.tr(),
                 ),
 
                 ///
@@ -85,8 +86,8 @@ class NotificationScreen extends ConsumerWidget {
                 ///
                 SettingsListTile(
                   onTap: ref.read(notificationProvider).testNotification,
-                  title: 'Test notification',
-                  subtitle: 'Show a test notification on your device',
+                  title: 'testNotificationTitle'.tr(),
+                  subtitle: 'testNotificationSubtitle'.tr(),
                 ),
               ],
             ),
