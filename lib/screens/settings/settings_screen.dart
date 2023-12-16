@@ -15,6 +15,21 @@ import '../notification/notification_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsScreen extends ConsumerWidget {
+  void showNotImplementedSnackBar(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Not implemented yet...',
+            style: PromajaTextStyles.snackbar,
+          ),
+          backgroundColor: PromajaColors.indigo,
+          behavior: SnackBarBehavior.floating,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         bottomNavigationBar: PromajaNavigationBar(),
@@ -92,7 +107,7 @@ class SettingsScreen extends ConsumerWidget {
                   /// TEMPERATURE SCALE
                   ///
                   SettingsListTile(
-                    onTap: () {},
+                    onTap: () => showNotImplementedSnackBar(context),
                     title: 'temperatureTitle'.tr(),
                     subtitle: 'temperatureSubtitle'.tr(),
                   ),
@@ -114,7 +129,7 @@ class SettingsScreen extends ConsumerWidget {
                   /// WIDGET
                   ///
                   SettingsListTile(
-                    onTap: () {},
+                    onTap: () => showNotImplementedSnackBar(context),
                     title: 'widgetTitle'.tr(),
                     subtitle: 'widgetSubtitle'.tr(),
                   ),
@@ -123,7 +138,13 @@ class SettingsScreen extends ConsumerWidget {
                   /// CONTACT
                   ///
                   SettingsListTile(
-                    onTap: () {},
+                    onTap: () => launchUrl(
+                      Uri(
+                        scheme: 'mailto',
+                        path: 'neksuses@gmail.com',
+                        queryParameters: {'subject': 'Regarding Promaja...'},
+                      ),
+                    ),
                     title: 'contactTitle'.tr(),
                     subtitle: 'contactSubtitle'.tr(),
                   ),
@@ -159,7 +180,7 @@ class SettingsScreen extends ConsumerWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => launchUrl(
-                                    Uri.parse('https://www.weatherapi.com'),
+                                    Uri(scheme: 'https', host: 'www.weatherapi.com'),
                                   ),
                           ),
                         ],
@@ -169,7 +190,7 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   GestureDetector(
                     onTap: () => launchUrl(
-                      Uri.parse('https://www.weatherapi.com'),
+                      Uri(scheme: 'https', host: 'www.weatherapi.com'),
                     ),
                     child: Image.asset(
                       PromajaIcons.weatherAPI,

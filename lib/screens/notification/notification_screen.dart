@@ -11,6 +11,21 @@ import '../../widgets/promaja_back_button.dart';
 import '../settings/widgets/settings_list_tile.dart';
 
 class NotificationScreen extends ConsumerWidget {
+  void showNotImplementedSnackBar(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Not implemented yet...',
+            style: PromajaTextStyles.snackbar,
+          ),
+          backgroundColor: PromajaColors.indigo,
+          behavior: SnackBarBehavior.floating,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         body: SafeArea(
@@ -76,7 +91,7 @@ class NotificationScreen extends ConsumerWidget {
                 /// SCHEDULE NOTIFICATION
                 ///
                 SettingsListTile(
-                  onTap: () {},
+                  onTap: () => showNotImplementedSnackBar(context),
                   title: 'scheduleNotificationTitle'.tr(),
                   subtitle: 'scheduleNotificationSubtitle'.tr(),
                 ),
