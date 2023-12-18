@@ -3,6 +3,16 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
+import '../models/settings/notification/evening_notification.dart';
+import '../models/settings/notification/morning_notification.dart';
+import '../models/settings/notification/notification_settings.dart';
+import '../models/settings/promaja_settings.dart';
+import '../models/settings/units/distance_speed_unit.dart';
+import '../models/settings/units/pressure_unit.dart';
+import '../models/settings/units/temperature_unit.dart';
+import '../models/settings/units/unit_settings.dart';
+import '../models/settings/widget/weather_type.dart';
+import '../models/settings/widget/widget_settings.dart';
 import 'logger_service.dart';
 
 final hiveProvider = StateNotifierProvider<HiveService, List<Location>>(
@@ -25,6 +35,9 @@ class HiveService extends StateNotifier<List<Location>> {
   late final Box<CustomColor> customColorsBox;
   late final Box<int> activeLocationIndexBox;
   late final Box<int> activeNavigationValueIndexToBox;
+  late final Box<PromajaSettings> promajaSettingsBox;
+
+  late final PromajaSettings defaultSettings;
 
   ///
   /// INIT
@@ -45,12 +58,72 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(ColorAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(NotificationSettingsAdapter().typeId)) {
+      Hive.registerAdapter(NotificationSettingsAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(MorningNotificationAdapter().typeId)) {
+      Hive.registerAdapter(MorningNotificationAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(EveningNotificationAdapter().typeId)) {
+      Hive.registerAdapter(EveningNotificationAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(WidgetSettingsAdapter().typeId)) {
+      Hive.registerAdapter(WidgetSettingsAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(WeatherTypeAdapter().typeId)) {
+      Hive.registerAdapter(WeatherTypeAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(UnitSettingsAdapter().typeId)) {
+      Hive.registerAdapter(UnitSettingsAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(TemperatureUnitAdapter().typeId)) {
+      Hive.registerAdapter(TemperatureUnitAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(DistanceSpeedUnitAdapter().typeId)) {
+      Hive.registerAdapter(DistanceSpeedUnitAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(PressureUnitAdapter().typeId)) {
+      Hive.registerAdapter(PressureUnitAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(PromajaSettingsAdapter().typeId)) {
+      Hive.registerAdapter(PromajaSettingsAdapter());
+    }
+
     locationsBox = await Hive.openBox<Location>('locationsBox');
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
+    activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
+    promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
 
     state = getLocationsFromBox();
+
+    defaultSettings = PromajaSettings(
+      notification: NotificationSettings(
+        location: state.first,
+        hourlyNotification: false,
+        morningNotification: MorningNotification.off,
+        eveningNotification: EveningNotification.off,
+      ),
+      widget: WidgetSettings(
+        location: state.first,
+        weatherType: WeatherType.current,
+      ),
+      unit: UnitSettings(
+        temperature: TemperatureUnit.celsius,
+        distanceSpeed: DistanceSpeedUnit.kilometers,
+        pressure: PressureUnit.hectopascal,
+      ),
+    );
   }
 
   ///
@@ -65,6 +138,7 @@ class HiveService extends StateNotifier<List<Location>> {
     await customColorsBox.close();
     await activeLocationIndexBox.close();
     await activeNavigationValueIndexToBox.close();
+    await promajaSettingsBox.close();
 
     await Hive.close();
   }
@@ -75,6 +149,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to add a new active navigation value index to [Hive]
   Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);
+
+  /// Called to add new settings value to [Hive]
+  Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async => promajaSettingsBox.put(0, promajaSettings);
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
@@ -117,6 +194,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to get active navigation value index from [Hive]
   int getActiveNavigationValueIndexFromBox() => activeNavigationValueIndexToBox.get(0) ?? 0;
+
+  /// Called to get settings from [Hive]
+  PromajaSettings getPromajaSettingsFromBox() => promajaSettingsBox.get(0) ?? defaultSettings;
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {

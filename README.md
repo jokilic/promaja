@@ -33,8 +33,23 @@ Tapping on any location will bring you to Forecast weather.
 
 ## Things I still want to do 👷‍♂️
 
-- [ ] Implement weather notifications
 - [ ] Publish app on App Store
 - [ ] Make a good looking settings screen with ListTiles and minimal design
-    - [ ] Functionality
     - [ ] Localization
+    - [ ] Widget
+        - [ ] Location
+        - [ ] Current weather or forecast
+    - [ ] Notifications
+        - [ ] Location
+        - [ ] Morning notification about daily forecast
+            - [ ] Put it between 7, 8, 9 or 10
+        - [ ] Hourly notification about current weathe
+        - [ ] Nightly notification about tomorrows forecast
+            - [ ] Put it between 19, 20, 21 or 22
+    - [ ] Units
+        - [ ] Temperature
+            - [ ] Celsius / Fahrenheit
+        - [ ] Distance / speed
+            - [ ] Kilometers / miles
+        - [ ] Pressure
+            - [ ] Hectopascal / Inches of Mercury
