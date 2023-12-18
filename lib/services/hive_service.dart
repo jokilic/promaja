@@ -108,13 +108,13 @@ class HiveService extends StateNotifier<List<Location>> {
 
     defaultSettings = PromajaSettings(
       notification: NotificationSettings(
-        location: state.first,
+        location: state.firstOrNull,
         hourlyNotification: false,
         morningNotification: MorningNotification.off,
         eveningNotification: EveningNotification.off,
       ),
       widget: WidgetSettings(
-        location: state.first,
+        location: state.firstOrNull,
         weatherType: WeatherType.current,
       ),
       unit: UnitSettings(

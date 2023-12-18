@@ -10,7 +10,7 @@ part 'widget_settings.g.dart';
 @HiveType(typeId: 6)
 class WidgetSettings extends HiveObject {
   @HiveField(0)
-  final Location location;
+  final Location? location;
   @HiveField(1)
   final WeatherType weatherType;
 
@@ -29,12 +29,12 @@ class WidgetSettings extends HiveObject {
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'location': location.toMap(),
+        'location': location?.toMap(),
         'weatherType': weatherType.name,
       };
 
   factory WidgetSettings.fromMap(Map<String, dynamic> map) => WidgetSettings(
-        location: Location.fromMap(map['location'] as Map<String, dynamic>),
+        location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
         weatherType: WeatherType.values.byName(map['weatherType'] as String),
       );
 

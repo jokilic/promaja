@@ -17,7 +17,7 @@ class NotificationSettingsAdapter extends TypeAdapter<NotificationSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NotificationSettings(
-      location: fields[0] as Location,
+      location: fields[0] as Location?,
       hourlyNotification: fields[1] as bool,
       morningNotification: fields[2] as MorningNotification,
       eveningNotification: fields[3] as EveningNotification,

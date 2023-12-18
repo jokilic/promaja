@@ -9,6 +9,7 @@ import '../../constants/text_styles.dart';
 import '../../services/notification_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
+import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 
 class NotificationScreen extends ConsumerWidget {
@@ -104,8 +105,21 @@ class NotificationScreen extends ConsumerWidget {
               ///
               /// HOURLY NOTIFICATION
               ///
-              SettingsListTile(
-                onTap: () => showNotImplementedSnackBar(context),
+              SettingsCheckboxListTile(
+                value: settings.notification.hourlyNotification,
+                onTap: () {
+                  final oldValue = settings.notification.hourlyNotification;
+                  final oldSettings = ref.read(settingsProvider);
+
+                  ref.read(settingsProvider.notifier).updateSettings(
+                        oldSettings.copyWith(
+                          notification: oldSettings.notification.copyWith(
+                            hourlyNotification: !oldValue,
+                          ),
+                        ),
+                      );
+                },
+
                 // TODO
                 title: 'Hourly notification',
                 subtitle: 'Show a weather notification each hour',

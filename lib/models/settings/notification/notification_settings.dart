@@ -11,7 +11,7 @@ part 'notification_settings.g.dart';
 @HiveType(typeId: 3)
 class NotificationSettings extends HiveObject {
   @HiveField(0)
-  final Location location;
+  final Location? location;
   @HiveField(1)
   final bool hourlyNotification;
   @HiveField(2)
@@ -40,14 +40,14 @@ class NotificationSettings extends HiveObject {
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'location': location.toMap(),
+        'location': location?.toMap(),
         'hourlyNotification': hourlyNotification,
         'morningNotification': morningNotification.name,
         'eveningNotification': eveningNotification.name,
       };
 
   factory NotificationSettings.fromMap(Map<String, dynamic> map) => NotificationSettings(
-        location: Location.fromMap(map['location'] as Map<String, dynamic>),
+        location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
         hourlyNotification: map['hourlyNotification'] as bool,
         morningNotification: MorningNotification.values.byName(map['morningNotification'] as String),
         eveningNotification: EveningNotification.values.byName(map['eveningNotification'] as String),

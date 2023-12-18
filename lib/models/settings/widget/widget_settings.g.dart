@@ -17,7 +17,7 @@ class WidgetSettingsAdapter extends TypeAdapter<WidgetSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WidgetSettings(
-      location: fields[0] as Location,
+      location: fields[0] as Location?,
       weatherType: fields[1] as WeatherType,
     );
   }
