@@ -102,7 +102,6 @@ class HiveService extends StateNotifier<List<Location>> {
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
-    activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
     promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
 
     state = getLocationsFromBox();
