@@ -5,13 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
+import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../services/notification_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
+import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
+// TODO: Localize file
 class NotificationScreen extends ConsumerWidget {
   void showNotImplementedSnackBar(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -95,10 +98,16 @@ class NotificationScreen extends ConsumerWidget {
               ///
               /// LOCATION
               ///
-              SettingsListTile(
-                onTap: () => showNotImplementedSnackBar(context),
-                // TODO
-                title: 'Location',
+              SettingsPopupMenuListTile(
+                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapUp: (_) async {
+                  final newLocation = await ref.read(settingsProvider.notifier).showNotificationLocationPopupMenu(context);
+
+                  if (newLocation != null) {
+                    await ref.read(settingsProvider.notifier).updateNotificationLocation(newLocation);
+                  }
+                },
+                activeValue: '${settings.notification.location?.name}, ${settings.notification.location?.country}',
                 subtitle: 'Location which will be shown in notifications',
               ),
 
@@ -107,20 +116,7 @@ class NotificationScreen extends ConsumerWidget {
               ///
               SettingsCheckboxListTile(
                 value: settings.notification.hourlyNotification,
-                onTap: () {
-                  final oldValue = settings.notification.hourlyNotification;
-                  final oldSettings = ref.read(settingsProvider);
-
-                  ref.read(settingsProvider.notifier).updateSettings(
-                        oldSettings.copyWith(
-                          notification: oldSettings.notification.copyWith(
-                            hourlyNotification: !oldValue,
-                          ),
-                        ),
-                      );
-                },
-
-                // TODO
+                onTap: () => ref.read(settingsProvider.notifier).toggleHourlyNotification(),
                 title: 'Hourly notification',
                 subtitle: 'Show a weather notification each hour',
               ),
@@ -128,8 +124,9 @@ class NotificationScreen extends ConsumerWidget {
               ///
               /// MORNING NOTIFICATION
               ///
-              SettingsListTile(
-                onTap: () => showNotImplementedSnackBar(context),
+              SettingsCheckboxListTile(
+                value: settings.notification.morningNotification,
+                onTap: () => ref.read(settingsProvider.notifier).toggleMonthlyNotification(),
                 title: 'morningNotificationTitle'.tr(),
                 subtitle: 'morningNotificationSubtitle'.tr(),
               ),
@@ -137,9 +134,9 @@ class NotificationScreen extends ConsumerWidget {
               ///
               /// EVENING NOTIFICATION
               ///
-              SettingsListTile(
-                onTap: () => showNotImplementedSnackBar(context),
-                // TODO
+              SettingsCheckboxListTile(
+                value: settings.notification.eveningNotification,
+                onTap: () => ref.read(settingsProvider.notifier).toggleEveningNotification(),
                 title: 'Evening notification',
                 subtitle: 'Each night, show a notification with forecast for tomorrow',
               ),
@@ -149,6 +146,7 @@ class NotificationScreen extends ConsumerWidget {
               ///
               SettingsListTile(
                 onTap: ref.read(notificationProvider).testNotification,
+                icon: PromajaIcons.dot,
                 title: 'testNotificationTitle'.tr(),
                 subtitle: 'testNotificationSubtitle'.tr(),
               ),

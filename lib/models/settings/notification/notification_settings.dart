@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 
 import '../../location/location.dart';
-import 'evening_notification.dart';
-import 'morning_notification.dart';
 
 part 'notification_settings.g.dart';
 
@@ -15,9 +13,9 @@ class NotificationSettings extends HiveObject {
   @HiveField(1)
   final bool hourlyNotification;
   @HiveField(2)
-  final MorningNotification morningNotification;
+  final bool morningNotification;
   @HiveField(3)
-  final EveningNotification eveningNotification;
+  final bool eveningNotification;
 
   NotificationSettings({
     required this.location,
@@ -29,8 +27,8 @@ class NotificationSettings extends HiveObject {
   NotificationSettings copyWith({
     Location? location,
     bool? hourlyNotification,
-    MorningNotification? morningNotification,
-    EveningNotification? eveningNotification,
+    bool? morningNotification,
+    bool? eveningNotification,
   }) =>
       NotificationSettings(
         location: location ?? this.location,
@@ -42,15 +40,15 @@ class NotificationSettings extends HiveObject {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'location': location?.toMap(),
         'hourlyNotification': hourlyNotification,
-        'morningNotification': morningNotification.name,
-        'eveningNotification': eveningNotification.name,
+        'morningNotification': morningNotification,
+        'eveningNotification': eveningNotification,
       };
 
   factory NotificationSettings.fromMap(Map<String, dynamic> map) => NotificationSettings(
         location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
         hourlyNotification: map['hourlyNotification'] as bool,
-        morningNotification: MorningNotification.values.byName(map['morningNotification'] as String),
-        eveningNotification: EveningNotification.values.byName(map['eveningNotification'] as String),
+        morningNotification: map['morningNotification'] as bool,
+        eveningNotification: map['eveningNotification'] as bool,
       );
 
   String toJson() => json.encode(toMap());

@@ -3,18 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../../constants/colors.dart';
-import '../../../constants/icons.dart';
 import '../../../constants/text_styles.dart';
 
 class SettingsListTile extends StatelessWidget {
   final Function() onTap;
   final String title;
   final String subtitle;
+  final String icon;
 
   const SettingsListTile({
     required this.onTap,
     required this.title,
     required this.subtitle,
+    required this.icon,
   });
 
   @override
@@ -36,7 +37,7 @@ class SettingsListTile extends StatelessWidget {
         trailing: Transform.rotate(
           angle: -45 * pi / 180,
           child: Image.asset(
-            PromajaIcons.arrow,
+            icon,
             color: PromajaColors.white,
             height: 28,
             width: 28,

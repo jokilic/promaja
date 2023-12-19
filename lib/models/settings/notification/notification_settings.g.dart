@@ -19,8 +19,8 @@ class NotificationSettingsAdapter extends TypeAdapter<NotificationSettings> {
     return NotificationSettings(
       location: fields[0] as Location?,
       hourlyNotification: fields[1] as bool,
-      morningNotification: fields[2] as MorningNotification,
-      eveningNotification: fields[3] as EveningNotification,
+      morningNotification: fields[2] as bool,
+      eveningNotification: fields[3] as bool,
     );
   }
 

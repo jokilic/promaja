@@ -187,4 +187,10 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w400,
     height: 1,
   );
+  static const settingsPopupMenuItem = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    height: 1,
+  );
 }

@@ -103,6 +103,7 @@ class SettingsScreen extends ConsumerWidget {
                       builder: (context) => CardColorsScreen(),
                     ),
                   ),
+                  icon: PromajaIcons.arrow,
                   title: 'cardColorsTitle'.tr(),
                   subtitle: 'cardColorsSubtitle'.tr(),
                 ),
@@ -112,6 +113,7 @@ class SettingsScreen extends ConsumerWidget {
                 ///
                 SettingsListTile(
                   onTap: () => showNotImplementedSnackBar(context),
+                  icon: PromajaIcons.arrow,
                   title: 'temperatureTitle'.tr(),
                   subtitle: 'temperatureSubtitle'.tr(),
                 ),
@@ -125,6 +127,7 @@ class SettingsScreen extends ConsumerWidget {
                       builder: (context) => NotificationScreen(),
                     ),
                   ),
+                  icon: PromajaIcons.arrow,
                   title: 'notificationTitle'.tr(),
                   subtitle: 'notificationSubtitle'.tr(),
                 ),
@@ -134,6 +137,7 @@ class SettingsScreen extends ConsumerWidget {
                 ///
                 SettingsListTile(
                   onTap: () => showNotImplementedSnackBar(context),
+                  icon: PromajaIcons.arrow,
                   title: 'widgetTitle'.tr(),
                   subtitle: 'widgetSubtitle'.tr(),
                 ),
@@ -149,6 +153,7 @@ class SettingsScreen extends ConsumerWidget {
                       queryParameters: {'subject': 'Regarding Promaja...'},
                     ),
                   ),
+                  icon: PromajaIcons.arrow,
                   title: 'contactTitle'.tr(),
                   subtitle: 'contactSubtitle'.tr(),
                 ),

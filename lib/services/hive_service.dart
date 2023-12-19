@@ -3,8 +3,6 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
-import '../models/settings/notification/evening_notification.dart';
-import '../models/settings/notification/morning_notification.dart';
 import '../models/settings/notification/notification_settings.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/distance_speed_unit.dart';
@@ -62,14 +60,6 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(NotificationSettingsAdapter());
     }
 
-    if (!Hive.isAdapterRegistered(MorningNotificationAdapter().typeId)) {
-      Hive.registerAdapter(MorningNotificationAdapter());
-    }
-
-    if (!Hive.isAdapterRegistered(EveningNotificationAdapter().typeId)) {
-      Hive.registerAdapter(EveningNotificationAdapter());
-    }
-
     if (!Hive.isAdapterRegistered(WidgetSettingsAdapter().typeId)) {
       Hive.registerAdapter(WidgetSettingsAdapter());
     }
@@ -110,8 +100,8 @@ class HiveService extends StateNotifier<List<Location>> {
       notification: NotificationSettings(
         location: state.firstOrNull,
         hourlyNotification: false,
-        morningNotification: MorningNotification.off,
-        eveningNotification: EveningNotification.off,
+        morningNotification: false,
+        eveningNotification: false,
       ),
       widget: WidgetSettings(
         location: state.firstOrNull,
@@ -150,7 +140,10 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);
 
   /// Called to add new settings value to [Hive]
-  Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async => promajaSettingsBox.put(0, promajaSettings);
+  Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async {
+    logger.f(promajaSettings);
+    await promajaSettingsBox.put(0, promajaSettings);
+  }
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
