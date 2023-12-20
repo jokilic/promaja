@@ -280,8 +280,18 @@ class NotificationService {
   /// Shows a test notification
   Future<void> testNotification() async {
     try {
+      /// Initialize notifications if they're not initialized
+      if (flutterLocalNotificationsPlugin == null) {
+        flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+        await configureTimeZone();
+        await initializeNotifications();
+      }
+
+      /// Check permissions
       final permissionsGranted = await requestNotificationPermissions();
+
       if (permissionsGranted) {
+        /// Show notification
         await cancelNotifications();
         await showNotification(
           title: 'Promaja',

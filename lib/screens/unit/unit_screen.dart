@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,6 @@ import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-// TODO: Localize file
 class UnitScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,10 +47,10 @@ class UnitScreen extends ConsumerWidget {
               ///
               /// UNITS TITLE
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Units',
+                  'unitsTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
@@ -59,10 +59,10 @@ class UnitScreen extends ConsumerWidget {
               ///
               /// UNITS DESCRIPTION
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Update units which get shown for temperature, pressure, wind speed and similar.',
+                  'unitsDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
                 ),
               ),
@@ -91,7 +91,7 @@ class UnitScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: localizeTemperature(settings.unit.temperature),
-                subtitle: 'Unit which is used for temperature',
+                subtitle: 'unitsTemperatureSubtitle'.tr(),
               ),
 
               ///
@@ -107,7 +107,7 @@ class UnitScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: localizeDistanceSpeed(settings.unit.distanceSpeed),
-                subtitle: 'Unit which is used for distance & speed',
+                subtitle: 'unitsDistanceSpeedSubtitle'.tr(),
               ),
 
               ///
@@ -123,7 +123,7 @@ class UnitScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: localizePressure(settings.unit.pressure),
-                subtitle: 'Unit which is used for pressure',
+                subtitle: 'unitsPressureSubtitle'.tr(),
               ),
             ],
           ),

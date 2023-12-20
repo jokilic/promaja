@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,6 @@ import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-// TODO: Localize file
 class WidgetScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,10 +45,10 @@ class WidgetScreen extends ConsumerWidget {
               ///
               /// WIDGET TITLE
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Widget',
+                  'widgetTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
@@ -57,10 +57,10 @@ class WidgetScreen extends ConsumerWidget {
               ///
               /// WIDGET DESCRIPTION
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'Settings related to the widget which is shown on your phones home screen.',
+                  'widgetDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
                 ),
               ),
@@ -89,7 +89,7 @@ class WidgetScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: '${settings.widget.location?.name}, ${settings.widget.location?.country}',
-                subtitle: 'Location which will be shown in widget',
+                subtitle: 'widgetLocationDescription'.tr(),
               ),
 
               ///
@@ -105,7 +105,7 @@ class WidgetScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: localizeWeatherType(settings.widget.weatherType),
-                subtitle: 'Weather type which will be shown in widget',
+                subtitle: 'widgetWeatherTypeDescription'.tr(),
               ),
             ],
           ),

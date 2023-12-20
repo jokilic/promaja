@@ -14,7 +14,6 @@ import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-// TODO: Localize file
 class NotificationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,7 +92,7 @@ class NotificationScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: '${settings.notification.location?.name}, ${settings.notification.location?.country}',
-                subtitle: 'Location which will be shown in notifications',
+                subtitle: 'notificationLocationDescription'.tr(),
               ),
 
               ///
@@ -102,8 +101,8 @@ class NotificationScreen extends ConsumerWidget {
               SettingsCheckboxListTile(
                 value: settings.notification.hourlyNotification,
                 onTap: () => ref.read(settingsProvider.notifier).toggleHourlyNotification(),
-                title: 'Hourly notification',
-                subtitle: 'Show a weather notification each hour',
+                title: 'hourlyNotificationTitle'.tr(),
+                subtitle: 'hourlyNotificationSubtitle'.tr(),
               ),
 
               ///
@@ -122,8 +121,8 @@ class NotificationScreen extends ConsumerWidget {
               SettingsCheckboxListTile(
                 value: settings.notification.eveningNotification,
                 onTap: () => ref.read(settingsProvider.notifier).toggleEveningNotification(),
-                title: 'Evening notification',
-                subtitle: 'Each night, show a notification with forecast for tomorrow',
+                title: 'eveningNotificationTitle'.tr(),
+                subtitle: 'eveningNotificationSubtitle'.tr(),
               ),
 
               ///

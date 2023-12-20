@@ -16,7 +16,6 @@ import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
-// TODO: Localize file
 class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
@@ -102,8 +101,8 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                     ),
                     icon: PromajaIcons.arrow,
-                    title: 'Units',
-                    subtitle: 'Update units you want to be shown for each weather',
+                    title: 'unitsTitle'.tr(),
+                    subtitle: 'unitsSubtitle'.tr(),
                   ),
 
                   ///
@@ -142,7 +141,9 @@ class SettingsScreen extends ConsumerWidget {
                       Uri(
                         scheme: 'mailto',
                         path: 'neksuses@gmail.com',
-                        queryParameters: {'subject': 'Regarding Promaja...'},
+                        queryParameters: {
+                          'subject': Uri.encodeComponent('Regarding Promaja...'),
+                        },
                       ),
                     ),
                     icon: PromajaIcons.arrow,
