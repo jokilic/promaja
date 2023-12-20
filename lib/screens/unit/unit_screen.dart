@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
+import '../../models/settings/units/distance_speed_unit.dart';
+import '../../models/settings/units/pressure_unit.dart';
+import '../../models/settings/units/temperature_unit.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
@@ -87,7 +90,7 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateTemperatureUnit(newTemperature);
                   }
                 },
-                activeValue: settings.unit.temperature.name,
+                activeValue: localizeTemperature(settings.unit.temperature),
                 subtitle: 'Unit which is used for temperature',
               ),
 
@@ -103,7 +106,7 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateDistanceSpeedUnit(newDistanceSpeed);
                   }
                 },
-                activeValue: settings.unit.distanceSpeed.name,
+                activeValue: localizeDistanceSpeed(settings.unit.distanceSpeed),
                 subtitle: 'Unit which is used for distance & speed',
               ),
 
@@ -119,7 +122,7 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updatePressureUnit(newPressure);
                   }
                 },
-                activeValue: settings.unit.pressure.name,
+                activeValue: localizePressure(settings.unit.pressure),
                 subtitle: 'Unit which is used for pressure',
               ),
             ],

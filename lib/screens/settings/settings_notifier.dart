@@ -90,7 +90,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
             (location) => PopupMenuItem(
               value: location,
               padding: const EdgeInsets.all(20),
-              onTap: () {},
               child: Text(
                 '${location.name}, ${location.country}',
                 style: PromajaTextStyles.settingsPopupMenuItem,
@@ -165,9 +164,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
             (temperatureUnit) => PopupMenuItem(
               value: temperatureUnit,
               padding: const EdgeInsets.all(20),
-              onTap: () {},
               child: Text(
-                temperatureUnit.name,
+                localizeTemperature(temperatureUnit),
                 style: PromajaTextStyles.settingsPopupMenuItem,
               ),
             ),
@@ -213,9 +211,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
             (distanceSpeedUnit) => PopupMenuItem(
               value: distanceSpeedUnit,
               padding: const EdgeInsets.all(20),
-              onTap: () {},
               child: Text(
-                distanceSpeedUnit.name,
+                localizeDistanceSpeed(distanceSpeedUnit),
                 style: PromajaTextStyles.settingsPopupMenuItem,
               ),
             ),
@@ -261,9 +258,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
             (pressureUnit) => PopupMenuItem(
               value: pressureUnit,
               padding: const EdgeInsets.all(20),
-              onTap: () {},
               child: Text(
-                pressureUnit.name,
+                localizePressure(pressureUnit),
                 style: PromajaTextStyles.settingsPopupMenuItem,
               ),
             ),
