@@ -80,8 +80,9 @@ class NotificationService {
   Future<void> init() async {
     final settings = hive.getPromajaSettingsFromBox();
 
-    /// Notifications are enabled, initialize them
-    if (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification) {
+    /// Notifications are not initialized & they are enabled in settings
+    if (flutterLocalNotificationsPlugin == null &&
+        (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification)) {
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
       await configureTimeZone();
       await initializeNotifications();

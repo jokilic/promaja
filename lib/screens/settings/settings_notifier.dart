@@ -10,11 +10,13 @@ import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../services/logger_service.dart';
+import '../../services/notification_service.dart';
 
 final settingsProvider = StateNotifierProvider.autoDispose<SettingsNotifier, PromajaSettings>(
   (ref) => SettingsNotifier(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
+    notification: ref.watch(notificationProvider),
   ),
   name: 'SettingsProvider',
 );
@@ -26,10 +28,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   final LoggerService logger;
   final HiveService hive;
+  final NotificationService notification;
 
   SettingsNotifier({
     required this.logger,
     required this.hive,
+    required this.notification,
   }) : super(hive.getPromajaSettingsFromBox())
 
   ///
@@ -110,31 +114,49 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
       );
 
   /// Triggered when the user taps the `Hourly notification` checkbox
-  Future<void> toggleHourlyNotification() async => updateSettings(
-        state.copyWith(
-          notification: state.notification.copyWith(
-            hourlyNotification: !state.notification.hourlyNotification,
-          ),
+  Future<void> toggleHourlyNotification() async {
+    /// Update `state` and [Hive] with proper value
+    await updateSettings(
+      state.copyWith(
+        notification: state.notification.copyWith(
+          hourlyNotification: !state.notification.hourlyNotification,
         ),
-      );
+      ),
+    );
+
+    /// Initialize notifications if necessary
+    await notification.init();
+  }
 
   /// Triggered when the user taps the `Morning notification` checkbox
-  Future<void> toggleMonthlyNotification() async => updateSettings(
-        state.copyWith(
-          notification: state.notification.copyWith(
-            morningNotification: !state.notification.morningNotification,
-          ),
+  Future<void> toggleMonthlyNotification() async {
+    /// Update `state` and [Hive] with proper value
+    await updateSettings(
+      state.copyWith(
+        notification: state.notification.copyWith(
+          morningNotification: !state.notification.morningNotification,
         ),
-      );
+      ),
+    );
+
+    /// Initialize notifications if necessary
+    await notification.init();
+  }
 
   /// Triggered when the user taps the `Evening notification` checkbox
-  Future<void> toggleEveningNotification() async => updateSettings(
-        state.copyWith(
-          notification: state.notification.copyWith(
-            eveningNotification: !state.notification.eveningNotification,
-          ),
+  Future<void> toggleEveningNotification() async {
+    /// Update `state` and [Hive] with proper value
+    await updateSettings(
+      state.copyWith(
+        notification: state.notification.copyWith(
+          eveningNotification: !state.notification.eveningNotification,
         ),
-      );
+      ),
+    );
+
+    /// Initialize notifications if necessary
+    await notification.init();
+  }
 
   ///
   /// TEMPERATURE
