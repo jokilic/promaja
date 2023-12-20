@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/colors.dart';
+import '../../../constants/durations.dart';
+import '../../../constants/icons.dart';
 import '../../../constants/text_styles.dart';
 
 class SettingsCheckboxListTile extends StatelessWidget {
@@ -33,19 +35,25 @@ class SettingsCheckboxListTile extends StatelessWidget {
           style: PromajaTextStyles.settingsText,
         ),
         trailing: Container(
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             border: Border.all(
               color: PromajaColors.white,
               width: 3,
             ),
             borderRadius: BorderRadius.circular(4),
-            color: value ? PromajaColors.white : null,
           ),
-          child: Icon(
-            // TODO: Check from FlatIcons
-            Icons.check_rounded,
-            size: 24,
-            color: value ? PromajaColors.black : Colors.transparent,
+          child: AnimatedSwitcher(
+            duration: PromajaDurations.checkInterval,
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeIn,
+            child: Image.asset(
+              key: ValueKey(value),
+              PromajaIcons.check,
+              color: value ? null : Colors.transparent,
+              height: 20,
+              width: 20,
+            ),
           ),
         ),
       );
