@@ -70,6 +70,8 @@
     "unitMiles": "Milje",
     "unitHectopascal": "Hektopaskal",
     "unitInchesOfMercury": "Inči žive",
+    "weatherTypeCurrent": "Trenutno vrijeme",
+    "weatherTypeForecast": "Prognoza vremena",
     "addLocation": "Dodaj svoju lokaciju",
     "navigationDescriptionCurrent": "Otvara kartice koje prikazuju trenutno vrijeme za sve lokacije koje si dodao.",
     "navigationDescriptionWeather": "Otvara kartice koje prikazuju vremensku prognozu za jednu lokaciju.",

@@ -70,6 +70,8 @@
     "unitMiles": "Miles",
     "unitHectopascal": "Hectopascal",
     "unitInchesOfMercury": "Inches of mercury",
+    "weatherTypeCurrent": "Current weather",
+    "weatherTypeForecast": "Forecast weather",
     "addLocation": "Add your location",
     "navigationDescriptionCurrent": "Opens cards which show current weather for all locations you added.",
     "navigationDescriptionWeather": "Opens cards which show forecast weather for a single location.",

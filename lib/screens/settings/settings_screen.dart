@@ -13,25 +13,11 @@ import '../../widgets/promaja_navigation_bar.dart';
 import '../card_colors/card_colors_screen.dart';
 import '../notification/notification_screen.dart';
 import '../unit/unit_screen.dart';
+import '../widget/widget_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
 // TODO: Localize file
 class SettingsScreen extends ConsumerWidget {
-  void showNotImplementedSnackBar(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            'Not implemented yet...',
-            style: PromajaTextStyles.snackbar,
-          ),
-          backgroundColor: PromajaColors.indigo,
-          behavior: SnackBarBehavior.floating,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
         bottomNavigationBar: PromajaNavigationBar(),
@@ -138,7 +124,11 @@ class SettingsScreen extends ConsumerWidget {
                   /// WIDGET
                   ///
                   SettingsListTile(
-                    onTap: () => showNotImplementedSnackBar(context),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => WidgetScreen(),
+                      ),
+                    ),
                     icon: PromajaIcons.arrow,
                     title: 'widgetTitle'.tr(),
                     subtitle: 'widgetSubtitle'.tr(),

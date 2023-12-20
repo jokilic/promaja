@@ -15,7 +15,7 @@ import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
 // TODO: Localize file
-class NotificationScreen extends ConsumerWidget {
+class UnitsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
@@ -47,24 +47,24 @@ class NotificationScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               ///
-              /// NOTIFICATIONS TITLE
+              /// UNITS TITLE
               ///
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'notificationTitle'.tr(),
+                  'Units',
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
               const SizedBox(height: 16),
 
               ///
-              /// NOTIFICATIONS DESCRIPTION
+              /// UNITS DESCRIPTION
               ///
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  'notificationDescription'.tr(),
+                  'Update units that you will see when checking weather info',
                   style: PromajaTextStyles.settingsText,
                 ),
               ),
@@ -81,7 +81,7 @@ class NotificationScreen extends ConsumerWidget {
               const SizedBox(height: 8),
 
               ///
-              /// LOCATION
+              /// TEMPERATURE
               ///
               SettingsPopupMenuListTile(
                 onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,

@@ -8,6 +8,7 @@ import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
+import '../../models/settings/widget/weather_type.dart';
 import '../../services/hive_service.dart';
 import '../../services/logger_service.dart';
 import '../../services/notification_service.dart';
@@ -41,11 +42,19 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   ///
 
   {
+    final locations = hive.getLocationsFromBox();
+
     /// Notification location is `null`, set it to the first location from [Hive]
     if (state.notification.location == null) {
-      final locations = hive.getLocationsFromBox();
       if (locations.isNotEmpty) {
         updateNotificationLocation(locations.first);
+      }
+    }
+
+    /// Widget location is `null`, set it to the first location from [Hive]
+    if (state.widget.location == null) {
+      if (locations.isNotEmpty) {
+        updateWidgetLocation(locations.first);
       }
     }
   }
@@ -67,7 +76,7 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   }
 
   ///
-  /// NOTIFICATION
+  /// NOTIFICATIONS
   ///
 
   /// Opens popup menu which chooses location to be used in notifications
@@ -104,7 +113,7 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     );
   }
 
-  /// Updates location to be used in Notification
+  /// Updates location to be used in notifications
   Future<void> updateNotificationLocation(Location newLocation) async => updateSettings(
         state.copyWith(
           notification: state.notification.copyWith(
@@ -159,7 +168,7 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   }
 
   ///
-  /// TEMPERATURE
+  /// UNITS
   ///
 
   /// Opens popup menu which chooses temperature units to be used
@@ -205,10 +214,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         ),
       );
 
-  ///
-  /// DISTANCE & SPEED
-  ///
-
   /// Opens popup menu which chooses distance & speed units to be used
   Future<DistanceSpeedUnit?> showDistanceSpeedUnitPopupMenu(BuildContext context) async {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
@@ -252,10 +257,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         ),
       );
 
-  ///
-  /// PRESSURE
-  ///
-
   /// Opens popup menu which chooses pressure units to be used
   Future<PressureUnit?> showPressureUnitPopupMenu(BuildContext context) async {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
@@ -295,6 +296,96 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         state.copyWith(
           unit: state.unit.copyWith(
             pressure: newPressureUnit,
+          ),
+        ),
+      );
+
+  ///
+  /// WIDGET
+  ///
+
+  /// Opens popup menu which chooses location to be used in widget
+  Future<Location?> showWidgetLocationPopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    final locations = hive.getLocationsFromBox();
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: locations
+          .map(
+            (location) => PopupMenuItem(
+              value: location,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                '${location.name}, ${location.country}',
+                style: PromajaTextStyles.settingsPopupMenuItem,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Updates location to be used in widget
+  Future<void> updateWidgetLocation(Location newLocation) async => updateSettings(
+        state.copyWith(
+          widget: state.widget.copyWith(
+            location: newLocation,
+          ),
+        ),
+      );
+
+  /// Opens popup menu which chooses weather type to be used in widget
+  Future<WeatherType?> showWidgetWeatherTypePopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    const weatherTypes = WeatherType.values;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: weatherTypes
+          .map(
+            (weatherType) => PopupMenuItem(
+              value: weatherType,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                localizeWeatherType(weatherType),
+                style: PromajaTextStyles.settingsPopupMenuItem,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Updates weather type to be used in widget
+  Future<void> updateWidgetWeatherType(WeatherType newWeatherType) async => updateSettings(
+        state.copyWith(
+          widget: state.widget.copyWith(
+            weatherType: newWeatherType,
           ),
         ),
       );
