@@ -12,6 +12,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../util/weather.dart';
+import 'hive_service.dart';
 import 'logger_service.dart';
 
 ///
@@ -21,7 +22,8 @@ import 'logger_service.dart';
 
 final notificationProvider = Provider<NotificationService>(
   (ref) => NotificationService(
-    ref.watch(loggerProvider),
+    logger: ref.watch(loggerProvider),
+    hive: ref.watch(hiveProvider.notifier),
   ),
   name: 'NotificationProvider',
 );
@@ -32,14 +34,18 @@ class NotificationService {
   ///
 
   final LoggerService logger;
+  final HiveService hive;
 
-  NotificationService(this.logger);
+  NotificationService({
+    required this.logger,
+    required this.hive,
+  });
 
   ///
   /// VARIABLES
   ///
 
-  late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
   final androidNotificationDetails = const AndroidNotificationDetails(
     'promaja_channel_id',
@@ -72,9 +78,14 @@ class NotificationService {
   ///
 
   Future<void> init() async {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    await configureTimeZone();
-    await initializeNotifications();
+    final settings = hive.getPromajaSettingsFromBox();
+
+    /// Notifications are enabled, initialize them
+    if (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification) {
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      await configureTimeZone();
+      await initializeNotifications();
+    }
   }
 
   ///
@@ -150,7 +161,7 @@ class NotificationService {
         linux: initializationSettingsLinux,
       );
 
-      final initialized = await flutterLocalNotificationsPlugin.initialize(
+      final initialized = await flutterLocalNotificationsPlugin?.initialize(
         initializationSettings,
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
@@ -172,17 +183,17 @@ class NotificationService {
       /// `Android` notifications
       if (Platform.isAndroid) {
         permissionsGranted =
-            await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
+            await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
 
         if (!permissionsGranted) {
           permissionsGranted =
-              await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission() ?? false;
+              await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission() ?? false;
         }
       }
 
       /// `iOS` notifications
       if (Platform.isIOS) {
-        permissionsGranted = await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+        permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
                   alert: true,
                   badge: true,
                 ) ??
@@ -191,7 +202,7 @@ class NotificationService {
 
       /// `MacOS` notifications
       if (Platform.isMacOS) {
-        permissionsGranted = await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+        permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
                   alert: true,
                   badge: true,
                 ) ??
@@ -216,7 +227,7 @@ class NotificationService {
   /// Cancels all notifications
   Future<void> cancelNotifications() async {
     try {
-      await flutterLocalNotificationsPlugin.cancelAll();
+      await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
       final error = 'NotificationService -> cancelNotifications() -> $e';
       logger.e(error);
@@ -226,7 +237,7 @@ class NotificationService {
   /// Shows a notification
   Future<void> showNotification({required String title, required String text}) async {
     try {
-      await flutterLocalNotificationsPlugin.show(
+      await flutterLocalNotificationsPlugin?.show(
         0,
         title,
         text,

@@ -91,7 +91,10 @@ final backgroundFetchInitProvider = FutureProvider<void>(
               logger: logger,
               hive: hive,
             );
-            final notifications = NotificationService(logger);
+            final notifications = NotificationService(
+              logger: logger,
+              hive: hive,
+            );
             await notifications.init();
 
             /// Get location to fetch
@@ -222,7 +225,10 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
       logger: logger,
       hive: hive,
     );
-    final notifications = NotificationService(logger);
+    final notifications = NotificationService(
+      logger: logger,
+      hive: hive,
+    );
     await notifications.init();
 
     /// Get location to fetch
