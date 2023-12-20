@@ -19,19 +19,22 @@ class UnitSettingsAdapter extends TypeAdapter<UnitSettings> {
     return UnitSettings(
       temperature: fields[0] as TemperatureUnit,
       distanceSpeed: fields[1] as DistanceSpeedUnit,
-      pressure: fields[2] as PressureUnit,
+      precipitation: fields[2] as PrecipitationUnit,
+      pressure: fields[3] as PressureUnit,
     );
   }
 
   @override
   void write(BinaryWriter writer, UnitSettings obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.temperature)
       ..writeByte(1)
       ..write(obj.distanceSpeed)
       ..writeByte(2)
+      ..write(obj.precipitation)
+      ..writeByte(3)
       ..write(obj.pressure);
   }
 

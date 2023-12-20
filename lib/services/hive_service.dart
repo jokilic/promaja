@@ -6,6 +6,7 @@ import '../models/location/location.dart';
 import '../models/settings/notification/notification_settings.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/distance_speed_unit.dart';
+import '../models/settings/units/precipitation_unit.dart';
 import '../models/settings/units/pressure_unit.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../models/settings/units/unit_settings.dart';
@@ -80,6 +81,10 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(DistanceSpeedUnitAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(PrecipitationUnitAdapter().typeId)) {
+      Hive.registerAdapter(PrecipitationUnitAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(PressureUnitAdapter().typeId)) {
       Hive.registerAdapter(PressureUnitAdapter());
     }
@@ -110,6 +115,7 @@ class HiveService extends StateNotifier<List<Location>> {
       unit: UnitSettings(
         temperature: TemperatureUnit.celsius,
         distanceSpeed: DistanceSpeedUnit.kilometers,
+        precipitation: PrecipitationUnit.millimeters,
         pressure: PressureUnit.hectopascal,
       ),
     );

@@ -53,3 +53,25 @@ Tapping on any location will bring you to Forecast weather.
             - [ ] Kilometers / miles
         - [ ] Pressure
             - [ ] Hectopascal / Inches of Mercury
+
+
+
+Temperature
+    - CardSuccess
+    - ListCardSuccess
+    - WeatherCardSuccess
+    - WeatherCardHourSuccess
+    - WeatherCardIndividualHour
+    - NotificationService
+    - HomeWidget
+    - AdditionalWPF
+
+Added fields
+    - Current
+        - temp_f
+        - wind_mph
+        - pressure_in
+        - precip_in
+        - feelslike_f
+        - vis_miles
+        - gust_mph

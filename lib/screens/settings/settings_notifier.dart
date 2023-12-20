@@ -6,6 +6,7 @@ import '../../constants/text_styles.dart';
 import '../../models/location/location.dart';
 import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
+import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../models/settings/widget/weather_type.dart';
@@ -253,6 +254,49 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         state.copyWith(
           unit: state.unit.copyWith(
             distanceSpeed: newDistanceSpeed,
+          ),
+        ),
+      );
+
+  /// Opens popup menu which chooses precipitation units to be used
+  Future<PrecipitationUnit?> showPrecipitationUnitPopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    const precipitationUnits = PrecipitationUnit.values;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: precipitationUnits
+          .map(
+            (precipitationUnit) => PopupMenuItem(
+              value: precipitationUnit,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                localizePrecipitation(precipitationUnit),
+                style: PromajaTextStyles.settingsPopupMenuItem,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Updates precipitation unit to be used
+  Future<void> updatePrecipitationUnit(PrecipitationUnit newPrecipitation) async => updateSettings(
+        state.copyWith(
+          unit: state.unit.copyWith(
+            precipitation: newPrecipitation,
           ),
         ),
       );

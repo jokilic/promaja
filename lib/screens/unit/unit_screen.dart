@@ -7,6 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
+import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../widgets/promaja_back_button.dart';
@@ -108,6 +109,22 @@ class UnitScreen extends ConsumerWidget {
                 },
                 activeValue: localizeDistanceSpeed(settings.unit.distanceSpeed),
                 subtitle: 'unitsDistanceSpeedSubtitle'.tr(),
+              ),
+
+              ///
+              /// PRECIPITATION
+              ///
+              SettingsPopupMenuListTile(
+                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapUp: (_) async {
+                  final newPrecipitation = await ref.read(settingsProvider.notifier).showPrecipitationUnitPopupMenu(context);
+
+                  if (newPrecipitation != null) {
+                    await ref.read(settingsProvider.notifier).updatePrecipitationUnit(newPrecipitation);
+                  }
+                },
+                activeValue: localizePrecipitation(settings.unit.precipitation),
+                subtitle: 'unitsPrecipitationSubtitle'.tr(),
               ),
 
               ///
