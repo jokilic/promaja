@@ -44,7 +44,7 @@ class SettingsCheckboxListTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
           child: AnimatedSwitcher(
-            duration: PromajaDurations.checkInterval,
+            duration: PromajaDurations.checkAnimation,
             switchInCurve: Curves.easeIn,
             switchOutCurve: Curves.easeIn,
             child: Image.asset(
