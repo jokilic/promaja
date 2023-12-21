@@ -14,11 +14,13 @@ class ListCardWidget extends ConsumerWidget {
   final Location location;
   final Function() onTap;
   final Function() onTapDelete;
+  final bool showCelsius;
 
   const ListCardWidget({
     required this.location,
     required this.onTap,
     required this.onTapDelete,
+    required this.showCelsius,
   });
 
   @override
@@ -63,6 +65,7 @@ class ListCardWidget extends ConsumerWidget {
                       isPhoneLocation: location.isPhoneLocation,
                       currentWeather: currentWeather,
                       onTap: onTap,
+                      showCelsius: showCelsius,
                     );
                   }
 

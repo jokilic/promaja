@@ -15,9 +15,11 @@ import 'list_card/list_card_widget.dart';
 
 class ListCards extends ConsumerWidget {
   final List<Location> locations;
+  final bool showCelsius;
 
   const ListCards({
     required this.locations,
+    required this.showCelsius,
   });
 
   Future<void> deleteLocation({
@@ -105,6 +107,7 @@ class ListCards extends ConsumerWidget {
             ],
             child: ListCardWidget(
               location: location,
+              showCelsius: showCelsius,
               onTap: () => openWeatherScreen(
                 index: index,
                 ref: ref,

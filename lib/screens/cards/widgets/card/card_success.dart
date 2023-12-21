@@ -24,12 +24,20 @@ class CardSuccess extends ConsumerWidget {
   final CurrentWeather currentWeather;
   final bool useOpacity;
   final bool isPhoneLocation;
+  final bool showCelsius;
+  final bool showKph;
+  final bool showMm;
+  final bool showhPa;
 
   const CardSuccess({
     required this.location,
     required this.currentWeather,
     required this.useOpacity,
     required this.isPhoneLocation,
+    required this.showCelsius,
+    required this.showKph,
+    required this.showMm,
+    required this.showhPa,
   });
 
   @override
@@ -175,7 +183,7 @@ class CardSuccess extends ConsumerWidget {
                       clipBehavior: Clip.none,
                       children: [
                         Text(
-                          '${currentWeather.tempC.round()}',
+                          showCelsius ? '${currentWeather.tempC.round()}' : '${currentWeather.tempF.round()}',
                           style: PromajaTextStyles.currentTemperature,
                           textAlign: TextAlign.center,
                         ),
@@ -217,9 +225,9 @@ class CardSuccess extends ConsumerWidget {
                       KeepAlivePage(
                         child: AdditionalWPF(
                           windDegree: currentWeather.windDegree,
-                          windKph: currentWeather.windKph,
-                          precipitation: currentWeather.precipMm,
-                          feelsLikeTemperature: currentWeather.feelsLikeC,
+                          windText: showKph ? '${currentWeather.windKph.round()} km/h' : '${currentWeather.windMph.round()} mi',
+                          precipitationText: showMm ? '${currentWeather.precipMm.round()} mm' : '${currentWeather.precipIn.round()} in',
+                          feelsLikeTemperature: showCelsius ? currentWeather.feelsLikeC : currentWeather.feelsLikeF,
                         ),
                       ),
 
@@ -228,7 +236,7 @@ class CardSuccess extends ConsumerWidget {
                       ///
                       AdditionalCVH(
                         cloud: currentWeather.cloud,
-                        visibility: currentWeather.visKm,
+                        visibilityText: showKph ? '${currentWeather.visKm.round()} km' : '${currentWeather.visMiles.round()} mi',
                         humidity: currentWeather.humidity,
                       ),
 
@@ -236,9 +244,9 @@ class CardSuccess extends ConsumerWidget {
                       /// PRESSURE, UV, GUST
                       ///
                       AdditionalPUG(
-                        pressure: currentWeather.pressurehPa,
+                        pressureText: showhPa ? '${currentWeather.pressurehPa.round()} hPa' : '${currentWeather.pressureIn} inHg',
                         uv: currentWeather.uv,
-                        gust: currentWeather.gustKph,
+                        gustText: showKph ? '${currentWeather.gustKph.round()} km/h' : '${currentWeather.gustMph.round()} mph',
                       ),
                     ],
                   ),

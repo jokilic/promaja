@@ -18,6 +18,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
   final bool useOpacity;
   final bool isActive;
   final Color borderColor;
+  final bool showCelsius;
   final Function() onPressed;
 
   const WeatherCardHourSuccess({
@@ -25,6 +26,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
     required this.useOpacity,
     required this.isActive,
     required this.borderColor,
+    required this.showCelsius,
     required this.onPressed,
   });
 
@@ -140,7 +142,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                   /// TEMPERATURE
                   ///
                   Text(
-                    '${hourWeather.tempC.round()}°',
+                    showCelsius ? '${hourWeather.tempC.round()}°' : '${hourWeather.tempF.round()}°',
                     style: PromajaTextStyles.weatherCardHourTemperature,
                     textAlign: TextAlign.center,
                   ),

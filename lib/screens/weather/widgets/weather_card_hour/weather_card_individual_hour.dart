@@ -17,10 +17,18 @@ import '../../weather_notifiers.dart';
 class WeatherCardIndividualHour extends ConsumerWidget {
   final HourWeather? hourWeather;
   final bool useOpacity;
+  final bool showCelsius;
+  final bool showKph;
+  final bool showMm;
+  final bool showhPa;
 
   const WeatherCardIndividualHour({
     required this.hourWeather,
     required this.useOpacity,
+    required this.showCelsius,
+    required this.showKph,
+    required this.showMm,
+    required this.showhPa,
     super.key,
   });
 
@@ -107,7 +115,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Text(
-                      '${hourWeather?.tempC.round()}',
+                      showCelsius ? '${hourWeather?.tempC.round()}' : '${hourWeather?.tempF.round()}',
                       style: PromajaTextStyles.currentHourTemperature,
                       textAlign: TextAlign.center,
                     ),
@@ -209,9 +217,9 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                         ///
                         AdditionalWPF(
                           windDegree: hourWeather!.windDegree,
-                          windKph: hourWeather!.windKph,
-                          precipitation: hourWeather!.precipMm,
-                          feelsLikeTemperature: hourWeather!.feelsLikeC,
+                          windText: showKph ? '${hourWeather!.windKph.round()} km/h' : '${hourWeather!.windMph.round()} mi',
+                          precipitationText: showMm ? '${hourWeather!.precipMm.round()} mm' : '${hourWeather!.precipIn.round()} in',
+                          feelsLikeTemperature: showCelsius ? hourWeather!.feelsLikeC : hourWeather!.feelsLikeF,
                           useAnimations: false,
                         ),
 
@@ -220,7 +228,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                         ///
                         AdditionalCVH(
                           cloud: hourWeather!.cloud,
-                          visibility: hourWeather!.visKm,
+                          visibilityText: showKph ? '${hourWeather!.visKm.round()} km' : '${hourWeather!.visMiles.round()} mi',
                           humidity: hourWeather!.humidity,
                         ),
 
@@ -228,9 +236,9 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                         /// PRESSURE, UV, GUST
                         ///
                         AdditionalPUG(
-                          pressure: hourWeather!.pressurehPa,
+                          pressureText: showhPa ? '${hourWeather!.pressurehPa.round()} hPa' : '${hourWeather!.pressureIn} inHg',
                           uv: hourWeather!.uv,
-                          gust: hourWeather!.gustKph,
+                          gustText: showKph ? '${hourWeather!.gustKph.round()} km/h' : '${hourWeather!.gustMph.round()} mph',
                         ),
                       ]
                     : [],

@@ -4,7 +4,9 @@ import '../condition/condition.dart';
 
 class DayWeather {
   final double maxTempC;
+  final double maxTempF;
   final double minTempC;
+  final double minTempF;
   final int dailyWillItRain;
   final int dailyChanceOfRain;
   final int dailyWillItSnow;
@@ -13,7 +15,9 @@ class DayWeather {
 
   DayWeather({
     required this.maxTempC,
+    required this.maxTempF,
     required this.minTempC,
+    required this.minTempF,
     required this.dailyWillItRain,
     required this.dailyChanceOfRain,
     required this.dailyWillItSnow,
@@ -23,7 +27,9 @@ class DayWeather {
 
   DayWeather copyWith({
     double? maxTempC,
+    double? maxTempF,
     double? minTempC,
+    double? minTempF,
     int? dailyWillItRain,
     int? dailyChanceOfRain,
     int? dailyWillItSnow,
@@ -32,7 +38,9 @@ class DayWeather {
   }) =>
       DayWeather(
         maxTempC: maxTempC ?? this.maxTempC,
+        maxTempF: maxTempF ?? this.maxTempF,
         minTempC: minTempC ?? this.minTempC,
+        minTempF: minTempF ?? this.minTempF,
         dailyWillItRain: dailyWillItRain ?? this.dailyWillItRain,
         dailyChanceOfRain: dailyChanceOfRain ?? this.dailyChanceOfRain,
         dailyWillItSnow: dailyWillItSnow ?? this.dailyWillItSnow,
@@ -42,7 +50,9 @@ class DayWeather {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'maxtemp_c': maxTempC,
+        'maxtemp_f': maxTempF,
         'mintemp_c': minTempC,
+        'mintemp_f': minTempF,
         'daily_will_it_rain': dailyWillItRain,
         'daily_chance_of_rain': dailyChanceOfRain,
         'daily_will_it_snow': dailyWillItSnow,
@@ -52,7 +62,9 @@ class DayWeather {
 
   factory DayWeather.fromMap(Map<String, dynamic> map) => DayWeather(
         maxTempC: map['maxtemp_c'] as double,
+        maxTempF: map['maxtemp_f'] as double,
         minTempC: map['mintemp_c'] as double,
+        minTempF: map['mintemp_f'] as double,
         dailyWillItRain: map['daily_will_it_rain'] as int,
         dailyChanceOfRain: map['daily_chance_of_rain'] as int,
         dailyWillItSnow: map['daily_will_it_snow'] as int,
@@ -66,7 +78,7 @@ class DayWeather {
 
   @override
   String toString() =>
-      'DayWeather(maxTempC: $maxTempC, minTempC: $minTempC, dailyWillItRain: $dailyWillItRain, dailyChanceOfRain: $dailyChanceOfRain, dailyWillItSnow: $dailyWillItSnow, dailyChanceOfSnow: $dailyChanceOfSnow, condition: $condition)';
+      'DayWeather(maxTempC: $maxTempC, maxTempF: $maxTempF, minTempC: $minTempC, minTempF: $minTempF, dailyWillItRain: $dailyWillItRain, dailyChanceOfRain: $dailyChanceOfRain, dailyWillItSnow: $dailyWillItSnow, dailyChanceOfSnow: $dailyChanceOfSnow, condition: $condition)';
 
   @override
   bool operator ==(covariant DayWeather other) {
@@ -75,7 +87,9 @@ class DayWeather {
     }
 
     return other.maxTempC == maxTempC &&
+        other.maxTempF == maxTempF &&
         other.minTempC == minTempC &&
+        other.minTempF == minTempF &&
         other.dailyWillItRain == dailyWillItRain &&
         other.dailyChanceOfRain == dailyChanceOfRain &&
         other.dailyWillItSnow == dailyWillItSnow &&
@@ -85,5 +99,13 @@ class DayWeather {
 
   @override
   int get hashCode =>
-      maxTempC.hashCode ^ minTempC.hashCode ^ dailyWillItRain.hashCode ^ dailyChanceOfRain.hashCode ^ dailyWillItSnow.hashCode ^ dailyChanceOfSnow.hashCode ^ condition.hashCode;
+      maxTempC.hashCode ^
+      maxTempF.hashCode ^
+      minTempC.hashCode ^
+      minTempF.hashCode ^
+      dailyWillItRain.hashCode ^
+      dailyChanceOfRain.hashCode ^
+      dailyWillItSnow.hashCode ^
+      dailyChanceOfSnow.hashCode ^
+      condition.hashCode;
 }

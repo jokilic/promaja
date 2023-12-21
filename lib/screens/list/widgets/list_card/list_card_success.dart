@@ -16,12 +16,14 @@ class ListCardSuccess extends ConsumerWidget {
   final bool isPhoneLocation;
   final CurrentWeather currentWeather;
   final Function() onTap;
+  final bool showCelsius;
 
   const ListCardSuccess({
     required this.locationName,
     required this.isPhoneLocation,
     required this.currentWeather,
     required this.onTap,
+    required this.showCelsius,
   });
 
   @override
@@ -111,7 +113,7 @@ class ListCardSuccess extends ConsumerWidget {
 
                       /// Temperature
                       Text(
-                        '${currentWeather.tempC.round()}°',
+                        showCelsius ? '${currentWeather.tempC.round()}°' : '${currentWeather.tempF.round()}°',
                         style: PromajaTextStyles.listTemperature,
                       ),
                     ],

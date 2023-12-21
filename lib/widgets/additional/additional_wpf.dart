@@ -9,14 +9,14 @@ import 'additional_value_widget.dart';
 
 class AdditionalWPF extends StatelessWidget {
   final int? windDegree;
-  final double windKph;
-  final double precipitation;
+  final String windText;
+  final String precipitationText;
   final double feelsLikeTemperature;
   final bool useAnimations;
 
   const AdditionalWPF({
-    required this.windKph,
-    required this.precipitation,
+    required this.windText,
+    required this.precipitationText,
     required this.feelsLikeTemperature,
     this.windDegree,
     this.useAnimations = true,
@@ -51,7 +51,7 @@ class AdditionalWPF extends StatelessWidget {
               Expanded(
                 child: AdditionalValueWidget(
                   icon: PromajaIcons.wind,
-                  value: '${windKph.round()} km/h',
+                  value: windText,
                   description: 'wind'.tr(),
                   rotation: windDegree,
                 ),
@@ -69,7 +69,7 @@ class AdditionalWPF extends StatelessWidget {
               Expanded(
                 child: AdditionalValueWidget(
                   icon: PromajaIcons.precipitation,
-                  value: '${precipitation.round()} mm',
+                  value: precipitationText,
                   description: 'precipitation'.tr(),
                 ),
               ),

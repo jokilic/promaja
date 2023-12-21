@@ -25,6 +25,10 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
   final bool useOpacity;
   final int index;
   final bool isPhoneLocation;
+  final bool showCelsius;
+  final bool showKph;
+  final bool showMm;
+  final bool showhPa;
 
   const WeatherCardSuccess({
     required this.location,
@@ -32,6 +36,10 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
     required this.useOpacity,
     required this.index,
     required this.isPhoneLocation,
+    required this.showCelsius,
+    required this.showKph,
+    required this.showMm,
+    required this.showhPa,
   });
 
   @override
@@ -257,7 +265,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                       clipBehavior: Clip.none,
                                       children: [
                                         Text(
-                                          '${widget.forecast.day.minTempC.round()}',
+                                          widget.showCelsius ? '${widget.forecast.day.minTempC.round()}' : '${widget.forecast.day.minTempF.round()}',
                                           style: PromajaTextStyles.weatherTemperatureMin,
                                           textAlign: TextAlign.center,
                                         ),
@@ -286,7 +294,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                       clipBehavior: Clip.none,
                                       children: [
                                         Text(
-                                          '${widget.forecast.day.maxTempC.round()}',
+                                          widget.showCelsius ? '${widget.forecast.day.maxTempC.round()}' : '${widget.forecast.day.maxTempF.round()}',
                                           style: PromajaTextStyles.weatherTemperatureMax,
                                           textAlign: TextAlign.center,
                                         ),
@@ -404,6 +412,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                   useOpacity: ref.watch(weatherCardMovingProvider),
                                   isActive: activeHourWeather == hourWeather,
                                   borderColor: backgroundColor,
+                                  showCelsius: widget.showCelsius,
                                   onPressed: () => weatherCardHourPressed(
                                     hourWeather: hourWeather,
                                     activeHourWeather: activeHourWeather,
@@ -433,6 +442,10 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                   hourWeather: activeHourWeather,
                   useOpacity: ref.watch(weatherCardMovingProvider),
                   key: ValueKey(activeHourWeather),
+                  showCelsius: widget.showCelsius,
+                  showKph: widget.showKph,
+                  showMm: widget.showMm,
+                  showhPa: widget.showhPa,
                 ),
               ],
             ),

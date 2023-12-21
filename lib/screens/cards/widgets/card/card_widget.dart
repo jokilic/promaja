@@ -14,10 +14,18 @@ import 'card_success.dart';
 class CardWidget extends ConsumerWidget {
   final Location originalLocation;
   final bool useOpacity;
+  final bool showCelsius;
+  final bool showKph;
+  final bool showMm;
+  final bool showhPa;
 
   const CardWidget({
     required this.originalLocation,
     required this.useOpacity,
+    required this.showCelsius,
+    required this.showKph,
+    required this.showMm,
+    required this.showhPa,
   });
 
   @override
@@ -42,6 +50,10 @@ class CardWidget extends ConsumerWidget {
                     currentWeather: currentWeather,
                     useOpacity: useOpacity,
                     isPhoneLocation: originalLocation.isPhoneLocation,
+                    showCelsius: showCelsius,
+                    showKph: showKph,
+                    showMm: showMm,
+                    showhPa: showhPa,
                   );
                 }
 

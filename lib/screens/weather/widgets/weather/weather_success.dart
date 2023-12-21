@@ -8,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
-import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../cards/cards_notifiers.dart';
@@ -18,15 +17,21 @@ import '../weather_card/weather_card_success.dart';
 
 class WeatherSuccess extends ConsumerWidget {
   final Location location;
-  final CurrentWeather currentWeather;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
+  final bool showCelsius;
+  final bool showKph;
+  final bool showMm;
+  final bool showhPa;
 
   const WeatherSuccess({
     required this.location,
-    required this.currentWeather,
     required this.forecastWeather,
     required this.isPhoneLocation,
+    required this.showCelsius,
+    required this.showKph,
+    required this.showMm,
+    required this.showhPa,
   });
 
   void cardSwiped({
@@ -96,6 +101,10 @@ class WeatherSuccess extends ConsumerWidget {
                 useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
                 index: cardIndex,
                 isPhoneLocation: isPhoneLocation,
+                showCelsius: showCelsius,
+                showKph: showKph,
+                showMm: showMm,
+                showhPa: showhPa,
               );
             }
 

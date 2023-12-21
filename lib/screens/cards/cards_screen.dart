@@ -10,6 +10,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../models/location/location.dart';
+import '../../models/settings/units/distance_speed_unit.dart';
+import '../../models/settings/units/precipitation_unit.dart';
+import '../../models/settings/units/pressure_unit.dart';
+import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
@@ -30,6 +34,13 @@ class CardsScreen extends ConsumerWidget {
     final index = ref.watch(cardIndexProvider);
     final locations = ref.watch(hiveProvider);
     final cardsCount = locations.length;
+
+    final settings = ref.watch(hiveProvider.notifier).getPromajaSettingsFromBox();
+
+    final showCelsius = settings.unit.temperature == TemperatureUnit.celsius;
+    final showKph = settings.unit.distanceSpeed == DistanceSpeedUnit.kilometers;
+    final showMm = settings.unit.precipitation == PrecipitationUnit.millimeters;
+    final showhPa = settings.unit.pressure == PressureUnit.hectopascal;
 
     return Scaffold(
       bottomNavigationBar: PromajaNavigationBar(),
@@ -64,6 +75,10 @@ class CardsScreen extends ConsumerWidget {
                   return CardWidget(
                     originalLocation: location,
                     useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                    showCelsius: showCelsius,
+                    showKph: showKph,
+                    showMm: showMm,
+                    showhPa: showhPa,
                   );
                 }
 

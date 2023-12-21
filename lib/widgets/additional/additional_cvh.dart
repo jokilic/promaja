@@ -7,12 +7,12 @@ import 'additional_value_widget.dart';
 
 class AdditionalCVH extends StatelessWidget {
   final int cloud;
-  final double visibility;
+  final String visibilityText;
   final int humidity;
 
   const AdditionalCVH({
     required this.cloud,
-    required this.visibility,
+    required this.visibilityText,
     required this.humidity,
   });
 
@@ -53,7 +53,7 @@ class AdditionalCVH extends StatelessWidget {
             Expanded(
               child: AdditionalValueWidget(
                 icon: PromajaIcons.visibility,
-                value: '${visibility.round()} km',
+                value: visibilityText,
                 description: 'visibility'.tr(),
               ),
             ),

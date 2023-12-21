@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/durations.dart';
+import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'widgets/list_cards.dart';
@@ -33,6 +34,7 @@ class ListScreen extends ConsumerWidget {
                 ? ListEmpty()
                 : ListCards(
                     locations: locations,
+                    showCelsius: ref.watch(hiveProvider.notifier).getPromajaSettingsFromBox().unit.temperature == TemperatureUnit.celsius,
                   ),
           ),
         ),

@@ -6,14 +6,14 @@ import '../../constants/icons.dart';
 import 'additional_value_widget.dart';
 
 class AdditionalPUG extends StatelessWidget {
-  final double pressure;
+  final String pressureText;
   final double uv;
-  final double gust;
+  final String gustText;
 
   const AdditionalPUG({
-    required this.pressure,
+    required this.pressureText,
     required this.uv,
-    required this.gust,
+    required this.gustText,
   });
 
   @override
@@ -36,7 +36,7 @@ class AdditionalPUG extends StatelessWidget {
             Expanded(
               child: AdditionalValueWidget(
                 icon: PromajaIcons.pressure,
-                value: '${pressure.round()} hPa',
+                value: pressureText,
                 description: 'pressure'.tr(),
               ),
             ),
@@ -70,7 +70,7 @@ class AdditionalPUG extends StatelessWidget {
             Expanded(
               child: AdditionalValueWidget(
                 icon: PromajaIcons.gust,
-                value: '${gust.round()} km/h',
+                value: gustText,
                 description: 'gust'.tr(),
               ),
             ),
