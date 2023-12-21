@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
+import '../models/settings/promaja_settings.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
@@ -165,4 +166,10 @@ class HomeWidgetService {
     /// Update [HomeWidget]
     await createHomeWidget(widget);
   }
+
+  /// Handles widget logic, depending on `WidgetSettings`
+  Future<void> handleWidget({
+    required PromajaSettings settings,
+    required ProviderContainer container,
+  }) async {}
 }

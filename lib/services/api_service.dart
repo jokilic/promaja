@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
@@ -138,5 +139,63 @@ class APIService {
       logger.e(error);
       return (response: null, error: null, genericError: error);
     }
+  }
+
+  /// Fetches current weather data
+  Future<ResponseCurrentWeather?> fetchCurrentWeather({
+    required Location location,
+    required ProviderContainer container,
+  }) async {
+    try {
+      final response = await getCurrentWeather(
+        query: '${location.lat},${location.lon}',
+      );
+
+      /// Data fetch was successful
+      if (response.response != null && response.error == null) {
+        return response.response;
+      }
+
+      /// Data fetch wasn't successfull, throw error
+      else {
+        final error = "fetchCurrentWeather -> data fetch wasn't successful -> ${response.error?.error.message}";
+        container.read(loggerProvider).e(error);
+      }
+    } catch (e) {
+      final error = 'fetchCurrentWeather -> $e';
+      Logger().e(error);
+    }
+
+    return null;
+  }
+
+  /// Fetches forecast weather data
+  Future<ResponseForecastWeather?> fetchForecastWeather({
+    required Location location,
+    required bool isTomorrow,
+    required ProviderContainer container,
+  }) async {
+    try {
+      final response = await getForecastWeather(
+        query: '${location.lat},${location.lon}',
+        days: isTomorrow ? 2 : 1,
+      );
+
+      /// Data fetch was successful
+      if (response.response != null && response.error == null) {
+        return response.response;
+      }
+
+      /// Data fetch wasn't successfull, throw error
+      else {
+        final error = "fetchForecastWeather -> data fetch wasn't successful -> ${response.error?.error.message}";
+        container.read(loggerProvider).e(error);
+      }
+    } catch (e) {
+      final error = 'fetchForecastWeather -> $e';
+      Logger().e(error);
+    }
+
+    return null;
   }
 }

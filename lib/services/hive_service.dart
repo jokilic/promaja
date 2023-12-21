@@ -146,10 +146,7 @@ class HiveService extends StateNotifier<List<Location>> {
   Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);
 
   /// Called to add new settings value to [Hive]
-  Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async {
-    logger.f(promajaSettings);
-    await promajaSettingsBox.put(0, promajaSettings);
-  }
+  Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async => promajaSettingsBox.put(0, promajaSettings);
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
