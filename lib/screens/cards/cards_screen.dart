@@ -59,7 +59,7 @@ class CardsScreen extends ConsumerWidget {
             /// WEATHER
             ///
             Padding(
-              padding: const EdgeInsets.only(bottom: 144),
+              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
               child: AppinioSwiper(
                 loop: true,
                 onCardPositionChanged: (_) => ref.read(cardMovingProvider.notifier).state = true,
