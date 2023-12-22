@@ -69,58 +69,57 @@ class WeatherSuccess extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(weatherCardIndexProvider);
-    final cardsCount = forecastWeather.forecastDays.length;
+    final cardCount = forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
         ///
         /// WEATHER
         ///
-        AppinioSwiper(
-          loop: true,
+        Padding(
           padding: const EdgeInsets.only(bottom: 24),
-          isDisabled: cardsCount <= 1,
-          duration: PromajaDurations.cardSwiperAnimation,
-          backgroundCardsCount: min(cardsCount - 1, 3),
-          cardsCount: cardsCount,
-          onSwiping: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
-          onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
-          onSwipe: (index, __) => cardSwiped(
-            index: index,
-            ref: ref,
-            screenWidth: MediaQuery.sizeOf(context).width,
-          ),
-          cardsBuilder: (_, cardIndex) {
-            final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
+          child: AppinioSwiper(
+            loop: true,
+            onCardPositionChanged: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
+            onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref, screenWidth: MediaQuery.sizeOf(context).width),
+            onSwipeCancelled: (_) => ref.read(weatherCardMovingProvider.notifier).state = false,
+            backgroundCardOffset: const Offset(0, 44),
+            isDisabled: cardCount <= 1,
+            duration: PromajaDurations.cardSwiperAnimation,
+            backgroundCardCount: min(cardCount - 1, 3),
+            cardCount: cardCount,
+            cardBuilder: (_, cardIndex) {
+              final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
 
-            /// Return proper [ForecastSuccess]
-            if (forecast != null) {
-              return WeatherCardSuccess(
-                location: location,
-                forecast: forecast,
-                useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                index: cardIndex,
-                isPhoneLocation: isPhoneLocation,
-                showCelsius: showCelsius,
-                showKph: showKph,
-                showMm: showMm,
-                showhPa: showhPa,
+              /// Return proper [ForecastSuccess]
+              if (forecast != null) {
+                return WeatherCardSuccess(
+                  location: location,
+                  forecast: forecast,
+                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                  index: cardIndex,
+                  isPhoneLocation: isPhoneLocation,
+                  showCelsius: showCelsius,
+                  showKph: showKph,
+                  showMm: showMm,
+                  showhPa: showhPa,
+                );
+              }
+
+              /// This should never happen, but if it does, return [ForecastError]
+              return ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(40),
+                ),
+                child: WeatherCardError(
+                  location: location,
+                  error: 'noMoreForecasts'.tr(),
+                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                  isPhoneLocation: isPhoneLocation,
+                ),
               );
-            }
-
-            /// This should never happen, but if it does, return [ForecastError]
-            return ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(40),
-              ),
-              child: WeatherCardError(
-                location: location,
-                error: 'noMoreForecasts'.tr(),
-                useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                isPhoneLocation: isPhoneLocation,
-              ),
-            );
-          },
+            },
+          ),
         ),
 
         ///
@@ -133,7 +132,7 @@ class WeatherSuccess extends ConsumerWidget {
           child: Align(
             child: AnimatedSmoothIndicator(
               activeIndex: index,
-              count: cardsCount,
+              count: cardCount,
               effect: WormEffect(
                 activeDotColor: PromajaColors.white,
                 dotHeight: 8,

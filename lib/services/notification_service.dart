@@ -50,6 +50,8 @@ class NotificationService {
 
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
+  var notificationId = 0;
+
   ///
   /// INIT
   ///
@@ -245,7 +247,7 @@ class NotificationService {
       );
 
       await flutterLocalNotificationsPlugin?.show(
-        DateTime.now().millisecondsSinceEpoch,
+        notificationId++,
         title,
         text,
         notificationDetails,

@@ -33,7 +33,7 @@ class CardsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(cardIndexProvider);
     final locations = ref.watch(hiveProvider);
-    final cardsCount = locations.length;
+    final cardCount = locations.length;
 
     final settings = ref.watch(hiveProvider.notifier).getPromajaSettingsFromBox();
 
@@ -57,50 +57,53 @@ class CardsScreen extends ConsumerWidget {
             ///
             /// WEATHER
             ///
-            AppinioSwiper(
-              loop: true,
+            Padding(
               padding: const EdgeInsets.only(bottom: 24),
-              isDisabled: cardsCount <= 1,
-              duration: PromajaDurations.cardSwiperAnimation,
-              backgroundCardsCount: min(cardsCount - 1, 3),
-              cardsCount: cardsCount,
-              onSwiping: (_) => ref.read(cardMovingProvider.notifier).state = true,
-              onSwipeCancelled: () => ref.read(cardMovingProvider.notifier).state = false,
-              onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
-              cardsBuilder: (_, cardIndex) {
-                final location = locations.elementAtOrNull(cardIndex);
+              child: AppinioSwiper(
+                loop: true,
+                onCardPositionChanged: (_) => ref.read(cardMovingProvider.notifier).state = true,
+                onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
+                onSwipeCancelled: (_) => ref.read(cardMovingProvider.notifier).state = false,
+                backgroundCardOffset: const Offset(0, 44),
+                isDisabled: cardCount <= 1,
+                duration: PromajaDurations.cardSwiperAnimation,
+                backgroundCardCount: min(cardCount - 1, 3),
+                cardCount: cardCount,
+                cardBuilder: (_, cardIndex) {
+                  final location = locations.elementAtOrNull(cardIndex);
 
-                /// Return proper [CardWidget]
-                if (location != null) {
-                  return CardWidget(
-                    originalLocation: location,
-                    useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                    showCelsius: showCelsius,
-                    showKph: showKph,
-                    showMm: showMm,
-                    showhPa: showhPa,
-                  );
-                }
+                  /// Return proper [CardWidget]
+                  if (location != null) {
+                    return CardWidget(
+                      originalLocation: location,
+                      useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                      showCelsius: showCelsius,
+                      showKph: showKph,
+                      showMm: showMm,
+                      showhPa: showhPa,
+                    );
+                  }
 
-                /// This should never happen, but if it does, return [CardError]
-                return ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(40),
-                  ),
-                  child: CardError(
-                    location: Location(
-                      country: '---',
-                      lat: 0,
-                      lon: 0,
-                      name: '---',
-                      region: '---',
+                  /// This should never happen, but if it does, return [CardError]
+                  return ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(40),
                     ),
-                    error: 'noMoreLocations'.tr(),
-                    useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                    isPhoneLocation: false,
-                  ),
-                );
-              },
+                    child: CardError(
+                      location: Location(
+                        country: '---',
+                        lat: 0,
+                        lon: 0,
+                        name: '---',
+                        region: '---',
+                      ),
+                      error: 'noMoreLocations'.tr(),
+                      useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                      isPhoneLocation: false,
+                    ),
+                  );
+                },
+              ),
             ),
 
             ///
@@ -113,7 +116,7 @@ class CardsScreen extends ConsumerWidget {
               child: Align(
                 child: AnimatedSmoothIndicator(
                   activeIndex: index,
-                  count: cardsCount,
+                  count: cardCount,
                   effect: WormEffect(
                     activeDotColor: PromajaColors.white,
                     dotHeight: 8,
