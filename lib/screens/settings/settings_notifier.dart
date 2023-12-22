@@ -139,7 +139,7 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   }
 
   /// Triggered when the user taps the `Morning notification` checkbox
-  Future<void> toggleMonthlyNotification() async {
+  Future<void> toggleMorningNotification() async {
     /// Update `state` and [Hive] with proper value
     await updateSettings(
       state.copyWith(

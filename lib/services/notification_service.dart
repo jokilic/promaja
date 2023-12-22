@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
+import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
@@ -63,6 +64,7 @@ class NotificationService {
         (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification)) {
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
       await initializeNotifications();
+      await requestNotificationPermissions();
     }
   }
 
@@ -353,6 +355,19 @@ class NotificationService {
                 isEvening: false,
                 container: container,
               );
+
+              /// Store new value of `NotificationLastShown` in [Hive]
+              final now = DateTime.now();
+              final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+              await hive.addNotificationLastShownToBox(
+                notificationLastShown: oldNotificationLastShown?.copyWith(
+                      morningNotificationLastShown: now,
+                    ) ??
+                    NotificationLastShown(
+                      morningNotificationLastShown: now,
+                      eveningNotificationLastShown: DateTime.fromMillisecondsSinceEpoch(0),
+                    ),
+              );
             }
           }
         }
@@ -381,6 +396,19 @@ class NotificationService {
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
                 container: container,
+              );
+
+              /// Store new value of `NotificationLastShown` in [Hive]
+              final now = DateTime.now();
+              final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+              await hive.addNotificationLastShownToBox(
+                notificationLastShown: oldNotificationLastShown?.copyWith(
+                      eveningNotificationLastShown: now,
+                    ) ??
+                    NotificationLastShown(
+                      morningNotificationLastShown: DateTime.fromMillisecondsSinceEpoch(0),
+                      eveningNotificationLastShown: now,
+                    ),
               );
             }
           }

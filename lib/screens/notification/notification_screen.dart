@@ -100,7 +100,7 @@ class NotificationScreen extends ConsumerWidget {
               ///
               SettingsCheckboxListTile(
                 value: settings.notification.hourlyNotification,
-                onTap: () => ref.read(settingsProvider.notifier).toggleHourlyNotification(),
+                onTap: ref.read(settingsProvider.notifier).toggleHourlyNotification,
                 title: 'hourlyNotificationTitle'.tr(),
                 subtitle: 'hourlyNotificationSubtitle'.tr(),
               ),
@@ -110,7 +110,7 @@ class NotificationScreen extends ConsumerWidget {
               ///
               SettingsCheckboxListTile(
                 value: settings.notification.morningNotification,
-                onTap: () => ref.read(settingsProvider.notifier).toggleMonthlyNotification(),
+                onTap: ref.read(settingsProvider.notifier).toggleMorningNotification,
                 title: 'morningNotificationTitle'.tr(),
                 subtitle: 'morningNotificationSubtitle'.tr(),
               ),
@@ -120,7 +120,7 @@ class NotificationScreen extends ConsumerWidget {
               ///
               SettingsCheckboxListTile(
                 value: settings.notification.eveningNotification,
-                onTap: () => ref.read(settingsProvider.notifier).toggleEveningNotification(),
+                onTap: ref.read(settingsProvider.notifier).toggleEveningNotification,
                 title: 'eveningNotificationTitle'.tr(),
                 subtitle: 'eveningNotificationSubtitle'.tr(),
               ),

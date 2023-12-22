@@ -87,6 +87,7 @@ class PromajaNavigationBar extends ConsumerWidget {
           top: Radius.circular(32),
         ),
         child: NavigationBar(
+          height: 80,
           backgroundColor: PromajaColors.black,
           elevation: 0,
           indicatorColor: Colors.transparent,
