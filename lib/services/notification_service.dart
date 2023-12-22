@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'dart:io';
 import 'dart:math';
 
@@ -9,6 +10,7 @@ import 'package:logger/logger.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
+import '../models/settings/notification/notification_type.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../util/weather.dart';
@@ -67,7 +69,7 @@ class NotificationService {
   /// METHODS
   ///
 
-  /// Triggered when a notification is received on `iOS`
+  /// Triggered when a notification is received while the app is in foreground on `iOS`
   Future<void> onDidReceiveLocalNotification(
     int id,
     String? title,
@@ -75,20 +77,26 @@ class NotificationService {
     String? payload,
   ) async {
     try {
-      // TODO: Needs to be implemented
+      final value = 'onDidReceiveLocalNotification -> payload -> $payload';
 
-      logger.f('onDidReceiveLocalNotification() triggered');
+      Logger().f(value);
+      dev.log(value);
+      print(value);
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveLocalNotification() -> $e';
       logger.e(error);
     }
   }
 
+  /// Triggered when the user taps the notification
   Future<void> onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
     try {
-      // TODO: Needs to be implemented
+      final payload = notificationResponse.payload;
+      final value = 'onDidReceiveNotificationResponse -> payload -> $payload';
 
-      logger.f('onDidReceiveNotificationResponse() triggered');
+      Logger().f(value);
+      dev.log(value);
+      print(value);
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
       logger.e(error);
@@ -194,7 +202,11 @@ class NotificationService {
   }
 
   /// Shows a notification
-  Future<void> showNotification({required String title, required String text}) async {
+  Future<void> showNotification({
+    required String title,
+    required String text,
+    required NotificationType notificationType,
+  }) async {
     try {
       final bigTextStyleInformation = BigTextStyleInformation(
         text,
@@ -229,11 +241,11 @@ class NotificationService {
       );
 
       await flutterLocalNotificationsPlugin?.show(
-        0,
+        DateTime.now().millisecondsSinceEpoch,
         title,
         text,
         notificationDetails,
-        payload: 'promaja_payload',
+        payload: notificationType.name,
       );
     } catch (e) {
       final error = 'NotificationService -> showNotification() -> $e';
@@ -258,6 +270,7 @@ class NotificationService {
         await showNotification(
           title: 'Test notification',
           text: getRandomWeatherJoke(),
+          notificationType: NotificationType.test,
         );
       }
     } catch (e) {
@@ -322,7 +335,7 @@ class NotificationService {
               await triggerForecastNotification(
                 forecastWeather: forecastWeather,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-                isTomorrow: false,
+                isEvening: false,
                 container: container,
               );
             }
@@ -351,7 +364,7 @@ class NotificationService {
               await triggerForecastNotification(
                 forecastWeather: forecastWeather,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-                isTomorrow: true,
+                isEvening: true,
                 container: container,
               );
             }
@@ -384,7 +397,11 @@ class NotificationService {
       const title = 'Hourly notification';
       final text = 'Hello! Current weather in $locationName is ${weatherDescription.toLowerCase()} with a temperature of $temp.';
 
-      await container.read(notificationProvider).showNotification(title: title, text: text);
+      await container.read(notificationProvider).showNotification(
+            title: title,
+            text: text,
+            notificationType: NotificationType.hourly,
+          );
     } catch (e) {
       final error = 'triggerHourlyNotification -> $e';
       Logger().e(error);
@@ -395,7 +412,7 @@ class NotificationService {
   Future<void> triggerForecastNotification({
     required ResponseForecastWeather forecastWeather,
     required bool showCelsius,
-    required bool isTomorrow,
+    required bool isEvening,
     required ProviderContainer container,
   }) async {
     try {
@@ -403,7 +420,7 @@ class NotificationService {
       final locationName = forecastWeather.location.name;
 
       final time = DateTime.now().add(
-        isTomorrow ? const Duration(days: 1) : Duration.zero,
+        isEvening ? const Duration(days: 1) : Duration.zero,
       );
       final forecast = forecastWeather.forecast.forecastDays
           .where(
@@ -422,14 +439,18 @@ class NotificationService {
           isDay: true,
         );
 
-        final partOfDay = isTomorrow ? 'Evening' : 'Morning';
-        final whichDay = isTomorrow ? 'Tomorrow' : 'Today';
+        final partOfDay = isEvening ? 'Evening' : 'Morning';
+        final whichDay = isEvening ? 'Tomorrow' : 'Today';
 
         final title = '$partOfDay notification';
         final text =
             'Good ${partOfDay.toLowerCase()}! $whichDay the weather in $locationName will be ${weatherDescription.toLowerCase()} with a temperature between $minTemp and $maxTemp.';
 
-        await showNotification(title: title, text: text);
+        await showNotification(
+          title: title,
+          text: text,
+          notificationType: isEvening ? NotificationType.evening : NotificationType.morning,
+        );
       }
     } catch (e) {
       final error = 'triggerMorningNotification -> $e';
@@ -461,7 +482,13 @@ class NotificationService {
   }
 }
 
+/// Triggered when a notification is received while the app is terminated
 @pragma('vm:entry-point')
 void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) {
-  // TODO: Needs to be implemented
+  final payload = notificationResponse.payload;
+  final value = 'onDidReceiveBackgroundNotificationResponse -> payload -> $payload';
+
+  Logger().f(value);
+  dev.log(value);
+  print(value);
 }
