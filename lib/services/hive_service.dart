@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
+import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_settings.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/distance_speed_unit.dart';
@@ -35,6 +36,7 @@ class HiveService extends StateNotifier<List<Location>> {
   late final Box<int> activeLocationIndexBox;
   late final Box<int> activeNavigationValueIndexToBox;
   late final Box<PromajaSettings> promajaSettingsBox;
+  late final Box<NotificationLastShown> notificationLastShownBox;
 
   late final PromajaSettings defaultSettings;
 
@@ -93,11 +95,16 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(PromajaSettingsAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(NotificationLastShownAdapter().typeId)) {
+      Hive.registerAdapter(NotificationLastShownAdapter());
+    }
+
     locationsBox = await Hive.openBox<Location>('locationsBox');
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
     promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
+    notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
 
     state = getLocationsFromBox();
 
@@ -134,6 +141,7 @@ class HiveService extends StateNotifier<List<Location>> {
     await activeLocationIndexBox.close();
     await activeNavigationValueIndexToBox.close();
     await promajaSettingsBox.close();
+    await notificationLastShownBox.close();
 
     await Hive.close();
   }
@@ -147,6 +155,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to add new settings value to [Hive]
   Future<void> addPromajaSettingsToBox({required PromajaSettings promajaSettings}) async => promajaSettingsBox.put(0, promajaSettings);
+
+  /// Called to add new navigation last shown to [Hive]
+  Future<void> addNotificationLastShownToBox({required NotificationLastShown notificationLastShown}) async => notificationLastShownBox.put(0, notificationLastShown);
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
@@ -192,6 +203,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to get settings from [Hive]
   PromajaSettings getPromajaSettingsFromBox() => promajaSettingsBox.get(0) ?? defaultSettings;
+
+  /// Called to get notification last shown from [Hive]
+  NotificationLastShown? getNotificationLastShownFromBox() => notificationLastShownBox.get(0);
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {

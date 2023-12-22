@@ -300,45 +300,61 @@ class NotificationService {
           }
         }
 
-        /// Morning notification is active, fetch today's forecast and show it
+        /// Morning notification is active
         if (settings.notification.morningNotification) {
-          // TODO: Logic which checks if this was ran already this morning
+          /// Check if notification should be triggered
+          final shouldShowNotification = shouldTriggerNotification(
+            isEveningNotification: false,
+          );
 
-          final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
-                location: location,
+          /// Notification should be shown
+          if (shouldShowNotification) {
+            /// Fetch today's forecast
+            final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
+                  location: location,
+                  isTomorrow: false,
+                  container: container,
+                );
+
+            /// Forecast weather is successfully fetched
+            if (forecastWeather != null) {
+              /// Show notification
+              await triggerForecastNotification(
+                forecastWeather: forecastWeather,
+                showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isTomorrow: false,
                 container: container,
               );
-
-          /// Forecast weather is successfully fetched
-          if (forecastWeather != null) {
-            await triggerForecastNotification(
-              forecastWeather: forecastWeather,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              isTomorrow: false,
-              container: container,
-            );
+            }
           }
         }
 
-        /// Evening notification is active, fetch tomorrow's forecast and show it
+        /// Evening notification is active
         if (settings.notification.eveningNotification) {
-          // TODO: Logic which checks if this was ran already this evening
+          /// Check if notification should be triggered
+          final shouldShowNotification = shouldTriggerNotification(
+            isEveningNotification: true,
+          );
 
-          final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
-                location: location,
+          /// Notification should be shown
+          if (shouldShowNotification) {
+            /// Fetch tomorrow's forecast
+            final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
+                  location: location,
+                  isTomorrow: true,
+                  container: container,
+                );
+
+            /// Forecast weather is successfully fetched
+            if (forecastWeather != null) {
+              /// Show notification
+              await triggerForecastNotification(
+                forecastWeather: forecastWeather,
+                showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isTomorrow: true,
                 container: container,
               );
-
-          /// Forecast weather is successfully fetched
-          if (forecastWeather != null) {
-            await triggerForecastNotification(
-              forecastWeather: forecastWeather,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              isTomorrow: true,
-              container: container,
-            );
+            }
           }
         }
       }
@@ -419,6 +435,29 @@ class NotificationService {
       final error = 'triggerMorningNotification -> $e';
       Logger().e(error);
     }
+  }
+
+  /// Checks when last notification was triggered and returns `true` if it's more than 20 hours
+  bool shouldTriggerNotification({required bool isEveningNotification}) {
+    final now = DateTime.now();
+
+    final startHour = isEveningNotification ? 19 : 8;
+    final endHour = isEveningNotification ? 21 : 10;
+
+    /// Notification is triggered between `startHour` & `endHour`
+    if (now.hour >= startHour && now.hour <= endHour) {
+      /// Get [DateTime] when the last notification is triggered
+      final lastShownNotification = hive.getNotificationLastShownFromBox();
+      final lastShownNotificationDateTime = (isEveningNotification ? lastShownNotification?.eveningNotificationLastShown : lastShownNotification?.morningNotificationLastShown) ??
+          DateTime.fromMillisecondsSinceEpoch(0);
+
+      /// Calculate difference between the last notification and current time
+      final difference = now.difference(lastShownNotificationDateTime);
+
+      /// The difference is more than 20 hours, we should trigger the notification
+      return difference.inHours > 20;
+    }
+    return false;
   }
 }
 
