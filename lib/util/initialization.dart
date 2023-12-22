@@ -44,7 +44,14 @@ Future<ProviderContainer?> initializeServices() async {
     return container;
   } catch (e) {
     final error = 'initializeServices -> $e';
-    Logger().e(error);
+    Logger(
+      printer: PrettyPrinter(
+        methodCount: 0,
+        errorMethodCount: 3,
+        lineLength: 50,
+        noBoxingByDefault: true,
+      ),
+    ).e(error);
     return null;
   }
 }
@@ -77,6 +84,13 @@ Future<void> initializeLocalization() async {
     await initializeDateFormatting('hr');
   } catch (e) {
     final error = 'initializeLocalization -> $e';
-    Logger().e(error);
+    Logger(
+      printer: PrettyPrinter(
+        methodCount: 0,
+        errorMethodCount: 3,
+        lineLength: 50,
+        noBoxingByDefault: true,
+      ),
+    ).e(error);
   }
 }

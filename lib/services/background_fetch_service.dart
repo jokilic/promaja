@@ -76,7 +76,14 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           /// Some generic error happened, throw error
           catch (e) {
             final error = 'backgroundFetchHeadlessTask -> $e';
-            Logger().e(error);
+            Logger(
+              printer: PrettyPrinter(
+                methodCount: 0,
+                errorMethodCount: 3,
+                lineLength: 50,
+                noBoxingByDefault: true,
+              ),
+            ).e(error);
           }
 
           /// Finish task
@@ -85,7 +92,14 @@ final backgroundFetchInitProvider = FutureProvider<void>(
 
         /// Task timeout logic
         (taskId) async {
-          Logger().e('Task timed-out: $taskId');
+          Logger(
+            printer: PrettyPrinter(
+              methodCount: 0,
+              errorMethodCount: 3,
+              lineLength: 50,
+              noBoxingByDefault: true,
+            ),
+          ).e('Task timed-out: $taskId');
           BackgroundFetch.finish(taskId);
         },
       );
@@ -94,7 +108,14 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       await BackgroundFetch.start();
     } catch (e) {
       final error = 'backgroundFetchInit -> initialize -> $e';
-      Logger().e(error);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).e(error);
     }
   },
   name: 'BackgroundFetchInitProvider',
@@ -107,7 +128,14 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
 
   /// Task is timed out, finish it immediately
   if (isTimeout) {
-    Logger().e('Headless task timed-out: $taskId');
+    Logger(
+      printer: PrettyPrinter(
+        methodCount: 0,
+        errorMethodCount: 3,
+        lineLength: 50,
+        noBoxingByDefault: true,
+      ),
+    ).e('Headless task timed-out: $taskId');
     BackgroundFetch.finish(taskId);
     return;
   }
@@ -152,7 +180,14 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   /// Some generic error happened, throw error
   catch (e) {
     final error = 'backgroundFetchHeadlessTask -> $e';
-    Logger().e(error);
+    Logger(
+      printer: PrettyPrinter(
+        methodCount: 0,
+        errorMethodCount: 3,
+        lineLength: 50,
+        noBoxingByDefault: true,
+      ),
+    ).e(error);
   }
 
   /// Finish task

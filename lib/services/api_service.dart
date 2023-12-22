@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
@@ -163,7 +162,7 @@ class APIService {
       }
     } catch (e) {
       final error = 'fetchCurrentWeather -> $e';
-      Logger().e(error);
+      logger.e(error);
     }
 
     return null;
@@ -193,7 +192,7 @@ class APIService {
       }
     } catch (e) {
       final error = 'fetchForecastWeather -> $e';
-      Logger().e(error);
+      logger.e(error);
     }
 
     return null;

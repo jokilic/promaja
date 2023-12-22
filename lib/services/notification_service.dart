@@ -1,4 +1,3 @@
-import 'dart:developer' as dev;
 import 'dart:io';
 import 'dart:math';
 
@@ -83,9 +82,14 @@ class NotificationService {
 
       final value = 'onDidReceiveLocalNotification -> payload -> $payload';
 
-      Logger().f(value);
-      dev.log(value);
-      print(value);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).f(value);
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveLocalNotification() -> $e';
       logger.e(error);
@@ -100,9 +104,14 @@ class NotificationService {
       final payload = notificationResponse.payload;
       final value = 'onDidReceiveNotificationResponse -> payload -> $payload';
 
-      Logger().f(value);
-      dev.log(value);
-      print(value);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).f(value);
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
       logger.e(error);
@@ -379,7 +388,14 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'handleNotifications -> $e';
-      Logger().e(error);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).e(error);
     }
   }
 
@@ -410,7 +426,14 @@ class NotificationService {
           );
     } catch (e) {
       final error = 'triggerHourlyNotification -> $e';
-      Logger().e(error);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).e(error);
     }
   }
 
@@ -460,7 +483,14 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'triggerMorningNotification -> $e';
-      Logger().e(error);
+      Logger(
+        printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          noBoxingByDefault: true,
+        ),
+      ).e(error);
     }
   }
 
@@ -496,7 +526,12 @@ void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificatio
   final payload = notificationResponse.payload;
   final value = 'onDidReceiveBackgroundNotificationResponse -> payload -> $payload';
 
-  Logger().f(value);
-  dev.log(value);
-  print(value);
+  Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+      errorMethodCount: 3,
+      lineLength: 50,
+      noBoxingByDefault: true,
+    ),
+  ).f(value);
 }
