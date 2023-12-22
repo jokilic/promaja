@@ -199,7 +199,7 @@ class HiveService extends StateNotifier<List<Location>> {
   int getActiveLocationIndexFromBox() => activeLocationIndexBox.get(0) ?? 0;
 
   /// Called to get active navigation value index from [Hive]
-  int getActiveNavigationValueIndexFromBox() => activeNavigationValueIndexToBox.get(0) ?? 0;
+  int? getActiveNavigationValueIndexFromBox() => activeNavigationValueIndexToBox.get(0);
 
   /// Called to get settings from [Hive]
   PromajaSettings getPromajaSettingsFromBox() => promajaSettingsBox.get(0) ?? defaultSettings;

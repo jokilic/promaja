@@ -38,7 +38,7 @@ final screenProvider = StateProvider.autoDispose<Widget>(
   name: 'ScreenProvider',
 );
 
-enum NavigationBarItems { cards, weather, list, test }
+enum NavigationBarItems { cards, weather, list, settings }
 
 class PromajaNavigationBarController extends StateNotifier<int> {
   final HiveService hiveService;
@@ -47,13 +47,31 @@ class PromajaNavigationBarController extends StateNotifier<int> {
   PromajaNavigationBarController({
     required this.hiveService,
     required this.homeWidgetService,
-  }) : super(
-          hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : hiveService.getActiveNavigationValueIndexFromBox(),
-        );
+  }) : super(2) {
+    state = getInitialNavigationBarIndex();
+  }
 
   ///
   /// METHODS
   ///
+
+  /// Returns proper initial index, depending on locations and previously opened screen
+  int getInitialNavigationBarIndex() {
+    final indexValue = hiveService.getActiveNavigationValueIndexFromBox();
+
+    /// No locations, go to [ListScreen]
+    if (hiveService.getLocationsFromBox().isEmpty) {
+      return NavigationBarItems.list.index;
+    }
+
+    /// Index is set at `SettingsScreen`, open `CardsScreen`
+    if (indexValue == 3) {
+      return NavigationBarItems.cards.index;
+    }
+
+    /// Return currently opened screen or `ListScreen` if there's no stored `index`
+    return indexValue ?? 2;
+  }
 
   /// Triggered when navigation bar needs changing
   Future<void> changeNavigationBarIndex(int newIndex) async {
