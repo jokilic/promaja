@@ -18,7 +18,6 @@ You can use a simple widget which shows current weather for the chosen location 
 Using a simple card UI, check current weather for all enabled locations.\
 All relevant information is accurate and easily visible.
 
-
 **Forecast weather** 🌦️
 
 Like in Current weather, data is shown in a simple card UI.\
@@ -30,6 +29,10 @@ Weather for multiple days is shown and hourly weather is visible at a glance.
 Here you can add new locations, delete unwanted ones and reorder them how you desire.\
 You can also see current weather for them in one simple place.\
 Tapping on any location will bring you to Forecast weather.
+
+**Settings** ⚙️
+
+Tweak settings, change units used to show the weather, update data that notification & widget are showing and lots more.
 
 ## Things I still want to do 👷‍♂️
 
