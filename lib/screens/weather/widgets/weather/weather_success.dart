@@ -77,7 +77,7 @@ class WeatherSuccess extends ConsumerWidget {
         /// WEATHER
         ///
         Padding(
-          padding: const EdgeInsets.only(bottom: 24),
+          padding: const EdgeInsets.only(bottom: 144),
           child: AppinioSwiper(
             loop: true,
             onCardPositionChanged: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
@@ -108,9 +108,7 @@ class WeatherSuccess extends ConsumerWidget {
 
               /// This should never happen, but if it does, return [ForecastError]
               return ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(40),
-                ),
+                borderRadius: BorderRadius.circular(40),
                 child: WeatherCardError(
                   location: location,
                   error: 'noMoreForecasts'.tr(),

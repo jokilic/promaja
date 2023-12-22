@@ -82,95 +82,100 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 
 class PromajaNavigationBar extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) => NavigationBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        indicatorColor: Colors.transparent,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        selectedIndex: ref.watch(navigationBarIndexProvider),
-        onDestinationSelected: (newIndex) {
-          if (ref.read(navigationBarIndexProvider) != newIndex) {
-            ref.read(cardIndexProvider.notifier).state = 0;
-            ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
-          }
-        },
-        animationDuration: PromajaDurations.navigationAnimation,
-        destinations: [
-          ///
-          /// CARDS
-          ///
-          NavigationDestination(
-            icon: Image.asset(
-              PromajaIcons.globe,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white.withOpacity(0.15),
+  Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(32),
+        ),
+        child: NavigationBar(
+          backgroundColor: PromajaColors.black,
+          elevation: 0,
+          indicatorColor: Colors.transparent,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          selectedIndex: ref.watch(navigationBarIndexProvider),
+          onDestinationSelected: (newIndex) {
+            if (ref.read(navigationBarIndexProvider) != newIndex) {
+              ref.read(cardIndexProvider.notifier).state = 0;
+              ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
+            }
+          },
+          animationDuration: PromajaDurations.navigationAnimation,
+          destinations: [
+            ///
+            /// CARDS
+            ///
+            NavigationDestination(
+              icon: Image.asset(
+                PromajaIcons.globe,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white.withOpacity(0.15),
+              ),
+              selectedIcon: Image.asset(
+                PromajaIcons.globe,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white,
+              ),
+              label: '',
             ),
-            selectedIcon: Image.asset(
-              PromajaIcons.globe,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white,
-            ),
-            label: '',
-          ),
 
-          ///
-          /// WEATHER
-          ///
-          NavigationDestination(
-            icon: Image.asset(
-              PromajaIcons.temperature,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white.withOpacity(0.15),
+            ///
+            /// WEATHER
+            ///
+            NavigationDestination(
+              icon: Image.asset(
+                PromajaIcons.temperature,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white.withOpacity(0.15),
+              ),
+              selectedIcon: Image.asset(
+                PromajaIcons.temperature,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white,
+              ),
+              label: '',
             ),
-            selectedIcon: Image.asset(
-              PromajaIcons.temperature,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white,
-            ),
-            label: '',
-          ),
 
-          ///
-          /// LIST
-          ///
-          NavigationDestination(
-            icon: Image.asset(
-              PromajaIcons.list,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white.withOpacity(0.15),
+            ///
+            /// LIST
+            ///
+            NavigationDestination(
+              icon: Image.asset(
+                PromajaIcons.list,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white.withOpacity(0.15),
+              ),
+              selectedIcon: Image.asset(
+                PromajaIcons.list,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white,
+              ),
+              label: '',
             ),
-            selectedIcon: Image.asset(
-              PromajaIcons.list,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white,
-            ),
-            label: '',
-          ),
 
-          ///
-          /// SETTINGS
-          ///
-          NavigationDestination(
-            icon: Image.asset(
-              PromajaIcons.settings,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white.withOpacity(0.15),
+            ///
+            /// SETTINGS
+            ///
+            NavigationDestination(
+              icon: Image.asset(
+                PromajaIcons.settings,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white.withOpacity(0.15),
+              ),
+              selectedIcon: Image.asset(
+                PromajaIcons.settings,
+                height: 20,
+                width: 20,
+                color: PromajaColors.white,
+              ),
+              label: '',
             ),
-            selectedIcon: Image.asset(
-              PromajaIcons.settings,
-              height: 20,
-              width: 20,
-              color: PromajaColors.white,
-            ),
-            label: '',
-          ),
-        ],
+          ],
+        ),
       );
 }

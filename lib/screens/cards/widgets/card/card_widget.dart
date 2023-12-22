@@ -27,9 +27,7 @@ class CardWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(40),
-        ),
+        borderRadius: BorderRadius.circular(40),
         child: ref.watch(getCurrentWeatherProvider(originalLocation)).when(
               data: (data) {
                 ///

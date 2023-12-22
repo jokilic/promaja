@@ -28,6 +28,7 @@ class WeatherScreen extends ConsumerWidget {
     final settings = ref.watch(hiveProvider.notifier).getPromajaSettingsFromBox();
 
     return Scaffold(
+      extendBody: true,
       bottomNavigationBar: PromajaNavigationBar(),
       body: Animate(
         key: ValueKey(ref.read(navigationBarIndexProvider)),

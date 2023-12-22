@@ -15,11 +15,9 @@ class WeatherLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.sizeOf(context).width,
-        margin: const EdgeInsets.only(bottom: 24),
+        margin: const EdgeInsets.only(bottom: 144),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(40),
-          ),
+          borderRadius: BorderRadius.circular(40),
           gradient: LinearGradient(
             colors: [
               lightenColor(Colors.amberAccent),

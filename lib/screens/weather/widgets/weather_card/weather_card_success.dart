@@ -127,9 +127,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     final showSnow = widget.forecast.day.dailyWillItSnow == 1;
 
     return ClipRRect(
-      borderRadius: const BorderRadius.vertical(
-        bottom: Radius.circular(40),
-      ),
+      borderRadius: BorderRadius.circular(40),
       child: AnimatedOpacity(
         duration: PromajaDurations.opacityAnimation,
         curve: Curves.easeIn,

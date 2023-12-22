@@ -24,9 +24,7 @@ class WeatherCardError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(40),
-        ),
+        borderRadius: BorderRadius.circular(40),
         child: AnimatedOpacity(
           duration: PromajaDurations.opacityAnimation,
           curve: Curves.easeIn,

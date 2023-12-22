@@ -43,6 +43,7 @@ class CardsScreen extends ConsumerWidget {
     final showhPa = settings.unit.pressure == PressureUnit.hectopascal;
 
     return Scaffold(
+      extendBody: true,
       bottomNavigationBar: PromajaNavigationBar(),
       body: animate.Animate(
         key: ValueKey(ref.read(navigationBarIndexProvider)),
@@ -58,7 +59,7 @@ class CardsScreen extends ConsumerWidget {
             /// WEATHER
             ///
             Padding(
-              padding: const EdgeInsets.only(bottom: 24),
+              padding: const EdgeInsets.only(bottom: 144),
               child: AppinioSwiper(
                 loop: true,
                 onCardPositionChanged: (_) => ref.read(cardMovingProvider.notifier).state = true,
@@ -86,9 +87,7 @@ class CardsScreen extends ConsumerWidget {
 
                   /// This should never happen, but if it does, return [CardError]
                   return ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(40),
-                    ),
+                    borderRadius: BorderRadius.circular(40),
                     child: CardError(
                       location: Location(
                         country: '---',
