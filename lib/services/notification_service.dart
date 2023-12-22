@@ -2,13 +2,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:logger/logger.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
@@ -52,32 +48,6 @@ class NotificationService {
 
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-  final androidNotificationDetails = const AndroidNotificationDetails(
-    'promaja_channel_id',
-    'Promaja notifications',
-    channelDescription: 'Notifications shown by the Promaja app',
-    importance: Importance.max,
-    priority: Priority.high,
-    ticker: 'ticker',
-  );
-
-  final iosNotificationDetails = const DarwinNotificationDetails(
-    categoryIdentifier: 'promaja_category_id',
-  );
-
-  final macOSNotificationDetails = const DarwinNotificationDetails(
-    categoryIdentifier: 'promaja_category_id',
-  );
-
-  final linuxNotificationDetails = const LinuxNotificationDetails();
-
-  late final notificationDetails = NotificationDetails(
-    android: androidNotificationDetails,
-    iOS: iosNotificationDetails,
-    macOS: macOSNotificationDetails,
-    linux: linuxNotificationDetails,
-  );
-
   ///
   /// INIT
   ///
@@ -89,7 +59,6 @@ class NotificationService {
     if (flutterLocalNotificationsPlugin == null &&
         (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification)) {
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-      await configureTimeZone();
       await initializeNotifications();
     }
   }
@@ -122,22 +91,6 @@ class NotificationService {
       logger.f('onDidReceiveNotificationResponse() triggered');
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
-      logger.e(error);
-    }
-  }
-
-  /// Configures timezone, required for scheduled notifications
-  Future<void> configureTimeZone() async {
-    try {
-      if (kIsWeb || Platform.isLinux) {
-        return;
-      }
-
-      tz.initializeTimeZones();
-      final timeZoneName = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(timeZoneName));
-    } catch (e) {
-      final error = 'NotificationService -> configureTimeZone() -> $e';
       logger.e(error);
     }
   }
@@ -243,6 +196,38 @@ class NotificationService {
   /// Shows a notification
   Future<void> showNotification({required String title, required String text}) async {
     try {
+      final bigTextStyleInformation = BigTextStyleInformation(
+        text,
+        contentTitle: title,
+      );
+
+      final androidNotificationDetails = AndroidNotificationDetails(
+        'promaja_channel_id',
+        'Promaja notifications',
+        channelDescription: 'Notifications shown by the Promaja app',
+        styleInformation: bigTextStyleInformation,
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker',
+      );
+
+      const iosNotificationDetails = DarwinNotificationDetails(
+        categoryIdentifier: 'promaja_category_id',
+      );
+
+      const macOSNotificationDetails = DarwinNotificationDetails(
+        categoryIdentifier: 'promaja_category_id',
+      );
+
+      const linuxNotificationDetails = LinuxNotificationDetails();
+
+      final notificationDetails = NotificationDetails(
+        android: androidNotificationDetails,
+        iOS: iosNotificationDetails,
+        macOS: macOSNotificationDetails,
+        linux: linuxNotificationDetails,
+      );
+
       await flutterLocalNotificationsPlugin?.show(
         0,
         title,
@@ -262,7 +247,6 @@ class NotificationService {
       /// Initialize notifications if they're not initialized
       if (flutterLocalNotificationsPlugin == null) {
         flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-        await configureTimeZone();
         await initializeNotifications();
       }
 
@@ -272,7 +256,7 @@ class NotificationService {
       if (permissionsGranted) {
         /// Show notification
         await showNotification(
-          title: 'Promaja',
+          title: 'Test notification',
           text: getRandomWeatherJoke(),
         );
       }
@@ -381,9 +365,7 @@ class NotificationService {
         isDay: currentWeather.current.isDay == 1,
       );
 
-      final timestamp = DateFormat.Hm().format(DateTime.now());
-
-      final title = 'Hourly notification @ $timestamp';
+      const title = 'Hourly notification';
       final text = 'Hello! Current weather in $locationName is ${weatherDescription.toLowerCase()} with a temperature of $temp.';
 
       await container.read(notificationProvider).showNotification(title: title, text: text);
@@ -424,12 +406,10 @@ class NotificationService {
           isDay: true,
         );
 
-        final timestamp = DateFormat.Hm().format(DateTime.now());
-
         final partOfDay = isTomorrow ? 'Evening' : 'Morning';
         final whichDay = isTomorrow ? 'Tomorrow' : 'Today';
 
-        final title = '$partOfDay notification @ $timestamp';
+        final title = '$partOfDay notification';
         final text =
             'Good ${partOfDay.toLowerCase()}! $whichDay the weather in $locationName will be ${weatherDescription.toLowerCase()} with a temperature between $minTemp and $maxTemp.';
 
