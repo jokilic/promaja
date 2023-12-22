@@ -9,32 +9,11 @@ import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
 import '../models/settings/promaja_settings.dart';
-import '../screens/weather/weather_notifiers.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
 import '../widgets/home_widget.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
-
-final updateHomeWidgetProvider = FutureProvider.family<void, ResponseCurrentWeather>(
-  (ref, response) async {
-    /// Get currently active location in [WeatherScreen]
-    final activeLocation = ref.read(activeWeatherProvider);
-
-    final activeLocationSameAsResponse = (activeLocation?.lat == response.location.lat) && (activeLocation?.lon == response.location.lon);
-
-    /// Update [HomeWidget] if `activeLocation` is being fetched
-    if (activeLocationSameAsResponse) {
-      /// Refresh [HomeWidget]
-      unawaited(
-        ref.read(homeWidgetProvider).refreshHomeWidget(
-              response: response,
-            ),
-      );
-    }
-  },
-  name: 'UpdateHomeWidgetProvider',
-);
 
 ///
 /// Service which initializes `HomeWidget`
@@ -171,5 +150,7 @@ class HomeWidgetService {
   Future<void> handleWidget({
     required PromajaSettings settings,
     required ProviderContainer container,
-  }) async {}
+  }) async {
+    // TODO: Implement widget handling, like `NotificationService -> handleNotifications()`
+  }
 }

@@ -52,6 +52,8 @@
     "widgetDescription": "Regarding the widget which can be shown on the home screen of your device.",
     "widgetLocationDescription": "Location which will be shown in widget",
     "widgetWeatherTypeDescription": "Weather type which will be shown in widget",
+    "widgetUpdateTitle": "Update widget",
+    "widgetUpdateSubtitle": "Manually update widget on your home screen",
     "contactTitle": "Contact",
     "contactSubtitle": "Having some ideas regarding Promaja?",
     "weatherAPIInfo": "Promaja wouldn't be possible without ",

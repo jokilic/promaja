@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
+import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/settings/widget/weather_type.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
+import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
 class WidgetScreen extends ConsumerWidget {
@@ -106,6 +108,18 @@ class WidgetScreen extends ConsumerWidget {
                 },
                 activeValue: localizeWeatherType(settings.widget.weatherType),
                 subtitle: 'widgetWeatherTypeDescription'.tr(),
+              ),
+
+              ///
+              /// UPDATE WIDGET
+              ///
+              SettingsListTile(
+                onTap: () {
+                  // TODO: Implement this
+                },
+                icon: PromajaIcons.dot,
+                title: 'widgetUpdateTitle'.tr(),
+                subtitle: 'widgetUpdateSubtitle'.tr(),
               ),
             ],
           ),

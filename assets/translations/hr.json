@@ -52,6 +52,8 @@
     "widgetDescription": "U vezi widgeta koji možete prikazati na početnom zaslonu vašeg uređaja.",
     "widgetLocationDescription": "Lokacija koja će biti prikazana u widgetu",
     "widgetWeatherTypeDescription": "Vrsta vremena koja će biti prikazana u widgetu",
+    "widgetUpdateTitle": "Ažuriraj widget",
+    "widgetUpdateSubtitle": "Ručno ažuriraj widget na vašem početnom zaslonu",
     "contactTitle": "Kontakt",
     "contactSubtitle": "Imate kakvih ideja u vezi Promaje?",
     "weatherAPIInfo": "Promaja ne bi bila moguća bez ",

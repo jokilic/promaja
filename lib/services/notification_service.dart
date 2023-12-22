@@ -77,6 +77,8 @@ class NotificationService {
     String? payload,
   ) async {
     try {
+      // TODO: Implement this
+
       final value = 'onDidReceiveLocalNotification -> payload -> $payload';
 
       Logger().f(value);
@@ -91,6 +93,8 @@ class NotificationService {
   /// Triggered when the user taps the notification
   Future<void> onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
     try {
+      // TODO: Implement this
+
       final payload = notificationResponse.payload;
       final value = 'onDidReceiveNotificationResponse -> payload -> $payload';
 
@@ -485,6 +489,8 @@ class NotificationService {
 /// Triggered when a notification is received while the app is terminated
 @pragma('vm:entry-point')
 void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) {
+  // TODO: Implement this
+
   final payload = notificationResponse.payload;
   final value = 'onDidReceiveBackgroundNotificationResponse -> payload -> $payload';
 
