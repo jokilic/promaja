@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import '../models/settings/notification/notification_type.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../screens/cards/cards_notifiers.dart';
+import '../util/initialization.dart';
 import '../util/weather.dart';
 import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
@@ -80,97 +82,6 @@ class NotificationService {
   /// METHODS
   ///
 
-  /// Triggered when a notification is received while the app is in foreground on `iOS`
-  Future<void> onDidReceiveLocalNotification(
-    int id,
-    String? title,
-    String? body,
-    String? payload,
-  ) async {
-    try {
-      // TODO: Implement this
-
-      final value = 'onDidReceiveLocalNotification -> payload -> $payload';
-
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).f(value);
-    } catch (e) {
-      final error = 'NotificationService -> onDidReceiveLocalNotification() -> $e';
-      logger.e(error);
-    }
-  }
-
-  /// Triggered when the user taps the notification
-  Future<void> onDidReceiveNotificationResponse(
-    NotificationResponse notificationResponse, {
-    required ProviderRef ref,
-  }) async {
-    try {
-      final payload = notificationResponse.payload;
-      final context = navigatorKey.currentState?.context;
-
-      if (payload != null && context != null) {
-        /// Parse to `NotificationPayload`
-        final notificationPayload = NotificationPayload.fromJson(payload);
-
-        /// Navigate to base route
-        Navigator.of(context).popUntil((route) => route.isFirst);
-
-        switch (notificationPayload.notificationType) {
-          ///
-          /// Hourly notification
-          ///
-          case NotificationType.hourly:
-            if (notificationPayload.location != null) {
-              /// Get location index
-              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
-
-              /// Go to `CardsScreen` with proper location
-              ref.read(cardMovingProvider.notifier).state = false;
-              ref.read(cardIndexProvider.notifier).state = locationIndex;
-              if (ref.read(cardAdditionalControllerProvider).hasClients) {
-                ref.read(cardAdditionalControllerProvider).jumpTo(0);
-              }
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
-              await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
-              for (var i = 0; i < locationIndex; i++) {
-                await ref.read(appinioControllerProvider).swipeDefault();
-              }
-            }
-
-          ///
-          /// Morning / evening notification
-          ///
-          case NotificationType.morning:
-          case NotificationType.evening:
-            if (notificationPayload.location != null) {
-              /// Get location index
-              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
-
-              /// Go to `ForecastScreen` with proper location
-              await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
-            }
-
-          ///
-          /// Test notification
-          ///
-          case NotificationType.test:
-            logger.f('Hello testy test');
-        }
-      }
-    } catch (e) {
-      final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
-      logger.e(error);
-    }
-  }
-
   /// Initializes [FlutterLocalNotifications] plugin
   Future<bool> initializeNotifications() async {
     try {
@@ -198,7 +109,7 @@ class NotificationService {
 
       final initialized = await flutterLocalNotificationsPlugin?.initialize(
         initializationSettings,
-        onDidReceiveNotificationResponse: (details) => onDidReceiveNotificationResponse(details, ref: ref),
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
       );
 
@@ -610,22 +521,119 @@ class NotificationService {
     }
     return false;
   }
+
+  /// Triggered when user presses a notification
+  Future<void> handlePressedNotification({required String? payload}) async {
+    final context = navigatorKey.currentState?.context;
+
+    if (payload != null && context != null) {
+      /// Parse to `NotificationPayload`
+      final notificationPayload = NotificationPayload.fromJson(payload);
+
+      /// Navigate to base route
+      Navigator.of(context).popUntil((route) => route.isFirst);
+
+      switch (notificationPayload.notificationType) {
+        ///
+        /// Hourly notification
+        ///
+        case NotificationType.hourly:
+          if (notificationPayload.location != null) {
+            /// Get location index
+            final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+
+            /// Go to `CardsScreen` with proper location
+            ref.read(cardMovingProvider.notifier).state = false;
+            ref.read(cardIndexProvider.notifier).state = locationIndex;
+            if (ref.read(cardAdditionalControllerProvider).hasClients) {
+              ref.read(cardAdditionalControllerProvider).jumpTo(0);
+            }
+            await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
+            await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
+            for (var i = 0; i < locationIndex; i++) {
+              await ref.read(appinioControllerProvider).swipeDefault();
+            }
+          }
+
+        ///
+        /// Morning / evening notification
+        ///
+        case NotificationType.morning:
+        case NotificationType.evening:
+          if (notificationPayload.location != null) {
+            /// Get location index
+            final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+
+            /// Go to `ForecastScreen` with proper location
+            await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
+            await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
+          }
+
+        ///
+        /// Test notification
+        ///
+        case NotificationType.test:
+          logger.f('Hello testy test');
+      }
+    }
+  }
+
+  /// Triggered when a notification is received while the app is in foreground on `iOS`
+  Future<void> onDidReceiveLocalNotification(
+    int id,
+    String? title,
+    String? body,
+    String? payload,
+  ) async {
+    try {
+      await handlePressedNotification(payload: payload);
+    } catch (e) {
+      final error = 'NotificationService -> onDidReceiveLocalNotification() -> $e';
+      logger.e(error);
+    }
+  }
+
+  /// Triggered when the user taps the notification
+  Future<void> onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
+    try {
+      await handlePressedNotification(
+        payload: notificationResponse.payload,
+      );
+    } catch (e) {
+      final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
+      logger.e(error);
+    }
+  }
 }
 
 /// Triggered when a notification is received while the app is terminated
 @pragma('vm:entry-point')
-void onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) {
-  // TODO: Implement this
+Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) async {
+  try {
+    /// Initialize Flutter related tasks
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
 
-  final payload = notificationResponse.payload;
-  final value = 'onDidReceiveBackgroundNotificationResponse -> payload -> $payload';
+    /// Initialize [EasyLocalization]
+    await initializeLocalization();
 
-  Logger(
-    printer: PrettyPrinter(
-      methodCount: 0,
-      errorMethodCount: 3,
-      lineLength: 50,
-      noBoxingByDefault: true,
-    ),
-  ).f(value);
+    /// Initialize services
+    final container = await initializeServices();
+
+    if (container != null) {
+      await container.read(notificationProvider).handlePressedNotification(
+            payload: notificationResponse.payload,
+          );
+    }
+  } catch (e) {
+    final error = 'NotificationService -> onDidReceiveBackgroundNotificationResponse() -> $e';
+    Logger(
+      printer: PrettyPrinter(
+        methodCount: 0,
+        errorMethodCount: 3,
+        lineLength: 50,
+        noBoxingByDefault: true,
+      ),
+    ).e(error);
+  }
 }
