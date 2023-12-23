@@ -41,13 +41,14 @@ class WeatherSuccess extends ConsumerWidget {
   }) {
     ref.read(weatherCardMovingProvider.notifier).state = false;
     ref.read(weatherCardIndexProvider.notifier).state = index;
-    ref.read(activeHourWeatherProvider.notifier).state = null;
+
     if (ref.read(weatherCardAdditionalControllerProvider).hasClients) {
       ref.read(weatherCardAdditionalControllerProvider).jumpTo(0);
     }
     if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
       ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
     }
+
     if (ref.read(weatherCardControllerProvider(index)).hasClients) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
@@ -80,8 +81,16 @@ class WeatherSuccess extends ConsumerWidget {
           padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
           child: AppinioSwiper(
             loop: true,
-            onCardPositionChanged: (_) => ref.read(weatherCardMovingProvider.notifier).state = true,
-            onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref, screenWidth: MediaQuery.sizeOf(context).width),
+            onCardPositionChanged: (_) {
+              if (!ref.read(weatherCardMovingProvider)) {
+                ref.read(weatherCardMovingProvider.notifier).state = true;
+              }
+            },
+            onSwipeEnd: (_, index, __) => cardSwiped(
+              index: index,
+              ref: ref,
+              screenWidth: MediaQuery.sizeOf(context).width,
+            ),
             onSwipeCancelled: (_) => ref.read(weatherCardMovingProvider.notifier).state = false,
             backgroundCardOffset: const Offset(0, 44),
             isDisabled: cardCount <= 1,

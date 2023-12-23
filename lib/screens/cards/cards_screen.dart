@@ -63,7 +63,11 @@ class CardsScreen extends ConsumerWidget {
               child: AppinioSwiper(
                 loop: true,
                 controller: ref.watch(appinioControllerProvider),
-                onCardPositionChanged: (_) => ref.read(cardMovingProvider.notifier).state = true,
+                onCardPositionChanged: (_) {
+                  if (!ref.read(cardMovingProvider)) {
+                    ref.read(cardMovingProvider.notifier).state = true;
+                  }
+                },
                 onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
                 onSwipeCancelled: (_) => ref.read(cardMovingProvider.notifier).state = false,
                 backgroundCardOffset: const Offset(0, 44),
