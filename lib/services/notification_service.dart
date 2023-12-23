@@ -2,18 +2,25 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
+import '../constants/durations.dart';
 import '../constants/icons.dart';
+import '../main.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
+import '../models/location/location.dart';
+import '../models/notification_payload/notification_payload.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
 import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
+import '../screens/cards/cards_notifiers.dart';
 import '../util/weather.dart';
+import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
@@ -27,6 +34,7 @@ final notificationProvider = Provider<NotificationService>(
   (ref) => NotificationService(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
+    ref: ref,
   ),
   name: 'NotificationProvider',
 );
@@ -38,10 +46,12 @@ class NotificationService {
 
   final LoggerService logger;
   final HiveService hive;
+  final ProviderRef ref;
 
   NotificationService({
     required this.logger,
     required this.hive,
+    required this.ref,
   });
 
   ///
@@ -97,21 +107,64 @@ class NotificationService {
   }
 
   /// Triggered when the user taps the notification
-  Future<void> onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
+  Future<void> onDidReceiveNotificationResponse(
+    NotificationResponse notificationResponse, {
+    required ProviderRef ref,
+  }) async {
     try {
-      // TODO: Implement this
-
       final payload = notificationResponse.payload;
-      final value = 'onDidReceiveNotificationResponse -> payload -> $payload';
+      final context = navigatorKey.currentState?.context;
 
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).f(value);
+      if (payload != null && context != null) {
+        /// Parse to `NotificationPayload`
+        final notificationPayload = NotificationPayload.fromJson(payload);
+
+        /// Navigate to base route
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+        switch (notificationPayload.notificationType) {
+          ///
+          /// Hourly notification
+          ///
+          case NotificationType.hourly:
+            if (notificationPayload.location != null) {
+              /// Get location index
+              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+
+              /// Go to `CardsScreen` with proper location
+              ref.read(cardMovingProvider.notifier).state = false;
+              ref.read(cardIndexProvider.notifier).state = locationIndex;
+              if (ref.read(cardAdditionalControllerProvider).hasClients) {
+                ref.read(cardAdditionalControllerProvider).jumpTo(0);
+              }
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
+              await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
+              for (var i = 0; i < locationIndex; i++) {
+                await ref.read(appinioControllerProvider).swipeDefault();
+              }
+            }
+
+          ///
+          /// Morning / evening notification
+          ///
+          case NotificationType.morning:
+          case NotificationType.evening:
+            if (notificationPayload.location != null) {
+              /// Get location index
+              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+
+              /// Go to `ForecastScreen` with proper location
+              await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
+            }
+
+          ///
+          /// Test notification
+          ///
+          case NotificationType.test:
+            logger.f('Hello testy test');
+        }
+      }
     } catch (e) {
       final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
       logger.e(error);
@@ -145,7 +198,7 @@ class NotificationService {
 
       final initialized = await flutterLocalNotificationsPlugin?.initialize(
         initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+        onDidReceiveNotificationResponse: (details) => onDidReceiveNotificationResponse(details, ref: ref),
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
       );
 
@@ -221,11 +274,14 @@ class NotificationService {
     required String title,
     required String text,
     required NotificationType notificationType,
+    Location? location,
   }) async {
     try {
       final bigTextStyleInformation = BigTextStyleInformation(
         text,
         contentTitle: title,
+        htmlFormatBigText: true,
+        htmlFormatContent: true,
       );
 
       final androidNotificationDetails = AndroidNotificationDetails(
@@ -255,12 +311,17 @@ class NotificationService {
         linux: linuxNotificationDetails,
       );
 
+      final payload = NotificationPayload(
+        location: location,
+        notificationType: notificationType,
+      ).toJson();
+
       await flutterLocalNotificationsPlugin?.show(
         notificationType.index,
         title,
         text,
         notificationDetails,
-        payload: notificationType.name,
+        payload: payload,
       );
     } catch (e) {
       final error = 'NotificationService -> showNotification() -> $e';
@@ -323,6 +384,7 @@ class NotificationService {
             await triggerHourlyNotification(
               currentWeather: currentWeather,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+              location: location,
               container: container,
             );
           }
@@ -351,6 +413,7 @@ class NotificationService {
                 forecastWeather: forecastWeather,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
+                location: location,
                 container: container,
               );
 
@@ -393,6 +456,7 @@ class NotificationService {
                 forecastWeather: forecastWeather,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
+                location: location,
                 container: container,
               );
 
@@ -429,6 +493,7 @@ class NotificationService {
   Future<void> triggerHourlyNotification({
     required ResponseCurrentWeather currentWeather,
     required bool showCelsius,
+    required Location location,
     required ProviderContainer container,
   }) async {
     try {
@@ -443,13 +508,14 @@ class NotificationService {
       );
 
       const title = 'Hourly notification';
-      final text = 'Hello! Current weather in $locationName is ${weatherDescription.toLowerCase()} with a temperature of $temp.';
+      final text = 'Hello! Current weather in <b>$locationName</b> is <b>${weatherDescription.toLowerCase()}</b> with a temperature of <b>$temp</b>.';
 
-      await container.read(notificationProvider).showNotification(
-            title: title,
-            text: text,
-            notificationType: NotificationType.hourly,
-          );
+      await showNotification(
+        title: title,
+        text: text,
+        notificationType: NotificationType.hourly,
+        location: location,
+      );
     } catch (e) {
       final error = 'triggerHourlyNotification -> $e';
       Logger(
@@ -468,6 +534,7 @@ class NotificationService {
     required ResponseForecastWeather forecastWeather,
     required bool showCelsius,
     required bool isEvening,
+    required Location location,
     required ProviderContainer container,
   }) async {
     try {
@@ -499,12 +566,13 @@ class NotificationService {
 
         final title = '$partOfDay notification';
         final text =
-            'Good ${partOfDay.toLowerCase()}! $whichDay the weather in $locationName will be ${weatherDescription.toLowerCase()} with a temperature between $minTemp and $maxTemp.';
+            'Good ${partOfDay.toLowerCase()}! $whichDay the weather in <b>$locationName</b> will be <b>${weatherDescription.toLowerCase()}</b> with a temperature between <b>$minTemp</b> and <b>$maxTemp</b>.';
 
         await showNotification(
           title: title,
           text: text,
           notificationType: isEvening ? NotificationType.evening : NotificationType.morning,
+          location: location,
         );
       }
     } catch (e) {

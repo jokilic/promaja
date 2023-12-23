@@ -62,6 +62,7 @@ class CardsScreen extends ConsumerWidget {
               padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
               child: AppinioSwiper(
                 loop: true,
+                controller: ref.watch(appinioControllerProvider),
                 onCardPositionChanged: (_) => ref.read(cardMovingProvider.notifier).state = true,
                 onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
                 onSwipeCancelled: (_) => ref.read(cardMovingProvider.notifier).state = false,

@@ -11,6 +11,8 @@ import 'generated/codegen_loader.g.dart';
 import 'util/initialization.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   /// Initialize Flutter related tasks
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,6 +64,7 @@ class PromajaApp extends ConsumerWidget {
         assetLoader: const CodegenLoader(),
         child: Builder(
           builder: (context) => MaterialApp(
+            navigatorKey: navigatorKey,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

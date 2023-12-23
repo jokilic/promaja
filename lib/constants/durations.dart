@@ -13,6 +13,7 @@ class PromajaDurations {
   static final popupMenuAnimation = 300.milliseconds;
   static final additionalWeatherListInterval = 100.milliseconds;
   static final weatherDataAnimationDelay = 100.milliseconds;
+  static final cardsSwiperNotificationDelay = 100.milliseconds;
   static final additionalWeatherDataAnimationDelay = 750.milliseconds;
   static final cardWeatherIconAnimationDelay = 1250.milliseconds;
   static final weatherIconAnimationDelay = 1000.milliseconds;

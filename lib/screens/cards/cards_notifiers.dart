@@ -1,3 +1,4 @@
+import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +7,11 @@ import '../../models/error/response_error.dart';
 import '../../models/forecast_weather/hour_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
+
+final appinioControllerProvider = Provider<AppinioSwiperController>(
+  (_) => AppinioSwiperController(),
+  name: 'appinioControllerProvider',
+);
 
 final cardIndexProvider = StateProvider<int>(
   (_) => 0,
