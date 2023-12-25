@@ -283,7 +283,9 @@ class NotificationService {
 
       /// Location exists
       if (location != null) {
+        ///
         /// Hourly notification is active, fetch current weather and show it
+        ///
         if (settings.notification.hourlyNotification) {
           final currentWeather = await container.read(apiProvider).fetchCurrentWeather(
                 location: location,
@@ -301,7 +303,9 @@ class NotificationService {
           }
         }
 
+        ///
         /// Morning notification is active
+        ///
         if (settings.notification.morningNotification) {
           /// Check if notification should be triggered
           final shouldShowNotification = shouldTriggerNotification(
@@ -344,7 +348,9 @@ class NotificationService {
           }
         }
 
+        ///
         /// Evening notification is active
+        ///
         if (settings.notification.eveningNotification) {
           /// Check if notification should be triggered
           final shouldShowNotification = shouldTriggerNotification(
