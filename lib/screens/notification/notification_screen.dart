@@ -7,6 +7,8 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
+import '../../models/promaja_log/promaja_log_level.dart';
+import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
@@ -89,6 +91,11 @@ class NotificationScreen extends ConsumerWidget {
 
                   if (newLocation != null) {
                     await ref.read(settingsProvider.notifier).updateNotificationLocation(newLocation);
+
+                    ref.read(hiveProvider.notifier).logPromajaEvent(
+                          text: 'Notifications -> Location update -> ${newLocation.name}, ${newLocation.country}',
+                          logLevel: PromajaLogLevel.settings,
+                        );
                   }
                 },
                 activeValue: '${settings.notification.location?.name}, ${settings.notification.location?.country}',

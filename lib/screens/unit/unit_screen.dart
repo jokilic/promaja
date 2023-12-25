@@ -6,10 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
+import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
+import '../../services/hive_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
@@ -89,6 +91,11 @@ class UnitScreen extends ConsumerWidget {
 
                   if (newTemperature != null) {
                     await ref.read(settingsProvider.notifier).updateTemperatureUnit(newTemperature);
+
+                    ref.read(hiveProvider.notifier).logPromajaEvent(
+                          text: 'Units -> Temperature update -> ${newTemperature.name}',
+                          logLevel: PromajaLogLevel.settings,
+                        );
                   }
                 },
                 activeValue: localizeTemperature(settings.unit.temperature),
@@ -105,6 +112,11 @@ class UnitScreen extends ConsumerWidget {
 
                   if (newDistanceSpeed != null) {
                     await ref.read(settingsProvider.notifier).updateDistanceSpeedUnit(newDistanceSpeed);
+
+                    ref.read(hiveProvider.notifier).logPromajaEvent(
+                          text: 'Units -> Distance & speed update -> ${newDistanceSpeed.name}',
+                          logLevel: PromajaLogLevel.settings,
+                        );
                   }
                 },
                 activeValue: localizeDistanceSpeed(settings.unit.distanceSpeed),
@@ -121,6 +133,11 @@ class UnitScreen extends ConsumerWidget {
 
                   if (newPrecipitation != null) {
                     await ref.read(settingsProvider.notifier).updatePrecipitationUnit(newPrecipitation);
+
+                    ref.read(hiveProvider.notifier).logPromajaEvent(
+                          text: 'Units -> Precipitation update -> ${newPrecipitation.name}',
+                          logLevel: PromajaLogLevel.settings,
+                        );
                   }
                 },
                 activeValue: localizePrecipitation(settings.unit.precipitation),
@@ -137,6 +154,11 @@ class UnitScreen extends ConsumerWidget {
 
                   if (newPressure != null) {
                     await ref.read(settingsProvider.notifier).updatePressureUnit(newPressure);
+
+                    ref.read(hiveProvider.notifier).logPromajaEvent(
+                          text: 'Units -> Pressure update -> ${newPressure.name}',
+                          logLevel: PromajaLogLevel.settings,
+                        );
                   }
                 },
                 activeValue: localizePressure(settings.unit.pressure),

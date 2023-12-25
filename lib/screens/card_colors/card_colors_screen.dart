@@ -8,6 +8,7 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
 import '../../models/custom_color/custom_color.dart';
+import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../util/weather.dart';
 import '../../widgets/promaja_back_button.dart';
@@ -21,6 +22,7 @@ class CardColorsScreen extends ConsumerStatefulWidget {
 class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
   Future<void> openColorPicker({
     required CustomColor customColor,
+    required String weatherDescription,
     required BuildContext context,
   }) async {
     var color = customColor.color;
@@ -61,7 +63,14 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                   await ref.read(hiveProvider.notifier).deleteCustomColorFromBox(
                         customColor: customColor,
                       );
+
                   Navigator.of(context).pop();
+
+                  ref.read(hiveProvider.notifier).logPromajaEvent(
+                        text: 'CardColors -> Custom color reverted -> $weatherDescription',
+                        logLevel: PromajaLogLevel.settings,
+                      );
+
                   setState(() {});
                 },
                 style: ElevatedButton.styleFrom(
@@ -85,7 +94,14 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                           color: color,
                         ),
                       );
+
                   Navigator.of(context).pop();
+
+                  ref.read(hiveProvider.notifier).logPromajaEvent(
+                        text: 'CardColors -> Custom color saved -> $weatherDescription',
+                        logLevel: PromajaLogLevel.settings,
+                      );
+
                   setState(() {});
                 },
                 style: ElevatedButton.styleFrom(
@@ -215,6 +231,7 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                   return SettingsCardWidget(
                     onTap: () => openColorPicker(
                       customColor: customColor,
+                      weatherDescription: description,
                       context: context,
                     ),
                     backgroundColor: customColor.color,
@@ -273,6 +290,7 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                   return SettingsCardWidget(
                     onTap: () => openColorPicker(
                       customColor: customColor,
+                      weatherDescription: description,
                       context: context,
                     ),
                     backgroundColor: customColor.color,

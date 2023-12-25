@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
+import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/promaja_settings.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
@@ -67,8 +68,11 @@ class HomeWidgetService {
         key: 'filePath',
       );
     } catch (e) {
-      final error = 'renderWidget -> $e';
-      logger.e(error);
+      hive.logPromajaEvent(
+        text: 'Widget -> renderHomeWidget -> $e',
+        logLevel: PromajaLogLevel.widget,
+        isError: true,
+      );
     }
   }
 
@@ -82,8 +86,11 @@ class HomeWidgetService {
         qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
       );
     } catch (e) {
-      final error = 'updateWidget -> $e';
-      logger.e(error);
+      hive.logPromajaEvent(
+        text: 'Widget -> updateHomeWidget -> $e',
+        logLevel: PromajaLogLevel.widget,
+        isError: true,
+      );
     }
   }
 
@@ -154,5 +161,13 @@ class HomeWidgetService {
     final location = settings.widget.location;
 
     if (location != null) {}
+  }
+
+  /// Refreshes widget in the home screen
+  Future<void> updateWidget() async {
+    hive.logPromajaEvent(
+      text: 'Widget -> Updated manually',
+      logLevel: PromajaLogLevel.widget,
+    );
   }
 }

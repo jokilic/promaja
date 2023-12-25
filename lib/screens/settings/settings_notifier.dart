@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
 import '../../models/location/location.dart';
+import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
@@ -126,46 +127,69 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   /// Triggered when the user taps the `Hourly notification` checkbox
   Future<void> toggleHourlyNotification() async {
     /// Update `state` and [Hive] with proper value
+    final newState = !state.notification.hourlyNotification;
+
     await updateSettings(
       state.copyWith(
         notification: state.notification.copyWith(
-          hourlyNotification: !state.notification.hourlyNotification,
+          hourlyNotification: newState,
         ),
       ),
     );
 
     /// Initialize notifications if necessary
     await notification.init();
+
+    hive.logPromajaEvent(
+      text: 'Notifications -> Hourly notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.settings,
+    );
   }
 
   /// Triggered when the user taps the `Morning notification` checkbox
   Future<void> toggleMorningNotification() async {
     /// Update `state` and [Hive] with proper value
+
+    final newState = !state.notification.morningNotification;
+
     await updateSettings(
       state.copyWith(
         notification: state.notification.copyWith(
-          morningNotification: !state.notification.morningNotification,
+          morningNotification: newState,
         ),
       ),
     );
 
     /// Initialize notifications if necessary
     await notification.init();
+
+    hive.logPromajaEvent(
+      text: 'Notifications -> Morning notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.settings,
+    );
   }
 
   /// Triggered when the user taps the `Evening notification` checkbox
   Future<void> toggleEveningNotification() async {
     /// Update `state` and [Hive] with proper value
+
+    final newState = !state.notification.eveningNotification;
+
     await updateSettings(
       state.copyWith(
         notification: state.notification.copyWith(
-          eveningNotification: !state.notification.eveningNotification,
+          eveningNotification: newState,
         ),
       ),
     );
 
     /// Initialize notifications if necessary
     await notification.init();
+
+    hive.logPromajaEvent(
+      text: 'Notifications -> Evening notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.settings,
+    );
   }
 
   ///
