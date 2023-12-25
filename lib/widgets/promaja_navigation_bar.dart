@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../constants/icons.dart';
+import '../models/promaja_log/promaja_log_level.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
@@ -12,9 +13,12 @@ import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
+import '../services/logger_service.dart';
+import '../util/log_data.dart';
 
 final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
   (ref) => PromajaNavigationBarController(
+    logger: ref.watch(loggerProvider),
     hiveService: ref.watch(hiveProvider.notifier),
     homeWidgetService: ref.watch(homeWidgetProvider),
   ),
@@ -41,10 +45,12 @@ final screenProvider = StateProvider.autoDispose<Widget>(
 enum NavigationBarItems { cards, weather, list, settings }
 
 class PromajaNavigationBarController extends StateNotifier<int> {
+  final LoggerService logger;
   final HiveService hiveService;
   final HomeWidgetService homeWidgetService;
 
   PromajaNavigationBarController({
+    required this.logger,
     required this.hiveService,
     required this.homeWidgetService,
   }) : super(2) {
@@ -75,8 +81,20 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 
   /// Triggered when navigation bar needs changing
   Future<void> changeNavigationBarIndex(int newIndex) async {
-    state = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
-    await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
+    final newState = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
+
+    if (state != newState) {
+      state = newState;
+      await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
+
+      logPromajaEvent(
+        logger: logger,
+        hive: hiveService,
+        text: 'NavigationBar -> changeNavigationBarIndex -> ${NavigationBarItems.values[state].name}',
+        logLevel: PromajaLogLevel.info,
+        isError: false,
+      );
+    }
   }
 }
 

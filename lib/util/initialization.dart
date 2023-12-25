@@ -87,6 +87,8 @@ Future<void> initializeLocalization() async {
 
     await initializeDateFormatting('en');
     await initializeDateFormatting('hr');
+
+    EasyLocalization.logger.enableBuildModes = [];
   } catch (e) {
     final logger = LoggerService();
     final hive = HiveService(logger);

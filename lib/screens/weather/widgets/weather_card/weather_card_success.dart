@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -10,8 +11,11 @@ import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
+import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
+import '../../../../util/log_data.dart';
 import '../../../../util/weather.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
@@ -72,6 +76,14 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
             duration: PromajaDurations.scrollAnimation,
             curve: Curves.easeIn,
           );
+
+      logPromajaEvent(
+        logger: ref.read(loggerProvider),
+        hive: ref.read(hiveProvider.notifier),
+        text: 'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour disabled',
+        logLevel: PromajaLogLevel.forecastWeather,
+        isError: false,
+      );
     }
 
     /// User pressed inactive hour
@@ -87,6 +99,15 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
               duration: PromajaDurations.scrollAnimation,
               curve: Curves.easeIn,
             ),
+      );
+
+      logPromajaEvent(
+        logger: ref.read(loggerProvider),
+        hive: ref.read(hiveProvider.notifier),
+        text:
+            'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour enabled -> ${DateFormat.Hm().format(hourWeather.timeEpoch)}',
+        logLevel: PromajaLogLevel.forecastWeather,
+        isError: false,
       );
     }
   }
@@ -393,9 +414,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                             scrollDirection: Axis.horizontal,
                             itemCount: widget.forecast.hours.length,
                             controller: ref.watch(
-                              weatherDaysControllerProvider(
-                                MediaQuery.sizeOf(context).width,
-                              ),
+                              weatherDaysControllerProvider(MediaQuery.sizeOf(context).width),
                             ),
                             physics: const PageScrollPhysics(
                               parent: BouncingScrollPhysics(),

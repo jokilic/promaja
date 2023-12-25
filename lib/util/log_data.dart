@@ -21,12 +21,12 @@ void logPromajaEvent({
   );
 
   logger
-    ..t('📄 PROMAJA LOG 📃')
-    ..t('--------------------')
-    ..t('Text -> ${promajaLog.text}')
-    ..t('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}')
-    ..t('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
-    ..t('--------------------\n');
+    ..f('\n📄 PROMAJA LOG 📃', passedLogger: logger.logger2)
+    ..f('--------------------', passedLogger: logger.logger2)
+    ..f('Text -> ${promajaLog.text}', passedLogger: logger.logger2)
+    ..f('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}', passedLogger: logger.logger2)
+    ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}', passedLogger: logger.logger2)
+    ..f('--------------------\n');
 
   hive.addPromajaLogToBox(promajaLog: promajaLog);
 }

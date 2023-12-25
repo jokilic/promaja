@@ -8,6 +8,10 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
+import '../../../../models/promaja_log/promaja_log_level.dart';
+import '../../../../services/hive_service.dart';
+import '../../../../services/logger_service.dart';
+import '../../../../util/log_data.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';
@@ -209,6 +213,13 @@ class WeatherCardIndividualHour extends ConsumerWidget {
               height: 144,
               child: PageView(
                 controller: ref.watch(weatherCardHourAdditionalControllerProvider),
+                onPageChanged: (index) => logPromajaEvent(
+                  logger: ref.read(loggerProvider),
+                  hive: ref.read(hiveProvider.notifier),
+                  text: 'ForecastWeather -> IndividualHour -> AdditionalInfo swiped -> Index $index',
+                  logLevel: PromajaLogLevel.forecastWeather,
+                  isError: false,
+                ),
                 physics: const BouncingScrollPhysics(),
                 children: hourWeather != null
                     ? [

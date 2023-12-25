@@ -10,11 +10,14 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../models/location/location.dart';
+import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
+import '../../services/logger_service.dart';
+import '../../util/log_data.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
 import 'widgets/card/card_error.dart';
@@ -22,10 +25,22 @@ import 'widgets/card/card_widget.dart';
 
 class CardsScreen extends ConsumerWidget {
   void cardSwiped({required int index, required WidgetRef ref}) {
-    ref.read(cardMovingProvider.notifier).state = false;
-    ref.read(cardIndexProvider.notifier).state = index;
-    if (ref.read(cardAdditionalControllerProvider).hasClients) {
-      ref.read(cardAdditionalControllerProvider).jumpTo(0);
+    if (ref.read(cardIndexProvider) != index) {
+      ref.read(cardMovingProvider.notifier).state = false;
+      ref.read(cardIndexProvider.notifier).state = index;
+      if (ref.read(cardAdditionalControllerProvider).hasClients) {
+        ref.read(cardAdditionalControllerProvider).jumpTo(0);
+      }
+
+      final activeLocation = ref.read(hiveProvider)[index];
+
+      logPromajaEvent(
+        logger: ref.read(loggerProvider),
+        hive: ref.read(hiveProvider.notifier),
+        text: 'CurrentWeather -> cardSwiped -> ${activeLocation.name}, ${activeLocation.country}',
+        logLevel: PromajaLogLevel.currentWeather,
+        isError: false,
+      );
     }
   }
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -166,11 +164,7 @@ class HiveService extends StateNotifier<List<Location>> {
   ///
 
   /// Called to add a new `PromajaLog` value to [Hive]
-  Future<void> addPromajaLogToBox({required PromajaLog promajaLog}) async {
-    final number = getPromajaLogsFromBox().length;
-    log('PromajaLog -> $number');
-    await promajaLogBox.add(promajaLog);
-  }
+  Future<void> addPromajaLogToBox({required PromajaLog promajaLog}) async => promajaLogBox.add(promajaLog);
 
   /// Called to add a new active navigation value index to [Hive]
   Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);

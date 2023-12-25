@@ -10,6 +10,10 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/promaja_log/promaja_log_level.dart';
+import '../../../../services/hive_service.dart';
+import '../../../../services/logger_service.dart';
+import '../../../../util/log_data.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
@@ -39,30 +43,40 @@ class WeatherSuccess extends ConsumerWidget {
     required WidgetRef ref,
     required double screenWidth,
   }) {
-    ref.read(weatherCardMovingProvider.notifier).state = false;
-    ref.read(weatherCardIndexProvider.notifier).state = index;
+    if (ref.read(weatherCardIndexProvider) != index) {
+      ref.read(weatherCardMovingProvider.notifier).state = false;
+      ref.read(weatherCardIndexProvider.notifier).state = index;
 
-    if (ref.read(weatherCardAdditionalControllerProvider).hasClients) {
-      ref.read(weatherCardAdditionalControllerProvider).jumpTo(0);
-    }
-    if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
-      ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
-    }
+      if (ref.read(weatherCardAdditionalControllerProvider).hasClients) {
+        ref.read(weatherCardAdditionalControllerProvider).jumpTo(0);
+      }
+      if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
+        ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
+      }
 
-    if (ref.read(weatherCardControllerProvider(index)).hasClients) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
-              0,
-              duration: PromajaDurations.scrollAnimation,
-              curve: Curves.easeIn,
-            ),
-      );
-    }
-    if (ref.read(weatherDaysControllerProvider(screenWidth)).hasClients) {
-      final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
+      if (ref.read(weatherCardControllerProvider(index)).hasClients) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
+                0,
+                duration: PromajaDurations.scrollAnimation,
+                curve: Curves.easeIn,
+              ),
+        );
+      }
+      if (ref.read(weatherDaysControllerProvider(screenWidth)).hasClients) {
+        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
 
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
+        );
+      }
+
+      logPromajaEvent(
+        logger: ref.read(loggerProvider),
+        hive: ref.read(hiveProvider.notifier),
+        text: 'ForecastWeather -> cardSwiped -> ${location.name}, ${location.country} -> Index $index',
+        logLevel: PromajaLogLevel.forecastWeather,
+        isError: false,
       );
     }
   }

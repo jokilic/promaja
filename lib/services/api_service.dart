@@ -54,7 +54,7 @@ class APIService {
         logPromajaEvent(
           logger: logger,
           hive: hive,
-          text: 'APIService -> getCurrentWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
+          text: 'APIService -> getCurrentWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.country}',
           logLevel: PromajaLogLevel.api,
           isError: false,
         );

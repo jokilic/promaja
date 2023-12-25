@@ -20,6 +20,7 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
 final weatherDaysControllerProvider = Provider.autoDispose.family<PageController, double>(
   (ref, screenWidth) {
     final controller = PageController();
+
     ref.onDispose(controller.dispose);
 
     final scrollFactor = (DateTime.now().hour / 4).floor();
