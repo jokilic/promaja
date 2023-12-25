@@ -12,8 +12,6 @@ import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
-import '../../../../services/logger_service.dart';
-import '../../../../util/log_data.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
@@ -71,13 +69,10 @@ class WeatherSuccess extends ConsumerWidget {
         );
       }
 
-      logPromajaEvent(
-        logger: ref.read(loggerProvider),
-        hive: ref.read(hiveProvider.notifier),
-        text: 'ForecastWeather -> cardSwiped -> ${location.name}, ${location.country} -> Index $index',
-        logLevel: PromajaLogLevel.forecastWeather,
-        isError: false,
-      );
+      ref.read(hiveProvider.notifier).logPromajaEvent(
+            text: 'ForecastWeather -> cardSwiped -> ${location.name}, ${location.country} -> Index $index',
+            logLevel: PromajaLogLevel.forecastWeather,
+          );
     }
   }
 

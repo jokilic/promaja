@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/intl.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
@@ -259,11 +260,21 @@ class HiveService extends StateNotifier<List<Location>> {
     /// User tried moving [AddLocationResult]
     /// User tried moving location below [AddLocationResult]
     if (oldIndex == state.length || newIndex > state.length) {
+      logPromajaEvent(
+        text: 'List -> reorderLocations -> Faulty move',
+        logLevel: PromajaLogLevel.list,
+        isError: true,
+      );
       return;
     }
 
     /// Phone location is active and user tried moving it or moving some location above it
     if (hasPhoneLocation && (oldIndex == 0 || newIndex == 0)) {
+      logPromajaEvent(
+        text: 'List -> reorderLocations -> User moved phone location',
+        logLevel: PromajaLogLevel.list,
+        isError: true,
+      );
       return;
     }
 
@@ -282,5 +293,34 @@ class HiveService extends StateNotifier<List<Location>> {
     for (var i = 0; i < state.length; i++) {
       await locationsBox.put(i, state[i]);
     }
+
+    logPromajaEvent(
+      text: 'List -> reorderLocations -> Locations reordered',
+      logLevel: PromajaLogLevel.list,
+    );
+  }
+
+  /// Logs & saves `PromajaLog` in [Hive]
+  void logPromajaEvent({
+    required String text,
+    required PromajaLogLevel logLevel,
+    bool isError = false,
+  }) {
+    final promajaLog = PromajaLog(
+      text: text,
+      time: DateTime.now(),
+      logLevel: logLevel,
+      isError: isError,
+    );
+
+    logger
+      ..f('\n📄 PROMAJA LOG 📃', passedLogger: logger.logger2)
+      ..f('--------------------', passedLogger: logger.logger2)
+      ..f('Text -> ${promajaLog.text}', passedLogger: logger.logger2)
+      ..f('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}', passedLogger: logger.logger2)
+      ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}', passedLogger: logger.logger2)
+      ..f('--------------------\n');
+
+    addPromajaLogToBox(promajaLog: promajaLog);
   }
 }

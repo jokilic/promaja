@@ -7,6 +7,7 @@ import '../../../constants/colors.dart';
 import '../../../constants/durations.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/location/location.dart';
+import '../../../models/promaja_log/promaja_log_level.dart';
 import '../../../services/hive_service.dart';
 import '../../../widgets/promaja_navigation_bar.dart';
 import '../notifiers/add_location_notifier.dart';
@@ -35,6 +36,11 @@ class ListCards extends ConsumerWidget {
           index: index,
         );
 
+    ref.read(hiveProvider.notifier).logPromajaEvent(
+          text: 'List -> deleteLocation -> ${location.name}, ${location.country} is deleted',
+          logLevel: PromajaLogLevel.list,
+        );
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -46,7 +52,13 @@ class ListCards extends ConsumerWidget {
         action: SnackBarAction(
           label: 'undo'.tr().toUpperCase(),
           textColor: PromajaColors.white,
-          onPressed: () => ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete),
+          onPressed: () async {
+            await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
+            ref.read(hiveProvider.notifier).logPromajaEvent(
+                  text: 'List -> deleteLocation -> Undo pressed -> ${location.name}, ${location.country}',
+                  logLevel: PromajaLogLevel.list,
+                );
+          },
         ),
         backgroundColor: PromajaColors.indigo,
         behavior: SnackBarBehavior.floating,

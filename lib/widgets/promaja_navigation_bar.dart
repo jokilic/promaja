@@ -14,7 +14,6 @@ import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/logger_service.dart';
-import '../util/log_data.dart';
 
 final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
   (ref) => PromajaNavigationBarController(
@@ -87,12 +86,9 @@ class PromajaNavigationBarController extends StateNotifier<int> {
       state = newState;
       await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
 
-      logPromajaEvent(
-        logger: logger,
-        hive: hiveService,
+      hiveService.logPromajaEvent(
         text: 'NavigationBar -> changeNavigationBarIndex -> ${NavigationBarItems.values[state].name}',
         logLevel: PromajaLogLevel.info,
-        isError: false,
       );
     }
   }

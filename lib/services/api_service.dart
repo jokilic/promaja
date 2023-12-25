@@ -10,7 +10,6 @@ import '../models/location/location.dart';
 import '../models/promaja_log/promaja_log_level.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
-import '../util/log_data.dart';
 import 'dio_service.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
@@ -51,12 +50,9 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getCurrentWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.country}',
           logLevel: PromajaLogLevel.api,
-          isError: false,
         );
         return (response: parsedResponse, error: null, genericError: null);
       }
@@ -64,9 +60,7 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getCurrentWeather -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
           logLevel: PromajaLogLevel.api,
           isError: true,
@@ -76,9 +70,7 @@ class APIService {
 
       /// Some weird error happened
       final error = 'getCurrentWeather -> StatusCode ${response.statusCode} -> Generic error';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,
@@ -86,9 +78,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'APIService -> getCurrentWeather -> Catch -> $e';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,
@@ -114,12 +104,9 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeForecastWeather(response.data);
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getForecastWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
           logLevel: PromajaLogLevel.api,
-          isError: false,
         );
         return (response: parsedResponse, error: null, genericError: null);
       }
@@ -127,9 +114,7 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getForecastWeather -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
           logLevel: PromajaLogLevel.api,
           isError: true,
@@ -139,9 +124,7 @@ class APIService {
 
       /// Some weird error happened
       final error = 'APIService -> getForecastWeather -> StatusCode ${response.statusCode} -> Generic error';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,
@@ -149,9 +132,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'APIService -> getForecastWeather -> Catch -> $e';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,
@@ -178,12 +159,9 @@ class APIService {
         final parsedResponse = await computeSearch(
           jsonDecode(jsonEncode(response.data)),
         );
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getSearch -> Fetched -> $parsedResponse',
           logLevel: PromajaLogLevel.api,
-          isError: false,
         );
         return (response: parsedResponse, error: null, genericError: null);
       }
@@ -191,21 +169,16 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        logPromajaEvent(
-          logger: logger,
-          hive: hive,
+        hive.logPromajaEvent(
           text: 'APIService -> getSearch -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
           logLevel: PromajaLogLevel.api,
-          isError: false,
         );
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'APIService -> getSearch -> StatusCode ${response.statusCode} -> Generic error';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,
@@ -213,9 +186,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'getSearch -> Catch -> $e';
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: error,
         logLevel: PromajaLogLevel.api,
         isError: true,

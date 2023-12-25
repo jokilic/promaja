@@ -13,9 +13,7 @@ import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
-import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
-import '../../../../util/log_data.dart';
 import '../../../../util/weather.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
@@ -77,13 +75,10 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
             curve: Curves.easeIn,
           );
 
-      logPromajaEvent(
-        logger: ref.read(loggerProvider),
-        hive: ref.read(hiveProvider.notifier),
-        text: 'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour disabled',
-        logLevel: PromajaLogLevel.forecastWeather,
-        isError: false,
-      );
+      ref.read(hiveProvider.notifier).logPromajaEvent(
+            text: 'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour disabled',
+            logLevel: PromajaLogLevel.forecastWeather,
+          );
     }
 
     /// User pressed inactive hour
@@ -101,14 +96,11 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
             ),
       );
 
-      logPromajaEvent(
-        logger: ref.read(loggerProvider),
-        hive: ref.read(hiveProvider.notifier),
-        text:
-            'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour enabled -> ${DateFormat.Hm().format(hourWeather.timeEpoch)}',
-        logLevel: PromajaLogLevel.forecastWeather,
-        isError: false,
-      );
+      ref.read(hiveProvider.notifier).logPromajaEvent(
+            text:
+                'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour enabled -> ${DateFormat.Hm().format(hourWeather.timeEpoch)}',
+            logLevel: PromajaLogLevel.forecastWeather,
+          );
     }
   }
 

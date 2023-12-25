@@ -16,7 +16,6 @@ import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/logger_service.dart';
 import '../services/notification_service.dart';
-import 'log_data.dart';
 
 /// Initialize services & pass `container`
 Future<ProviderContainer?> initializeServices() async {
@@ -49,9 +48,7 @@ Future<ProviderContainer?> initializeServices() async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'Initialization -> initializeServices -> $e',
       logLevel: PromajaLogLevel.info,
       isError: true,
@@ -94,9 +91,7 @@ Future<void> initializeLocalization() async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'Initialization -> initializeLocalization -> $e',
       logLevel: PromajaLogLevel.info,
       isError: true,

@@ -6,12 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/error/response_error.dart';
 import '../../../models/location/location.dart';
+import '../../../models/promaja_log/promaja_log_level.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
+import '../../../services/logger_service.dart';
 
 final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Location>? response, ResponseError? error, String? genericError, bool loading})>(
   (ref) {
     final addLocationController = AddLocationNotifier(
+      logger: ref.watch(loggerProvider),
       hiveService: ref.watch(hiveProvider.notifier),
       ref: ref,
     );
@@ -28,10 +31,12 @@ final getSearchProvider = FutureProvider.family<({List<Location>? response, Resp
 );
 
 class AddLocationNotifier extends StateNotifier<({List<Location>? response, ResponseError? error, String? genericError, bool loading})> {
+  final LoggerService logger;
   final HiveService hiveService;
   final Ref ref;
 
   AddLocationNotifier({
+    required this.logger,
     required this.hiveService,
     required this.ref,
   }) : super((
@@ -94,6 +99,11 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
           ),
         );
       }
+
+      hiveService.logPromajaEvent(
+        text: 'List -> searchPlace -> $value',
+        logLevel: PromajaLogLevel.list,
+      );
     }
   }
 
@@ -112,6 +122,13 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         ),
         loading: false,
       );
+
+      hiveService.logPromajaEvent(
+        text: 'List -> addPlace -> locationLimit is triggered',
+        logLevel: PromajaLogLevel.list,
+        isError: true,
+      );
+
       return;
     }
 
@@ -128,6 +145,13 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         ),
         loading: false,
       );
+
+      hiveService.logPromajaEvent(
+        text: 'List -> addPlace -> location exists',
+        logLevel: PromajaLogLevel.list,
+        isError: true,
+      );
+
       return;
     }
 
@@ -154,6 +178,11 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
           duration: const Duration(seconds: 1),
           curve: Curves.fastOutSlowIn,
         ),
+      );
+
+      hiveService.logPromajaEvent(
+        text: 'List -> addPlace -> ${location.name}, ${location.country}',
+        logLevel: PromajaLogLevel.list,
       );
     }
   }

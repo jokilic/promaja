@@ -2,12 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../models/location/location.dart';
+import '../../../models/promaja_log/promaja_log_level.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/location_service.dart';
+import '../../../services/logger_service.dart';
 import '../../cards/cards_notifiers.dart';
 
 final phoneLocationProvider = StateNotifierProvider<PhoneLocationNotifier, ({Position? position, String? error, bool loading})>(
   (ref) => PhoneLocationNotifier(
+    logger: ref.watch(loggerProvider),
     hiveService: ref.watch(hiveProvider.notifier),
     ref: ref,
   ),
@@ -20,10 +23,12 @@ final getPhonePositionProvider = FutureProvider<({Position? position, String? er
 );
 
 class PhoneLocationNotifier extends StateNotifier<({Position? position, String? error, bool loading})> {
+  final LoggerService logger;
   final HiveService hiveService;
   final Ref ref;
 
   PhoneLocationNotifier({
+    required this.logger,
     required this.hiveService,
     required this.ref,
   }) : super((
@@ -86,6 +91,11 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
         isPhoneLocation: true,
       );
 
+      hiveService.logPromajaEvent(
+        text: 'List -> enablePhoneLocation -> Phone position found',
+        logLevel: PromajaLogLevel.list,
+      );
+
       /// Fetch weather data
       final response = await ref.read(getCurrentWeatherProvider(location).future);
 
@@ -99,6 +109,15 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
           ],
         );
       }
+    }
+
+    /// Error getting position
+    else {
+      hiveService.logPromajaEvent(
+        text: 'List -> enablePhoneLocation -> Error getting position${position.error != null ? ' -> ${position.error}' : ''}',
+        logLevel: PromajaLogLevel.list,
+        isError: true,
+      );
     }
 
     if (mounted) {

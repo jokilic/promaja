@@ -12,7 +12,6 @@ import 'models/promaja_log/promaja_log_level.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'util/initialization.dart';
-import 'util/log_data.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -58,21 +57,16 @@ Future<void> main() async {
       ),
     );
 
-    logPromajaEvent(
-      logger: container.read(loggerProvider),
-      hive: container.read(hiveProvider.notifier),
-      text: 'main -> App started',
-      logLevel: PromajaLogLevel.info,
-      isError: false,
-    );
+    container.read(hiveProvider.notifier).logPromajaEvent(
+          text: 'main -> App started',
+          logLevel: PromajaLogLevel.info,
+        );
   } catch (e) {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'main -> $e',
       logLevel: PromajaLogLevel.info,
       isError: true,

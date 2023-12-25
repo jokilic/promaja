@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/promaja_log/promaja_log_level.dart';
 import '../util/initialization.dart';
-import '../util/log_data.dart';
 import 'hive_service.dart';
 import 'home_widget_service.dart';
 import 'logger_service.dart';
@@ -81,9 +80,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             final hive = HiveService(logger);
             await hive.init();
 
-            logPromajaEvent(
-              logger: logger,
-              hive: hive,
+            hive.logPromajaEvent(
               text: 'BackgroundFetchService -> backgroundFetchInit -> $e',
               logLevel: PromajaLogLevel.info,
               isError: true,
@@ -100,9 +97,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           final hive = HiveService(logger);
           await hive.init();
 
-          logPromajaEvent(
-            logger: logger,
-            hive: hive,
+          hive.logPromajaEvent(
             text: 'BackgroundFetchService -> backgroundFetchInit -> Task timed-out -> $taskId',
             logLevel: PromajaLogLevel.info,
             isError: true,
@@ -119,21 +114,16 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       final hive = HiveService(logger);
       await hive.init();
 
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: 'BackgroundFetchService -> backgroundFetchInit -> initialize -> Success',
         logLevel: PromajaLogLevel.info,
-        isError: false,
       );
     } catch (e) {
       final logger = LoggerService();
       final hive = HiveService(logger);
       await hive.init();
 
-      logPromajaEvent(
-        logger: logger,
-        hive: hive,
+      hive.logPromajaEvent(
         text: 'BackgroundFetchService -> backgroundFetchInit -> initialize -> $e',
         logLevel: PromajaLogLevel.info,
         isError: true,
@@ -154,9 +144,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> Task timed-out -> $taskId',
       logLevel: PromajaLogLevel.info,
       isError: true,
@@ -206,12 +194,9 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> Success',
       logLevel: PromajaLogLevel.info,
-      isError: false,
     );
   }
 
@@ -221,9 +206,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logPromajaEvent(
-      logger: logger,
-      hive: hive,
+    hive.logPromajaEvent(
       text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> $e',
       logLevel: PromajaLogLevel.info,
       isError: true,

@@ -16,8 +16,6 @@ import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
-import '../../services/logger_service.dart';
-import '../../util/log_data.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
 import 'widgets/card/card_error.dart';
@@ -34,13 +32,10 @@ class CardsScreen extends ConsumerWidget {
 
       final activeLocation = ref.read(hiveProvider)[index];
 
-      logPromajaEvent(
-        logger: ref.read(loggerProvider),
-        hive: ref.read(hiveProvider.notifier),
-        text: 'CurrentWeather -> cardSwiped -> ${activeLocation.name}, ${activeLocation.country}',
-        logLevel: PromajaLogLevel.currentWeather,
-        isError: false,
-      );
+      ref.read(hiveProvider.notifier).logPromajaEvent(
+            text: 'CurrentWeather -> cardSwiped -> ${activeLocation.name}, ${activeLocation.country}',
+            logLevel: PromajaLogLevel.currentWeather,
+          );
     }
   }
 
