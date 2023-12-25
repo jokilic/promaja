@@ -151,6 +151,8 @@ class HomeWidgetService {
     required PromajaSettings settings,
     required ProviderContainer container,
   }) async {
-    // TODO: Implement widget handling, like `NotificationService -> handleNotifications()`
+    final location = settings.widget.location;
+
+    if (location != null) {}
   }
 }

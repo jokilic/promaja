@@ -8,7 +8,10 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
+import 'services/hive_service.dart';
+import 'services/logger_service.dart';
 import 'util/initialization.dart';
+import 'util/log_data.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -51,6 +54,12 @@ Future<void> main() async {
       container: container!,
       child: PromajaApp(),
     ),
+  );
+
+  logInfo(
+    logger: container.read(loggerProvider),
+    hive: container.read(hiveProvider.notifier),
+    text: 'Main -> App started',
   );
 }
 

@@ -9,13 +9,16 @@ import '../models/forecast_weather/response_forecast_weather.dart';
 import '../models/location/location.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
+import '../util/log_data.dart';
 import 'dio_service.dart';
+import 'hive_service.dart';
 import 'logger_service.dart';
 
 final apiProvider = Provider<APIService>(
   (ref) => APIService(
     logger: ref.watch(loggerProvider),
     dio: ref.watch(dioProvider).dio,
+    hive: ref.watch(hiveProvider.notifier),
   ),
   name: 'APIService',
 );
@@ -23,10 +26,12 @@ final apiProvider = Provider<APIService>(
 class APIService {
   final LoggerService logger;
   final Dio dio;
+  final HiveService hive;
 
   APIService({
     required this.logger,
     required this.dio,
+    required this.hive,
   });
 
   ///
@@ -45,22 +50,32 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
+        logInfo(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getCurrentWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
+        );
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getCurrentWeather -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
+        );
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
-      final error = 'getCurrentWeather -> StatusCode ${response.statusCode}';
-      logger.e(error);
+      final error = 'getCurrentWeather -> StatusCode ${response.statusCode} -> Generic error';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'getCurrentWeather -> catch -> $e';
-      logger.e(error);
+      final error = 'APIService -> getCurrentWeather -> Catch -> $e';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -82,22 +97,32 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeForecastWeather(response.data);
+        logInfo(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getForecastWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
+        );
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getForecastWeather -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
+        );
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
-      final error = 'getForecastWeather -> StatusCode ${response.statusCode}';
-      logger.e(error);
+      final error = 'APIService -> getForecastWeather -> StatusCode ${response.statusCode} -> Generic error';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'getForecastWeather -> catch -> $e';
-      logger.e(error);
+      final error = 'APIService -> getForecastWeather -> Catch -> $e';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -120,22 +145,32 @@ class APIService {
         final parsedResponse = await computeSearch(
           jsonDecode(jsonEncode(response.data)),
         );
+        logInfo(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getSearch -> Fetched -> $parsedResponse',
+        );
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'APIService -> getSearch -> StatusCode ${response.statusCode} -> ${parsedError.error.message}',
+        );
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
-      final error = 'getSearch -> StatusCode ${response.statusCode}';
-      logger.e(error);
+      final error = 'APIService -> getSearch -> StatusCode ${response.statusCode} -> Generic error';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'getSearch -> catch -> $e';
-      logger.e(error);
+      final error = 'getSearch -> Catch -> $e';
+      logError(logger: logger, hive: hive, text: error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -145,26 +180,16 @@ class APIService {
     required Location location,
     required ProviderContainer container,
   }) async {
-    try {
-      final response = await getCurrentWeather(
-        query: '${location.lat},${location.lon}',
-      );
+    final response = await getCurrentWeather(
+      query: '${location.lat},${location.lon}',
+    );
 
-      /// Data fetch was successful
-      if (response.response != null && response.error == null) {
-        return response.response;
-      }
-
-      /// Data fetch wasn't successfull, throw error
-      else {
-        final error = "fetchCurrentWeather -> data fetch wasn't successful -> ${response.error?.error.message}";
-        container.read(loggerProvider).e(error);
-      }
-    } catch (e) {
-      final error = 'fetchCurrentWeather -> $e';
-      logger.e(error);
+    /// Data fetch was successful
+    if (response.response != null && response.error == null) {
+      return response.response;
     }
 
+    /// Data fetch wasn't successful
     return null;
   }
 
@@ -174,27 +199,17 @@ class APIService {
     required bool isTomorrow,
     required ProviderContainer container,
   }) async {
-    try {
-      final response = await getForecastWeather(
-        query: '${location.lat},${location.lon}',
-        days: isTomorrow ? 2 : 1,
-      );
+    final response = await getForecastWeather(
+      query: '${location.lat},${location.lon}',
+      days: isTomorrow ? 2 : 1,
+    );
 
-      /// Data fetch was successful
-      if (response.response != null && response.error == null) {
-        return response.response;
-      }
-
-      /// Data fetch wasn't successfull, throw error
-      else {
-        final error = "fetchForecastWeather -> data fetch wasn't successful -> ${response.error?.error.message}";
-        container.read(loggerProvider).e(error);
-      }
-    } catch (e) {
-      final error = 'fetchForecastWeather -> $e';
-      logger.e(error);
+    /// Data fetch was successful
+    if (response.response != null && response.error == null) {
+      return response.response;
     }
 
+    /// Data fetch wasn't successful
     return null;
   }
 }

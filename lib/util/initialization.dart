@@ -6,7 +6,6 @@ import 'package:easy_localization/src/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 
 import '../generated/codegen_loader.g.dart';
 import '../services/api_service.dart';
@@ -16,6 +15,7 @@ import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/logger_service.dart';
 import '../services/notification_service.dart';
+import 'log_data.dart';
 
 /// Initialize services & pass `container`
 Future<ProviderContainer?> initializeServices() async {
@@ -28,30 +28,32 @@ Future<ProviderContainer?> initializeServices() async {
       ],
     )
       ..read(loggerProvider)
-      ..read(dioProvider)
-      ..read(apiProvider);
+      ..read(dioProvider);
 
     await container.read(backgroundFetchInitProvider.future);
 
     final hive = container.read(hiveProvider.notifier);
     await hive.init();
 
-    container.read(homeWidgetProvider);
+    container
+      ..read(apiProvider)
+      ..read(homeWidgetProvider);
 
     final notifications = container.read(notificationProvider);
     await notifications.init();
 
     return container;
   } catch (e) {
-    final error = 'initializeServices -> $e';
-    Logger(
-      printer: PrettyPrinter(
-        methodCount: 0,
-        errorMethodCount: 3,
-        lineLength: 50,
-        noBoxingByDefault: true,
-      ),
-    ).e(error);
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logError(
+      logger: logger,
+      hive: hive,
+      text: 'Initialization -> initializeServices -> $e',
+    );
+
     return null;
   }
 }
@@ -83,14 +85,14 @@ Future<void> initializeLocalization() async {
     await initializeDateFormatting('en');
     await initializeDateFormatting('hr');
   } catch (e) {
-    final error = 'initializeLocalization -> $e';
-    Logger(
-      printer: PrettyPrinter(
-        methodCount: 0,
-        errorMethodCount: 3,
-        lineLength: 50,
-        noBoxingByDefault: true,
-      ),
-    ).e(error);
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logError(
+      logger: logger,
+      hive: hive,
+      text: 'Initialization -> initializeLocalization -> $e',
+    );
   }
 }

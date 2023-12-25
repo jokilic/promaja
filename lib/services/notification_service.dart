@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../constants/durations.dart';
 import '../constants/icons.dart';
@@ -21,6 +20,7 @@ import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../util/initialization.dart';
+import '../util/log_data.dart';
 import '../util/weather.dart';
 import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
@@ -113,10 +113,19 @@ class NotificationService {
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
       );
 
+      logInfo(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> initializeNotifications -> Success',
+      );
+
       return initialized ?? false;
     } catch (e) {
-      final error = 'NotificationService -> initializeNotifications() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> initializeNotifications -> $e',
+      );
       return false;
     }
   }
@@ -157,15 +166,35 @@ class NotificationService {
 
       /// Error while granting permissions
       if (permissionsGranted == null) {
-        const error = 'NotificationService -> requestNotificationPermissions() -> Platform different than Android, iOS or MacOS';
-        logger.e(error);
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'NotificationService -> requestNotificationPermissions -> Platform different than Android, iOS or MacOS',
+        );
         return false;
+      }
+
+      if (permissionsGranted) {
+        logInfo(
+          logger: logger,
+          hive: hive,
+          text: 'NotificationService -> requestNotificationPermissions -> Success',
+        );
+      } else {
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'NotificationService -> requestNotificationPermissions -> Failure',
+        );
       }
 
       return permissionsGranted;
     } catch (e) {
-      final error = 'NotificationService -> requestNotificationPermissions() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> requestNotificationPermissions -> $e',
+      );
       return false;
     }
   }
@@ -175,8 +204,11 @@ class NotificationService {
     try {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
-      final error = 'NotificationService -> cancelNotifications() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> cancelNotifications -> $e',
+      );
     }
   }
 
@@ -234,9 +266,18 @@ class NotificationService {
         notificationDetails,
         payload: payload,
       );
+
+      logInfo(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> showNotification -> Notification shown -> ${notificationType.name}',
+      );
     } catch (e) {
-      final error = 'NotificationService -> showNotification() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> showNotification -> $e',
+      );
     }
   }
 
@@ -261,8 +302,11 @@ class NotificationService {
         );
       }
     } catch (e) {
-      final error = 'NotificationService -> testNotification() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> testNotification -> $e',
+      );
     }
   }
 
@@ -298,7 +342,6 @@ class NotificationService {
               currentWeather: currentWeather,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
-              container: container,
             );
           }
         }
@@ -329,7 +372,6 @@ class NotificationService {
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
                 location: location,
-                container: container,
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
@@ -374,7 +416,6 @@ class NotificationService {
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
                 location: location,
-                container: container,
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
@@ -393,16 +434,21 @@ class NotificationService {
           }
         }
       }
+
+      /// Location doesn't exist
+      else {
+        logInfo(
+          logger: logger,
+          hive: hive,
+          text: 'NotificationService -> handleNotification -> Location is null',
+        );
+      }
     } catch (e) {
-      final error = 'handleNotifications -> $e';
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> handleNotification -> $e',
+      );
     }
   }
 
@@ -411,7 +457,6 @@ class NotificationService {
     required ResponseCurrentWeather currentWeather,
     required bool showCelsius,
     required Location location,
-    required ProviderContainer container,
   }) async {
     try {
       /// Store relevant values in variables
@@ -434,15 +479,11 @@ class NotificationService {
         location: location,
       );
     } catch (e) {
-      final error = 'triggerHourlyNotification -> $e';
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> triggerHourlyNotification -> $e',
+      );
     }
   }
 
@@ -452,7 +493,6 @@ class NotificationService {
     required bool showCelsius,
     required bool isEvening,
     required Location location,
-    required ProviderContainer container,
   }) async {
     try {
       /// Store relevant values in variables
@@ -493,15 +533,11 @@ class NotificationService {
         );
       }
     } catch (e) {
-      final error = 'triggerMorningNotification -> $e';
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> triggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} -> $e',
+      );
     }
   }
 
@@ -530,57 +566,74 @@ class NotificationService {
 
   /// Triggered when user presses a notification
   Future<void> handlePressedNotification({required String? payload}) async {
-    final context = navigatorKey.currentState?.context;
+    try {
+      final context = navigatorKey.currentState?.context;
 
-    if (payload != null && context != null) {
-      /// Parse to `NotificationPayload`
-      final notificationPayload = NotificationPayload.fromJson(payload);
+      if (payload != null && context != null) {
+        /// Parse to `NotificationPayload`
+        final notificationPayload = NotificationPayload.fromJson(payload);
 
-      /// Navigate to base route
-      Navigator.of(context).popUntil((route) => route.isFirst);
+        /// Navigate to base route
+        Navigator.of(context).popUntil((route) => route.isFirst);
 
-      switch (notificationPayload.notificationType) {
-        ///
-        /// Hourly notification
-        ///
-        case NotificationType.hourly:
-          if (notificationPayload.location != null) {
-            /// Get location index
-            final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+        switch (notificationPayload.notificationType) {
+          ///
+          /// Hourly notification
+          ///
+          case NotificationType.hourly:
+            if (notificationPayload.location != null) {
+              /// Get location index
+              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
 
-            /// Go to `CardsScreen` with proper location
-            ref.read(cardMovingProvider.notifier).state = false;
-            ref.read(cardIndexProvider.notifier).state = locationIndex;
-            if (ref.read(cardAdditionalControllerProvider).hasClients) {
-              ref.read(cardAdditionalControllerProvider).jumpTo(0);
+              /// Go to `CardsScreen` with proper location
+              ref.read(cardMovingProvider.notifier).state = false;
+              ref.read(cardIndexProvider.notifier).state = locationIndex;
+              if (ref.read(cardAdditionalControllerProvider).hasClients) {
+                ref.read(cardAdditionalControllerProvider).jumpTo(0);
+              }
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
+              await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
+              for (var i = 0; i < locationIndex; i++) {
+                await ref.read(appinioControllerProvider).swipeDefault();
+              }
             }
-            await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
-            await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
-            for (var i = 0; i < locationIndex; i++) {
-              await ref.read(appinioControllerProvider).swipeDefault();
+
+          ///
+          /// Morning / evening notification
+          ///
+          case NotificationType.morning:
+          case NotificationType.evening:
+            if (notificationPayload.location != null) {
+              /// Get location index
+              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+
+              /// Go to `ForecastScreen` with proper location
+              await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
             }
-          }
 
-        ///
-        /// Morning / evening notification
-        ///
-        case NotificationType.morning:
-        case NotificationType.evening:
-          if (notificationPayload.location != null) {
-            /// Get location index
-            final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
-
-            /// Go to `ForecastScreen` with proper location
-            await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
-            await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
-          }
-
-        ///
-        /// Test notification
-        ///
-        case NotificationType.test:
-          logger.f('Hello testy test');
+          ///
+          /// Test notification
+          ///
+          case NotificationType.test:
+            logger.f('Hello testy test');
+        }
       }
+
+      /// Payload or context is null
+      else {
+        logError(
+          logger: logger,
+          hive: hive,
+          text: 'NotificationService -> handlePressedNotification -> Payload or context is null',
+        );
+      }
+    } catch (e) {
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> handlePressedNotification -> $e',
+      );
     }
   }
 
@@ -594,8 +647,11 @@ class NotificationService {
     try {
       await handlePressedNotification(payload: payload);
     } catch (e) {
-      final error = 'NotificationService -> onDidReceiveLocalNotification() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> onDidReceiveLocalNotification -> $e',
+      );
     }
   }
 
@@ -606,8 +662,11 @@ class NotificationService {
         payload: notificationResponse.payload,
       );
     } catch (e) {
-      final error = 'NotificationService -> onDidReceiveNotificationResponse() -> $e';
-      logger.e(error);
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'NotificationService -> onDidReceiveNotificationResponse -> $e',
+      );
     }
   }
 }
@@ -632,14 +691,14 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
           );
     }
   } catch (e) {
-    final error = 'NotificationService -> onDidReceiveBackgroundNotificationResponse() -> $e';
-    Logger(
-      printer: PrettyPrinter(
-        methodCount: 0,
-        errorMethodCount: 3,
-        lineLength: 50,
-        noBoxingByDefault: true,
-      ),
-    ).e(error);
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logError(
+      logger: logger,
+      hive: hive,
+      text: 'NotificationService -> onDidReceiveBackgroundNotificationResponse -> $e',
+    );
   }
 }

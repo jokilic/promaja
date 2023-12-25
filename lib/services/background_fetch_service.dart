@@ -4,11 +4,12 @@ import 'dart:ui';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../util/initialization.dart';
+import '../util/log_data.dart';
 import 'hive_service.dart';
 import 'home_widget_service.dart';
+import 'logger_service.dart';
 import 'notification_service.dart';
 
 ///
@@ -75,15 +76,15 @@ final backgroundFetchInitProvider = FutureProvider<void>(
 
           /// Some generic error happened, throw error
           catch (e) {
-            final error = 'backgroundFetchHeadlessTask -> $e';
-            Logger(
-              printer: PrettyPrinter(
-                methodCount: 0,
-                errorMethodCount: 3,
-                lineLength: 50,
-                noBoxingByDefault: true,
-              ),
-            ).e(error);
+            final logger = LoggerService();
+            final hive = HiveService(logger);
+            await hive.init();
+
+            logError(
+              logger: logger,
+              hive: hive,
+              text: 'BackgroundFetchService -> backgroundFetchInit -> $e',
+            );
           }
 
           /// Finish task
@@ -92,30 +93,42 @@ final backgroundFetchInitProvider = FutureProvider<void>(
 
         /// Task timeout logic
         (taskId) async {
-          Logger(
-            printer: PrettyPrinter(
-              methodCount: 0,
-              errorMethodCount: 3,
-              lineLength: 50,
-              noBoxingByDefault: true,
-            ),
-          ).e('Task timed-out: $taskId');
+          final logger = LoggerService();
+          final hive = HiveService(logger);
+          await hive.init();
+
+          logError(
+            logger: logger,
+            hive: hive,
+            text: 'BackgroundFetchService -> backgroundFetchInit -> Task timed-out -> $taskId',
+          );
+
           BackgroundFetch.finish(taskId);
         },
       );
 
       /// Start [BackgroundFetch]
       await BackgroundFetch.start();
+
+      final logger = LoggerService();
+      final hive = HiveService(logger);
+      await hive.init();
+
+      logInfo(
+        logger: logger,
+        hive: hive,
+        text: 'BackgroundFetchService -> backgroundFetchInit -> initialize -> Success',
+      );
     } catch (e) {
-      final error = 'backgroundFetchInit -> initialize -> $e';
-      Logger(
-        printer: PrettyPrinter(
-          methodCount: 0,
-          errorMethodCount: 3,
-          lineLength: 50,
-          noBoxingByDefault: true,
-        ),
-      ).e(error);
+      final logger = LoggerService();
+      final hive = HiveService(logger);
+      await hive.init();
+
+      logError(
+        logger: logger,
+        hive: hive,
+        text: 'BackgroundFetchService -> backgroundFetchInit -> initialize -> $e',
+      );
     }
   },
   name: 'BackgroundFetchInitProvider',
@@ -128,14 +141,16 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
 
   /// Task is timed out, finish it immediately
   if (isTimeout) {
-    Logger(
-      printer: PrettyPrinter(
-        methodCount: 0,
-        errorMethodCount: 3,
-        lineLength: 50,
-        noBoxingByDefault: true,
-      ),
-    ).e('Headless task timed-out: $taskId');
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logError(
+      logger: logger,
+      hive: hive,
+      text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> Task timed-out -> $taskId',
+    );
+
     BackgroundFetch.finish(taskId);
     return;
   }
@@ -175,19 +190,29 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
             container: container,
           );
     }
+
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logInfo(
+      logger: logger,
+      hive: hive,
+      text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> Success',
+    );
   }
 
   /// Some generic error happened, throw error
   catch (e) {
-    final error = 'backgroundFetchHeadlessTask -> $e';
-    Logger(
-      printer: PrettyPrinter(
-        methodCount: 0,
-        errorMethodCount: 3,
-        lineLength: 50,
-        noBoxingByDefault: true,
-      ),
-    ).e(error);
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logError(
+      logger: logger,
+      hive: hive,
+      text: 'BackgroundFetchService -> backgroundFetchHeadlessTask -> $e',
+    );
   }
 
   /// Finish task

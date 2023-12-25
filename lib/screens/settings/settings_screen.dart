@@ -9,6 +9,8 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
+import '../../services/hive_service.dart';
+import '../../services/logger_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import '../card_colors/card_colors_screen.dart';
 import '../notification/notification_screen.dart';
@@ -194,6 +196,10 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () => launchUrl(
                       Uri(scheme: 'https', host: 'www.weatherapi.com'),
                     ),
+                    onLongPress: () {
+                      final logs = ref.read(hiveProvider.notifier).getPromajaLogsFromBox();
+                      ref.read(loggerProvider).f(logs);
+                    },
                     child: Image.asset(
                       PromajaIcons.weatherAPI,
                       height: 80,

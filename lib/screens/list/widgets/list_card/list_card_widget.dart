@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../models/location/location.dart';
+import '../../../../util/error.dart';
 import '../../../cards/cards_notifiers.dart';
 import 'list_card_error.dart';
 import 'list_card_loading.dart';
@@ -75,7 +75,7 @@ class ListCardWidget extends ConsumerWidget {
                   return ListCardError(
                     locationName: location.name,
                     isPhoneLocation: location.isPhoneLocation,
-                    error: data.error?.error.message ?? data.genericError ?? 'weirdErrorHappened'.tr(),
+                    error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                     onTap: onTap,
                   );
                 },
