@@ -16,7 +16,21 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
       case 0:
         return PromajaLogLevel.info;
       case 1:
-        return PromajaLogLevel.error;
+        return PromajaLogLevel.api;
+      case 2:
+        return PromajaLogLevel.currentWeather;
+      case 3:
+        return PromajaLogLevel.forecastWeather;
+      case 4:
+        return PromajaLogLevel.list;
+      case 5:
+        return PromajaLogLevel.settings;
+      case 6:
+        return PromajaLogLevel.notification;
+      case 7:
+        return PromajaLogLevel.widget;
+      case 8:
+        return PromajaLogLevel.location;
       default:
         return PromajaLogLevel.info;
     }
@@ -28,8 +42,29 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
       case PromajaLogLevel.info:
         writer.writeByte(0);
         break;
-      case PromajaLogLevel.error:
+      case PromajaLogLevel.api:
         writer.writeByte(1);
+        break;
+      case PromajaLogLevel.currentWeather:
+        writer.writeByte(2);
+        break;
+      case PromajaLogLevel.forecastWeather:
+        writer.writeByte(3);
+        break;
+      case PromajaLogLevel.list:
+        writer.writeByte(4);
+        break;
+      case PromajaLogLevel.settings:
+        writer.writeByte(5);
+        break;
+      case PromajaLogLevel.notification:
+        writer.writeByte(6);
+        break;
+      case PromajaLogLevel.widget:
+        writer.writeByte(7);
+        break;
+      case PromajaLogLevel.location:
+        writer.writeByte(8);
         break;
     }
   }

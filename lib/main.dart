@@ -8,6 +8,7 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
+import 'models/promaja_log/promaja_log_level.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'util/initialization.dart';
@@ -17,50 +18,66 @@ import 'widgets/promaja_navigation_bar.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  /// Initialize Flutter related tasks
-  WidgetsFlutterBinding.ensureInitialized();
-  DartPluginRegistrant.ensureInitialized();
+  try {
+    /// Initialize Flutter related tasks
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
 
-  /// Parsing of [StackTrace]
-  FlutterError.demangleStackTrace = (stack) {
-    if (stack is Trace) {
-      return stack.vmTrace;
-    }
-    if (stack is Chain) {
-      return stack.toTrace().vmTrace;
-    }
-    return stack;
-  };
+    /// Parsing of [StackTrace]
+    FlutterError.demangleStackTrace = (stack) {
+      if (stack is Trace) {
+        return stack.vmTrace;
+      }
+      if (stack is Chain) {
+        return stack.toTrace().vmTrace;
+      }
+      return stack;
+    };
 
-  /// Make sure the orientation is only `portrait`
-  await SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp],
-  );
+    /// Make sure the orientation is only `portrait`
+    await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp],
+    );
 
-  /// Make sure the status bar shows white text
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle.light,
-  );
+    /// Make sure the status bar shows white text
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.light,
+    );
 
-  /// Initialize [EasyLocalization]
-  await initializeLocalization();
+    /// Initialize [EasyLocalization]
+    await initializeLocalization();
 
-  /// Initialize services
-  final container = await initializeServices();
+    /// Initialize services
+    final container = await initializeServices();
 
-  /// Run [Promaja]
-  runApp(
-    UncontrolledProviderScope(
-      container: container!,
-      child: PromajaApp(),
-    ),
-  );
+    /// Run [Promaja]
+    runApp(
+      UncontrolledProviderScope(
+        container: container!,
+        child: PromajaApp(),
+      ),
+    );
 
-  logInfo(
-    logger: container.read(loggerProvider),
-    hive: container.read(hiveProvider.notifier),
-    text: 'Main -> App started',
-  );
+    logPromajaEvent(
+      logger: container.read(loggerProvider),
+      hive: container.read(hiveProvider.notifier),
+      text: 'main -> App started',
+      logLevel: PromajaLogLevel.info,
+      isError: false,
+    );
+  } catch (e) {
+    final logger = LoggerService();
+    final hive = HiveService(logger);
+    await hive.init();
+
+    logPromajaEvent(
+      logger: logger,
+      hive: hive,
+      text: 'main -> $e',
+      logLevel: PromajaLogLevel.info,
+      isError: true,
+    );
+  }
 }
 
 class PromajaApp extends ConsumerWidget {

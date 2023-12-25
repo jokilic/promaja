@@ -7,5 +7,19 @@ enum PromajaLogLevel {
   @HiveField(0)
   info,
   @HiveField(1)
-  error,
+  api,
+  @HiveField(2)
+  currentWeather,
+  @HiveField(3)
+  forecastWeather,
+  @HiveField(4)
+  list,
+  @HiveField(5)
+  settings,
+  @HiveField(6)
+  notification,
+  @HiveField(7)
+  widget,
+  @HiveField(8)
+  location,
 }

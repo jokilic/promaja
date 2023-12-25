@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../generated/codegen_loader.g.dart';
+import '../models/promaja_log/promaja_log_level.dart';
 import '../services/api_service.dart';
 import '../services/background_fetch_service.dart';
 import '../services/dio_service.dart';
@@ -48,10 +49,12 @@ Future<ProviderContainer?> initializeServices() async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logError(
+    logPromajaEvent(
       logger: logger,
       hive: hive,
       text: 'Initialization -> initializeServices -> $e',
+      logLevel: PromajaLogLevel.info,
+      isError: true,
     );
 
     return null;
@@ -89,10 +92,12 @@ Future<void> initializeLocalization() async {
     final hive = HiveService(logger);
     await hive.init();
 
-    logError(
+    logPromajaEvent(
       logger: logger,
       hive: hive,
       text: 'Initialization -> initializeLocalization -> $e',
+      logLevel: PromajaLogLevel.info,
+      isError: true,
     );
   }
 }

@@ -20,19 +20,22 @@ class PromajaLogAdapter extends TypeAdapter<PromajaLog> {
       text: fields[0] as String,
       time: fields[1] as DateTime,
       logLevel: fields[2] as PromajaLogLevel,
+      isError: fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PromajaLog obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.text)
       ..writeByte(1)
       ..write(obj.time)
       ..writeByte(2)
-      ..write(obj.logLevel);
+      ..write(obj.logLevel)
+      ..writeByte(3)
+      ..write(obj.isError);
   }
 
   @override
