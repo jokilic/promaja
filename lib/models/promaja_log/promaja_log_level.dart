@@ -5,7 +5,7 @@ part 'promaja_log_level.g.dart';
 @HiveType(typeId: 16)
 enum PromajaLogLevel {
   @HiveField(0)
-  info,
+  initialization,
   @HiveField(1)
   api,
   @HiveField(2)
@@ -22,10 +22,21 @@ enum PromajaLogLevel {
   widget,
   @HiveField(8)
   location,
+  @HiveField(9)
+  cardColor,
+  @HiveField(10)
+  logging,
+  @HiveField(11)
+  unit,
+  @HiveField(12)
+  background,
+  @HiveField(13)
+  navigation,
 }
 
+// TODO: Localize this
 String localizeLogLevel(PromajaLogLevel logLevel) => switch (logLevel) {
-      PromajaLogLevel.info => 'Info',
+      PromajaLogLevel.initialization => 'Init',
       PromajaLogLevel.api => 'API',
       PromajaLogLevel.currentWeather => 'Current weather',
       PromajaLogLevel.forecastWeather => 'Forecast weather',
@@ -34,4 +45,9 @@ String localizeLogLevel(PromajaLogLevel logLevel) => switch (logLevel) {
       PromajaLogLevel.notification => 'Notifications',
       PromajaLogLevel.widget => 'Widget',
       PromajaLogLevel.location => 'Location',
+      PromajaLogLevel.cardColor => 'Card color',
+      PromajaLogLevel.logging => 'Logging',
+      PromajaLogLevel.unit => 'Unit',
+      PromajaLogLevel.background => 'Background',
+      PromajaLogLevel.navigation => 'Navigation',
     };

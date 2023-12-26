@@ -6,7 +6,6 @@ import '../../../constants/text_styles.dart';
 class LoggingListTile extends StatelessWidget {
   final Function() onTap;
   final String text;
-  final String date;
   final String time;
   final IconData icon;
   final bool isError;
@@ -14,7 +13,6 @@ class LoggingListTile extends StatelessWidget {
   const LoggingListTile({
     required this.onTap,
     required this.text,
-    required this.date,
     required this.time,
     required this.icon,
     required this.isError,
@@ -47,17 +45,9 @@ class LoggingListTile extends StatelessWidget {
           text,
           style: PromajaTextStyles.settingsText,
         ),
-        trailing: Column(
-          children: [
-            Text(
-              date,
-              style: PromajaTextStyles.settingsText,
-            ),
-            Text(
-              time,
-              style: PromajaTextStyles.settingsText,
-            ),
-          ],
+        trailing: Text(
+          time,
+          style: PromajaTextStyles.settingsText,
         ),
       );
 }

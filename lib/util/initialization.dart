@@ -49,8 +49,8 @@ Future<ProviderContainer?> initializeServices() async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'Initialization -> initializeServices -> $e',
-      logLevel: PromajaLogLevel.info,
+      text: 'initializeServices -> $e',
+      logLevel: PromajaLogLevel.initialization,
       isError: true,
     );
 
@@ -84,16 +84,14 @@ Future<void> initializeLocalization() async {
 
     await initializeDateFormatting('en');
     await initializeDateFormatting('hr');
-
-    EasyLocalization.logger.enableBuildModes = [];
   } catch (e) {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'Initialization -> initializeLocalization -> $e',
-      logLevel: PromajaLogLevel.info,
+      text: 'initializeLocalization -> $e',
+      logLevel: PromajaLogLevel.initialization,
       isError: true,
     );
   }

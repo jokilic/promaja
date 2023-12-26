@@ -14,7 +14,7 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
   PromajaLogLevel read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return PromajaLogLevel.info;
+        return PromajaLogLevel.initialization;
       case 1:
         return PromajaLogLevel.api;
       case 2:
@@ -31,15 +31,25 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
         return PromajaLogLevel.widget;
       case 8:
         return PromajaLogLevel.location;
+      case 9:
+        return PromajaLogLevel.cardColor;
+      case 10:
+        return PromajaLogLevel.logging;
+      case 11:
+        return PromajaLogLevel.unit;
+      case 12:
+        return PromajaLogLevel.background;
+      case 13:
+        return PromajaLogLevel.navigation;
       default:
-        return PromajaLogLevel.info;
+        return PromajaLogLevel.initialization;
     }
   }
 
   @override
   void write(BinaryWriter writer, PromajaLogLevel obj) {
     switch (obj) {
-      case PromajaLogLevel.info:
+      case PromajaLogLevel.initialization:
         writer.writeByte(0);
         break;
       case PromajaLogLevel.api:
@@ -65,6 +75,21 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
         break;
       case PromajaLogLevel.location:
         writer.writeByte(8);
+        break;
+      case PromajaLogLevel.cardColor:
+        writer.writeByte(9);
+        break;
+      case PromajaLogLevel.logging:
+        writer.writeByte(10);
+        break;
+      case PromajaLogLevel.unit:
+        writer.writeByte(11);
+        break;
+      case PromajaLogLevel.background:
+        writer.writeByte(12);
+        break;
+      case PromajaLogLevel.navigation:
+        writer.writeByte(13);
         break;
     }
   }

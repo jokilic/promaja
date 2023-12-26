@@ -92,8 +92,8 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
       );
 
       hiveService.logPromajaEvent(
-        text: 'List -> enablePhoneLocation -> Phone position found',
-        logLevel: PromajaLogLevel.list,
+        text: 'enablePhoneLocation -> Phone position found',
+        logLevel: PromajaLogLevel.location,
       );
 
       /// Fetch weather data
@@ -114,8 +114,8 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
     /// Error getting position
     else {
       hiveService.logPromajaEvent(
-        text: 'List -> enablePhoneLocation -> Error getting position${position.error != null ? ' -> ${position.error}' : ''}',
-        logLevel: PromajaLogLevel.list,
+        text: 'enablePhoneLocation -> Error getting position${position.error != null ? ' -> ${position.error}' : ''}',
+        logLevel: PromajaLogLevel.location,
         isError: true,
       );
     }

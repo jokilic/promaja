@@ -28,7 +28,7 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
     required this.logger,
     required this.hive,
   }) : super((
-          list: hive.getPromajaLogsFromBox().reversed.toList(),
+          list: hive.getPromajaLogsFromBox(),
           logFilter: null,
         ));
 
@@ -45,7 +45,7 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
   /// Updates state with only logs of `visibleLevel`
   /// If no `visibleLevel` is passed, it gives a full list of logs
   void updateLogs({PromajaLogLevel? visibleLevel}) {
-    final logs = hive.getPromajaLogsFromBox().reversed.toList();
+    final logs = hive.getPromajaLogsFromBox();
     final newList = visibleLevel != null ? logs.where((log) => log.logLevel == visibleLevel).toList() : logs;
 
     state = (list: newList, logFilter: visibleLevel);
@@ -94,29 +94,22 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
     );
   }
 
+  // TODO: Find proper icons from FlatIcon
   /// Returns proper icon for [LoggingListTile]
-  IconData getLoggingIcon(PromajaLogLevel logLevel) {
-    // TODO: Find proper icons from FlatIcon
-
-    switch (logLevel) {
-      case PromajaLogLevel.info:
-        return Icons.info_rounded;
-      case PromajaLogLevel.api:
-        return Icons.api_rounded;
-      case PromajaLogLevel.currentWeather:
-        return Icons.wb_sunny_rounded;
-      case PromajaLogLevel.forecastWeather:
-        return Icons.cloud_rounded;
-      case PromajaLogLevel.list:
-        return Icons.list_rounded;
-      case PromajaLogLevel.settings:
-        return Icons.settings_rounded;
-      case PromajaLogLevel.notification:
-        return Icons.notifications_rounded;
-      case PromajaLogLevel.widget:
-        return Icons.widgets_rounded;
-      case PromajaLogLevel.location:
-        return Icons.location_on_rounded;
-    }
-  }
+  IconData getLoggingIcon(PromajaLogLevel logLevel) => switch (logLevel) {
+        PromajaLogLevel.initialization => Icons.info_rounded,
+        PromajaLogLevel.api => Icons.api_rounded,
+        PromajaLogLevel.currentWeather => Icons.wb_sunny_rounded,
+        PromajaLogLevel.forecastWeather => Icons.cloud_rounded,
+        PromajaLogLevel.list => Icons.list_rounded,
+        PromajaLogLevel.settings => Icons.settings_rounded,
+        PromajaLogLevel.notification => Icons.notifications_rounded,
+        PromajaLogLevel.widget => Icons.widgets_rounded,
+        PromajaLogLevel.location => Icons.location_on_rounded,
+        PromajaLogLevel.cardColor => Icons.add_card_rounded,
+        PromajaLogLevel.logging => Icons.text_snippet_rounded,
+        PromajaLogLevel.unit => Icons.ad_units_rounded,
+        PromajaLogLevel.background => Icons.backpack_rounded,
+        PromajaLogLevel.navigation => Icons.navigation_rounded,
+      };
 }

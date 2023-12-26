@@ -9,27 +9,12 @@ final loggerProvider = Provider<LoggerService>(
   name: 'LoggerProvider',
 );
 
-class NoLogger extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) => false;
-}
-
 class LoggerService {
   ///
   /// VARIABLES
   ///
 
   late final logger = Logger(
-    printer: PrettyPrinter(
-      methodCount: 0,
-      errorMethodCount: 3,
-      lineLength: 50,
-      noBoxingByDefault: true,
-    ),
-    filter: NoLogger(),
-  );
-
-  late final logger2 = Logger(
     printer: PrettyPrinter(
       methodCount: 0,
       errorMethodCount: 3,
@@ -58,7 +43,7 @@ class LoggerService {
   void e(value) => logger.e(value);
 
   /// 👾 Fatal error, purple color
-  void f(value, {Logger? passedLogger}) => passedLogger != null ? passedLogger.f(value) : logger.f(value);
+  void f(value) => logger.f(value);
 
   /// Logs JSON responses with proper formatting
   void logJson(String data, {bool isError = false}) {

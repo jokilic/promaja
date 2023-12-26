@@ -76,7 +76,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
           );
 
       ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour disabled',
+            text: 'weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour disabled',
             logLevel: PromajaLogLevel.forecastWeather,
           );
     }
@@ -97,8 +97,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
       );
 
       ref.read(hiveProvider.notifier).logPromajaEvent(
-            text:
-                'ForecastWeather -> weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour enabled -> ${DateFormat.Hm().format(hourWeather.timeEpoch)}',
+            text: 'weatherCardHourPressed -> ${widget.location.name}, ${widget.location.country} -> Hour enabled -> ${DateFormat.Hm().format(hourWeather.timeEpoch)}',
             logLevel: PromajaLogLevel.forecastWeather,
           );
     }

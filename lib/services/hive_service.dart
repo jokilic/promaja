@@ -261,7 +261,7 @@ class HiveService extends StateNotifier<List<Location>> {
     /// User tried moving location below [AddLocationResult]
     if (oldIndex == state.length || newIndex > state.length) {
       logPromajaEvent(
-        text: 'List -> reorderLocations -> Faulty move',
+        text: 'reorderLocations -> Faulty move',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -271,7 +271,7 @@ class HiveService extends StateNotifier<List<Location>> {
     /// Phone location is active and user tried moving it or moving some location above it
     if (hasPhoneLocation && (oldIndex == 0 || newIndex == 0)) {
       logPromajaEvent(
-        text: 'List -> reorderLocations -> User moved phone location',
+        text: 'reorderLocations -> User moved phone location',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -295,7 +295,7 @@ class HiveService extends StateNotifier<List<Location>> {
     }
 
     logPromajaEvent(
-      text: 'List -> reorderLocations -> Locations reordered',
+      text: 'reorderLocations -> Locations reordered',
       logLevel: PromajaLogLevel.list,
     );
   }
@@ -314,11 +314,11 @@ class HiveService extends StateNotifier<List<Location>> {
     );
 
     logger
-      ..f('\n📄 PROMAJA LOG 📃', passedLogger: logger.logger2)
-      ..f('--------------------', passedLogger: logger.logger2)
-      ..f('Text -> ${promajaLog.text}', passedLogger: logger.logger2)
-      ..f('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}', passedLogger: logger.logger2)
-      ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}', passedLogger: logger.logger2)
+      ..f('\n📄 PROMAJA LOG 📃')
+      ..f('--------------------')
+      ..f('Text -> ${promajaLog.text}')
+      ..f('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}')
+      ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
       ..f('--------------------\n');
 
     addPromajaLogToBox(promajaLog: promajaLog);

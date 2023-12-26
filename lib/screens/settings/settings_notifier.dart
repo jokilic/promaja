@@ -141,8 +141,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     await notification.init();
 
     hive.logPromajaEvent(
-      text: 'Notifications -> Hourly notification -> ${newState ? 'Enabled' : 'Disabled'}',
-      logLevel: PromajaLogLevel.settings,
+      text: 'Hourly notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.notification,
     );
   }
 
@@ -164,8 +164,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     await notification.init();
 
     hive.logPromajaEvent(
-      text: 'Notifications -> Morning notification -> ${newState ? 'Enabled' : 'Disabled'}',
-      logLevel: PromajaLogLevel.settings,
+      text: 'Morning notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.notification,
     );
   }
 
@@ -187,8 +187,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     await notification.init();
 
     hive.logPromajaEvent(
-      text: 'Notifications -> Evening notification -> ${newState ? 'Enabled' : 'Disabled'}',
-      logLevel: PromajaLogLevel.settings,
+      text: 'Evening notification -> ${newState ? 'Enabled' : 'Disabled'}',
+      logLevel: PromajaLogLevel.notification,
     );
   }
 

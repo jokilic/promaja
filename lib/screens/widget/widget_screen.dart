@@ -95,8 +95,8 @@ class WidgetScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateWidgetLocation(newLocation);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Widget -> Location update -> ${newLocation.name}, ${newLocation.country}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Location update -> ${newLocation.name}, ${newLocation.country}',
+                          logLevel: PromajaLogLevel.widget,
                         );
                   }
                 },
@@ -116,8 +116,8 @@ class WidgetScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateWidgetWeatherType(newWeatherType);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Widget -> Weather type update -> ${newWeatherType.name}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Weather type update -> ${newWeatherType.name}',
+                          logLevel: PromajaLogLevel.widget,
                         );
                   }
                 },

@@ -91,7 +91,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Card colors pressed',
+                            text: 'Card colors pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -112,7 +112,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Units pressed',
+                            text: 'Units pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -133,7 +133,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Notifications pressed',
+                            text: 'Notifications pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -154,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Widget pressed',
+                            text: 'Widget pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -179,7 +179,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Contact pressed',
+                            text: 'Contact pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -224,7 +224,7 @@ class SettingsScreen extends ConsumerWidget {
                                 );
 
                                 ref.read(hiveProvider.notifier).logPromajaEvent(
-                                      text: 'Settings -> WeatherAPI link pressed',
+                                      text: 'WeatherAPI link pressed',
                                       logLevel: PromajaLogLevel.settings,
                                     );
                               },
@@ -241,7 +241,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> WeatherAPI logo pressed',
+                            text: 'WeatherAPI logo pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
@@ -253,7 +253,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Settings -> Logging pressed',
+                            text: 'Logging pressed',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },

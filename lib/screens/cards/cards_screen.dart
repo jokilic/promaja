@@ -33,7 +33,7 @@ class CardsScreen extends ConsumerWidget {
       final activeLocation = ref.read(hiveProvider)[index];
 
       ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'CurrentWeather -> cardSwiped -> ${activeLocation.name}, ${activeLocation.country}',
+            text: 'cardSwiped -> ${activeLocation.name}, ${activeLocation.country}',
             logLevel: PromajaLogLevel.currentWeather,
           );
     }

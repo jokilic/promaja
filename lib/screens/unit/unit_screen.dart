@@ -95,8 +95,8 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateTemperatureUnit(newTemperature);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Units -> Temperature update -> ${newTemperature.name}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Temperature update -> ${newTemperature.name}',
+                          logLevel: PromajaLogLevel.unit,
                         );
                   }
                 },
@@ -116,8 +116,8 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateDistanceSpeedUnit(newDistanceSpeed);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Units -> Distance & speed update -> ${newDistanceSpeed.name}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Distance & speed update -> ${newDistanceSpeed.name}',
+                          logLevel: PromajaLogLevel.unit,
                         );
                   }
                 },
@@ -137,8 +137,8 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updatePrecipitationUnit(newPrecipitation);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Units -> Precipitation update -> ${newPrecipitation.name}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Precipitation update -> ${newPrecipitation.name}',
+                          logLevel: PromajaLogLevel.unit,
                         );
                   }
                 },
@@ -158,8 +158,8 @@ class UnitScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updatePressureUnit(newPressure);
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Units -> Pressure update -> ${newPressure.name}',
-                          logLevel: PromajaLogLevel.settings,
+                          text: 'Pressure update -> ${newPressure.name}',
+                          logLevel: PromajaLogLevel.unit,
                         );
                   }
                 },

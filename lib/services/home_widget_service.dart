@@ -69,7 +69,7 @@ class HomeWidgetService {
       );
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Widget -> renderHomeWidget -> $e',
+        text: 'renderHomeWidget -> $e',
         logLevel: PromajaLogLevel.widget,
         isError: true,
       );
@@ -87,7 +87,7 @@ class HomeWidgetService {
       );
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Widget -> updateHomeWidget -> $e',
+        text: 'updateHomeWidget -> $e',
         logLevel: PromajaLogLevel.widget,
         isError: true,
       );
@@ -170,7 +170,7 @@ class HomeWidgetService {
     // TODO: Implement this
 
     hive.logPromajaEvent(
-      text: 'Widget -> Updated manually',
+      text: 'Updated manually',
       logLevel: PromajaLogLevel.widget,
     );
   }

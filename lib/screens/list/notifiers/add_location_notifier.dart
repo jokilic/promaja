@@ -101,7 +101,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       }
 
       hiveService.logPromajaEvent(
-        text: 'List -> searchPlace -> $value',
+        text: 'searchPlace -> $value',
         logLevel: PromajaLogLevel.list,
       );
     }
@@ -124,7 +124,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       );
 
       hiveService.logPromajaEvent(
-        text: 'List -> addPlace -> locationLimit is triggered',
+        text: 'addPlace -> locationLimit is triggered',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -147,7 +147,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       );
 
       hiveService.logPromajaEvent(
-        text: 'List -> addPlace -> location exists',
+        text: 'addPlace -> location exists',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -181,7 +181,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       );
 
       hiveService.logPromajaEvent(
-        text: 'List -> addPlace -> ${location.name}, ${location.country}',
+        text: 'addPlace -> ${location.name}, ${location.country}',
         logLevel: PromajaLogLevel.list,
       );
     }

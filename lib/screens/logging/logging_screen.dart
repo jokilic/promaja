@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
+import '../../models/promaja_log/promaja_log.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_back_button.dart';
@@ -78,7 +80,7 @@ class LoggingScreen extends ConsumerWidget {
                 endIndent: 120,
                 color: PromajaColors.white,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
 
               ///
               /// LOG FILTER
@@ -91,8 +93,8 @@ class LoggingScreen extends ConsumerWidget {
                   ref.read(loggingProvider.notifier).updateLogs(visibleLevel: newLogFilter);
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Logging -> Log filter -> ${newLogFilter != null ? newLogFilter.name : 'All'}',
-                        logLevel: PromajaLogLevel.settings,
+                        text: 'Log filter -> ${newLogFilter != null ? newLogFilter.name : 'All'}',
+                        logLevel: PromajaLogLevel.logging,
                       );
                 },
                 activeValue: logs.logFilter != null ? localizeLogLevel(logs.logFilter!) : 'All',
@@ -104,22 +106,27 @@ class LoggingScreen extends ConsumerWidget {
               ///
               /// LOGS
               ///
-              ListView.builder(
+              GroupedListView<PromajaLog, String>(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
-                itemCount: logs.list.length,
-                itemBuilder: (_, index) {
-                  final log = logs.list[index];
-
-                  return LoggingListTile(
-                    onTap: () {},
-                    text: log.text,
-                    date: '${DateFormat.d().format(log.time)} ${DateFormat.MMM().format(log.time)}',
-                    time: DateFormat.Hm().format(log.time),
-                    icon: ref.read(loggingProvider.notifier).getLoggingIcon(log.logLevel),
-                    isError: log.isError,
-                  );
-                },
+                elements: logs.list,
+                groupBy: (log) => DateFormat.yMMMMd().format(log.time),
+                groupSeparatorBuilder: (groupByValue) => Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
+                  child: Text(
+                    groupByValue,
+                    style: PromajaTextStyles.settingsSubtitle,
+                  ),
+                ),
+                itemBuilder: (_, log) => LoggingListTile(
+                  onTap: () {},
+                  text: log.text,
+                  time: DateFormat.Hm().format(log.time),
+                  icon: ref.read(loggingProvider.notifier).getLoggingIcon(log.logLevel),
+                  isError: log.isError,
+                ),
+                itemComparator: (log1, log2) => log1.time.compareTo(log2.time),
+                order: GroupedListOrder.DESC,
               ),
             ],
           ),
