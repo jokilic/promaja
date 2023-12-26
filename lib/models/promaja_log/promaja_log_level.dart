@@ -23,3 +23,15 @@ enum PromajaLogLevel {
   @HiveField(8)
   location,
 }
+
+String localizeLogLevel(PromajaLogLevel logLevel) => switch (logLevel) {
+      PromajaLogLevel.info => 'Info',
+      PromajaLogLevel.api => 'API',
+      PromajaLogLevel.currentWeather => 'Current weather',
+      PromajaLogLevel.forecastWeather => 'Forecast weather',
+      PromajaLogLevel.list => 'List',
+      PromajaLogLevel.settings => 'Settings',
+      PromajaLogLevel.notification => 'Notifications',
+      PromajaLogLevel.widget => 'Widget',
+      PromajaLogLevel.location => 'Location',
+    };

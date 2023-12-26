@@ -11,11 +11,7 @@ enum WeatherType {
   forecast,
 }
 
-String localizeWeatherType(WeatherType weatherType) {
-  switch (weatherType) {
-    case WeatherType.current:
-      return 'weatherTypeCurrent'.tr();
-    case WeatherType.forecast:
-      return 'weatherTypeForecast'.tr();
-  }
-}
+String localizeWeatherType(WeatherType weatherType) => switch (weatherType) {
+      WeatherType.current => 'weatherTypeCurrent'.tr(),
+      WeatherType.forecast => 'weatherTypeForecast'.tr(),
+    };

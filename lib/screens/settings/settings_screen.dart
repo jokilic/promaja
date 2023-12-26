@@ -11,9 +11,9 @@ import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
-import '../../services/logger_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import '../card_colors/card_colors_screen.dart';
+import '../logging/logging_screen.dart';
 import '../notification/notification_screen.dart';
 import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
@@ -34,7 +34,6 @@ class SettingsScreen extends ConsumerWidget {
           child: SafeArea(
             child: ListView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
               children: AnimateList(
                 interval: PromajaDurations.settingsInterval,
                 effects: [
@@ -50,7 +49,7 @@ class SettingsScreen extends ConsumerWidget {
                   /// SETTINGS TITLE
                   ///
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
                       'settingsTitle'.tr(),
                       style: PromajaTextStyles.settingsTitle,
@@ -62,7 +61,7 @@ class SettingsScreen extends ConsumerWidget {
                   /// SETTINGS DESCRIPTION
                   ///
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
                       'settingsSubtitle'.tr(),
                       style: PromajaTextStyles.settingsText,
@@ -247,8 +246,16 @@ class SettingsScreen extends ConsumerWidget {
                           );
                     },
                     onLongPress: () {
-                      final logs = ref.read(hiveProvider.notifier).getPromajaLogsFromBox();
-                      ref.read(loggerProvider).f(logs);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoggingScreen(),
+                        ),
+                      );
+
+                      ref.read(hiveProvider.notifier).logPromajaEvent(
+                            text: 'Settings -> Logging pressed',
+                            logLevel: PromajaLogLevel.settings,
+                          );
                     },
                     child: Image.asset(
                       PromajaIcons.weatherAPI,

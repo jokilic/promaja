@@ -158,6 +158,8 @@ class HomeWidgetService {
     required PromajaSettings settings,
     required ProviderContainer container,
   }) async {
+    // TODO: Implement this
+
     final location = settings.widget.location;
 
     if (location != null) {}
@@ -165,6 +167,8 @@ class HomeWidgetService {
 
   /// Refreshes widget in the home screen
   Future<void> updateWidget() async {
+    // TODO: Implement this
+
     hive.logPromajaEvent(
       text: 'Widget -> Updated manually',
       logLevel: PromajaLogLevel.widget,

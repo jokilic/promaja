@@ -25,7 +25,10 @@ class SettingsListTile extends StatelessWidget {
         ),
         splashColor: PromajaColors.white.withOpacity(0.15),
         onTap: onTap,
-        contentPadding: const EdgeInsets.all(8),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
         title: Text(
           title,
           style: PromajaTextStyles.settingsSubtitle,

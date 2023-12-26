@@ -11,11 +11,7 @@ enum DistanceSpeedUnit {
   miles,
 }
 
-String localizeDistanceSpeed(DistanceSpeedUnit distanceSpeed) {
-  switch (distanceSpeed) {
-    case DistanceSpeedUnit.kilometers:
-      return 'unitKilometers'.tr();
-    case DistanceSpeedUnit.miles:
-      return 'unitMiles'.tr();
-  }
-}
+String localizeDistanceSpeed(DistanceSpeedUnit distanceSpeed) => switch (distanceSpeed) {
+      DistanceSpeedUnit.kilometers => 'unitKilometers'.tr(),
+      DistanceSpeedUnit.miles => 'unitMiles'.tr(),
+    };

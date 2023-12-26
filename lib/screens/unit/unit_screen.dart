@@ -25,7 +25,6 @@ class UnitScreen extends ConsumerWidget {
       body: SafeArea(
         child: ListView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           children: AnimateList(
             interval: PromajaDurations.settingsInterval,
             effects: [
@@ -40,10 +39,13 @@ class UnitScreen extends ConsumerWidget {
               ///
               /// BACK BUTTON
               ///
-              const Row(
-                children: [
-                  PromajaBackButton(),
-                ],
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    PromajaBackButton(),
+                  ],
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -51,7 +53,7 @@ class UnitScreen extends ConsumerWidget {
               /// UNITS TITLE
               ///
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'unitsTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
@@ -63,7 +65,7 @@ class UnitScreen extends ConsumerWidget {
               /// UNITS DESCRIPTION
               ///
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'unitsDescription'.tr(),
                   style: PromajaTextStyles.settingsText,

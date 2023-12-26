@@ -25,7 +25,6 @@ class WidgetScreen extends ConsumerWidget {
       body: SafeArea(
         child: ListView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           children: AnimateList(
             interval: PromajaDurations.settingsInterval,
             effects: [
@@ -40,10 +39,13 @@ class WidgetScreen extends ConsumerWidget {
               ///
               /// BACK BUTTON
               ///
-              const Row(
-                children: [
-                  PromajaBackButton(),
-                ],
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    PromajaBackButton(),
+                  ],
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -51,7 +53,7 @@ class WidgetScreen extends ConsumerWidget {
               /// WIDGET TITLE
               ///
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'widgetTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
@@ -63,7 +65,7 @@ class WidgetScreen extends ConsumerWidget {
               /// WIDGET DESCRIPTION
               ///
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'widgetDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
@@ -127,7 +129,7 @@ class WidgetScreen extends ConsumerWidget {
               /// UPDATE WIDGET
               ///
               SettingsListTile(
-                onTap: () => ref.read(homeWidgetProvider).updateWidget(),
+                onTap: ref.read(homeWidgetProvider).updateWidget,
                 icon: PromajaIcons.dot,
                 title: 'widgetUpdateTitle'.tr(),
                 subtitle: 'widgetUpdateSubtitle'.tr(),

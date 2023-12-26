@@ -24,12 +24,16 @@ class SettingsPopupMenuListTile extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTapDown: onTapDown,
         onTapUp: onTapUp,
+        borderRadius: BorderRadius.circular(8),
         child: ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
           splashColor: PromajaColors.white.withOpacity(0.15),
-          contentPadding: const EdgeInsets.all(8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
           title: AnimatedSwitcher(
             duration: PromajaDurations.popupMenuAnimation,
             switchInCurve: Curves.easeIn,

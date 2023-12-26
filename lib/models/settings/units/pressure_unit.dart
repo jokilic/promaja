@@ -11,11 +11,7 @@ enum PressureUnit {
   inchesOfMercury,
 }
 
-String localizePressure(PressureUnit pressure) {
-  switch (pressure) {
-    case PressureUnit.hectopascal:
-      return 'unitHectopascal'.tr();
-    case PressureUnit.inchesOfMercury:
-      return 'unitInchesOfMercury'.tr();
-  }
-}
+String localizePressure(PressureUnit pressure) => switch (pressure) {
+      PressureUnit.hectopascal => 'unitHectopascal'.tr(),
+      PressureUnit.inchesOfMercury => 'unitInchesOfMercury'.tr(),
+    };

@@ -11,11 +11,7 @@ enum PrecipitationUnit {
   inches,
 }
 
-String localizePrecipitation(PrecipitationUnit precipitation) {
-  switch (precipitation) {
-    case PrecipitationUnit.millimeters:
-      return 'unitMillimeters'.tr();
-    case PrecipitationUnit.inches:
-      return 'unitInches'.tr();
-  }
-}
+String localizePrecipitation(PrecipitationUnit precipitation) => switch (precipitation) {
+      PrecipitationUnit.millimeters => 'unitMillimeters'.tr(),
+      PrecipitationUnit.inches => 'unitInches'.tr(),
+    };

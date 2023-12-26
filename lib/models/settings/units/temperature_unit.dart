@@ -11,11 +11,7 @@ enum TemperatureUnit {
   fahrenheit,
 }
 
-String localizeTemperature(TemperatureUnit temperature) {
-  switch (temperature) {
-    case TemperatureUnit.celsius:
-      return 'unitCelsius'.tr();
-    case TemperatureUnit.fahrenheit:
-      return 'unitFahrenheit'.tr();
-  }
-}
+String localizeTemperature(TemperatureUnit temperature) => switch (temperature) {
+      TemperatureUnit.celsius => 'unitCelsius'.tr(),
+      TemperatureUnit.fahrenheit => 'unitFahrenheit'.tr(),
+    };
