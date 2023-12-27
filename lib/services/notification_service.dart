@@ -372,16 +372,15 @@ class NotificationService {
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
-              final now = DateTime.now();
               final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+
+              final newNotificationLastShown = NotificationLastShown(
+                morningNotificationLastShown: DateTime.now(),
+                eveningNotificationLastShown: oldNotificationLastShown?.eveningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
+              );
+
               await hive.addNotificationLastShownToBox(
-                notificationLastShown: oldNotificationLastShown?.copyWith(
-                      morningNotificationLastShown: now,
-                    ) ??
-                    NotificationLastShown(
-                      morningNotificationLastShown: now,
-                      eveningNotificationLastShown: DateTime.fromMillisecondsSinceEpoch(0),
-                    ),
+                notificationLastShown: newNotificationLastShown,
               );
             }
           }
@@ -416,16 +415,15 @@ class NotificationService {
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
-              final now = DateTime.now();
               final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+
+              final newNotificationLastShown = NotificationLastShown(
+                morningNotificationLastShown: oldNotificationLastShown?.morningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
+                eveningNotificationLastShown: DateTime.now(),
+              );
+
               await hive.addNotificationLastShownToBox(
-                notificationLastShown: oldNotificationLastShown?.copyWith(
-                      eveningNotificationLastShown: now,
-                    ) ??
-                    NotificationLastShown(
-                      morningNotificationLastShown: DateTime.fromMillisecondsSinceEpoch(0),
-                      eveningNotificationLastShown: now,
-                    ),
+                notificationLastShown: newNotificationLastShown,
               );
             }
           }
