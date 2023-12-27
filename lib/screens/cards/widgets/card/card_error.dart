@@ -14,12 +14,14 @@ class CardError extends StatelessWidget {
   final bool useOpacity;
   final String error;
   final bool isPhoneLocation;
+  final Function()? refreshPressed;
 
   const CardError({
     required this.location,
     required this.useOpacity,
     required this.error,
     required this.isPhoneLocation,
+    this.refreshPressed,
   });
 
   @override
@@ -115,6 +117,20 @@ class CardError extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 80),
                     child: Column(
                       children: [
+                        if (refreshPressed != null) ...[
+                          IconButton.filled(
+                            style: IconButton.styleFrom(
+                              backgroundColor: PromajaColors.white,
+                            ),
+                            onPressed: refreshPressed,
+                            icon: const Icon(
+                              Icons.refresh_rounded,
+                              color: PromajaColors.red,
+                              size: 32,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
                         Text(
                           'error'.tr(),
                           style: PromajaTextStyles.errorFetching,

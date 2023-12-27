@@ -67,12 +67,22 @@ class WeatherScreen extends ConsumerWidget {
                       location: originalLocation!,
                       error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                       isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                      refreshPressed: () => ref.invalidate(
+                        getForecastWeatherProvider(
+                          (location: originalLocation!, days: 3),
+                        ),
+                      ),
                     );
                   },
                   error: (error, stackTrace) => WeatherError(
                     location: originalLocation!,
                     error: '$error',
                     isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                    refreshPressed: () => ref.invalidate(
+                      getForecastWeatherProvider(
+                        (location: originalLocation!, days: 3),
+                      ),
+                    ),
                   ),
                   loading: () => WeatherLoading(
                     location: originalLocation!,

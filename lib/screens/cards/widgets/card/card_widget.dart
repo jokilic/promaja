@@ -57,6 +57,9 @@ class CardWidget extends ConsumerWidget {
                   error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                   useOpacity: useOpacity,
                   isPhoneLocation: originalLocation.isPhoneLocation,
+                  refreshPressed: () => ref.invalidate(
+                    getCurrentWeatherProvider(originalLocation),
+                  ),
                 );
               },
 
@@ -68,6 +71,9 @@ class CardWidget extends ConsumerWidget {
                 error: '$error',
                 useOpacity: useOpacity,
                 isPhoneLocation: originalLocation.isPhoneLocation,
+                refreshPressed: () => ref.invalidate(
+                  getCurrentWeatherProvider(originalLocation),
+                ),
               ),
 
               ///
