@@ -34,7 +34,6 @@ enum PromajaLogLevel {
   navigation,
 }
 
-// TODO: Localize this
 String localizeLogLevel(PromajaLogLevel logLevel) => switch (logLevel) {
       PromajaLogLevel.initialization => 'Init',
       PromajaLogLevel.api => 'API',

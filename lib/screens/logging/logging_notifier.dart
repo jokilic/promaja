@@ -94,7 +94,6 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
     );
   }
 
-  // TODO: Find proper icons from FlatIcon
   /// Returns proper icon for [LoggingListTile]
   IconData getLoggingIcon(PromajaLogLevel logLevel) => switch (logLevel) {
         PromajaLogLevel.initialization => Icons.info_rounded,

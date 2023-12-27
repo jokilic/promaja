@@ -38,4 +38,8 @@ Tweak settings, change units used to show the weather, update data that notifica
 
 - [ ] Publish app on App Store
 - [ ] Make a good looking settings screen with ListTiles and minimal design
-    - [ ] Widget
+    - [ ] Widget - handleWidget & updateWidget
+- [ ] Dodaj neki ‘try again’ botun u CardError widgete
+- [ ] Dodaj neki glavni forecast card, sa svim weatherima za taj grad. Nakon njega neka idu oni normalni forecast cards
+- [ ] localizeLogLevel should be localized
+- [ ] getLoggingIcon - find proper icons from FlatIcons

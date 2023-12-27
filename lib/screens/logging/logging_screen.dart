@@ -10,6 +10,7 @@ import '../../constants/text_styles.dart';
 import '../../models/promaja_log/promaja_log.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
+import '../../util/weather.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 import 'logging_notifier.dart';
@@ -110,11 +111,11 @@ class LoggingScreen extends ConsumerWidget {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 elements: logs.list,
-                groupBy: (log) => DateFormat.yMMMMd().format(log.time),
+                groupBy: (log) => DateTime(log.time.year, log.time.month, log.time.day).toIso8601String(),
                 groupSeparatorBuilder: (groupByValue) => Padding(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
                   child: Text(
-                    groupByValue,
+                    getForecastDate(dateEpoch: DateTime.parse(groupByValue)),
                     style: PromajaTextStyles.settingsSubtitle,
                   ),
                 ),
