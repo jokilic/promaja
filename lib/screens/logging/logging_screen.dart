@@ -120,9 +120,9 @@ class LoggingScreen extends ConsumerWidget {
                 ),
                 itemBuilder: (_, log) => LoggingListTile(
                   onTap: () {},
+                  group: log.logGroup.name,
                   text: log.text,
                   time: DateFormat.Hm().format(log.time),
-                  icon: ref.read(loggingProvider.notifier).getLoggingIcon(log.logGroup),
                   isError: log.isError,
                 ),
                 itemComparator: (log1, log2) => log1.time.compareTo(log2.time),

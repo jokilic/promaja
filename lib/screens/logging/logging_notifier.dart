@@ -94,22 +94,4 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogG
       ],
     );
   }
-
-  /// Returns proper icon for [LoggingListTile]
-  IconData getLoggingIcon(PromajaLogGroup logGroup) => switch (logGroup) {
-        PromajaLogGroup.initialization => Icons.info_rounded,
-        PromajaLogGroup.api => Icons.api_rounded,
-        PromajaLogGroup.currentWeather => Icons.wb_sunny_rounded,
-        PromajaLogGroup.forecastWeather => Icons.cloud_rounded,
-        PromajaLogGroup.list => Icons.list_rounded,
-        PromajaLogGroup.settings => Icons.settings_rounded,
-        PromajaLogGroup.notification => Icons.notifications_rounded,
-        PromajaLogGroup.widget => Icons.widgets_rounded,
-        PromajaLogGroup.location => Icons.location_on_rounded,
-        PromajaLogGroup.cardColor => Icons.add_card_rounded,
-        PromajaLogGroup.logging => Icons.text_snippet_rounded,
-        PromajaLogGroup.unit => Icons.ad_units_rounded,
-        PromajaLogGroup.background => Icons.backpack_rounded,
-        PromajaLogGroup.navigation => Icons.navigation_rounded,
-      };
 }

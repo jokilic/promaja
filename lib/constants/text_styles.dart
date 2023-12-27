@@ -175,6 +175,11 @@ class PromajaTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static const settingsAbbreviation = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+  );
   static const settingsListTitle = TextStyle(
     color: PromajaColors.white,
     fontSize: 22,

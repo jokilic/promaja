@@ -5,16 +5,17 @@ import '../../../constants/text_styles.dart';
 
 class LoggingListTile extends StatelessWidget {
   final Function() onTap;
+  final String group;
   final String text;
   final String time;
-  final IconData icon;
+
   final bool isError;
 
   const LoggingListTile({
     required this.onTap,
+    required this.group,
     required this.text,
     required this.time,
-    required this.icon,
     required this.isError,
   });
 
@@ -29,17 +30,9 @@ class LoggingListTile extends StatelessWidget {
           horizontal: 16,
           vertical: 8,
         ),
-        leading: Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: isError ? PromajaColors.red : null,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: PromajaColors.white,
-            size: 26,
-          ),
+        leading: Text(
+          group.substring(0, 2).toUpperCase(),
+          style: PromajaTextStyles.settingsAbbreviation,
         ),
         title: Text(
           text,
