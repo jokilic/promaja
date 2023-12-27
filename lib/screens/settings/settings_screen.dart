@@ -189,6 +189,27 @@ class SettingsScreen extends ConsumerWidget {
                   ),
 
                   ///
+                  /// LOGGING
+                  ///
+                  SettingsListTile(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoggingScreen(),
+                        ),
+                      );
+
+                      ref.read(hiveProvider.notifier).logPromajaEvent(
+                            text: 'Logging',
+                            logLevel: PromajaLogLevel.settings,
+                          );
+                    },
+                    icon: PromajaIcons.arrow,
+                    title: 'loggingTitle'.tr(),
+                    subtitle: 'loggingSubtitle'.tr(),
+                  ),
+
+                  ///
                   /// DIVIDER
                   ///
                   const SizedBox(height: 16),
@@ -242,18 +263,6 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'WeatherAPI logo',
-                            logLevel: PromajaLogLevel.settings,
-                          );
-                    },
-                    onLongPress: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => LoggingScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Logging',
                             logLevel: PromajaLogLevel.settings,
                           );
                     },
