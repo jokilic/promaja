@@ -1,13 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:intl/intl.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
-import '../../models/promaja_log/promaja_log.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../util/weather.dart';
@@ -52,10 +51,10 @@ class LoggingScreen extends ConsumerWidget {
               ///
               /// LOGGING TITLE
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  'Logging',
+                  'loggingTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
@@ -64,10 +63,10 @@ class LoggingScreen extends ConsumerWidget {
               ///
               /// WIDGET DESCRIPTION
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  'Here you can find all logs explaining app behaviour.',
+                  'loggingDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
                 ),
               ),
@@ -84,22 +83,22 @@ class LoggingScreen extends ConsumerWidget {
               const SizedBox(height: 4),
 
               ///
-              /// LOG FILTER
+              /// LOG GROUP
               ///
               SettingsPopupMenuListTile(
                 onTapDown: (details) => ref.read(loggingProvider.notifier).tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newLogFilter = await ref.read(loggingProvider.notifier).showLogFilterPopupMenu(context);
+                  final newLogGroup = await ref.read(loggingProvider.notifier).showLogGroupPopupMenu(context);
 
-                  ref.read(loggingProvider.notifier).updateLogs(visibleLevel: newLogFilter);
+                  ref.read(loggingProvider.notifier).updateLogs(visibleLevel: newLogGroup);
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Log filter -> ${newLogFilter != null ? newLogFilter.name : 'All'}',
-                        logLevel: PromajaLogLevel.logging,
+                        text: 'Log group -> ${newLogGroup != null ? newLogGroup.name : 'All'}',
+                        logGroup: PromajaLogGroup.logging,
                       );
                 },
-                activeValue: logs.logFilter != null ? localizeLogLevel(logs.logFilter!) : 'All',
-                subtitle: 'Choose a log filter to be visible',
+                activeValue: logs.logGroup != null ? localizeLogGroup(logs.logGroup!) : 'loggingAll'.tr(),
+                subtitle: 'loggingLogGroup'.tr(),
               ),
 
               const SizedBox(height: 8),
@@ -107,7 +106,7 @@ class LoggingScreen extends ConsumerWidget {
               ///
               /// LOGS
               ///
-              GroupedListView<PromajaLog, String>(
+              GroupedListView(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 elements: logs.list,
@@ -123,7 +122,7 @@ class LoggingScreen extends ConsumerWidget {
                   onTap: () {},
                   text: log.text,
                   time: DateFormat.Hm().format(log.time),
-                  icon: ref.read(loggingProvider.notifier).getLoggingIcon(log.logLevel),
+                  icon: ref.read(loggingProvider.notifier).getLoggingIcon(log.logGroup),
                   isError: log.isError,
                 ),
                 itemComparator: (log1, log2) => log1.time.compareTo(log2.time),

@@ -96,7 +96,7 @@ class UnitScreen extends ConsumerWidget {
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
                           text: 'Temperature -> ${newTemperature.name}',
-                          logLevel: PromajaLogLevel.unit,
+                          logGroup: PromajaLogGroup.unit,
                         );
                   }
                 },
@@ -117,7 +117,7 @@ class UnitScreen extends ConsumerWidget {
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
                           text: 'Distance & speed -> ${newDistanceSpeed.name}',
-                          logLevel: PromajaLogLevel.unit,
+                          logGroup: PromajaLogGroup.unit,
                         );
                   }
                 },
@@ -138,7 +138,7 @@ class UnitScreen extends ConsumerWidget {
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
                           text: 'Precipitation -> ${newPrecipitation.name}',
-                          logLevel: PromajaLogLevel.unit,
+                          logGroup: PromajaLogGroup.unit,
                         );
                   }
                 },
@@ -159,7 +159,7 @@ class UnitScreen extends ConsumerWidget {
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
                           text: 'Pressure -> ${newPressure.name}',
-                          logLevel: PromajaLogLevel.unit,
+                          logGroup: PromajaLogGroup.unit,
                         );
                   }
                 },

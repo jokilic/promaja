@@ -6,89 +6,89 @@ part of 'promaja_log_level.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
+class PromajaLogGroupAdapter extends TypeAdapter<PromajaLogGroup> {
   @override
   final int typeId = 16;
 
   @override
-  PromajaLogLevel read(BinaryReader reader) {
+  PromajaLogGroup read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return PromajaLogLevel.initialization;
+        return PromajaLogGroup.initialization;
       case 1:
-        return PromajaLogLevel.api;
+        return PromajaLogGroup.api;
       case 2:
-        return PromajaLogLevel.currentWeather;
+        return PromajaLogGroup.currentWeather;
       case 3:
-        return PromajaLogLevel.forecastWeather;
+        return PromajaLogGroup.forecastWeather;
       case 4:
-        return PromajaLogLevel.list;
+        return PromajaLogGroup.list;
       case 5:
-        return PromajaLogLevel.settings;
+        return PromajaLogGroup.settings;
       case 6:
-        return PromajaLogLevel.notification;
+        return PromajaLogGroup.notification;
       case 7:
-        return PromajaLogLevel.widget;
+        return PromajaLogGroup.widget;
       case 8:
-        return PromajaLogLevel.location;
+        return PromajaLogGroup.location;
       case 9:
-        return PromajaLogLevel.cardColor;
+        return PromajaLogGroup.cardColor;
       case 10:
-        return PromajaLogLevel.logging;
+        return PromajaLogGroup.logging;
       case 11:
-        return PromajaLogLevel.unit;
+        return PromajaLogGroup.unit;
       case 12:
-        return PromajaLogLevel.background;
+        return PromajaLogGroup.background;
       case 13:
-        return PromajaLogLevel.navigation;
+        return PromajaLogGroup.navigation;
       default:
-        return PromajaLogLevel.initialization;
+        return PromajaLogGroup.initialization;
     }
   }
 
   @override
-  void write(BinaryWriter writer, PromajaLogLevel obj) {
+  void write(BinaryWriter writer, PromajaLogGroup obj) {
     switch (obj) {
-      case PromajaLogLevel.initialization:
+      case PromajaLogGroup.initialization:
         writer.writeByte(0);
         break;
-      case PromajaLogLevel.api:
+      case PromajaLogGroup.api:
         writer.writeByte(1);
         break;
-      case PromajaLogLevel.currentWeather:
+      case PromajaLogGroup.currentWeather:
         writer.writeByte(2);
         break;
-      case PromajaLogLevel.forecastWeather:
+      case PromajaLogGroup.forecastWeather:
         writer.writeByte(3);
         break;
-      case PromajaLogLevel.list:
+      case PromajaLogGroup.list:
         writer.writeByte(4);
         break;
-      case PromajaLogLevel.settings:
+      case PromajaLogGroup.settings:
         writer.writeByte(5);
         break;
-      case PromajaLogLevel.notification:
+      case PromajaLogGroup.notification:
         writer.writeByte(6);
         break;
-      case PromajaLogLevel.widget:
+      case PromajaLogGroup.widget:
         writer.writeByte(7);
         break;
-      case PromajaLogLevel.location:
+      case PromajaLogGroup.location:
         writer.writeByte(8);
         break;
-      case PromajaLogLevel.cardColor:
+      case PromajaLogGroup.cardColor:
         writer.writeByte(9);
         break;
-      case PromajaLogLevel.logging:
+      case PromajaLogGroup.logging:
         writer.writeByte(10);
         break;
-      case PromajaLogLevel.unit:
+      case PromajaLogGroup.unit:
         writer.writeByte(11);
         break;
-      case PromajaLogLevel.background:
+      case PromajaLogGroup.background:
         writer.writeByte(12);
         break;
-      case PromajaLogLevel.navigation:
+      case PromajaLogGroup.navigation:
         writer.writeByte(13);
         break;
     }
@@ -100,7 +100,7 @@ class PromajaLogLevelAdapter extends TypeAdapter<PromajaLogLevel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PromajaLogLevelAdapter &&
+      other is PromajaLogGroupAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

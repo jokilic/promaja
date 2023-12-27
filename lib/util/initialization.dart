@@ -50,7 +50,7 @@ Future<ProviderContainer?> initializeServices() async {
 
     hive.logPromajaEvent(
       text: 'Services -> $e',
-      logLevel: PromajaLogLevel.initialization,
+      logGroup: PromajaLogGroup.initialization,
       isError: true,
     );
 
@@ -91,7 +91,7 @@ Future<void> initializeLocalization() async {
 
     hive.logPromajaEvent(
       text: 'Localization -> $e',
-      logLevel: PromajaLogLevel.initialization,
+      logGroup: PromajaLogGroup.initialization,
       isError: true,
     );
   }

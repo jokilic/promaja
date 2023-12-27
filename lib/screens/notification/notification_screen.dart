@@ -96,7 +96,7 @@ class NotificationScreen extends ConsumerWidget {
 
                     ref.read(hiveProvider.notifier).logPromajaEvent(
                           text: 'Location -> ${newLocation.name}, ${newLocation.country}',
-                          logLevel: PromajaLogLevel.notification,
+                          logGroup: PromajaLogGroup.notification,
                         );
                   }
                 },

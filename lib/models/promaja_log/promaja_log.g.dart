@@ -19,7 +19,7 @@ class PromajaLogAdapter extends TypeAdapter<PromajaLog> {
     return PromajaLog(
       text: fields[0] as String,
       time: fields[1] as DateTime,
-      logLevel: fields[2] as PromajaLogLevel,
+      logGroup: fields[2] as PromajaLogGroup,
       isError: fields[3] as bool,
     );
   }
@@ -33,7 +33,7 @@ class PromajaLogAdapter extends TypeAdapter<PromajaLog> {
       ..writeByte(1)
       ..write(obj.time)
       ..writeByte(2)
-      ..write(obj.logLevel)
+      ..write(obj.logGroup)
       ..writeByte(3)
       ..write(obj.isError);
   }

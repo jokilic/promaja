@@ -38,7 +38,7 @@ class ListCards extends ConsumerWidget {
 
     ref.read(hiveProvider.notifier).logPromajaEvent(
           text: 'Delete -> ${location.name}, ${location.country}',
-          logLevel: PromajaLogLevel.list,
+          logGroup: PromajaLogGroup.list,
         );
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +56,7 @@ class ListCards extends ConsumerWidget {
             await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
             ref.read(hiveProvider.notifier).logPromajaEvent(
                   text: 'Undo -> ${location.name}, ${location.country}',
-                  logLevel: PromajaLogLevel.list,
+                  logGroup: PromajaLogGroup.list,
                 );
           },
         ),

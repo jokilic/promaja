@@ -70,7 +70,7 @@ class HomeWidgetService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Render widget -> $e',
-        logLevel: PromajaLogLevel.widget,
+        logGroup: PromajaLogGroup.widget,
         isError: true,
       );
     }
@@ -88,7 +88,7 @@ class HomeWidgetService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Update widget -> $e',
-        logLevel: PromajaLogLevel.widget,
+        logGroup: PromajaLogGroup.widget,
         isError: true,
       );
     }
@@ -167,7 +167,7 @@ class HomeWidgetService {
   Future<void> updateWidget() async {
     hive.logPromajaEvent(
       text: 'Widget -> Update',
-      logLevel: PromajaLogLevel.widget,
+      logGroup: PromajaLogGroup.widget,
     );
   }
 }

@@ -13,41 +13,41 @@ class PromajaLog extends HiveObject {
   @HiveField(1)
   final DateTime time;
   @HiveField(2)
-  final PromajaLogLevel logLevel;
+  final PromajaLogGroup logGroup;
   @HiveField(3)
   final bool isError;
 
   PromajaLog({
     required this.text,
     required this.time,
-    required this.logLevel,
+    required this.logGroup,
     required this.isError,
   });
 
   PromajaLog copyWith({
     String? text,
     DateTime? time,
-    PromajaLogLevel? logLevel,
+    PromajaLogGroup? logGroup,
     bool? isError,
   }) =>
       PromajaLog(
         text: text ?? this.text,
         time: time ?? this.time,
-        logLevel: logLevel ?? this.logLevel,
+        logGroup: logGroup ?? this.logGroup,
         isError: isError ?? this.isError,
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'text': text,
         'time': time.millisecondsSinceEpoch,
-        'logLevel': logLevel.name,
+        'logGroup': logGroup.name,
         'isError': isError,
       };
 
   factory PromajaLog.fromMap(Map<String, dynamic> map) => PromajaLog(
         text: map['text'] as String,
         time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
-        logLevel: PromajaLogLevel.values.byName(map['logLevel'] as String),
+        logGroup: PromajaLogGroup.values.byName(map['logGroup'] as String),
         isError: map['isError'] as bool,
       );
 
@@ -56,7 +56,7 @@ class PromajaLog extends HiveObject {
   factory PromajaLog.fromJson(String source) => PromajaLog.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'PromajaLog(text: $text, time: $time, logLevel: $logLevel, isError: $isError)';
+  String toString() => 'PromajaLog(text: $text, time: $time, logGroup: $logGroup, isError: $isError)';
 
   @override
   bool operator ==(covariant PromajaLog other) {
@@ -64,9 +64,9 @@ class PromajaLog extends HiveObject {
       return true;
     }
 
-    return other.text == text && other.time == time && other.logLevel == logLevel && other.isError == isError;
+    return other.text == text && other.time == time && other.logGroup == logGroup && other.isError == isError;
   }
 
   @override
-  int get hashCode => text.hashCode ^ time.hashCode ^ logLevel.hashCode ^ isError.hashCode;
+  int get hashCode => text.hashCode ^ time.hashCode ^ logGroup.hashCode ^ isError.hashCode;
 }

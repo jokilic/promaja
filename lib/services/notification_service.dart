@@ -117,7 +117,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Notification initialize -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
       return false;
@@ -162,7 +162,7 @@ class NotificationService {
       if (permissionsGranted == null) {
         hive.logPromajaEvent(
           text: 'Notification permission -> Platform different than Android, iOS or MacOS',
-          logLevel: PromajaLogLevel.notification,
+          logGroup: PromajaLogGroup.notification,
           isError: true,
         );
         return false;
@@ -171,7 +171,7 @@ class NotificationService {
       if (!permissionsGranted) {
         hive.logPromajaEvent(
           text: 'Notification permission -> Permissions denied',
-          logLevel: PromajaLogLevel.notification,
+          logGroup: PromajaLogGroup.notification,
           isError: true,
         );
       }
@@ -180,7 +180,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Notification permission -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
       return false;
@@ -194,7 +194,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Notification cancel -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -257,12 +257,12 @@ class NotificationService {
 
       hive.logPromajaEvent(
         text: 'Notification show -> ${notificationType.name}',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
       );
     } catch (e) {
       hive.logPromajaEvent(
         text: ' Notification show -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -291,7 +291,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Test notification -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -424,14 +424,14 @@ class NotificationService {
       else {
         hive.logPromajaEvent(
           text: 'Notification handle -> Location null',
-          logLevel: PromajaLogLevel.notification,
+          logGroup: PromajaLogGroup.notification,
           isError: true,
         );
       }
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Notification handle -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -466,7 +466,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Hourly notification -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -520,7 +520,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: '${isEvening ? 'Evening' : 'Morning'} notification -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -606,7 +606,7 @@ class NotificationService {
 
         hive.logPromajaEvent(
           text: 'Notification pressed -> ${notificationPayload.notificationType.name}',
-          logLevel: PromajaLogLevel.notification,
+          logGroup: PromajaLogGroup.notification,
         );
       }
 
@@ -614,14 +614,14 @@ class NotificationService {
       else {
         hive.logPromajaEvent(
           text: 'Notification pressed -> Payload or context null',
-          logLevel: PromajaLogLevel.notification,
+          logGroup: PromajaLogGroup.notification,
           isError: true,
         );
       }
     } catch (e) {
       hive.logPromajaEvent(
         text: 'Notification pressed -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -639,7 +639,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'onDidReceiveLocalNotification -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -654,7 +654,7 @@ class NotificationService {
     } catch (e) {
       hive.logPromajaEvent(
         text: 'onDidReceiveNotificationResponse -> $e',
-        logLevel: PromajaLogLevel.notification,
+        logGroup: PromajaLogGroup.notification,
         isError: true,
       );
     }
@@ -687,7 +687,7 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
 
     hive.logPromajaEvent(
       text: 'onDidReceiveBackgroundNotificationResponse -> $e',
-      logLevel: PromajaLogLevel.notification,
+      logGroup: PromajaLogGroup.notification,
       isError: true,
     );
   }

@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 
 part 'promaja_log_level.g.dart';
 
 @HiveType(typeId: 16)
-enum PromajaLogLevel {
+enum PromajaLogGroup {
   @HiveField(0)
   initialization,
   @HiveField(1)
@@ -34,19 +35,19 @@ enum PromajaLogLevel {
   navigation,
 }
 
-String localizeLogLevel(PromajaLogLevel logLevel) => switch (logLevel) {
-      PromajaLogLevel.initialization => 'Init',
-      PromajaLogLevel.api => 'API',
-      PromajaLogLevel.currentWeather => 'Current weather',
-      PromajaLogLevel.forecastWeather => 'Forecast weather',
-      PromajaLogLevel.list => 'List',
-      PromajaLogLevel.settings => 'Settings',
-      PromajaLogLevel.notification => 'Notifications',
-      PromajaLogLevel.widget => 'Widget',
-      PromajaLogLevel.location => 'Location',
-      PromajaLogLevel.cardColor => 'Card color',
-      PromajaLogLevel.logging => 'Logging',
-      PromajaLogLevel.unit => 'Unit',
-      PromajaLogLevel.background => 'Background',
-      PromajaLogLevel.navigation => 'Navigation',
+String localizeLogGroup(PromajaLogGroup logGroup) => switch (logGroup) {
+      PromajaLogGroup.initialization => 'loggingInitialization'.tr(),
+      PromajaLogGroup.api => 'loggingApi'.tr(),
+      PromajaLogGroup.currentWeather => 'loggingCurrentWeather'.tr(),
+      PromajaLogGroup.forecastWeather => 'loggingForecastWeather'.tr(),
+      PromajaLogGroup.list => 'loggingList'.tr(),
+      PromajaLogGroup.settings => 'loggingSettings'.tr(),
+      PromajaLogGroup.notification => 'loggingNotifications'.tr(),
+      PromajaLogGroup.widget => 'loggingWidget'.tr(),
+      PromajaLogGroup.location => 'loggingLocation'.tr(),
+      PromajaLogGroup.cardColor => 'loggingCardColor'.tr(),
+      PromajaLogGroup.logging => 'loggingLogging'.tr(),
+      PromajaLogGroup.unit => 'loggingUnits'.tr(),
+      PromajaLogGroup.background => 'loggingBackground'.tr(),
+      PromajaLogGroup.navigation => 'loggingNavigation'.tr(),
     };

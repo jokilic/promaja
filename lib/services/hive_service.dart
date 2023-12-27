@@ -103,8 +103,8 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(NotificationLastShownAdapter());
     }
 
-    if (!Hive.isAdapterRegistered(PromajaLogLevelAdapter().typeId)) {
-      Hive.registerAdapter(PromajaLogLevelAdapter());
+    if (!Hive.isAdapterRegistered(PromajaLogGroupAdapter().typeId)) {
+      Hive.registerAdapter(PromajaLogGroupAdapter());
     }
 
     if (!Hive.isAdapterRegistered(PromajaLogAdapter().typeId)) {
@@ -262,7 +262,7 @@ class HiveService extends StateNotifier<List<Location>> {
     if (oldIndex == state.length || newIndex > state.length) {
       logPromajaEvent(
         text: 'Reorder -> Faulty move',
-        logLevel: PromajaLogLevel.list,
+        logGroup: PromajaLogGroup.list,
         isError: true,
       );
       return;
@@ -272,7 +272,7 @@ class HiveService extends StateNotifier<List<Location>> {
     if (hasPhoneLocation && (oldIndex == 0 || newIndex == 0)) {
       logPromajaEvent(
         text: 'Reorder -> Phone location moved',
-        logLevel: PromajaLogLevel.list,
+        logGroup: PromajaLogGroup.list,
         isError: true,
       );
       return;
@@ -296,20 +296,20 @@ class HiveService extends StateNotifier<List<Location>> {
 
     logPromajaEvent(
       text: 'Reorder',
-      logLevel: PromajaLogLevel.list,
+      logGroup: PromajaLogGroup.list,
     );
   }
 
   /// Logs & saves `PromajaLog` in [Hive]
   void logPromajaEvent({
     required String text,
-    required PromajaLogLevel logLevel,
+    required PromajaLogGroup logGroup,
     bool isError = false,
   }) {
     final promajaLog = PromajaLog(
       text: text,
       time: DateTime.now(),
-      logLevel: logLevel,
+      logGroup: logGroup,
       isError: isError,
     );
 
@@ -317,7 +317,7 @@ class HiveService extends StateNotifier<List<Location>> {
       ..f('\n📄 PROMAJA LOG 📃')
       ..f('--------------------')
       ..f('Text -> ${promajaLog.text}')
-      ..f('Log level -> ${promajaLog.logLevel.name}${isError ? ' -> Error' : ''}')
+      ..f('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
       ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
       ..f('--------------------\n');
 

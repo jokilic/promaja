@@ -213,7 +213,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 controller: ref.watch(weatherCardHourAdditionalControllerProvider),
                 onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
                       text: 'Hour -> AdditionalInfo swipe $index',
-                      logLevel: PromajaLogLevel.forecastWeather,
+                      logGroup: PromajaLogGroup.forecastWeather,
                     ),
                 physics: const BouncingScrollPhysics(),
                 children: hourWeather != null

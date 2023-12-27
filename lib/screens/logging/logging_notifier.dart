@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,7 +9,7 @@ import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../services/logger_service.dart';
 
-final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({List<PromajaLog> list, PromajaLogLevel? logFilter})>(
+final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({List<PromajaLog> list, PromajaLogGroup? logGroup})>(
   (ref) => LoggingNotifier(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
@@ -16,7 +17,7 @@ final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({Lis
   name: 'LoggingProvider',
 );
 
-class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogLevel? logFilter})> {
+class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogGroup? logGroup})> {
   ///
   /// CONSTRUCTOR
   ///
@@ -29,7 +30,7 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
     required this.hive,
   }) : super((
           list: hive.getPromajaLogsFromBox(),
-          logFilter: null,
+          logGroup: null,
         ));
 
   ///
@@ -44,19 +45,19 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
 
   /// Updates state with only logs of `visibleLevel`
   /// If no `visibleLevel` is passed, it gives a full list of logs
-  void updateLogs({PromajaLogLevel? visibleLevel}) {
+  void updateLogs({PromajaLogGroup? visibleLevel}) {
     final logs = hive.getPromajaLogsFromBox();
-    final newList = visibleLevel != null ? logs.where((log) => log.logLevel == visibleLevel).toList() : logs;
+    final newList = visibleLevel != null ? logs.where((log) => log.logGroup == visibleLevel).toList() : logs;
 
-    state = (list: newList, logFilter: visibleLevel);
+    state = (list: newList, logGroup: visibleLevel);
   }
 
-  /// Opens popup menu which chooses logging filter
-  Future<PromajaLogLevel?> showLogFilterPopupMenu(BuildContext context) async {
+  /// Opens popup menu which chooses logging group
+  Future<PromajaLogGroup?> showLogGroupPopupMenu(BuildContext context) async {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
     final top = tapDownDetails?.globalPosition.dy ?? 0;
 
-    const logLevels = PromajaLogLevel.values;
+    const logGroups = PromajaLogGroup.values;
 
     return showMenu(
       context: context,
@@ -71,20 +72,20 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
         ),
       ),
       items: [
-        const PopupMenuItem(
-          padding: EdgeInsets.all(20),
+        PopupMenuItem(
+          padding: const EdgeInsets.all(20),
           child: Text(
-            'All',
+            'loggingAll'.tr(),
             style: PromajaTextStyles.settingsPopupMenuItem,
           ),
         ),
-        ...logLevels
+        ...logGroups
             .map(
-              (logLevel) => PopupMenuItem(
-                value: logLevel,
+              (logGroup) => PopupMenuItem(
+                value: logGroup,
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  localizeLogLevel(logLevel),
+                  localizeLogGroup(logGroup),
                   style: PromajaTextStyles.settingsPopupMenuItem,
                 ),
               ),
@@ -95,20 +96,20 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogL
   }
 
   /// Returns proper icon for [LoggingListTile]
-  IconData getLoggingIcon(PromajaLogLevel logLevel) => switch (logLevel) {
-        PromajaLogLevel.initialization => Icons.info_rounded,
-        PromajaLogLevel.api => Icons.api_rounded,
-        PromajaLogLevel.currentWeather => Icons.wb_sunny_rounded,
-        PromajaLogLevel.forecastWeather => Icons.cloud_rounded,
-        PromajaLogLevel.list => Icons.list_rounded,
-        PromajaLogLevel.settings => Icons.settings_rounded,
-        PromajaLogLevel.notification => Icons.notifications_rounded,
-        PromajaLogLevel.widget => Icons.widgets_rounded,
-        PromajaLogLevel.location => Icons.location_on_rounded,
-        PromajaLogLevel.cardColor => Icons.add_card_rounded,
-        PromajaLogLevel.logging => Icons.text_snippet_rounded,
-        PromajaLogLevel.unit => Icons.ad_units_rounded,
-        PromajaLogLevel.background => Icons.backpack_rounded,
-        PromajaLogLevel.navigation => Icons.navigation_rounded,
+  IconData getLoggingIcon(PromajaLogGroup logGroup) => switch (logGroup) {
+        PromajaLogGroup.initialization => Icons.info_rounded,
+        PromajaLogGroup.api => Icons.api_rounded,
+        PromajaLogGroup.currentWeather => Icons.wb_sunny_rounded,
+        PromajaLogGroup.forecastWeather => Icons.cloud_rounded,
+        PromajaLogGroup.list => Icons.list_rounded,
+        PromajaLogGroup.settings => Icons.settings_rounded,
+        PromajaLogGroup.notification => Icons.notifications_rounded,
+        PromajaLogGroup.widget => Icons.widgets_rounded,
+        PromajaLogGroup.location => Icons.location_on_rounded,
+        PromajaLogGroup.cardColor => Icons.add_card_rounded,
+        PromajaLogGroup.logging => Icons.text_snippet_rounded,
+        PromajaLogGroup.unit => Icons.ad_units_rounded,
+        PromajaLogGroup.background => Icons.backpack_rounded,
+        PromajaLogGroup.navigation => Icons.navigation_rounded,
       };
 }

@@ -92,7 +92,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Card colors',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -113,7 +113,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Units',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -134,7 +134,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Notifications',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -155,7 +155,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Widget',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -180,7 +180,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Contact',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -201,7 +201,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Logging',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
@@ -246,7 +246,7 @@ class SettingsScreen extends ConsumerWidget {
 
                                 ref.read(hiveProvider.notifier).logPromajaEvent(
                                       text: 'WeatherAPI link',
-                                      logLevel: PromajaLogLevel.settings,
+                                      logGroup: PromajaLogGroup.settings,
                                     );
                               },
                           ),
@@ -263,7 +263,7 @@ class SettingsScreen extends ConsumerWidget {
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'WeatherAPI logo',
-                            logLevel: PromajaLogLevel.settings,
+                            logGroup: PromajaLogGroup.settings,
                           );
                     },
                     child: Image.asset(

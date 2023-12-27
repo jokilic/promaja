@@ -88,7 +88,7 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 
       hiveService.logPromajaEvent(
         text: NavigationBarItems.values[state].name.substring(0, 1).toUpperCase() + NavigationBarItems.values[state].name.substring(1),
-        logLevel: PromajaLogLevel.navigation,
+        logGroup: PromajaLogGroup.navigation,
       );
     }
   }
