@@ -87,7 +87,7 @@ class PromajaNavigationBarController extends StateNotifier<int> {
       await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
 
       hiveService.logPromajaEvent(
-        text: 'NavigationBar -> changeNavigationBarIndex -> ${NavigationBarItems.values[state].name}',
+        text: NavigationBarItems.values[state].name.substring(0, 1).toUpperCase() + NavigationBarItems.values[state].name.substring(1),
         logLevel: PromajaLogLevel.navigation,
       );
     }

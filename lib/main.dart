@@ -58,7 +58,7 @@ Future<void> main() async {
     );
 
     container.read(hiveProvider.notifier).logPromajaEvent(
-          text: 'main -> App started',
+          text: 'App start',
           logLevel: PromajaLogLevel.initialization,
         );
   } catch (e) {
@@ -67,7 +67,7 @@ Future<void> main() async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'main -> $e',
+      text: 'App start -> $e',
       logLevel: PromajaLogLevel.initialization,
       isError: true,
     );

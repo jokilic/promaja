@@ -219,7 +219,7 @@ class CardSuccess extends ConsumerWidget {
                   child: PageView(
                     controller: ref.watch(cardAdditionalControllerProvider),
                     onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'AdditionalInfo swiped -> ${location.name}, ${location.country} -> Index $index',
+                          text: 'AdditionalInfo swipe $index -> ${location.name}, ${location.country}',
                           logLevel: PromajaLogLevel.currentWeather,
                         ),
                     physics: const BouncingScrollPhysics(),

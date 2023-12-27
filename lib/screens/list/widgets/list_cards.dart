@@ -37,7 +37,7 @@ class ListCards extends ConsumerWidget {
         );
 
     ref.read(hiveProvider.notifier).logPromajaEvent(
-          text: 'deleteLocation -> ${location.name}, ${location.country} is deleted',
+          text: 'Delete -> ${location.name}, ${location.country}',
           logLevel: PromajaLogLevel.list,
         );
 
@@ -55,7 +55,7 @@ class ListCards extends ConsumerWidget {
           onPressed: () async {
             await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
             ref.read(hiveProvider.notifier).logPromajaEvent(
-                  text: 'deleteLocation -> Undo pressed -> ${location.name}, ${location.country}',
+                  text: 'Undo -> ${location.name}, ${location.country}',
                   logLevel: PromajaLogLevel.list,
                 );
           },

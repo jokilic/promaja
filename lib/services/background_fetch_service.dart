@@ -81,7 +81,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             await hive.init();
 
             hive.logPromajaEvent(
-              text: 'backgroundFetchInit -> $e',
+              text: 'Initialize -> $e',
               logLevel: PromajaLogLevel.background,
               isError: true,
             );
@@ -98,7 +98,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           await hive.init();
 
           hive.logPromajaEvent(
-            text: 'backgroundFetchInit -> Task timed-out -> $taskId',
+            text: 'Initialize -> Task timed-out -> $taskId',
             logLevel: PromajaLogLevel.background,
             isError: true,
           );
@@ -115,7 +115,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       await hive.init();
 
       hive.logPromajaEvent(
-        text: 'backgroundFetchInit -> initialize -> Success',
+        text: 'Initialize',
         logLevel: PromajaLogLevel.background,
       );
     } catch (e) {
@@ -124,7 +124,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       await hive.init();
 
       hive.logPromajaEvent(
-        text: 'backgroundFetchInit -> initialize -> $e',
+        text: 'Initialize -> $e',
         logLevel: PromajaLogLevel.background,
         isError: true,
       );
@@ -145,7 +145,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'backgroundFetchHeadlessTask -> Task timed-out -> $taskId',
+      text: 'HeadlessTask -> Task timed-out -> $taskId',
       logLevel: PromajaLogLevel.background,
       isError: true,
     );
@@ -195,7 +195,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'backgroundFetchHeadlessTask -> Success',
+      text: 'HeadlessTask',
       logLevel: PromajaLogLevel.background,
     );
   }
@@ -207,7 +207,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'backgroundFetchHeadlessTask -> $e',
+      text: 'HeadlessTask -> $e',
       logLevel: PromajaLogLevel.background,
       isError: true,
     );

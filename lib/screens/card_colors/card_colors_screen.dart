@@ -67,7 +67,7 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                   Navigator.of(context).pop();
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Custom color reverted -> $weatherDescription',
+                        text: 'Reverted -> $weatherDescription',
                         logLevel: PromajaLogLevel.cardColor,
                       );
 
@@ -98,7 +98,7 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                   Navigator.of(context).pop();
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Custom color saved -> $weatherDescription',
+                        text: 'Saved -> $weatherDescription',
                         logLevel: PromajaLogLevel.cardColor,
                       );
 

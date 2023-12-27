@@ -51,7 +51,7 @@ class APIService {
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
         hive.logPromajaEvent(
-          text: 'getCurrentWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.country}',
+          text: 'getCurrentWeather -> ${parsedResponse.location.name}, ${parsedResponse.location.country}',
           logLevel: PromajaLogLevel.api,
         );
         return (response: parsedResponse, error: null, genericError: null);
@@ -105,7 +105,7 @@ class APIService {
       if (response.statusCode == 200) {
         final parsedResponse = await computeForecastWeather(response.data);
         hive.logPromajaEvent(
-          text: 'getForecastWeather -> Fetched -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
+          text: 'getForecastWeather -> ${parsedResponse.location.name}, ${parsedResponse.location.name}',
           logLevel: PromajaLogLevel.api,
         );
         return (response: parsedResponse, error: null, genericError: null);
@@ -160,7 +160,7 @@ class APIService {
           jsonDecode(jsonEncode(response.data)),
         );
         hive.logPromajaEvent(
-          text: 'getSearch -> Fetched -> $parsedResponse',
+          text: 'getSearch -> $parsedResponse',
           logLevel: PromajaLogLevel.api,
         );
         return (response: parsedResponse, error: null, genericError: null);

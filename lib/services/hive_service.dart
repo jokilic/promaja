@@ -261,7 +261,7 @@ class HiveService extends StateNotifier<List<Location>> {
     /// User tried moving location below [AddLocationResult]
     if (oldIndex == state.length || newIndex > state.length) {
       logPromajaEvent(
-        text: 'reorderLocations -> Faulty move',
+        text: 'Reorder -> Faulty move',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -271,7 +271,7 @@ class HiveService extends StateNotifier<List<Location>> {
     /// Phone location is active and user tried moving it or moving some location above it
     if (hasPhoneLocation && (oldIndex == 0 || newIndex == 0)) {
       logPromajaEvent(
-        text: 'reorderLocations -> User moved phone location',
+        text: 'Reorder -> Phone location moved',
         logLevel: PromajaLogLevel.list,
         isError: true,
       );
@@ -295,7 +295,7 @@ class HiveService extends StateNotifier<List<Location>> {
     }
 
     logPromajaEvent(
-      text: 'reorderLocations -> Locations reordered',
+      text: 'Reorder',
       logLevel: PromajaLogLevel.list,
     );
   }
