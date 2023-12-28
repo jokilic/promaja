@@ -171,7 +171,7 @@ class PromajaTextStyles {
   );
   static const settingsTitle = TextStyle(
     color: PromajaColors.white,
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: FontWeight.w700,
   );
   static const settingsSubtitle = TextStyle(

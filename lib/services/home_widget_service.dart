@@ -300,11 +300,21 @@ class HomeWidgetService {
           isDay: isDay,
         );
 
+        final showRain = forecast.day.dailyWillItRain == 1;
+        final showSnow = forecast.day.dailyWillItSnow == 1;
+
+        final dailyChanceOfRain = forecast.day.dailyChanceOfRain;
+        final dailyChanceOfSnow = forecast.day.dailyChanceOfSnow;
+
         final weatherIconWidget = AssetImage(weatherIcon);
         const promajaIconWidget = AssetImage(PromajaIcons.icon);
+        const umbrellaIconWidget = AssetImage(PromajaIcons.umbrella);
+        const snowIconWidget = AssetImage(PromajaIcons.snow);
 
         await preloadImage(weatherIconWidget);
         await preloadImage(promajaIconWidget);
+        await preloadImage(umbrellaIconWidget);
+        await preloadImage(snowIconWidget);
 
         final timestamp = DateFormat.Hm().format(DateTime.now());
 
@@ -317,7 +327,13 @@ class HomeWidgetService {
           backgroundColor: backgroundColor,
           weatherIconWidget: weatherIconWidget,
           promajaIconWidget: promajaIconWidget,
+          umbrellaIconWidget: umbrellaIconWidget,
+          snowIconWidget: snowIconWidget,
           timestamp: timestamp,
+          showRain: showRain,
+          showSnow: showSnow,
+          dailyChanceOfRain: dailyChanceOfRain,
+          dailyChanceOfSnow: dailyChanceOfSnow,
         );
 
         /// Update [HomeWidget]
