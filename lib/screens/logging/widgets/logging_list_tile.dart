@@ -30,9 +30,18 @@ class LoggingListTile extends StatelessWidget {
           horizontal: 16,
           vertical: 8,
         ),
-        leading: Text(
-          group.substring(0, 3).toUpperCase(),
-          style: PromajaTextStyles.settingsAbbreviation,
+        leading: FittedBox(
+          child: SizedBox(
+            width: 40,
+            child: FittedBox(
+              child: Text(
+                group.substring(0, 3).toUpperCase(),
+                style: PromajaTextStyles.settingsAbbreviation.copyWith(
+                  color: isError ? PromajaColors.red : null,
+                ),
+              ),
+            ),
+          ),
         ),
         title: Text(
           text,
