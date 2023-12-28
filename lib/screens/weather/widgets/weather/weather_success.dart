@@ -16,6 +16,7 @@ import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
+import '../weather_card/weather_card_summary.dart';
 
 class WeatherSuccess extends ConsumerWidget {
   final Location location;
@@ -62,7 +63,7 @@ class WeatherSuccess extends ConsumerWidget {
         );
       }
       if (ref.read(weatherDaysControllerProvider(screenWidth)).hasClients) {
-        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
+        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 1 ? DateTime.now().hour : 8) / 4).floor();
 
         WidgetsBinding.instance.addPostFrameCallback(
           (_) => ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
@@ -79,7 +80,7 @@ class WeatherSuccess extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(weatherCardIndexProvider);
-    final cardCount = forecastWeather.forecastDays.length;
+    final cardCount = 1 + forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
@@ -110,16 +111,16 @@ class WeatherSuccess extends ConsumerWidget {
               ///
               /// SUMMARY FORECAST CARD
               ///
-              // if (cardIndex == 0) {
-              //   return Container(
-              //     color: Colors.pink,
-              //   );
-              // }
+              if (cardIndex == 0) {
+                return WeatherCardSummary(
+                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                );
+              }
 
               ///
               /// DAILY FORECAST CARDS
               ///
-              final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
+              final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1);
 
               /// Return proper [ForecastSuccess]
               if (forecast != null) {
