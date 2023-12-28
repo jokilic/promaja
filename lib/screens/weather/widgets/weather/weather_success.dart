@@ -107,6 +107,18 @@ class WeatherSuccess extends ConsumerWidget {
             backgroundCardCount: min(cardCount - 1, 3),
             cardCount: cardCount,
             cardBuilder: (_, cardIndex) {
+              ///
+              /// SUMMARY FORECAST CARD
+              ///
+              // if (cardIndex == 0) {
+              //   return Container(
+              //     color: Colors.pink,
+              //   );
+              // }
+
+              ///
+              /// DAILY FORECAST CARDS
+              ///
               final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex);
 
               /// Return proper [ForecastSuccess]
