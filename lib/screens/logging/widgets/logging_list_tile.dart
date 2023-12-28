@@ -31,7 +31,7 @@ class LoggingListTile extends StatelessWidget {
           vertical: 8,
         ),
         leading: Text(
-          group.substring(0, 2).toUpperCase(),
+          group.substring(0, 3).toUpperCase(),
           style: PromajaTextStyles.settingsAbbreviation,
         ),
         title: Text(

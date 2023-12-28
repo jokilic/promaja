@@ -164,6 +164,27 @@ class SettingsScreen extends ConsumerWidget {
                   ),
 
                   ///
+                  /// LOGGING
+                  ///
+                  SettingsListTile(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoggingScreen(),
+                        ),
+                      );
+
+                      ref.read(hiveProvider.notifier).logPromajaEvent(
+                            text: 'Logging',
+                            logGroup: PromajaLogGroup.settings,
+                          );
+                    },
+                    icon: PromajaIcons.arrow,
+                    title: 'loggingTitle'.tr(),
+                    subtitle: 'loggingSubtitle'.tr(),
+                  ),
+
+                  ///
                   /// CONTACT
                   ///
                   SettingsListTile(
@@ -186,27 +207,6 @@ class SettingsScreen extends ConsumerWidget {
                     icon: PromajaIcons.arrow,
                     title: 'contactTitle'.tr(),
                     subtitle: 'contactSubtitle'.tr(),
-                  ),
-
-                  ///
-                  /// LOGGING
-                  ///
-                  SettingsListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => LoggingScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Logging',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
-                    icon: PromajaIcons.arrow,
-                    title: 'loggingTitle'.tr(),
-                    subtitle: 'loggingSubtitle'.tr(),
                   ),
 
                   ///

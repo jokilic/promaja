@@ -17,7 +17,6 @@ import '../models/notification_payload/notification_payload.dart';
 import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
-import '../models/settings/promaja_settings.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../util/initialization.dart';
@@ -36,6 +35,7 @@ final notificationProvider = Provider<NotificationService>(
   (ref) => NotificationService(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
+    api: ref.watch(apiProvider),
     ref: ref,
   ),
   name: 'NotificationProvider',
@@ -48,11 +48,13 @@ class NotificationService {
 
   final LoggerService logger;
   final HiveService hive;
+  final APIService api;
   final ProviderRef ref;
 
   NotificationService({
     required this.logger,
     required this.hive,
+    required this.api,
     required this.ref,
   });
 
@@ -305,11 +307,10 @@ class NotificationService {
   }
 
   /// Handles notification logic, depending on `NotificationSettings`
-  Future<void> handleNotifications({
-    required PromajaSettings settings,
-    required ProviderContainer container,
-  }) async {
+  Future<void> handleNotifications() async {
     try {
+      final settings = hive.getPromajaSettingsFromBox();
+
       final location = settings.notification.location;
 
       /// Location exists
@@ -318,10 +319,10 @@ class NotificationService {
         /// Hourly notification is active, fetch current weather and show it
         ///
         if (settings.notification.hourlyNotification) {
-          final currentWeather = await container.read(apiProvider).fetchCurrentWeather(
-                location: location,
-                container: container,
-              );
+          /// Fetch current weather
+          final currentWeather = await api.fetchCurrentWeather(
+            location: location,
+          );
 
           /// Current weather is successfully fetched
           if (currentWeather != null) {
@@ -345,11 +346,10 @@ class NotificationService {
           /// Notification should be shown
           if (shouldShowNotification) {
             /// Fetch today's forecast
-            final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
-                  location: location,
-                  isTomorrow: false,
-                  container: container,
-                );
+            final forecastWeather = await api.fetchForecastWeather(
+              location: location,
+              isTomorrow: false,
+            );
 
             /// Forecast weather is successfully fetched
             if (forecastWeather != null) {
@@ -388,11 +388,10 @@ class NotificationService {
           /// Notification should be shown
           if (shouldShowNotification) {
             /// Fetch tomorrow's forecast
-            final forecastWeather = await container.read(apiProvider).fetchForecastWeather(
-                  location: location,
-                  isTomorrow: true,
-                  container: container,
-                );
+            final forecastWeather = await api.fetchForecastWeather(
+              location: location,
+              isTomorrow: true,
+            );
 
             /// Forecast weather is successfully fetched
             if (forecastWeather != null) {

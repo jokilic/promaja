@@ -37,7 +37,4 @@ Tweak settings, change units used to show the weather, update data that notifica
 ## Things I still want to do 👷‍♂️
 
 - [ ] Publish app on App Store
-- [ ] Make a good looking settings screen with ListTiles and minimal design
-    - [ ] Widget - handleWidget & updateWidget
-- [ ] Dodaj neki glavni forecast card, sa svim weatherima za taj grad. Nakon njega neka idu oni normalni forecast cards
-- [ ] getLoggingIcon - find proper icons from FlatIcons
+- [ ] Create a 'main forecast card' in `WeatherScreen` with all forecast info for the relevant city

@@ -53,24 +53,15 @@ final backgroundFetchInitProvider = FutureProvider<void>(
 
             /// Everything initialized successfully
             if (container != null) {
-              /// Get `PromajaSettings`
-              final settings = container.read(hiveProvider.notifier).getPromajaSettingsFromBox();
-
               ///
               /// Notifications
               ///
-              await container.read(notificationProvider).handleNotifications(
-                    settings: settings,
-                    container: container,
-                  );
+              await container.read(notificationProvider).handleNotifications();
 
               ///
               /// Widget
               ///
-              await container.read(homeWidgetProvider).handleWidget(
-                    settings: settings,
-                    container: container,
-                  );
+              await container.read(homeWidgetProvider).handleWidget();
             }
           }
 
@@ -170,24 +161,15 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
 
     /// Everything initialized successfully
     if (container != null) {
-      /// Get `PromajaSettings`
-      final settings = container.read(hiveProvider.notifier).getPromajaSettingsFromBox();
-
       ///
       /// Notifications
       ///
-      await container.read(notificationProvider).handleNotifications(
-            settings: settings,
-            container: container,
-          );
+      await container.read(notificationProvider).handleNotifications();
 
       ///
       /// Widget
       ///
-      await container.read(homeWidgetProvider).handleWidget(
-            settings: settings,
-            container: container,
-          );
+      await container.read(homeWidgetProvider).handleWidget();
     }
 
     final logger = LoggerService();

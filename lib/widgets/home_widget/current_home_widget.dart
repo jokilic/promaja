@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/text_styles.dart';
-import '../util/color.dart';
+import '../../constants/text_styles.dart';
+import '../../util/color.dart';
 
-class PromajaHomeWidget extends StatelessWidget {
+class CurrentHomeWidget extends StatelessWidget {
   final String locationName;
   final int temp;
   final Color backgroundColor;
@@ -15,7 +15,7 @@ class PromajaHomeWidget extends StatelessWidget {
   final AssetImage promajaIconWidget;
   final String timestamp;
 
-  const PromajaHomeWidget({
+  const CurrentHomeWidget({
     required this.locationName,
     required this.temp,
     required this.backgroundColor,
@@ -78,7 +78,7 @@ class PromajaHomeWidget extends StatelessWidget {
                       children: [
                         Text(
                           '$temp',
-                          style: PromajaTextStyles.homeWidgetTemperature,
+                          style: PromajaTextStyles.homeWidgetCurrentTemperature,
                           textAlign: TextAlign.center,
                         ),
                         const Positioned(
@@ -86,7 +86,7 @@ class PromajaHomeWidget extends StatelessWidget {
                           right: -14,
                           child: Text(
                             '°',
-                            style: PromajaTextStyles.homeWidgetTemperature,
+                            style: PromajaTextStyles.homeWidgetCurrentTemperature,
                             textAlign: TextAlign.center,
                           ),
                         ),

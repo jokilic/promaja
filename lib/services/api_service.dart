@@ -160,7 +160,7 @@ class APIService {
           jsonDecode(jsonEncode(response.data)),
         );
         hive.logPromajaEvent(
-          text: 'Search -> $parsedResponse',
+          text: 'Search -> ${parsedResponse.first.name}, ${parsedResponse.first.country}',
           logGroup: PromajaLogGroup.api,
         );
         return (response: parsedResponse, error: null, genericError: null);
@@ -196,10 +196,7 @@ class APIService {
   }
 
   /// Fetches current weather data
-  Future<ResponseCurrentWeather?> fetchCurrentWeather({
-    required Location location,
-    required ProviderContainer container,
-  }) async {
+  Future<ResponseCurrentWeather?> fetchCurrentWeather({required Location location}) async {
     final response = await getCurrentWeather(
       query: '${location.lat},${location.lon}',
     );
@@ -217,7 +214,6 @@ class APIService {
   Future<ResponseForecastWeather?> fetchForecastWeather({
     required Location location,
     required bool isTomorrow,
-    required ProviderContainer container,
   }) async {
     final response = await getForecastWeather(
       query: '${location.lat},${location.lon}',

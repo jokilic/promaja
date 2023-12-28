@@ -81,6 +81,11 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         loading: true,
       );
 
+      hiveService.logPromajaEvent(
+        text: 'Search -> $value',
+        logGroup: PromajaLogGroup.list,
+      );
+
       final response = await ref.read(getSearchProvider(value).future);
 
       state = (
@@ -99,11 +104,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
           ),
         );
       }
-
-      hiveService.logPromajaEvent(
-        text: 'Search -> $value',
-        logGroup: PromajaLogGroup.list,
-      );
     }
   }
 

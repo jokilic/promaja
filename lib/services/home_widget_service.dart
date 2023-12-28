@@ -8,11 +8,16 @@ import 'package:intl/intl.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
+import '../models/forecast_weather/response_forecast_weather.dart';
+import '../models/location/location.dart';
 import '../models/promaja_log/promaja_log_level.dart';
-import '../models/settings/promaja_settings.dart';
+import '../models/settings/units/temperature_unit.dart';
+import '../models/settings/widget/weather_type.dart';
 import '../util/preload_image.dart';
 import '../util/weather.dart';
-import '../widgets/home_widget.dart';
+import '../widgets/home_widget/current_home_widget.dart';
+import '../widgets/home_widget/forecast_home_widget.dart';
+import 'api_service.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
 
@@ -25,6 +30,7 @@ final homeWidgetProvider = Provider<HomeWidgetService>(
   (ref) => HomeWidgetService(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
+    api: ref.watch(apiProvider),
   ),
   name: 'HomeWidgetProvider',
 );
@@ -36,10 +42,12 @@ class HomeWidgetService {
 
   final LoggerService logger;
   final HiveService hive;
+  final APIService api;
 
   HomeWidgetService({
     required this.logger,
     required this.hive,
+    required this.api,
   })
 
   ///
@@ -94,79 +102,241 @@ class HomeWidgetService {
     }
   }
 
-  /// Checks if location exists and updates [HomeWidget]
-  Future<void> refreshHomeWidget({required ResponseCurrentWeather response}) async {
-    /// Store relevant values in variables
-    final locationName = response.location.name;
+  /// Handles widget logic, depending on `WidgetSettings`
+  Future<void> handleWidget() async {
+    try {
+      final settings = hive.getPromajaSettingsFromBox();
 
-    final currentWeather = response.current;
+      final location = settings.widget.location;
 
-    final temp = currentWeather.tempC.round();
-    final conditionCode = currentWeather.condition.code;
-    final isDay = currentWeather.isDay == 1;
+      /// Location exists
+      if (location != null) {
+        ///
+        /// Current weather
+        ///
+        if (settings.widget.weatherType == WeatherType.current) {
+          /// Fetch current weather
+          final currentWeather = await api.fetchCurrentWeather(
+            location: location,
+          );
 
-    final backgroundColor = hive
-        .getCustomColorsFromBox()
-        .firstWhere(
-          (customColor) => customColor.code == conditionCode && customColor.isDay,
-          orElse: () => CustomColor(
-            code: conditionCode,
-            isDay: isDay,
-            color: getWeatherColor(
-              code: conditionCode,
-              isDay: isDay,
-            ),
-          ),
-        )
-        .color;
+          /// Current weather is successfully fetched
+          if (currentWeather != null) {
+            await triggerCurrentWidget(
+              response: currentWeather,
+              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+              location: location,
+            );
 
-    final weatherIcon = getWeatherIcon(
-      code: conditionCode,
-      isDay: isDay,
-    );
+            hive.logPromajaEvent(
+              text: 'Current widget -> Update',
+              logGroup: PromajaLogGroup.widget,
+            );
+          }
+        }
 
-    final weatherDescription = getWeatherDescription(
-      code: conditionCode,
-      isDay: isDay,
-    );
+        ///
+        /// Forecast weather
+        ///
+        if (settings.widget.weatherType == WeatherType.forecast) {
+          /// Fetch today's forecast
+          final forecastWeather = await api.fetchForecastWeather(
+            location: location,
+            isTomorrow: false,
+          );
 
-    final weatherIconWidget = AssetImage(weatherIcon);
-    const promajaIconWidget = AssetImage(PromajaIcons.icon);
+          /// Forecast weather is successfully fetched
+          if (forecastWeather != null) {
+            await triggerForecastWidget(
+              response: forecastWeather,
+              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+              location: location,
+            );
 
-    await preloadImage(weatherIconWidget);
-    await preloadImage(promajaIconWidget);
+            hive.logPromajaEvent(
+              text: 'Forecast widget -> Update',
+              logGroup: PromajaLogGroup.widget,
+            );
+          }
+        }
+      }
 
-    final timestamp = DateFormat.Hm().format(DateTime.now());
-
-    /// Create a Flutter widget to show in [HomeWidget]
-    final widget = PromajaHomeWidget(
-      locationName: locationName,
-      temp: temp,
-      weatherDescription: weatherDescription,
-      backgroundColor: backgroundColor,
-      weatherIconWidget: weatherIconWidget,
-      promajaIconWidget: promajaIconWidget,
-      timestamp: timestamp,
-    );
-
-    /// Update [HomeWidget]
-    await createHomeWidget(widget);
+      /// Location doesn't exist
+      else {
+        hive.logPromajaEvent(
+          text: 'Widget handle -> Location null',
+          logGroup: PromajaLogGroup.widget,
+          isError: true,
+        );
+      }
+    } catch (e) {
+      hive.logPromajaEvent(
+        text: 'Widget handle -> $e',
+        logGroup: PromajaLogGroup.widget,
+        isError: true,
+      );
+    }
   }
 
-  /// Handles widget logic, depending on `WidgetSettings`
-  Future<void> handleWidget({
-    required PromajaSettings settings,
-    required ProviderContainer container,
+  /// Triggers widget with current weather
+  Future<void> triggerCurrentWidget({
+    required ResponseCurrentWeather response,
+    required bool showCelsius,
+    required Location location,
   }) async {
-    final location = settings.widget.location;
+    try {
+      /// Store relevant values in variables
+      final locationName = response.location.name;
 
-    if (location != null) {}
+      final currentWeather = response.current;
+
+      final temp = showCelsius ? currentWeather.tempC.round() : currentWeather.tempF.round();
+      final conditionCode = currentWeather.condition.code;
+      final isDay = currentWeather.isDay == 1;
+
+      final backgroundColor = hive
+          .getCustomColorsFromBox()
+          .firstWhere(
+            (customColor) => customColor.code == conditionCode && customColor.isDay,
+            orElse: () => CustomColor(
+              code: conditionCode,
+              isDay: isDay,
+              color: getWeatherColor(
+                code: conditionCode,
+                isDay: isDay,
+              ),
+            ),
+          )
+          .color;
+
+      final weatherIcon = getWeatherIcon(
+        code: conditionCode,
+        isDay: isDay,
+      );
+
+      final weatherDescription = getWeatherDescription(
+        code: conditionCode,
+        isDay: isDay,
+      );
+
+      final weatherIconWidget = AssetImage(weatherIcon);
+      const promajaIconWidget = AssetImage(PromajaIcons.icon);
+
+      await preloadImage(weatherIconWidget);
+      await preloadImage(promajaIconWidget);
+
+      final timestamp = DateFormat.Hm().format(DateTime.now());
+
+      /// Create a Flutter widget to show in [HomeWidget]
+      final widget = CurrentHomeWidget(
+        locationName: locationName,
+        temp: temp,
+        weatherDescription: weatherDescription,
+        backgroundColor: backgroundColor,
+        weatherIconWidget: weatherIconWidget,
+        promajaIconWidget: promajaIconWidget,
+        timestamp: timestamp,
+      );
+
+      /// Update [HomeWidget]
+      await createHomeWidget(widget);
+    } catch (e) {
+      hive.logPromajaEvent(
+        text: 'Current widget -> $e',
+        logGroup: PromajaLogGroup.widget,
+        isError: true,
+      );
+    }
+  }
+
+  /// Triggers widget with forecast weather
+  Future<void> triggerForecastWidget({
+    required ResponseForecastWeather response,
+    required bool showCelsius,
+    required Location location,
+  }) async {
+    try {
+      /// Store relevant values in variables
+      final locationName = response.location.name;
+
+      final time = DateTime.now();
+
+      final forecast = response.forecast.forecastDays
+          .where(
+            (forecastDay) => forecastDay.dateEpoch.year == time.year && forecastDay.dateEpoch.month == time.month && forecastDay.dateEpoch.day == time.day,
+          )
+          .toList()
+          .firstOrNull;
+
+      /// Forecast exists, show it
+      if (forecast != null) {
+        final minTemp = showCelsius ? forecast.day.minTempC.round() : forecast.day.minTempF.round();
+        final maxTemp = showCelsius ? forecast.day.maxTempC.round() : forecast.day.maxTempF.round();
+        final conditionCode = forecast.day.condition.code;
+        const isDay = true;
+
+        final backgroundColor = hive
+            .getCustomColorsFromBox()
+            .firstWhere(
+              (customColor) => customColor.code == conditionCode && customColor.isDay,
+              orElse: () => CustomColor(
+                code: conditionCode,
+                isDay: isDay,
+                color: getWeatherColor(
+                  code: conditionCode,
+                  isDay: isDay,
+                ),
+              ),
+            )
+            .color;
+
+        final weatherIcon = getWeatherIcon(
+          code: conditionCode,
+          isDay: isDay,
+        );
+
+        final weatherDescription = getWeatherDescription(
+          code: conditionCode,
+          isDay: isDay,
+        );
+
+        final weatherIconWidget = AssetImage(weatherIcon);
+        const promajaIconWidget = AssetImage(PromajaIcons.icon);
+
+        await preloadImage(weatherIconWidget);
+        await preloadImage(promajaIconWidget);
+
+        final timestamp = DateFormat.Hm().format(DateTime.now());
+
+        /// Create a Flutter widget to show in [HomeWidget]
+        final widget = ForecastHomeWidget(
+          locationName: locationName,
+          minTemp: minTemp,
+          maxTemp: maxTemp,
+          weatherDescription: weatherDescription,
+          backgroundColor: backgroundColor,
+          weatherIconWidget: weatherIconWidget,
+          promajaIconWidget: promajaIconWidget,
+          timestamp: timestamp,
+        );
+
+        /// Update [HomeWidget]
+        await createHomeWidget(widget);
+      }
+    } catch (e) {
+      hive.logPromajaEvent(
+        text: 'Forecast widget -> $e',
+        logGroup: PromajaLogGroup.widget,
+        isError: true,
+      );
+    }
   }
 
   /// Refreshes widget in the home screen
   Future<void> updateWidget() async {
+    await handleWidget();
     hive.logPromajaEvent(
-      text: 'Widget -> Update',
+      text: 'Widget -> Manual update',
       logGroup: PromajaLogGroup.widget,
     );
   }
