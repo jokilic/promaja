@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
@@ -49,18 +48,11 @@ class WeatherCardSummary extends ConsumerWidget {
               duration: PromajaDurations.opacityAnimation,
               curve: Curves.easeIn,
               opacity: useOpacity ? 0 : 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: AnimateList(
-                  delay: PromajaDurations.weatherDataAnimationDelay,
-                  interval: PromajaDurations.weatherDataAnimationDelay,
-                  effects: [
-                    FadeEffect(
-                      curve: Curves.easeIn,
-                      duration: PromajaDurations.fadeAnimation,
-                    ),
-                  ],
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
                       height: MediaQuery.paddingOf(context).top + 32,

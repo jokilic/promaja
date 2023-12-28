@@ -69,23 +69,22 @@ class CardsScreen extends ConsumerWidget {
             /// WEATHER
             ///
             Padding(
-              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
+              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
               child: AppinioSwiper(
                 loop: true,
-                controller: ref.watch(appinioControllerProvider),
-                onCardPositionChanged: (_) {
+                padding: const EdgeInsets.only(bottom: 24),
+                isDisabled: cardCount <= 1,
+                duration: PromajaDurations.cardSwiperAnimation,
+                backgroundCardsCount: min(cardCount - 1, 3),
+                cardsCount: cardCount,
+                onSwiping: (_) {
                   if (!ref.read(cardMovingProvider)) {
                     ref.read(cardMovingProvider.notifier).state = true;
                   }
                 },
-                onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
-                onSwipeCancelled: (_) => ref.read(cardMovingProvider.notifier).state = false,
-                backgroundCardOffset: const Offset(0, 44),
-                isDisabled: cardCount <= 1,
-                duration: PromajaDurations.cardSwiperAnimation,
-                backgroundCardCount: min(cardCount - 1, 3),
-                cardCount: cardCount,
-                cardBuilder: (_, cardIndex) {
+                onSwipeCancelled: () => ref.read(cardMovingProvider.notifier).state = false,
+                onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
+                cardsBuilder: (_, cardIndex) {
                   final location = locations.elementAtOrNull(cardIndex);
 
                   /// Return proper [CardWidget]

@@ -88,26 +88,26 @@ class WeatherSuccess extends ConsumerWidget {
         /// WEATHER
         ///
         Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
+          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
           child: AppinioSwiper(
             loop: true,
-            onCardPositionChanged: (_) {
+            padding: const EdgeInsets.only(bottom: 24),
+            isDisabled: cardCount <= 1,
+            duration: PromajaDurations.cardSwiperAnimation,
+            backgroundCardsCount: min(cardCount - 1, 3),
+            cardsCount: cardCount,
+            onSwiping: (_) {
               if (!ref.read(weatherCardMovingProvider)) {
                 ref.read(weatherCardMovingProvider.notifier).state = true;
               }
             },
-            onSwipeEnd: (_, index, __) => cardSwiped(
+            onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
+            onSwipe: (index, __) => cardSwiped(
               index: index,
               ref: ref,
               screenWidth: MediaQuery.sizeOf(context).width,
             ),
-            onSwipeCancelled: (_) => ref.read(weatherCardMovingProvider.notifier).state = false,
-            backgroundCardOffset: const Offset(0, 44),
-            isDisabled: cardCount <= 1,
-            duration: PromajaDurations.cardSwiperAnimation,
-            backgroundCardCount: min(cardCount - 1, 3),
-            cardCount: cardCount,
-            cardBuilder: (_, cardIndex) {
+            cardsBuilder: (_, cardIndex) {
               ///
               /// SUMMARY FORECAST CARD
               ///

@@ -15,7 +15,7 @@ class WeatherLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.sizeOf(context).width,
-        margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 80),
+        margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
           gradient: LinearGradient(
