@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:intl/intl.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
@@ -313,13 +312,13 @@ class HiveService extends StateNotifier<List<Location>> {
       isError: isError,
     );
 
-    logger
-      ..f('\n📄 PROMAJA LOG 📃')
-      ..f('--------------------')
-      ..f('Text -> ${promajaLog.text}')
-      ..f('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
-      ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
-      ..f('--------------------\n');
+    // logger
+    //   ..f('\n📄 PROMAJA LOG 📃')
+    //   ..f('--------------------')
+    //   ..f('Text -> ${promajaLog.text}')
+    //   ..f('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
+    //   ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
+    //   ..f('--------------------\n');
 
     addPromajaLogToBox(promajaLog: promajaLog);
   }

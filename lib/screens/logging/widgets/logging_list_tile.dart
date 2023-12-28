@@ -27,7 +27,7 @@ class LoggingListTile extends StatelessWidget {
         splashColor: PromajaColors.white.withOpacity(0.15),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
+          horizontal: 20,
           vertical: 8,
         ),
         leading: FittedBox(

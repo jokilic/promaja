@@ -31,7 +31,7 @@ class SettingsPopupMenuListTile extends StatelessWidget {
           ),
           splashColor: PromajaColors.white.withOpacity(0.15),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
+            horizontal: 20,
             vertical: 8,
           ),
           title: AnimatedSwitcher(

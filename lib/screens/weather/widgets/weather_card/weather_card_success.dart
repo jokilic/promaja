@@ -169,7 +169,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                 /// MAIN CARD CONTENT
                 ///
                 SizedBox(
-                  height: MediaQuery.sizeOf(context).height - 136,
+                  height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom - 16,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: AnimateList(

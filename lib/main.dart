@@ -91,7 +91,7 @@ class PromajaApp extends ConsumerWidget {
             home: ref.watch(screenProvider),
             onGenerateTitle: (_) => 'appNameString'.tr(),
             theme: ThemeData(
-              fontFamily: 'Rubik',
+              fontFamily: 'Jost',
               scaffoldBackgroundColor: PromajaColors.black,
             ),
           ),

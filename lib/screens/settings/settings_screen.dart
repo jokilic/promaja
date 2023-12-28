@@ -224,7 +224,7 @@ class SettingsScreen extends ConsumerWidget {
                   /// WEATHER API
                   ///
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text.rich(
                       TextSpan(
                         children: [

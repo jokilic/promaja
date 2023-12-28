@@ -46,7 +46,7 @@ class PromajaTextStyles {
   );
   static const currentWeather = TextStyle(
     color: PromajaColors.white,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: FontWeight.w500,
   );
   static final currentLastUpdated = TextStyle(

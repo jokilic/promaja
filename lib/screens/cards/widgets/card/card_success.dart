@@ -111,7 +111,7 @@ class CardSuccess extends ConsumerWidget {
                 ///
                 Column(
                   children: [
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Text(
                       'currentWeather'.tr(),
                       style: PromajaTextStyles.currentLastUpdated,
