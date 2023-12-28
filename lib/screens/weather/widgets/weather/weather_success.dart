@@ -16,7 +16,7 @@ import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
-import '../weather_card/weather_card_summary.dart';
+import '../weather_card_summary/weather_card_summary.dart';
 
 class WeatherSuccess extends ConsumerWidget {
   final Location location;
@@ -113,7 +113,11 @@ class WeatherSuccess extends ConsumerWidget {
               ///
               if (cardIndex == 0) {
                 return WeatherCardSummary(
+                  location: location,
+                  forecastWeather: forecastWeather,
                   useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                  isPhoneLocation: isPhoneLocation,
+                  showCelsius: showCelsius,
                 );
               }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../constants/icons.dart';
 
-String getForecastDate({required DateTime dateEpoch}) {
+String getForecastDate({required DateTime dateEpoch, bool isShortMonth = false}) {
   /// Current date and time
   final now = DateTime.now();
 
@@ -21,7 +21,7 @@ String getForecastDate({required DateTime dateEpoch}) {
   } else if (passedDate.isAtSameMomentAs(tomorrow)) {
     return 'tomorrow'.tr();
   } else {
-    return DateFormat.yMMMMd().format(dateEpoch);
+    return isShortMonth ? DateFormat.MMMd().format(dateEpoch) : DateFormat.MMMMd().format(dateEpoch);
   }
 }
 

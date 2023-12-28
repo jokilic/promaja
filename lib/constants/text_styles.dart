@@ -34,6 +34,16 @@ class PromajaTextStyles {
     fontSize: 64,
     height: 1,
   );
+  static final weatherSummaryTemperatureMin = TextStyle(
+    color: PromajaColors.white.withOpacity(0.5),
+    fontSize: 40,
+    height: 1,
+  );
+  static const weatherSummaryTemperatureMax = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 40,
+    height: 1,
+  );
   static const currentHourTemperature = TextStyle(
     color: PromajaColors.white,
     fontSize: 80,
