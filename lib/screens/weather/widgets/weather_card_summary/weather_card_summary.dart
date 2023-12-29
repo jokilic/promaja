@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,9 +8,11 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../weather_notifiers.dart';
+import 'weather_card_summary_graph.dart';
 import 'weather_card_summary_list_tile.dart';
 
-class WeatherCardSummary extends ConsumerWidget {
+class WeatherCardSummary extends ConsumerStatefulWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool useOpacity;
@@ -29,12 +30,25 @@ class WeatherCardSummary extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
+  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherCardSummaryState();
+}
+
+class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ref.read(activeSummaryWeatherProvider.notifier).state = widget.forecastWeather.forecastDays.first,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(40),
         child: AnimatedOpacity(
           duration: PromajaDurations.opacityAnimation,
           curve: Curves.easeIn,
-          opacity: useOpacity ? 0.45 : 1,
+          opacity: widget.useOpacity ? 0.45 : 1,
           child: Container(
             width: MediaQuery.sizeOf(context).width,
             decoration: BoxDecoration(
@@ -50,7 +64,7 @@ class WeatherCardSummary extends ConsumerWidget {
             child: AnimatedOpacity(
               duration: PromajaDurations.opacityAnimation,
               curve: Curves.easeIn,
-              opacity: useOpacity ? 0 : 1,
+              opacity: widget.useOpacity ? 0 : 1,
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
                 child: Column(
@@ -78,12 +92,12 @@ class WeatherCardSummary extends ConsumerWidget {
                         clipBehavior: Clip.none,
                         children: [
                           Text(
-                            '${location.name}, ${location.country}',
+                            '${widget.location.name}, ${widget.location.country}',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: PromajaTextStyles.settingsTitle,
                           ),
-                          if (isPhoneLocation)
+                          if (widget.isPhoneLocation)
                             Positioned(
                               right: -44,
                               top: 0,
@@ -117,17 +131,19 @@ class WeatherCardSummary extends ConsumerWidget {
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       physics: const BouncingScrollPhysics(),
-                      itemCount: forecastWeather.forecastDays.length,
+                      itemCount: widget.forecastWeather.forecastDays.length,
                       itemBuilder: (_, index) {
-                        final forecast = forecastWeather.forecastDays[index];
+                        final forecast = widget.forecastWeather.forecastDays[index];
 
                         return WeatherCardSummaryListTile(
                           forecast: forecast,
-                          showCelsius: showCelsius,
+                          onPressed: () => ref.read(activeSummaryWeatherProvider.notifier).state = forecast,
+                          isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
+                          showCelsius: widget.showCelsius,
                         );
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 28),
 
                     ///
                     /// TEMPERATURE CHART
@@ -135,23 +151,12 @@ class WeatherCardSummary extends ConsumerWidget {
                     AnimatedOpacity(
                       duration: PromajaDurations.opacityAnimation,
                       curve: Curves.easeIn,
-                      opacity: useGradientOpacity ? 0 : 1,
-                      child: SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                        child: LineChart(
-                          LineChartData(
-                            lineBarsData: [
-                              LineChartBarData(),
-                            ],
-                            lineTouchData: const LineTouchData(),
-                          ),
-                          duration: PromajaDurations.summaryGraphAnimation,
-                          curve: Curves.easeIn,
-                        ),
+                      opacity: widget.useGradientOpacity ? 0 : 1,
+                      child: WeatherCardSummaryGraph(
+                        forecastWeather: widget.forecastWeather,
+                        showCelsius: widget.showCelsius,
                       ),
                     ),
-                    const SizedBox.shrink()
                   ],
                 ),
               ),

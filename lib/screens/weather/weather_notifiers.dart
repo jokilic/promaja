@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/error/response_error.dart';
+import '../../models/forecast_weather/forecast_day_weather.dart';
 import '../../models/forecast_weather/response_forecast_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
@@ -15,6 +16,11 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
     return weatherList.isNotEmpty ? weatherList[weatherIndex] : null;
   },
   name: 'ActiveWeatherProvider',
+);
+
+final activeSummaryWeatherProvider = StateProvider.autoDispose<ForecastDayWeather?>(
+  (_) => null,
+  name: 'ActiveSummaryWeatherProvider',
 );
 
 final weatherDaysControllerProvider = Provider.autoDispose.family<PageController, double>(

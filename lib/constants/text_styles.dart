@@ -217,4 +217,16 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w500,
     height: 1,
   );
+  static const summaryGraphTooltip = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
+  static const summaryGraphTitles = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
 }
