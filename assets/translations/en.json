@@ -6,6 +6,8 @@
     "noMoreForecasts": "No more forecasts",
     "error": "Error",
     "currentWeather": "Current weather",
+    "weatherSummary": "Weather summary",
+    "weatherSummaryGraphTitle": "Temperatures for {}",
     "weirdErrorHappened": "Some weird error happened",
     "noMoreThanXLocations": "You can't have more than {} locations",
     "locationAlreadyExists": "{}, {} already exists.",

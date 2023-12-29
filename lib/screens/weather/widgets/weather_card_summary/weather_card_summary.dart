@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,10 +90,10 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                       ///
                       /// TITLE & LOCATION
                       ///
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Summary',
+                          'weatherSummary'.tr(),
                           style: PromajaTextStyles.settingsSubtitle,
                         ),
                       ),
@@ -171,11 +172,15 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          'Temperatures for ${getForecastDate(
-                            dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
-                            isShortMonth: true,
-                            isLowercase: true,
-                          )}',
+                          'weatherSummaryGraphTitle'.tr(
+                            args: [
+                              getForecastDate(
+                                dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
+                                isShortMonth: true,
+                                isLowercase: true,
+                              ),
+                            ],
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: PromajaTextStyles.settingsSubtitle,
