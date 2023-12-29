@@ -13,11 +13,11 @@ import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
+import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
-import '../weather_card_hour/weather_card_hour_error.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
@@ -57,6 +57,8 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         (hour) => hour.timeEpoch.hour == DateTime.now().hour,
       ),
     );
+
+    ref.read(loggerProvider).f('Card initialized');
   }
 
   void weatherCardHourPressed({
@@ -393,29 +395,21 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                             parent: BouncingScrollPhysics(),
                           ),
                           itemBuilder: (context, hourIndex) {
-                            final hourWeather = widget.forecast.hours.elementAtOrNull(hourIndex);
+                            final hourWeather = widget.forecast.hours[hourIndex];
 
                             /// Return proper [ForecastHourSuccess]
-                            if (hourWeather != null) {
-                              return WeatherCardHourSuccess(
-                                hourWeather: hourWeather,
-                                useOpacity: ref.watch(weatherCardMovingProvider),
-                                isActive: activeHourWeather == hourWeather,
-                                borderColor: backgroundColor,
-                                showCelsius: widget.showCelsius,
-                                onPressed: () => weatherCardHourPressed(
-                                  hourWeather: hourWeather,
-                                  activeHourWeather: activeHourWeather,
-                                  ref: ref,
-                                  index: widget.index,
-                                ),
-                              );
-                            }
-
-                            /// This should never happen, but if it does, return [ForecastHourError]
-                            return WeatherCardHourError(
+                            return WeatherCardHourSuccess(
+                              hourWeather: hourWeather,
                               useOpacity: ref.watch(weatherCardMovingProvider),
-                              onPressed: () {},
+                              isActive: activeHourWeather == hourWeather,
+                              borderColor: backgroundColor,
+                              showCelsius: widget.showCelsius,
+                              onPressed: () => weatherCardHourPressed(
+                                hourWeather: hourWeather,
+                                activeHourWeather: activeHourWeather,
+                                ref: ref,
+                                index: widget.index,
+                              ),
                             );
                           },
                         ),

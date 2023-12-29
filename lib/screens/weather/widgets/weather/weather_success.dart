@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:appinio_swiper/appinio_swiper.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -14,9 +13,7 @@ import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
 import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
-import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
-import '../weather_card_summary/weather_card_summary.dart';
 
 class WeatherSuccess extends ConsumerWidget {
   final Location location;
@@ -80,7 +77,7 @@ class WeatherSuccess extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(weatherCardIndexProvider);
-    final cardCount = 1 + forecastWeather.forecastDays.length;
+    final cardCount = forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
@@ -107,52 +104,17 @@ class WeatherSuccess extends ConsumerWidget {
               ref: ref,
               screenWidth: MediaQuery.sizeOf(context).width,
             ),
-            cardsBuilder: (_, cardIndex) {
-              ///
-              /// SUMMARY FORECAST CARD
-              ///
-              if (cardIndex == 0) {
-                return WeatherCardSummary(
-                  location: location,
-                  forecastWeather: forecastWeather,
-                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                  useGradientOpacity: ref.watch(weatherCardMovingProvider),
-                  isPhoneLocation: isPhoneLocation,
-                  showCelsius: showCelsius,
-                );
-              }
-
-              ///
-              /// DAILY FORECAST CARDS
-              ///
-              final forecast = forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1);
-
-              /// Return proper [ForecastSuccess]
-              if (forecast != null) {
-                return WeatherCardSuccess(
-                  location: location,
-                  forecast: forecast,
-                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                  index: cardIndex,
-                  isPhoneLocation: isPhoneLocation,
-                  showCelsius: showCelsius,
-                  showKph: showKph,
-                  showMm: showMm,
-                  showhPa: showhPa,
-                );
-              }
-
-              /// This should never happen, but if it does, return [ForecastError]
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: WeatherCardError(
-                  location: location,
-                  error: 'noMoreForecasts'.tr(),
-                  useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
-                  isPhoneLocation: isPhoneLocation,
-                ),
-              );
-            },
+            cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
+              location: location,
+              forecast: forecastWeather.forecastDays[cardIndex],
+              useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+              index: cardIndex,
+              isPhoneLocation: isPhoneLocation,
+              showCelsius: showCelsius,
+              showKph: showKph,
+              showMm: showMm,
+              showhPa: showhPa,
+            ),
           ),
         ),
 

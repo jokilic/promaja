@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:appinio_swiper/appinio_swiper.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart' as animate;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
-import '../../models/location/location.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
@@ -18,7 +16,6 @@ import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
-import 'widgets/card/card_error.dart';
 import 'widgets/card/card_widget.dart';
 
 class CardsScreen extends ConsumerWidget {
@@ -84,38 +81,14 @@ class CardsScreen extends ConsumerWidget {
                 },
                 onSwipeCancelled: () => ref.read(cardMovingProvider.notifier).state = false,
                 onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
-                cardsBuilder: (_, cardIndex) {
-                  final location = locations.elementAtOrNull(cardIndex);
-
-                  /// Return proper [CardWidget]
-                  if (location != null) {
-                    return CardWidget(
-                      originalLocation: location,
-                      useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                      showCelsius: showCelsius,
-                      showKph: showKph,
-                      showMm: showMm,
-                      showhPa: showhPa,
-                    );
-                  }
-
-                  /// This should never happen, but if it does, return [CardError]
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: CardError(
-                      location: Location(
-                        country: '---',
-                        lat: 0,
-                        lon: 0,
-                        name: '---',
-                        region: '---',
-                      ),
-                      error: 'noMoreLocations'.tr(),
-                      useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
-                      isPhoneLocation: false,
-                    ),
-                  );
-                },
+                cardsBuilder: (_, cardIndex) => CardWidget(
+                  originalLocation: locations[cardIndex],
+                  useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
+                  showCelsius: showCelsius,
+                  showKph: showKph,
+                  showMm: showMm,
+                  showhPa: showhPa,
+                ),
               ),
             ),
 
