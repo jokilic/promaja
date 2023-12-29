@@ -129,7 +129,24 @@ class WidgetScreen extends ConsumerWidget {
               /// UPDATE WIDGET
               ///
               SettingsListTile(
-                onTap: ref.read(homeWidgetProvider).updateWidget,
+                onTap: () async {
+                  await ref.read(homeWidgetProvider).updateWidget();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'widgetUpdated'.tr(),
+                        style: PromajaTextStyles.snackbar,
+                      ),
+                      backgroundColor: PromajaColors.indigo,
+                      behavior: SnackBarBehavior.floating,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  );
+                },
                 icon: PromajaIcons.dot,
                 title: 'widgetUpdateTitle'.tr(),
                 subtitle: 'widgetUpdateSubtitle'.tr(),

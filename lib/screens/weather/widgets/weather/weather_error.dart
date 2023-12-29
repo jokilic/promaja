@@ -25,7 +25,7 @@ class WeatherError extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.sizeOf(context).width,
-        margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
+        margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
           gradient: LinearGradient(

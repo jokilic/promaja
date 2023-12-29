@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,6 +15,7 @@ class WeatherCardSummary extends ConsumerWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool useOpacity;
+  final bool useGradientOpacity;
   final bool isPhoneLocation;
   final bool showCelsius;
 
@@ -21,6 +23,7 @@ class WeatherCardSummary extends ConsumerWidget {
     required this.location,
     required this.forecastWeather,
     required this.useOpacity,
+    required this.useGradientOpacity,
     required this.isPhoneLocation,
     required this.showCelsius,
   });
@@ -55,7 +58,7 @@ class WeatherCardSummary extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: MediaQuery.paddingOf(context).top + 32,
+                      height: MediaQuery.paddingOf(context).top + 24,
                     ),
 
                     ///
@@ -123,6 +126,30 @@ class WeatherCardSummary extends ConsumerWidget {
                           showCelsius: showCelsius,
                         );
                       },
+                    ),
+                    const SizedBox(height: 16),
+
+                    ///
+                    /// TEMPERATURE CHART
+                    ///
+                    AnimatedOpacity(
+                      duration: PromajaDurations.opacityAnimation,
+                      curve: Curves.easeIn,
+                      opacity: useGradientOpacity ? 0 : 1,
+                      child: SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: LineChart(
+                          LineChartData(
+                            lineBarsData: [
+                              LineChartBarData(),
+                            ],
+                            lineTouchData: const LineTouchData(),
+                          ),
+                          duration: PromajaDurations.summaryGraphAnimation,
+                          curve: Curves.easeIn,
+                        ),
+                      ),
                     ),
                     const SizedBox.shrink()
                   ],

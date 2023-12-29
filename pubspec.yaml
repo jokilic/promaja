@@ -16,6 +16,7 @@ dependencies:
   dio: 5.4.0
   easy_localization: 3.0.3
   envied: 0.5.2
+  fl_chart: 0.66.0
   flutter_animate: 4.3.0
   flutter_colorpicker: 1.0.3
   flutter_local_notifications: 16.2.0

@@ -351,6 +351,7 @@ class HomeWidgetService {
   /// Refreshes widget in the home screen
   Future<void> updateWidget() async {
     await handleWidget();
+
     hive.logPromajaEvent(
       text: 'Widget -> Manual update',
       logGroup: PromajaLogGroup.widget,

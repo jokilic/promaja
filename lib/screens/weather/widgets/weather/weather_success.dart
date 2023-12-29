@@ -116,6 +116,7 @@ class WeatherSuccess extends ConsumerWidget {
                   location: location,
                   forecastWeather: forecastWeather,
                   useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
+                  useGradientOpacity: ref.watch(weatherCardMovingProvider),
                   isPhoneLocation: isPhoneLocation,
                   showCelsius: showCelsius,
                 );
