@@ -109,6 +109,8 @@ class PromajaNavigationBar extends ConsumerWidget {
           onDestinationSelected: (newIndex) {
             if (ref.read(navigationBarIndexProvider) != newIndex) {
               ref.read(cardIndexProvider.notifier).state = 0;
+              ref.read(weatherCardIndexProvider.notifier).state = 0;
+
               ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
             }
           },

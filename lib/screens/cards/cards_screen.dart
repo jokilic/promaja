@@ -83,7 +83,6 @@ class CardsScreen extends ConsumerWidget {
                 onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
                 cardsBuilder: (_, cardIndex) => CardWidget(
                   originalLocation: locations[cardIndex],
-                  useOpacity: index != cardIndex && !ref.watch(cardMovingProvider),
                   showCelsius: showCelsius,
                   showKph: showKph,
                   showMm: showMm,

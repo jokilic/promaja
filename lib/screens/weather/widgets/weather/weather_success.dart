@@ -11,7 +11,6 @@ import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
-import '../../../cards/cards_notifiers.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_success.dart';
 
@@ -43,9 +42,6 @@ class WeatherSuccess extends ConsumerWidget {
       ref.read(weatherCardMovingProvider.notifier).state = false;
       ref.read(weatherCardIndexProvider.notifier).state = index;
 
-      if (ref.read(weatherCardAdditionalControllerProvider).hasClients) {
-        ref.read(weatherCardAdditionalControllerProvider).jumpTo(0);
-      }
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }
@@ -59,11 +55,11 @@ class WeatherSuccess extends ConsumerWidget {
               ),
         );
       }
-      if (ref.read(weatherDaysControllerProvider(screenWidth)).hasClients) {
-        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 1 ? DateTime.now().hour : 8) / 4).floor();
+      if (ref.read(weatherHoursControllerProvider(screenWidth)).hasClients) {
+        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
 
         WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref.read(weatherDaysControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
+          (_) => ref.read(weatherHoursControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
         );
       }
 
@@ -107,7 +103,6 @@ class WeatherSuccess extends ConsumerWidget {
             cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: location,
               forecast: forecastWeather.forecastDays[cardIndex],
-              useOpacity: index != cardIndex && !ref.watch(weatherCardMovingProvider),
               index: cardIndex,
               isPhoneLocation: isPhoneLocation,
               showCelsius: showCelsius,

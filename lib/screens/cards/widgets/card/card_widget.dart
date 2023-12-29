@@ -10,7 +10,6 @@ import 'card_success.dart';
 
 class CardWidget extends ConsumerWidget {
   final Location originalLocation;
-  final bool useOpacity;
   final bool showCelsius;
   final bool showKph;
   final bool showMm;
@@ -18,7 +17,6 @@ class CardWidget extends ConsumerWidget {
 
   const CardWidget({
     required this.originalLocation,
-    required this.useOpacity,
     required this.showCelsius,
     required this.showKph,
     required this.showMm,
@@ -40,7 +38,6 @@ class CardWidget extends ConsumerWidget {
                   return CardSuccess(
                     location: location,
                     currentWeather: currentWeather,
-                    useOpacity: useOpacity,
                     isPhoneLocation: originalLocation.isPhoneLocation,
                     showCelsius: showCelsius,
                     showKph: showKph,
@@ -55,7 +52,6 @@ class CardWidget extends ConsumerWidget {
                 return CardError(
                   location: originalLocation,
                   error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
-                  useOpacity: useOpacity,
                   isPhoneLocation: originalLocation.isPhoneLocation,
                   refreshPressed: () => ref.invalidate(
                     getCurrentWeatherProvider(originalLocation),
@@ -69,7 +65,6 @@ class CardWidget extends ConsumerWidget {
               error: (error, _) => CardError(
                 location: originalLocation,
                 error: '$error',
-                useOpacity: useOpacity,
                 isPhoneLocation: originalLocation.isPhoneLocation,
                 refreshPressed: () => ref.invalidate(
                   getCurrentWeatherProvider(originalLocation),
@@ -81,7 +76,6 @@ class CardWidget extends ConsumerWidget {
               ///
               loading: () => CardLoading(
                 location: originalLocation,
-                useOpacity: useOpacity,
               ),
             ),
       );

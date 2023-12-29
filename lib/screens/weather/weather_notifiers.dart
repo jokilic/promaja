@@ -3,10 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/error/response_error.dart';
 import '../../models/forecast_weather/forecast_day_weather.dart';
+import '../../models/forecast_weather/hour_weather.dart';
 import '../../models/forecast_weather/response_forecast_weather.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
+
+final weatherCardIndexProvider = StateProvider<int>(
+  (_) => 0,
+  name: 'WeatherCardIndexProvider',
+);
+
+final weatherCardMovingProvider = StateProvider<bool>(
+  (_) => false,
+  name: 'WeatherCardMovingProvider',
+);
+
+final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageController>(
+  (ref) {
+    final controller = PageController();
+    ref.onDispose(controller.dispose);
+    return controller;
+  },
+  name: 'WeatherCardHourAdditionalControllerProvider',
+);
 
 final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   (ref) {
@@ -23,7 +43,7 @@ final activeSummaryWeatherProvider = StateProvider.autoDispose<ForecastDayWeathe
   name: 'ActiveSummaryWeatherProvider',
 );
 
-final weatherDaysControllerProvider = Provider.autoDispose.family<PageController, double>(
+final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, double>(
   (ref, screenWidth) {
     final controller = PageController();
 
@@ -37,25 +57,7 @@ final weatherDaysControllerProvider = Provider.autoDispose.family<PageController
 
     return controller;
   },
-  name: 'WeatherDaysControllerProvider',
-);
-
-final weatherCardAdditionalControllerProvider = Provider.autoDispose<PageController>(
-  (ref) {
-    final controller = PageController();
-    ref.onDispose(controller.dispose);
-    return controller;
-  },
-  name: 'WeatherCardAdditionalControllerProvider',
-);
-
-final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageController>(
-  (ref) {
-    final controller = PageController();
-    ref.onDispose(controller.dispose);
-    return controller;
-  },
-  name: 'WeatherCardHourAdditionalControllerProvider',
+  name: 'WeatherHoursControllerProvider',
 );
 
 final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int? days})>(
@@ -64,4 +66,18 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
         days: forecastParameters.days,
       ),
   name: 'GetForecastWeatherProvider',
+);
+
+final activeHourWeatherProvider = StateProvider.autoDispose<HourWeather?>(
+  (_) => null,
+  name: 'ActiveHourWeatherProvider',
+);
+
+final weatherCardControllerProvider = Provider.autoDispose.family<ScrollController, int>(
+  (ref, index) {
+    final controller = ScrollController();
+    ref.onDispose(controller.dispose);
+    return controller;
+  },
+  name: 'WeatherCardControllerProvider',
 );
