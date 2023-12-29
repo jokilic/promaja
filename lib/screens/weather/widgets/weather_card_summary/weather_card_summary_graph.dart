@@ -87,6 +87,7 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
             titlesData: FlTitlesData(
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
+                  reservedSize: 48,
                   getTitlesWidget: (value, _) => Text(
                     '${value.round()}',
                     style: PromajaTextStyles.summaryGraphTitles,
@@ -102,7 +103,7 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
                     style: PromajaTextStyles.summaryGraphTitles,
                   ),
                   showTitles: true,
-                  interval: 4,
+                  interval: 8,
                 ),
               ),
               topTitles: const AxisTitles(),
