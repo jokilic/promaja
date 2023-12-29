@@ -9,6 +9,7 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 import 'weather_card_summary_graph.dart';
 import 'weather_card_summary_list_tile.dart';
@@ -82,7 +83,7 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                     ],
                     children: [
                       SizedBox(
-                        height: MediaQuery.paddingOf(context).top + 24,
+                        height: MediaQuery.paddingOf(context).top + 16,
                       ),
 
                       ///
@@ -132,7 +133,6 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                         endIndent: 120,
                         color: PromajaColors.white,
                       ),
-                      const SizedBox(height: 4),
 
                       ///
                       /// SUMMARY FORECASTS
@@ -152,6 +152,34 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                             showCelsius: widget.showCelsius,
                           );
                         },
+                      ),
+
+                      ///
+                      /// DIVIDER
+                      ///
+                      const SizedBox(height: 8),
+                      const Divider(
+                        indent: 120,
+                        endIndent: 120,
+                        color: PromajaColors.white,
+                      ),
+                      const SizedBox(height: 12),
+
+                      ///
+                      /// CHART TITLE
+                      ///
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Temperatures for ${getForecastDate(
+                            dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
+                            isShortMonth: true,
+                            isLowercase: true,
+                          )}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: PromajaTextStyles.settingsSubtitle,
+                        ),
                       ),
                       const SizedBox(height: 28),
 

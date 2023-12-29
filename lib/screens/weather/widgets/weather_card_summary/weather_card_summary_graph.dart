@@ -36,90 +36,97 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
 
     return Center(
       child: SizedBox(
-        height: 180,
-        width: MediaQuery.sizeOf(context).width - 56,
-        child: LineChart(
-          LineChartData(
-            lineBarsData: [
-              LineChartBarData(
-                isCurved: true,
-                isStrokeCapRound: true,
-                isStrokeJoinRound: true,
-                barWidth: 4,
-                color: PromajaColors.white,
-                dotData: const FlDotData(
-                  show: false,
-                ),
-                spots: List.generate(
-                  activeSummaryWeather?.hours.length ?? 0,
-                  (index) {
-                    final hourModel = activeSummaryWeather!.hours[index];
-                    final hour = double.tryParse(DateFormat.H().format(hourModel.timeEpoch));
-
-                    return FlSpot(
-                      hour ?? index.toDouble(),
-                      showCelsius ? hourModel.tempC : hourModel.tempF,
-                    );
-                  },
-                ),
-              ),
-            ],
-            lineTouchData: LineTouchData(
-              getTouchLineStart: (_, __) => 0,
-              getTouchLineEnd: (_, __) => 0,
-              touchTooltipData: LineTouchTooltipData(
-                tooltipRoundedRadius: 100,
-                tooltipBgColor: PromajaColors.indigo,
-                getTooltipItems: (touchedSpots) => touchedSpots
-                    .map(
-                      (touchedSpot) => LineTooltipItem(
-                        '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}',
-                        PromajaTextStyles.summaryGraphTooltip,
+        height: 136,
+        width: MediaQuery.sizeOf(context).width - 40,
+        child: Row(
+          children: [
+            Expanded(
+              child: LineChart(
+                LineChartData(
+                  lineBarsData: [
+                    LineChartBarData(
+                      isCurved: true,
+                      isStrokeCapRound: true,
+                      isStrokeJoinRound: true,
+                      barWidth: 4,
+                      color: PromajaColors.white,
+                      dotData: const FlDotData(
+                        show: false,
                       ),
-                    )
-                    .toList(),
-                tooltipBorder: const BorderSide(
-                  color: PromajaColors.white,
-                  width: 2,
-                ),
-              ),
-            ),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  reservedSize: 48,
-                  getTitlesWidget: (value, _) => Text(
-                    '${value.round()}',
-                    style: PromajaTextStyles.summaryGraphTitles,
+                      spots: List.generate(
+                        activeSummaryWeather?.hours.length ?? 0,
+                        (index) {
+                          final hourModel = activeSummaryWeather!.hours[index];
+                          final hour = double.tryParse(DateFormat.H().format(hourModel.timeEpoch));
+
+                          return FlSpot(
+                            hour ?? index.toDouble(),
+                            showCelsius ? hourModel.tempC : hourModel.tempF,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                  lineTouchData: LineTouchData(
+                    getTouchLineStart: (_, __) => 0,
+                    getTouchLineEnd: (_, __) => 0,
+                    touchTooltipData: LineTouchTooltipData(
+                      tooltipRoundedRadius: 100,
+                      tooltipBgColor: PromajaColors.indigo,
+                      getTooltipItems: (touchedSpots) => touchedSpots
+                          .map(
+                            (touchedSpot) => LineTooltipItem(
+                              '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}',
+                              PromajaTextStyles.summaryGraphTooltip,
+                            ),
+                          )
+                          .toList(),
+                      tooltipBorder: const BorderSide(
+                        color: PromajaColors.white,
+                        width: 2,
+                      ),
+                    ),
                   ),
-                  showTitles: true,
-                  interval: interval,
-                ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  getTitlesWidget: (value, _) => Text(
-                    '${value.round()}',
-                    style: PromajaTextStyles.summaryGraphTitles,
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        reservedSize: 48,
+                        getTitlesWidget: (value, _) => Text(
+                          '${value.round()}',
+                          style: PromajaTextStyles.summaryGraphTitles,
+                        ),
+                        showTitles: true,
+                        interval: interval,
+                      ),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        getTitlesWidget: (value, _) => Text(
+                          '${value.round()}',
+                          style: PromajaTextStyles.summaryGraphTitles,
+                        ),
+                        showTitles: true,
+                        interval: 8,
+                      ),
+                    ),
+                    topTitles: const AxisTitles(),
+                    rightTitles: const AxisTitles(),
                   ),
-                  showTitles: true,
-                  interval: 8,
+                  gridData: const FlGridData(
+                    show: false,
+                  ),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  minY: minTemp != null ? minTemp - 2 : null,
+                  maxY: maxTemp != null ? maxTemp + 2 : null,
                 ),
+                duration: PromajaDurations.summaryGraphAnimation,
+                curve: Curves.easeIn,
               ),
-              topTitles: const AxisTitles(),
-              rightTitles: const AxisTitles(),
             ),
-            gridData: const FlGridData(
-              show: false,
-            ),
-            borderData: FlBorderData(
-              show: false,
-            ),
-            minY: minTemp != null ? minTemp - 2 : null,
-            maxY: maxTemp != null ? maxTemp + 2 : null,
-          ),
-          duration: PromajaDurations.summaryGraphAnimation,
-          curve: Curves.easeIn,
+            const SizedBox(width: 8),
+          ],
         ),
       ),
     );
