@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
@@ -70,94 +71,104 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.paddingOf(context).top + 24,
-                    ),
-
-                    ///
-                    /// TITLE & LOCATION
-                    ///
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Summary',
-                        style: PromajaTextStyles.settingsSubtitle,
+                  children: AnimateList(
+                    delay: PromajaDurations.weatherDataAnimationDelay,
+                    interval: PromajaDurations.weatherDataAnimationDelay,
+                    effects: [
+                      FadeEffect(
+                        curve: Curves.easeIn,
+                        duration: PromajaDurations.fadeAnimation,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Text(
-                            '${widget.location.name}, ${widget.location.country}',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: PromajaTextStyles.settingsTitle,
-                          ),
-                          if (widget.isPhoneLocation)
-                            Positioned(
-                              right: -44,
-                              top: 0,
-                              bottom: 0,
-                              child: Image.asset(
-                                PromajaIcons.location,
-                                height: 32,
-                                width: 32,
-                                color: PromajaColors.white,
-                              ),
+                    ],
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.paddingOf(context).top + 24,
+                      ),
+
+                      ///
+                      /// TITLE & LOCATION
+                      ///
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Summary',
+                          style: PromajaTextStyles.settingsSubtitle,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Text(
+                              '${widget.location.name}, ${widget.location.country}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: PromajaTextStyles.settingsTitle,
                             ),
-                        ],
+                            if (widget.isPhoneLocation)
+                              Positioned(
+                                right: -44,
+                                top: 0,
+                                bottom: 0,
+                                child: Image.asset(
+                                  PromajaIcons.location,
+                                  height: 32,
+                                  width: 32,
+                                  color: PromajaColors.white,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
 
-                    ///
-                    /// DIVIDER
-                    ///
-                    const SizedBox(height: 16),
-                    const Divider(
-                      indent: 120,
-                      endIndent: 120,
-                      color: PromajaColors.white,
-                    ),
-                    const SizedBox(height: 4),
+                      ///
+                      /// DIVIDER
+                      ///
+                      const SizedBox(height: 16),
+                      const Divider(
+                        indent: 120,
+                        endIndent: 120,
+                        color: PromajaColors.white,
+                      ),
+                      const SizedBox(height: 4),
 
-                    ///
-                    /// SUMMARY FORECASTS
-                    ///
-                    ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: widget.forecastWeather.forecastDays.length,
-                      itemBuilder: (_, index) {
-                        final forecast = widget.forecastWeather.forecastDays[index];
+                      ///
+                      /// SUMMARY FORECASTS
+                      ///
+                      ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: widget.forecastWeather.forecastDays.length,
+                        itemBuilder: (_, index) {
+                          final forecast = widget.forecastWeather.forecastDays[index];
 
-                        return WeatherCardSummaryListTile(
-                          forecast: forecast,
-                          onPressed: () => ref.read(activeSummaryWeatherProvider.notifier).state = forecast,
-                          isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
+                          return WeatherCardSummaryListTile(
+                            forecast: forecast,
+                            onPressed: () => ref.read(activeSummaryWeatherProvider.notifier).state = forecast,
+                            isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
+                            showCelsius: widget.showCelsius,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 28),
+
+                      ///
+                      /// TEMPERATURE CHART
+                      ///
+                      AnimatedOpacity(
+                        duration: PromajaDurations.opacityAnimation,
+                        curve: Curves.easeIn,
+                        opacity: widget.useGradientOpacity ? 0 : 1,
+                        child: WeatherCardSummaryGraph(
+                          forecastWeather: widget.forecastWeather,
                           showCelsius: widget.showCelsius,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 28),
-
-                    ///
-                    /// TEMPERATURE CHART
-                    ///
-                    AnimatedOpacity(
-                      duration: PromajaDurations.opacityAnimation,
-                      curve: Curves.easeIn,
-                      opacity: widget.useGradientOpacity ? 0 : 1,
-                      child: WeatherCardSummaryGraph(
-                        forecastWeather: widget.forecastWeather,
-                        showCelsius: widget.showCelsius,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
