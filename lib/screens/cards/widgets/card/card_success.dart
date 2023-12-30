@@ -204,7 +204,8 @@ class CardSuccess extends ConsumerWidget {
             ///
             /// ADDITIONAL INFO
             ///
-            SizedBox(
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
               height: 144,
               child: PageView(
                 controller: ref.watch(cardAdditionalControllerProvider),
