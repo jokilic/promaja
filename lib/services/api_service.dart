@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/current_weather/response_current_weather.dart';
@@ -156,9 +157,25 @@ class APIService {
 
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
+        final responseList = jsonDecode(jsonEncode(response.data)) as List;
+
+        /// No locations found
+        if (responseList.isEmpty) {
+          hive.logPromajaEvent(
+            text: 'Search -> No locations found',
+            logGroup: PromajaLogGroup.api,
+            isError: true,
+          );
+          return (response: null, error: null, genericError: 'noLocationsFound'.tr());
+        }
+
+        ///
+        /// Locations found
+        ///
         final parsedResponse = await computeSearch(
-          jsonDecode(jsonEncode(response.data)),
+          responseList,
         );
+
         hive.logPromajaEvent(
           text: 'Search -> ${parsedResponse.first.name}, ${parsedResponse.first.country}',
           logGroup: PromajaLogGroup.api,

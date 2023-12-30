@@ -5,11 +5,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
+import '../../../../models/error/response_error.dart';
+import '../../../../models/location/location.dart';
 import '../../../../services/hive_service.dart';
 import '../../notifiers/add_location_notifier.dart';
 import '../../notifiers/phone_location_notifier.dart';
 
 class AddLocationWidget extends ConsumerWidget {
+  String? getErrorText(({ResponseError? error, String? genericError, bool loading, List<Location>? response}) state) {
+    /// Response is empty, there is no locations
+    if (state.response?.isEmpty ?? false) {
+      return 'noLocationsFound'.tr();
+    }
+
+    /// Some error happened
+    if (state.error != null || state.genericError != null) {
+      return state.error?.error.message ?? state.genericError ?? 'weirdErrorHappened'.tr();
+    }
+
+    /// No error happened
+    return null;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(addLocationProvider).loading;
@@ -27,24 +44,15 @@ class AddLocationWidget extends ConsumerWidget {
       ..listen(
         addLocationProvider,
         (_, state) {
-          if (state.error != null || state.genericError != null || (state.response?.isEmpty ?? false)) {
-            late String text;
+          /// Generate potential error
+          final errorText = getErrorText(state);
 
-            /// Some error happened
-            if (state.error != null || state.genericError != null) {
-              text = state.error?.error.message ?? state.genericError ?? 'weirdErrorHappened'.tr();
-            }
-
-            /// Response is empty, there is no locations
-            if (state.response?.isEmpty ?? false) {
-              text = 'noLocationsFound'.tr();
-            }
-
-            /// Show snackbar
+          /// Show snackbar if error exists
+          if (errorText != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  text,
+                  errorText,
                   style: PromajaTextStyles.snackbar,
                 ),
                 backgroundColor: PromajaColors.indigo,
