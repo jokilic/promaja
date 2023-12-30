@@ -56,7 +56,7 @@ class WeatherSuccess extends ConsumerWidget {
       if (ref.read(weatherHoursControllerProvider(index)).hasClients) {
         WidgetsBinding.instance.addPostFrameCallback(
           (_) => ref.read(weatherHoursControllerProvider(index)).animateToPage(
-                ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor(),
+                ((ref.read(weatherCardIndexProvider) == 1 ? DateTime.now().hour : 8) / 4).floor(),
                 duration: PromajaDurations.hoursScrollAnimation,
                 curve: Curves.easeIn,
               ),

@@ -73,6 +73,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// Disable active hour and scroll up
     if (activeHourWeather == hourWeather) {
       ref.read(activeHourWeatherProvider.notifier).state = null;
+      ref.read(showWeatherTopContainerProvider.notifier).state = false;
       ref.read(weatherCardControllerProvider(index)).animateTo(
             0,
             duration: PromajaDurations.scrollAnimation,
@@ -89,6 +90,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// Enable active hour and scroll down
     else {
       ref.read(activeHourWeatherProvider.notifier).state = hourWeather;
+      ref.read(showWeatherTopContainerProvider.notifier).state = true;
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }
