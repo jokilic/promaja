@@ -64,7 +64,7 @@ class WeatherSuccess extends ConsumerWidget {
       }
 
       ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Card swipe $index -> ${location.name}, ${location.country}',
+            text: 'Card swipe -> ${location.name}, ${location.country}',
             logGroup: PromajaLogGroup.forecastWeather,
           );
     }

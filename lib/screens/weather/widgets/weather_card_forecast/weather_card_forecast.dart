@@ -333,7 +333,7 @@ class WeatherCardForecast extends ConsumerWidget {
                           ),
                           itemCount: (forecast.hours.length / 4).round(),
                           onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
-                                text: 'Hours swipe $index -> ${location.name}, ${location.country}',
+                                text: 'Hours swipe -> ${location.name}, ${location.country}',
                                 logGroup: PromajaLogGroup.forecastWeather,
                               ),
                           physics: const BouncingScrollPhysics(),
