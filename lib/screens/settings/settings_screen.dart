@@ -91,7 +91,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Card colors',
+                            text: 'Open -> Card colors',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -112,7 +112,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Units',
+                            text: 'Open -> Units',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -133,7 +133,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Notifications',
+                            text: 'Open -> Notifications',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -154,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Widget',
+                            text: 'Open -> Widget',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -175,7 +175,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Logging',
+                            text: 'Open -> Logging',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -200,7 +200,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Contact',
+                            text: 'Open -> Contact',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
@@ -245,7 +245,7 @@ class SettingsScreen extends ConsumerWidget {
                                 );
 
                                 ref.read(hiveProvider.notifier).logPromajaEvent(
-                                      text: 'WeatherAPI link',
+                                      text: 'Open -> WeatherAPI link',
                                       logGroup: PromajaLogGroup.settings,
                                     );
                               },
@@ -262,7 +262,7 @@ class SettingsScreen extends ConsumerWidget {
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'WeatherAPI logo',
+                            text: 'Open -> WeatherAPI logo',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },

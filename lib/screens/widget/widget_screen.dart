@@ -130,7 +130,12 @@ class WidgetScreen extends ConsumerWidget {
               ///
               SettingsListTile(
                 onTap: () async {
-                  await ref.read(homeWidgetProvider).updateWidget();
+                  await ref.read(homeWidgetProvider).handleWidget();
+
+                  ref.read(hiveProvider.notifier).logPromajaEvent(
+                        text: 'Manual widget update',
+                        logGroup: PromajaLogGroup.widget,
+                      );
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

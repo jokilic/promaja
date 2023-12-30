@@ -129,7 +129,7 @@ class HomeWidgetService {
             );
 
             hive.logPromajaEvent(
-              text: 'Current widget -> Update',
+              text: 'Current widget updated',
               logGroup: PromajaLogGroup.widget,
             );
           }
@@ -154,7 +154,7 @@ class HomeWidgetService {
             );
 
             hive.logPromajaEvent(
-              text: 'Forecast widget -> Update',
+              text: 'Forecast widget updated',
               logGroup: PromajaLogGroup.widget,
             );
           }
@@ -164,14 +164,14 @@ class HomeWidgetService {
       /// Location doesn't exist
       else {
         hive.logPromajaEvent(
-          text: 'Widget handle -> Location null',
+          text: 'Handle widget -> Location null',
           logGroup: PromajaLogGroup.widget,
           isError: true,
         );
       }
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Widget handle -> $e',
+        text: 'Handle widget -> $e',
         logGroup: PromajaLogGroup.widget,
         isError: true,
       );
@@ -242,7 +242,7 @@ class HomeWidgetService {
       await createHomeWidget(widget);
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Current widget -> $e',
+        text: 'Trigger current widget -> $e',
         logGroup: PromajaLogGroup.widget,
         isError: true,
       );
@@ -341,20 +341,10 @@ class HomeWidgetService {
       }
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Forecast widget -> $e',
+        text: 'Trigger forecast widget -> $e',
         logGroup: PromajaLogGroup.widget,
         isError: true,
       );
     }
-  }
-
-  /// Refreshes widget in the home screen
-  Future<void> updateWidget() async {
-    await handleWidget();
-
-    hive.logPromajaEvent(
-      text: 'Widget -> Manual update',
-      logGroup: PromajaLogGroup.widget,
-    );
   }
 }

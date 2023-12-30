@@ -78,7 +78,7 @@ class APIService {
       );
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'Current weather -> Catch -> $e';
+      final error = 'Current weather -> catch -> $e';
       hive.logPromajaEvent(
         text: error,
         logGroup: PromajaLogGroup.api,
@@ -132,7 +132,7 @@ class APIService {
       );
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'Forecast weather -> Catch -> $e';
+      final error = 'Forecast weather -> catch -> $e';
       hive.logPromajaEvent(
         text: error,
         logGroup: PromajaLogGroup.api,
@@ -202,7 +202,7 @@ class APIService {
       );
       return (response: null, error: null, genericError: error);
     } catch (e) {
-      final error = 'Search -> Catch -> $e';
+      final error = 'Search -> catch -> $e';
       hive.logPromajaEvent(
         text: error,
         logGroup: PromajaLogGroup.api,

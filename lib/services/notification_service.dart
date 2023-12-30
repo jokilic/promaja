@@ -163,7 +163,7 @@ class NotificationService {
       /// Error while granting permissions
       if (permissionsGranted == null) {
         hive.logPromajaEvent(
-          text: 'Notification permission -> Platform different than Android, iOS or MacOS',
+          text: 'Notification platform different than Android, iOS or MacOS',
           logGroup: PromajaLogGroup.notification,
           isError: true,
         );
@@ -172,7 +172,7 @@ class NotificationService {
 
       if (!permissionsGranted) {
         hive.logPromajaEvent(
-          text: 'Notification permission -> Permissions denied',
+          text: 'Notification permissions denied',
           logGroup: PromajaLogGroup.notification,
           isError: true,
         );
@@ -422,14 +422,14 @@ class NotificationService {
       /// Location doesn't exist
       else {
         hive.logPromajaEvent(
-          text: 'Notification handle -> Location null',
+          text: 'Handle notification -> Location null',
           logGroup: PromajaLogGroup.notification,
           isError: true,
         );
       }
     } catch (e) {
       hive.logPromajaEvent(
-        text: 'Notification handle -> $e',
+        text: 'Handle notification -> $e',
         logGroup: PromajaLogGroup.notification,
         isError: true,
       );

@@ -33,7 +33,7 @@ class LocationService {
 
       /// Location services are not enabled, return error
       if (!serviceEnabled) {
-        const error = 'Location -> Services not enabled';
+        const error = 'Location services not enabled';
         hive.logPromajaEvent(
           text: error,
           logGroup: PromajaLogGroup.location,
@@ -51,7 +51,7 @@ class LocationService {
 
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
-          const error = 'Location -> Permissions denied';
+          const error = 'Location permissions denied';
           hive.logPromajaEvent(
             text: error,
             logGroup: PromajaLogGroup.location,
@@ -63,7 +63,7 @@ class LocationService {
 
       /// Permission are denied forever, return error
       if (permission == LocationPermission.deniedForever) {
-        const error = 'Location -> Permissions permanently denied';
+        const error = 'Location permissions permanently denied';
         hive.logPromajaEvent(
           text: error,
           logGroup: PromajaLogGroup.location,
@@ -75,7 +75,7 @@ class LocationService {
       /// Permissions are granted, access position
       final position = await Geolocator.getCurrentPosition();
       hive.logPromajaEvent(
-        text: 'Location',
+        text: 'Location fetched',
         logGroup: PromajaLogGroup.location,
       );
       return (position: position, error: null);

@@ -294,7 +294,7 @@ class HiveService extends StateNotifier<List<Location>> {
     }
 
     logPromajaEvent(
-      text: 'Reorder',
+      text: 'Reorder done',
       logGroup: PromajaLogGroup.list,
     );
   }
@@ -304,22 +304,13 @@ class HiveService extends StateNotifier<List<Location>> {
     required String text,
     required PromajaLogGroup logGroup,
     bool isError = false,
-  }) {
-    final promajaLog = PromajaLog(
-      text: text,
-      time: DateTime.now(),
-      logGroup: logGroup,
-      isError: isError,
-    );
-
-    // logger
-    //   ..t('\n📄 PROMAJA LOG 📃')
-    //   ..t('--------------------')
-    //   ..t('Text -> ${promajaLog.text}')
-    //   ..t('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
-    //   ..t('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
-    //   ..t('--------------------\n');
-
-    addPromajaLogToBox(promajaLog: promajaLog);
-  }
+  }) =>
+      addPromajaLogToBox(
+        promajaLog: PromajaLog(
+          text: text,
+          time: DateTime.now(),
+          logGroup: logGroup,
+          isError: isError,
+        ),
+      );
 }

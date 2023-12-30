@@ -80,7 +80,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             await hive.init();
 
             hive.logPromajaEvent(
-              text: 'Initialize -> $e',
+              text: 'Background task -> $e',
               logGroup: PromajaLogGroup.background,
               isError: true,
             );
@@ -97,7 +97,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           await hive.init();
 
           hive.logPromajaEvent(
-            text: 'Initialize -> Task timed-out -> $taskId',
+            text: 'Background task -> Task timed-out',
             logGroup: PromajaLogGroup.background,
             isError: true,
           );
@@ -114,7 +114,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       await hive.init();
 
       hive.logPromajaEvent(
-        text: 'Initialize',
+        text: 'Background done',
         logGroup: PromajaLogGroup.background,
       );
     } catch (e) {
@@ -123,7 +123,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       await hive.init();
 
       hive.logPromajaEvent(
-        text: 'Initialize -> $e',
+        text: 'Background -> $e',
         logGroup: PromajaLogGroup.background,
         isError: true,
       );
@@ -144,7 +144,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'HeadlessTask -> Task timed-out -> $taskId',
+      text: 'HeadlessTask -> Task timed-out',
       logGroup: PromajaLogGroup.background,
       isError: true,
     );
@@ -192,7 +192,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     await hive.init();
 
     hive.logPromajaEvent(
-      text: 'HeadlessTask',
+      text: 'HeadlessTask done',
       logGroup: PromajaLogGroup.background,
     );
   }
