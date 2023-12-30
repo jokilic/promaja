@@ -93,7 +93,7 @@ class LoggingScreen extends ConsumerWidget {
                   ref.read(loggingProvider.notifier).updateLogs(visibleLevel: newLogGroup);
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Log group -> ${newLogGroup != null ? newLogGroup.name : 'All'}',
+                        text: 'Log group -> ${newLogGroup != null ? '${newLogGroup.name.substring(0, 1).toUpperCase()}${newLogGroup.name.substring(1)}' : 'All'}',
                         logGroup: PromajaLogGroup.logging,
                       );
                 },

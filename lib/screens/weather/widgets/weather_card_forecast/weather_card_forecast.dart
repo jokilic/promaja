@@ -314,7 +314,10 @@ class WeatherCardForecast extends ConsumerWidget {
                   /// HOURS
                   ///
                   Container(
-                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 24,
+                    ),
                     height: 160,
                     child: PageView.builder(
                       controller: ref.watch(

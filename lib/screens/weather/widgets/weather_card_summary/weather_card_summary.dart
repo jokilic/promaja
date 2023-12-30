@@ -60,7 +60,7 @@ class WeatherCardSummary extends ConsumerWidget {
                 ],
                 children: [
                   SizedBox(
-                    height: MediaQuery.paddingOf(context).top + 16,
+                    height: MediaQuery.paddingOf(context).top + 24,
                   ),
 
                   ///
