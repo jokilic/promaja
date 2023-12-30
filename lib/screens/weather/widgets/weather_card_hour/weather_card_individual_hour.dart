@@ -146,7 +146,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                     ///
                     if (showRain && !showSnow)
                       Positioned(
-                        right: -36,
+                        right: -44,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +171,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                     ///
                     if (showSnow)
                       Positioned(
-                        right: -36,
+                        right: -40,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,

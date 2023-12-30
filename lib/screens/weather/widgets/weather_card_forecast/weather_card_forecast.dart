@@ -84,8 +84,8 @@ class WeatherCardForecast extends ConsumerWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(40),
       child: Stack(
-        clipBehavior: Clip.none,
         alignment: Alignment.center,
+        clipBehavior: Clip.none,
         children: [
           ///
           /// MAIN CONTENT
@@ -268,7 +268,7 @@ class WeatherCardForecast extends ConsumerWidget {
                                 ///
                                 if (showRain && !showSnow)
                                   Positioned(
-                                    right: -36,
+                                    right: -40,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -293,7 +293,7 @@ class WeatherCardForecast extends ConsumerWidget {
                                 ///
                                 if (showSnow)
                                   Positioned(
-                                    right: -36,
+                                    right: -40,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.center,

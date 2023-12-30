@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
@@ -142,49 +141,6 @@ class WeatherCardHourSuccess extends ConsumerWidget {
               ],
             ),
           ),
-
-          ///
-          /// CHANCE OF RAIN
-          ///
-          if (showRain || showSnow)
-            Positioned(
-              top: -24,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  /// Rain
-                  if (showRain && !showSnow) ...[
-                    Image.asset(
-                      PromajaIcons.umbrella,
-                      color: PromajaColors.white,
-                      height: 20,
-                      width: 20,
-                    ),
-                    Text(
-                      '${hourWeather.chanceOfRain}%',
-                      style: PromajaTextStyles.weatherCardHourChanceOfRain,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-
-                  /// Snow
-                  if (showSnow) ...[
-                    Image.asset(
-                      PromajaIcons.snow,
-                      color: PromajaColors.white,
-                      height: 20,
-                      width: 20,
-                    ),
-                    Text(
-                      '${hourWeather.chanceOfSnow}%',
-                      style: PromajaTextStyles.weatherCardHourChanceOfRain,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ],
-              ),
-            ),
 
           ///
           /// INKWELL RIPPLE
