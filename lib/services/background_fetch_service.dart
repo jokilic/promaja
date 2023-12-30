@@ -42,6 +42,13 @@ final backgroundFetchInitProvider = FutureProvider<void>(
         /// Task logic
         (taskId) async {
           try {
+            /// If task is triggered between `00:00` and `06:00`, don't do anything
+            final hour = DateTime.now().hour;
+            if (hour >= 0 && hour <= 6) {
+              BackgroundFetch.finish(taskId);
+              return;
+            }
+
             /// Initialize Flutter related tasks
             WidgetsFlutterBinding.ensureInitialized();
             DartPluginRegistrant.ensureInitialized();
@@ -150,6 +157,13 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   /// Task logic
   ///
   try {
+    /// If task is triggered between `00:00` and `06:00`, don't do anything
+    final hour = DateTime.now().hour;
+    if (hour >= 0 && hour <= 6) {
+      BackgroundFetch.finish(taskId);
+      return;
+    }
+
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();

@@ -104,7 +104,7 @@ class WeatherCardSummary extends ConsumerWidget {
                   ///
                   /// DIVIDER
                   ///
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   const Divider(
                     indent: 120,
                     endIndent: 120,
@@ -140,7 +140,7 @@ class WeatherCardSummary extends ConsumerWidget {
                     endIndent: 120,
                     color: PromajaColors.white,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
                   ///
                   /// CHART TITLE
@@ -162,7 +162,7 @@ class WeatherCardSummary extends ConsumerWidget {
                       style: PromajaTextStyles.settingsSubtitle,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 28),
 
                   ///
                   /// TEMPERATURE CHART
