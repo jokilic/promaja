@@ -9,7 +9,6 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
@@ -42,8 +41,6 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ref.read(activeSummaryWeatherProvider.notifier).state = widget.forecastWeather.forecastDays.first,
     );
-
-    ref.read(loggerProvider).f('Summary initialized');
   }
 
   @override

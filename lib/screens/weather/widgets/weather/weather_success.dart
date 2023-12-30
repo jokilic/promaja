@@ -33,11 +33,7 @@ class WeatherSuccess extends ConsumerWidget {
     required this.showhPa,
   });
 
-  void cardSwiped({
-    required int index,
-    required WidgetRef ref,
-    required double screenWidth,
-  }) {
+  void cardSwiped({required int index, required WidgetRef ref}) {
     if (ref.read(weatherCardIndexProvider) != index) {
       ref.read(weatherCardMovingProvider.notifier).state = false;
       ref.read(weatherCardIndexProvider.notifier).state = index;
@@ -55,11 +51,14 @@ class WeatherSuccess extends ConsumerWidget {
               ),
         );
       }
-      if (ref.read(weatherHoursControllerProvider(screenWidth)).hasClients) {
-        final scrollFactor = ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor();
 
+      if (ref.read(weatherHoursControllerProvider(index)).hasClients) {
         WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref.read(weatherHoursControllerProvider(screenWidth)).jumpTo(screenWidth * scrollFactor),
+          (_) => ref.read(weatherHoursControllerProvider(index)).animateToPage(
+                ((ref.read(weatherCardIndexProvider) == 0 ? DateTime.now().hour : 8) / 4).floor(),
+                duration: PromajaDurations.hoursScrollAnimation,
+                curve: Curves.easeIn,
+              ),
         );
       }
 
@@ -95,11 +94,7 @@ class WeatherSuccess extends ConsumerWidget {
               }
             },
             onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
-            onSwipe: (index, __) => cardSwiped(
-              index: index,
-              ref: ref,
-              screenWidth: MediaQuery.sizeOf(context).width,
-            ),
+            onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
             cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: location,
               forecast: forecastWeather.forecastDays[cardIndex],

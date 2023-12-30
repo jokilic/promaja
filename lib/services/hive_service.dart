@@ -313,12 +313,12 @@ class HiveService extends StateNotifier<List<Location>> {
     );
 
     // logger
-    //   ..f('\n📄 PROMAJA LOG 📃')
-    //   ..f('--------------------')
-    //   ..f('Text -> ${promajaLog.text}')
-    //   ..f('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
-    //   ..f('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
-    //   ..f('--------------------\n');
+    //   ..t('\n📄 PROMAJA LOG 📃')
+    //   ..t('--------------------')
+    //   ..t('Text -> ${promajaLog.text}')
+    //   ..t('Log level -> ${promajaLog.logGroup.name}${isError ? ' -> Error' : ''}')
+    //   ..t('Time -> ${DateFormat.Hms().format(promajaLog.time)}')
+    //   ..t('--------------------\n');
 
     addPromajaLogToBox(promajaLog: promajaLog);
   }

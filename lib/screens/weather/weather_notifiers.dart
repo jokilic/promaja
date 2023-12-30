@@ -43,17 +43,12 @@ final activeSummaryWeatherProvider = StateProvider.autoDispose<ForecastDayWeathe
   name: 'ActiveSummaryWeatherProvider',
 );
 
-final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, double>(
-  (ref, screenWidth) {
-    final controller = PageController();
-
-    ref.onDispose(controller.dispose);
-
-    final scrollFactor = (DateTime.now().hour / 4).floor();
-
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => controller.jumpTo(screenWidth * scrollFactor),
+final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, int>(
+  (ref, index) {
+    final controller = PageController(
+      initialPage: index == 0 ? (DateTime.now().hour / 4).floor() : 1,
     );
+    ref.onDispose(controller.dispose);
 
     return controller;
   },

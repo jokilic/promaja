@@ -13,7 +13,6 @@ import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
-import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
@@ -54,8 +53,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         (hour) => hour.timeEpoch.hour == DateTime.now().hour,
       ),
     );
-
-    ref.read(loggerProvider).f('Card initialized');
   }
 
   void weatherCardHourPressed({
@@ -371,35 +368,41 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                   /// HOURS
                   ///
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 8),
                     height: 160,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(top: 24, bottom: 16),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.forecast.hours.length,
+                    child: PageView.builder(
                       controller: ref.watch(
-                        weatherHoursControllerProvider(MediaQuery.sizeOf(context).width),
+                        weatherHoursControllerProvider(widget.index),
                       ),
-                      physics: const PageScrollPhysics(
-                        parent: BouncingScrollPhysics(),
-                      ),
-                      itemBuilder: (context, hourIndex) {
-                        final hourWeather = widget.forecast.hours[hourIndex];
-
-                        /// Return proper [ForecastHourSuccess]
-                        return WeatherCardHourSuccess(
-                          hourWeather: hourWeather,
-                          isActive: activeHourWeather == hourWeather,
-                          borderColor: backgroundColor,
-                          showCelsius: widget.showCelsius,
-                          onPressed: () => weatherCardHourPressed(
-                            hourWeather: hourWeather,
-                            activeHourWeather: activeHourWeather,
-                            ref: ref,
-                            index: widget.index,
+                      itemCount: (widget.forecast.hours.length / 4).round(),
+                      onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
+                            text: 'Hours swipe $index -> ${widget.location.name}, ${widget.location.country}',
+                            logGroup: PromajaLogGroup.forecastWeather,
                           ),
-                        );
-                      },
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, pageViewIndex) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          4,
+                          (listIndex) {
+                            final properIndex = (pageViewIndex * 4) + listIndex;
+                            final hourWeather = widget.forecast.hours[properIndex];
+
+                            return WeatherCardHourSuccess(
+                              hourWeather: hourWeather,
+                              isActive: activeHourWeather == hourWeather,
+                              borderColor: backgroundColor,
+                              showCelsius: widget.showCelsius,
+                              onPressed: () => weatherCardHourPressed(
+                                hourWeather: hourWeather,
+                                activeHourWeather: activeHourWeather,
+                                ref: ref,
+                                index: widget.index,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ],
