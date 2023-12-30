@@ -72,7 +72,7 @@ class WeatherSuccess extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(weatherCardIndexProvider);
-    final cardCount = forecastWeather.forecastDays.length;
+    final cardCount = 1 + forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
@@ -97,7 +97,8 @@ class WeatherSuccess extends ConsumerWidget {
             onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
             cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: location,
-              forecast: forecastWeather.forecastDays[cardIndex],
+              forecastWeather: forecastWeather,
+              forecast: forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
               index: cardIndex,
               isPhoneLocation: isPhoneLocation,
               showCelsius: showCelsius,

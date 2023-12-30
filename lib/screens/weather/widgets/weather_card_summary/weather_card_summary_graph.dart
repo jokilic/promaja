@@ -1,7 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -73,14 +73,19 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
                     touchTooltipData: LineTouchTooltipData(
                       tooltipRoundedRadius: 100,
                       tooltipBgColor: PromajaColors.indigo,
-                      getTooltipItems: (touchedSpots) => touchedSpots
-                          .map(
-                            (touchedSpot) => LineTooltipItem(
-                              '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}',
-                              PromajaTextStyles.summaryGraphTooltip,
+                      getTooltipItems: (touchedSpots) => touchedSpots.map(
+                        (touchedSpot) {
+                          final temperature = '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}';
+                          final hour = '${touchedSpot.x.round()}';
+
+                          return LineTooltipItem(
+                            'weatherSummaryGraphTooltip'.tr(
+                              args: [temperature, hour],
                             ),
-                          )
-                          .toList(),
+                            PromajaTextStyles.summaryGraphTooltip,
+                          );
+                        },
+                      ).toList(),
                       tooltipBorder: const BorderSide(
                         color: PromajaColors.white,
                         width: 2,

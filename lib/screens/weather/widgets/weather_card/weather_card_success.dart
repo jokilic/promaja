@@ -9,19 +9,23 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
+import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
+import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
+import '../weather_card_summary/weather_card_summary.dart';
 
 class WeatherCardSuccess extends ConsumerStatefulWidget {
   final Location location;
-  final ForecastDayWeather forecast;
+  final ForecastWeather? forecastWeather;
+  final ForecastDayWeather? forecast;
   final int index;
   final bool isPhoneLocation;
   final bool showCelsius;
@@ -31,6 +35,7 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
 
   const WeatherCardSuccess({
     required this.location,
+    required this.forecastWeather,
     required this.forecast,
     required this.index,
     required this.isPhoneLocation,
@@ -48,11 +53,16 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast.hours.firstWhere(
-        (hour) => hour.timeEpoch.hour == DateTime.now().hour,
-      ),
-    );
+
+    if (widget.forecast != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast!.hours.firstWhere(
+          (hour) => hour.timeEpoch.hour == DateTime.now().hour,
+        ),
+      );
+    }
+
+    ref.read(loggerProvider).f('Initialized -> ${widget.forecast == null}');
   }
 
   void weatherCardHourPressed({
@@ -101,9 +111,18 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.forecastWeather != null && widget.forecast == null) {
+      return WeatherCardSummary(
+        location: widget.location,
+        forecastWeather: widget.forecastWeather!,
+        isPhoneLocation: widget.isPhoneLocation,
+        showCelsius: widget.showCelsius,
+      );
+    }
+
     final activeHourWeather = ref.watch(activeHourWeatherProvider);
 
-    final weatherCode = widget.forecast.day.condition.code;
+    final weatherCode = widget.forecast!.day.condition.code;
 
     final backgroundColor = ref
         .watch(hiveProvider.notifier)
@@ -122,17 +141,17 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         .color;
 
     final weatherIcon = getWeatherIcon(
-      code: widget.forecast.day.condition.code,
+      code: widget.forecast!.day.condition.code,
       isDay: true,
     );
 
     final weatherDescription = getWeatherDescription(
-      code: widget.forecast.day.condition.code,
+      code: widget.forecast!.day.condition.code,
       isDay: true,
     );
 
-    final showRain = widget.forecast.day.dailyWillItRain == 1;
-    final showSnow = widget.forecast.day.dailyWillItSnow == 1;
+    final showRain = widget.forecast!.day.dailyWillItRain == 1;
+    final showSnow = widget.forecast!.day.dailyWillItSnow == 1;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(40),
@@ -170,7 +189,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                     children: [
                       const SizedBox(height: 24),
                       Text(
-                        getForecastDate(dateEpoch: widget.forecast.dateEpoch),
+                        getForecastDate(dateEpoch: widget.forecast!.dateEpoch),
                         style: PromajaTextStyles.weatherCardLastUpdated,
                         textAlign: TextAlign.center,
                       ),
@@ -245,7 +264,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   Text(
-                                    widget.showCelsius ? '${widget.forecast.day.minTempC.round()}' : '${widget.forecast.day.minTempF.round()}',
+                                    widget.showCelsius ? '${widget.forecast!.day.minTempC.round()}' : '${widget.forecast!.day.minTempF.round()}',
                                     style: PromajaTextStyles.weatherTemperatureMin,
                                     textAlign: TextAlign.center,
                                   ),
@@ -274,7 +293,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   Text(
-                                    widget.showCelsius ? '${widget.forecast.day.maxTempC.round()}' : '${widget.forecast.day.maxTempF.round()}',
+                                    widget.showCelsius ? '${widget.forecast!.day.maxTempC.round()}' : '${widget.forecast!.day.maxTempF.round()}',
                                     style: PromajaTextStyles.weatherTemperatureMax,
                                     textAlign: TextAlign.center,
                                   ),
@@ -326,7 +345,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                       width: 24,
                                     ),
                                     Text(
-                                      '${widget.forecast.day.dailyChanceOfRain}%',
+                                      '${widget.forecast!.day.dailyChanceOfRain}%',
                                       style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
                                       textAlign: TextAlign.center,
                                     ),
@@ -351,7 +370,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                                       width: 24,
                                     ),
                                     Text(
-                                      '${widget.forecast.day.dailyChanceOfSnow}%',
+                                      '${widget.forecast!.day.dailyChanceOfSnow}%',
                                       style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
                                       textAlign: TextAlign.center,
                                     ),
@@ -374,7 +393,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                       controller: ref.watch(
                         weatherHoursControllerProvider(widget.index),
                       ),
-                      itemCount: (widget.forecast.hours.length / 4).round(),
+                      itemCount: (widget.forecast!.hours.length / 4).round(),
                       onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
                             text: 'Hours swipe $index -> ${widget.location.name}, ${widget.location.country}',
                             logGroup: PromajaLogGroup.forecastWeather,
@@ -386,7 +405,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
                           4,
                           (listIndex) {
                             final properIndex = (pageViewIndex * 4) + listIndex;
-                            final hourWeather = widget.forecast.hours[properIndex];
+                            final hourWeather = widget.forecast!.hours[properIndex];
 
                             return WeatherCardHourSuccess(
                               hourWeather: hourWeather,

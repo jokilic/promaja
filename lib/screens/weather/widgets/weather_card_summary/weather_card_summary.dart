@@ -9,6 +9,7 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
@@ -18,14 +19,12 @@ import 'weather_card_summary_list_tile.dart';
 class WeatherCardSummary extends ConsumerStatefulWidget {
   final Location location;
   final ForecastWeather forecastWeather;
-  final bool useGradientOpacity;
   final bool isPhoneLocation;
   final bool showCelsius;
 
   const WeatherCardSummary({
     required this.location,
     required this.forecastWeather,
-    required this.useGradientOpacity,
     required this.isPhoneLocation,
     required this.showCelsius,
   });
@@ -41,6 +40,8 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ref.read(activeSummaryWeatherProvider.notifier).state = widget.forecastWeather.forecastDays.first,
     );
+
+    ref.read(loggerProvider).f('Initialized summary');
   }
 
   @override
@@ -181,14 +182,9 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                   ///
                   /// TEMPERATURE CHART
                   ///
-                  AnimatedOpacity(
-                    duration: PromajaDurations.opacityAnimation,
-                    curve: Curves.easeIn,
-                    opacity: widget.useGradientOpacity ? 0 : 1,
-                    child: WeatherCardSummaryGraph(
-                      forecastWeather: widget.forecastWeather,
-                      showCelsius: widget.showCelsius,
-                    ),
+                  WeatherCardSummaryGraph(
+                    forecastWeather: widget.forecastWeather,
+                    showCelsius: widget.showCelsius,
                   ),
                 ],
               ),
