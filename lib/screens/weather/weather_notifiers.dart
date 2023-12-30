@@ -19,6 +19,11 @@ final weatherCardMovingProvider = StateProvider<bool>(
   name: 'WeatherCardMovingProvider',
 );
 
+final weatherCardSummaryShowAnimationProvider = StateProvider.autoDispose<bool>(
+  (_) => true,
+  name: 'WeatherCardSummaryShowAnimationProvider',
+);
+
 final weatherCardHourAdditionalControllerProvider = Provider.autoDispose<PageController>(
   (ref) {
     final controller = PageController();

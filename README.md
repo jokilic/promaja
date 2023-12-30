@@ -37,4 +37,3 @@ Tweak settings, change units used to show the weather, update data that notifica
 ## Things I still want to do 👷‍♂️
 
 - [ ] Publish app on App Store
-- [ ] Create a 'main forecast card' in `WeatherScreen` with all forecast info for the relevant city

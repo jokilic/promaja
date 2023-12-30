@@ -35,6 +35,7 @@ class WeatherSuccess extends ConsumerWidget {
 
   void cardSwiped({required int index, required WidgetRef ref}) {
     if (ref.read(weatherCardIndexProvider) != index) {
+      ref.read(weatherCardSummaryShowAnimationProvider.notifier).state = false;
       ref.read(weatherCardMovingProvider.notifier).state = false;
       ref.read(weatherCardIndexProvider.notifier).state = index;
 
@@ -98,7 +99,7 @@ class WeatherSuccess extends ConsumerWidget {
             cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: location,
               forecastWeather: forecastWeather,
-              forecast: forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
+              forecast: cardIndex == 0 ? null : forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
               index: cardIndex,
               isPhoneLocation: isPhoneLocation,
               showCelsius: showCelsius,

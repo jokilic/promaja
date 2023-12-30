@@ -9,14 +9,13 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../services/logger_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 import 'weather_card_summary_graph.dart';
 import 'weather_card_summary_list_tile.dart';
 
-class WeatherCardSummary extends ConsumerStatefulWidget {
+class WeatherCardSummary extends ConsumerWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
@@ -30,22 +29,7 @@ class WeatherCardSummary extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherCardSummaryState();
-}
-
-class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(activeSummaryWeatherProvider.notifier).state = widget.forecastWeather.forecastDays.first,
-    );
-
-    ref.read(loggerProvider).f('Initialized summary');
-  }
-
-  @override
-  Widget build(BuildContext context) => ClipRRect(
+  Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
         borderRadius: BorderRadius.circular(40),
         child: Container(
           width: MediaQuery.sizeOf(context).width,
@@ -68,10 +52,11 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                 delay: PromajaDurations.weatherDataAnimationDelay,
                 interval: PromajaDurations.weatherDataAnimationDelay,
                 effects: [
-                  FadeEffect(
-                    curve: Curves.easeIn,
-                    duration: PromajaDurations.fadeAnimation,
-                  ),
+                  if (ref.watch(weatherCardSummaryShowAnimationProvider))
+                    FadeEffect(
+                      curve: Curves.easeIn,
+                      duration: PromajaDurations.fadeAnimation,
+                    ),
                 ],
                 children: [
                   SizedBox(
@@ -95,12 +80,12 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                       clipBehavior: Clip.none,
                       children: [
                         Text(
-                          '${widget.location.name}, ${widget.location.country}',
-                          maxLines: 2,
+                          '${location.name}, ${location.country}',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: PromajaTextStyles.settingsTitle,
                         ),
-                        if (widget.isPhoneLocation)
+                        if (isPhoneLocation)
                           Positioned(
                             right: -44,
                             top: 0,
@@ -119,7 +104,7 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                   ///
                   /// DIVIDER
                   ///
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   const Divider(
                     indent: 120,
                     endIndent: 120,
@@ -133,15 +118,15 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: widget.forecastWeather.forecastDays.length,
+                    itemCount: forecastWeather.forecastDays.length,
                     itemBuilder: (_, index) {
-                      final forecast = widget.forecastWeather.forecastDays[index];
+                      final forecast = forecastWeather.forecastDays[index];
 
                       return WeatherCardSummaryListTile(
                         forecast: forecast,
                         onPressed: () => ref.read(activeSummaryWeatherProvider.notifier).state = forecast,
                         isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
-                        showCelsius: widget.showCelsius,
+                        showCelsius: showCelsius,
                       );
                     },
                   ),
@@ -149,13 +134,13 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                   ///
                   /// DIVIDER
                   ///
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   const Divider(
                     indent: 120,
                     endIndent: 120,
                     color: PromajaColors.white,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
 
                   ///
                   /// CHART TITLE
@@ -177,14 +162,14 @@ class _WeatherCardSummaryState extends ConsumerState<WeatherCardSummary> {
                       style: PromajaTextStyles.settingsSubtitle,
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 32),
 
                   ///
                   /// TEMPERATURE CHART
                   ///
                   WeatherCardSummaryGraph(
-                    forecastWeather: widget.forecastWeather,
-                    showCelsius: widget.showCelsius,
+                    forecastWeather: forecastWeather,
+                    showCelsius: showCelsius,
                   ),
                 ],
               ),
