@@ -27,7 +27,7 @@ class ListScreen extends ConsumerWidget {
         ],
         child: SafeArea(
           child: AnimatedSwitcher(
-            duration: PromajaDurations.cardSwiperAnimation,
+            duration: PromajaDurations.fadeAnimation,
             switchInCurve: Curves.easeIn,
             switchOutCurve: Curves.easeIn,
             child: locations.isEmpty

@@ -6,6 +6,7 @@ import 'package:grouped_list/grouped_list.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
+import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
@@ -93,11 +94,11 @@ class LoggingScreen extends ConsumerWidget {
                   ref.read(loggingProvider.notifier).updateLogs(visibleLevel: newLogGroup);
 
                   ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Log group -> ${newLogGroup != null ? '${newLogGroup.name.substring(0, 1).toUpperCase()}${newLogGroup.name.substring(1)}' : 'All'}',
+                        text: 'Log group -> ${newLogGroup != null ? '${newLogGroup.substring(0, 1).toUpperCase()}${newLogGroup.substring(1)}' : 'All'}',
                         logGroup: PromajaLogGroup.logging,
                       );
                 },
-                activeValue: logs.logGroup != null ? localizeLogGroup(logs.logGroup!) : 'loggingAll'.tr(),
+                activeValue: ref.read(loggingProvider.notifier).getLocalizedLogValue(logs.logGroup),
                 subtitle: 'loggingLogGroup'.tr(),
               ),
 
@@ -106,27 +107,58 @@ class LoggingScreen extends ConsumerWidget {
               ///
               /// LOGS
               ///
-              GroupedListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                elements: logs.list,
-                groupBy: (log) => DateTime(log.time.year, log.time.month, log.time.day).toIso8601String(),
-                groupSeparatorBuilder: (groupByValue) => Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
-                  child: Text(
-                    getForecastDate(dateEpoch: DateTime.parse(groupByValue)),
-                    style: PromajaTextStyles.settingsSubtitle,
-                  ),
+              AnimatedSize(
+                duration: PromajaDurations.checkAnimation,
+                curve: Curves.easeIn,
+                child: AnimatedSwitcher(
+                  duration: PromajaDurations.checkAnimation,
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeIn,
+                  child: logs.list.isNotEmpty
+                      ? GroupedListView(
+                          key: ValueKey(logs.logGroup),
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          elements: logs.list,
+                          groupBy: (log) => DateTime(log.time.year, log.time.month, log.time.day).toIso8601String(),
+                          groupSeparatorBuilder: (groupByValue) => Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
+                            child: Text(
+                              getForecastDate(dateEpoch: DateTime.parse(groupByValue)),
+                              style: PromajaTextStyles.settingsSubtitle,
+                            ),
+                          ),
+                          itemBuilder: (_, log) => LoggingListTile(
+                            onTap: () {},
+                            group: log.logGroup.name,
+                            text: log.text,
+                            time: DateFormat.Hm().format(log.time),
+                            isError: log.isError,
+                          ),
+                          itemComparator: (log1, log2) => log1.time.compareTo(log2.time),
+                          order: GroupedListOrder.DESC,
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(height: 32),
+                            Image.asset(
+                              PromajaIcons.noLogging,
+                              height: 120,
+                              width: 120,
+                            ),
+                            const SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 80),
+                              child: Text(
+                                'loggingNoData'.tr(),
+                                style: PromajaTextStyles.settingsSubtitle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
-                itemBuilder: (_, log) => LoggingListTile(
-                  onTap: () {},
-                  group: log.logGroup.name,
-                  text: log.text,
-                  time: DateFormat.Hm().format(log.time),
-                  isError: log.isError,
-                ),
-                itemComparator: (log1, log2) => log1.time.compareTo(log2.time),
-                order: GroupedListOrder.DESC,
               ),
             ],
           ),

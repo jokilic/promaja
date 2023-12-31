@@ -9,7 +9,7 @@ import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../services/logger_service.dart';
 
-final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({List<PromajaLog> list, PromajaLogGroup? logGroup})>(
+final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({List<PromajaLog> list, String? logGroup})>(
   (ref) => LoggingNotifier(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
@@ -17,7 +17,7 @@ final loggingProvider = StateNotifierProvider.autoDispose<LoggingNotifier, ({Lis
   name: 'LoggingProvider',
 );
 
-class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogGroup? logGroup})> {
+class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, String? logGroup})> {
   ///
   /// CONSTRUCTOR
   ///
@@ -30,7 +30,7 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogG
     required this.hive,
   }) : super((
           list: hive.getPromajaLogsFromBox(),
-          logGroup: null,
+          logGroup: 'all',
         ));
 
   ///
@@ -45,15 +45,48 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogG
 
   /// Updates state with only logs of `visibleLevel`
   /// If no `visibleLevel` is passed, it gives a full list of logs
-  void updateLogs({PromajaLogGroup? visibleLevel}) {
+  void updateLogs({String? visibleLevel}) {
     final logs = hive.getPromajaLogsFromBox();
-    final newList = visibleLevel != null ? logs.where((log) => log.logGroup == visibleLevel).toList() : logs;
 
-    state = (list: newList, logGroup: visibleLevel);
+    /// User picked `All`
+    if (visibleLevel == 'all') {
+      state = (list: logs, logGroup: visibleLevel);
+      return;
+    }
+
+    /// User picked `Errors`
+    if (visibleLevel == 'errors') {
+      final newList = logs.where((log) => log.isError).toList();
+      state = (list: newList, logGroup: visibleLevel);
+      return;
+    }
+
+    /// User picked one of the `PromajaLogGroup` values
+    if (visibleLevel != null) {
+      final newList = logs.where((log) => log.logGroup.name == visibleLevel).toList();
+      state = (list: newList, logGroup: visibleLevel);
+    }
+  }
+
+  /// Returns proper value for the `active log`
+  String getLocalizedLogValue(String? logGroup) {
+    if (logGroup == 'all') {
+      return 'loggingAll'.tr();
+    }
+
+    if (logGroup == 'errors') {
+      return 'loggingErrors'.tr();
+    }
+
+    if (logGroup != null) {
+      return localizeLogGroup(PromajaLogGroup.values.byName(logGroup));
+    }
+
+    return 'No value';
   }
 
   /// Opens popup menu which chooses logging group
-  Future<PromajaLogGroup?> showLogGroupPopupMenu(BuildContext context) async {
+  Future<String?> showLogGroupPopupMenu(BuildContext context) async {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
     final top = tapDownDetails?.globalPosition.dy ?? 0;
 
@@ -73,16 +106,27 @@ class LoggingNotifier extends StateNotifier<({List<PromajaLog> list, PromajaLogG
       ),
       items: [
         PopupMenuItem(
+          value: 'all',
           padding: const EdgeInsets.all(20),
           child: Text(
             'loggingAll'.tr(),
             style: PromajaTextStyles.settingsPopupMenuItem,
           ),
         ),
+        PopupMenuItem(
+          value: 'errors',
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'loggingErrors'.tr(),
+            style: PromajaTextStyles.settingsPopupMenuItem.copyWith(
+              color: PromajaColors.red,
+            ),
+          ),
+        ),
         ...logGroups
             .map(
               (logGroup) => PopupMenuItem(
-                value: logGroup,
+                value: logGroup.name,
                 padding: const EdgeInsets.all(20),
                 child: Text(
                   localizeLogGroup(logGroup),

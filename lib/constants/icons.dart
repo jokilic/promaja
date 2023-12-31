@@ -6,6 +6,7 @@ class PromajaIcons {
   static const settings = 'assets/icons/settings.png';
   static const search = 'assets/icons/search.png';
   static const location = 'assets/icons/location.png';
+  static const noLogging = 'assets/icons/nologging.png';
   static const umbrella = 'assets/icons/umbrella.png';
   static const snow = 'assets/icons/snow.png';
   static const wind = 'assets/icons/wind.png';
