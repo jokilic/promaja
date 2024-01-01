@@ -29,6 +29,10 @@ class ListCards extends ConsumerWidget {
     required Location location,
     required int index,
   }) async {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    final locationsBeforeDelete = ref.read(hiveProvider);
+
     await ref.read(hiveProvider.notifier).deleteLocationFromBox(
           passedLocation: location,
           index: index,
@@ -46,6 +50,17 @@ class ListCards extends ConsumerWidget {
             args: [location.name, location.country],
           ),
           style: PromajaTextStyles.snackbar,
+        ),
+        action: SnackBarAction(
+          label: 'undo'.tr().toUpperCase(),
+          textColor: PromajaColors.white,
+          onPressed: () async {
+            await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
+            ref.read(hiveProvider.notifier).logPromajaEvent(
+                  text: 'Undo -> ${location.name}, ${location.country}',
+                  logGroup: PromajaLogGroup.list,
+                );
+          },
         ),
         backgroundColor: PromajaColors.indigo,
         behavior: SnackBarBehavior.floating,
