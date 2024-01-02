@@ -43,6 +43,8 @@ class ListCards extends ConsumerWidget {
           logGroup: PromajaLogGroup.list,
         );
 
+    final showUndo = ref.read(hiveProvider).isNotEmpty;
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -51,17 +53,19 @@ class ListCards extends ConsumerWidget {
           ),
           style: PromajaTextStyles.snackbar,
         ),
-        action: SnackBarAction(
-          label: 'undo'.tr().toUpperCase(),
-          textColor: PromajaColors.white,
-          onPressed: () async {
-            await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
-            ref.read(hiveProvider.notifier).logPromajaEvent(
-                  text: 'Undo -> ${location.name}, ${location.country}',
-                  logGroup: PromajaLogGroup.list,
-                );
-          },
-        ),
+        action: showUndo
+            ? SnackBarAction(
+                label: 'undo'.tr().toUpperCase(),
+                textColor: PromajaColors.white,
+                onPressed: () async {
+                  await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
+                  ref.read(hiveProvider.notifier).logPromajaEvent(
+                        text: 'Undo -> ${location.name}, ${location.country}',
+                        logGroup: PromajaLogGroup.list,
+                      );
+                },
+              )
+            : null,
         backgroundColor: PromajaColors.indigo,
         behavior: SnackBarBehavior.floating,
         elevation: 0,
