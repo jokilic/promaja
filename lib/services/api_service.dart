@@ -21,7 +21,7 @@ final apiProvider = Provider<APIService>(
     dio: ref.watch(dioProvider).dio,
     hive: ref.watch(hiveProvider.notifier),
   ),
-  name: 'APIService',
+  name: 'APIProvider',
 );
 
 class APIService {

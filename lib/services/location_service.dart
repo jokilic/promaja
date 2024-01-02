@@ -10,7 +10,7 @@ final locationProvider = Provider<LocationService>(
     logger: ref.watch(loggerProvider),
     hive: ref.watch(hiveProvider.notifier),
   ),
-  name: 'LocationService',
+  name: 'LocationProvider',
 );
 
 class LocationService {

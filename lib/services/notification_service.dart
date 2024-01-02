@@ -42,10 +42,6 @@ final notificationProvider = Provider<NotificationService>(
 );
 
 class NotificationService {
-  ///
-  /// CONSTRUCTOR
-  ///
-
   final LoggerService logger;
   final HiveService hive;
   final APIService api;

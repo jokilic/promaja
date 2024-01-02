@@ -250,6 +250,10 @@ class SettingsScreen extends ConsumerWidget {
                                     );
                               },
                           ),
+                          const TextSpan(
+                            text: '.',
+                            style: PromajaTextStyles.settingsText,
+                          ),
                         ],
                       ),
                     ),
