@@ -8,7 +8,6 @@
     "error": "Greška",
     "currentWeather": "Trenutno vrijeme",
     "weatherSummary": "Pregled vremena",
-    "weatherSummaryGraphTitle": "Temperature za {}",
     "weatherSummaryGraphTooltip": "{} u {}h",
     "weirdErrorHappened": "Neka čudna greška se dogodila",
     "noMoreThanXLocations": "Ne možeš imati više od {} lokacija",

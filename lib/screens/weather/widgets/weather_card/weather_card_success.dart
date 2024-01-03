@@ -74,6 +74,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     if (activeHourWeather == hourWeather) {
       ref.read(activeHourWeatherProvider.notifier).state = null;
       ref.read(showWeatherTopContainerProvider.notifier).state = false;
+
       ref.read(weatherCardControllerProvider(index)).animateTo(
             0,
             duration: PromajaDurations.scrollAnimation,
@@ -94,6 +95,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }
+
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
               ref.read(weatherCardControllerProvider(index)).position.maxScrollExtent,

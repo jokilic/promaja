@@ -86,3 +86,12 @@ final weatherCardControllerProvider = Provider.autoDispose.family<ScrollControll
   },
   name: 'WeatherCardControllerProvider',
 );
+
+final weatherSummaryProvider = Provider.autoDispose<ScrollController>(
+  (ref) {
+    final controller = ScrollController();
+    ref.onDispose(controller.dispose);
+    return controller;
+  },
+  name: 'WeatherSummaryProvider',
+);

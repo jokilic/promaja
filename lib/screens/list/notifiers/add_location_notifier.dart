@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../constants/durations.dart';
 import '../../../models/error/response_error.dart';
 import '../../../models/location/location.dart';
 import '../../../models/promaja_log/promaja_log_level.dart';
@@ -99,7 +100,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         WidgetsBinding.instance.addPostFrameCallback(
           (_) => scrollController.animateTo(
             scrollController.positions.last.maxScrollExtent,
-            duration: const Duration(seconds: 1),
+            duration: PromajaDurations.scrollAnimation,
             curve: Curves.fastOutSlowIn,
           ),
         );
@@ -175,7 +176,7 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => scrollController.animateTo(
           scrollController.positions.last.maxScrollExtent,
-          duration: const Duration(seconds: 1),
+          duration: PromajaDurations.scrollAnimation,
           curve: Curves.fastOutSlowIn,
         ),
       );

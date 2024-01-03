@@ -8,7 +8,6 @@
     "error": "Error",
     "currentWeather": "Current weather",
     "weatherSummary": "Weather summary",
-    "weatherSummaryGraphTitle": "Temperatures for {}",
     "weatherSummaryGraphTooltip": "{} at {}h",
     "weirdErrorHappened": "Some weird error happened",
     "noMoreThanXLocations": "You can't have more than {} locations",

@@ -7,6 +7,7 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
+import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 
 class WeatherCardSummaryGraph extends ConsumerWidget {
@@ -23,7 +24,8 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
     final activeSummaryWeather = ref.watch(activeSummaryWeatherProvider);
 
     return Center(
-      child: SizedBox(
+      child: Container(
+        padding: const EdgeInsets.only(right: 24),
         height: 136,
         width: MediaQuery.sizeOf(context).width - 40,
         child: Row(
@@ -63,15 +65,33 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
                       tooltipBgColor: PromajaColors.indigo,
                       getTooltipItems: (touchedSpots) => touchedSpots.map(
                         (touchedSpot) {
-                          final temperature = '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}';
-                          final hour = '${touchedSpot.x.round()}';
-
-                          return LineTooltipItem(
-                            'weatherSummaryGraphTooltip'.tr(
-                              args: [temperature, hour],
-                            ),
-                            PromajaTextStyles.summaryGraphTooltip,
+                          final hour = touchedSpot.x.round();
+                          final touchedHourWeather = activeSummaryWeather?.hours.firstWhere(
+                            (hourWeather) => hourWeather.timeEpoch.hour == hour,
                           );
+
+                          if (touchedHourWeather != null) {
+                            final description = getWeatherDescription(
+                              code: touchedHourWeather.condition.code,
+                              isDay: touchedHourWeather.isDay == 1,
+                            );
+
+                            return LineTooltipItem(
+                              'weatherSummaryGraphTooltip'.tr(
+                                args: [description, '${touchedHourWeather.timeEpoch.hour}'],
+                              ),
+                              PromajaTextStyles.summaryGraphTooltip,
+                            );
+                          } else {
+                            final temperature = '${touchedSpot.y.round()}°${showCelsius ? 'C' : 'F'}';
+
+                            return LineTooltipItem(
+                              'weatherSummaryGraphTooltip'.tr(
+                                args: [temperature, '$hour'],
+                              ),
+                              PromajaTextStyles.summaryGraphTooltip,
+                            );
+                          }
                         },
                       ).toList(),
                       tooltipBorder: const BorderSide(

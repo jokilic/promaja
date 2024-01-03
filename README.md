@@ -36,4 +36,4 @@ Tweak settings, change units used to show the weather, update data that notifica
 
 ## Things I still want to do 👷‍♂️
 
-- [ ] Nothing for now
+- [ ]  Pogledaj zašto se ne prikazuje home widget ako je release build na iOS-u

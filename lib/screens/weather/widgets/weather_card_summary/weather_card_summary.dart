@@ -10,7 +10,6 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
-import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 import 'weather_card_summary_graph.dart';
 import 'weather_card_summary_list_tile.dart';
@@ -46,6 +45,7 @@ class WeatherCardSummary extends ConsumerWidget {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
             child: ListView(
+              controller: ref.watch(weatherSummaryProvider),
               padding: EdgeInsets.zero,
               physics: const BouncingScrollPhysics(),
               children: AnimateList(
@@ -127,7 +127,17 @@ class WeatherCardSummary extends ConsumerWidget {
 
                       return WeatherCardSummaryListTile(
                         forecast: forecast,
-                        onPressed: () => ref.read(activeSummaryWeatherProvider.notifier).state = forecast,
+                        onPressed: () async {
+                          ref.read(activeSummaryWeatherProvider.notifier).state = forecast;
+
+                          WidgetsBinding.instance.addPostFrameCallback(
+                            (_) => ref.read(weatherSummaryProvider).animateTo(
+                                  ref.read(weatherSummaryProvider).positions.last.maxScrollExtent,
+                                  duration: PromajaDurations.scrollAnimation,
+                                  curve: Curves.fastOutSlowIn,
+                                ),
+                          );
+                        },
                         isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
                         showCelsius: showCelsius,
                       );
@@ -143,33 +153,7 @@ class WeatherCardSummary extends ConsumerWidget {
                     endIndent: 120,
                     color: PromajaColors.white,
                   ),
-                  const SizedBox(height: 12),
-
-                  ///
-                  /// CHART TITLE
-                  ///
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: AnimatedOpacity(
-                      opacity: ref.watch(weatherCardIndexProvider) == 0 ? 1 : 0,
-                      duration: PromajaDurations.opacityAnimation,
-                      curve: Curves.easeIn,
-                      child: Text(
-                        'weatherSummaryGraphTitle'.tr(
-                          args: [
-                            getForecastDate(
-                              dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
-                              isLowercase: true,
-                            ),
-                          ],
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: PromajaTextStyles.settingsSubtitle,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 36),
+                  const SizedBox(height: 28),
 
                   ///
                   /// TEMPERATURE CHART
@@ -178,7 +162,6 @@ class WeatherCardSummary extends ConsumerWidget {
                     forecastWeather: forecastWeather,
                     showCelsius: showCelsius,
                   ),
-
                   const SizedBox(height: 40),
                 ],
               ),
