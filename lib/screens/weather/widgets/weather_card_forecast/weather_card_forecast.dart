@@ -252,69 +252,79 @@ class WeatherCardForecast extends ConsumerWidget {
                           const SizedBox(height: 4),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 80),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              clipBehavior: Clip.none,
-                              children: [
-                                ///
-                                /// WEATHER DESCRIPTION
-                                ///
-                                Text(
-                                  weatherDescription,
-                                  style: PromajaTextStyles.currentWeather,
-                                  textAlign: TextAlign.center,
-                                ),
-
-                                ///
-                                /// CHANCE OF RAIN
-                                ///
-                                if (showRain && !showSnow)
-                                  Positioned(
-                                    right: -40,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          PromajaIcons.umbrella,
-                                          color: PromajaColors.white,
-                                          height: 24,
-                                          width: 24,
-                                        ),
-                                        Text(
-                                          '${forecast.day.dailyChanceOfRain}%',
-                                          style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  ///
+                                  /// WEATHER DESCRIPTION
+                                  ///
+                                  TextSpan(
+                                    text: weatherDescription,
                                   ),
 
-                                ///
-                                /// CHANCE OF SNOW
-                                ///
-                                if (showSnow)
-                                  Positioned(
-                                    right: -40,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          PromajaIcons.snow,
-                                          color: PromajaColors.white,
-                                          height: 24,
-                                          width: 24,
-                                        ),
-                                        Text(
-                                          '${forecast.day.dailyChanceOfSnow}%',
-                                          style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
+                                  ///
+                                  /// CHANCE OF RAIN
+                                  ///
+                                  if (showRain && !showSnow) ...[
+                                    const WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: SizedBox(width: 8),
                                     ),
-                                  ),
-                              ],
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            PromajaIcons.umbrella,
+                                            color: PromajaColors.white,
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                          Text(
+                                            '${forecast.day.dailyChanceOfRain}%',
+                                            style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+
+                                  ///
+                                  /// CHANCE OF SNOW
+                                  ///
+                                  if (showSnow) ...[
+                                    const WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: SizedBox(width: 8),
+                                    ),
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            PromajaIcons.snow,
+                                            color: PromajaColors.white,
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                          Text(
+                                            '${forecast.day.dailyChanceOfSnow}%',
+                                            style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                              style: PromajaTextStyles.currentWeather,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ],

@@ -108,26 +108,27 @@ class CardSuccess extends ConsumerWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 2),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: location.name,
-                      ),
-                      if (isPhoneLocation)
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Image.asset(
-                            PromajaIcons.location,
-                            height: 24,
-                            width: 24,
-                            color: PromajaColors.white,
-                          ),
+                Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: [
+                    Text(
+                      location.name,
+                      style: PromajaTextStyles.currentLocation,
+                      textAlign: TextAlign.center,
+                    ),
+                    if (isPhoneLocation)
+                      Positioned(
+                        left: -32,
+                        top: 4,
+                        child: Image.asset(
+                          PromajaIcons.location,
+                          height: 24,
+                          width: 24,
+                          color: PromajaColors.white,
                         ),
-                    ],
-                  ),
-                  style: PromajaTextStyles.currentLocation,
-                  textAlign: TextAlign.center,
+                      ),
+                  ],
                 ),
               ],
             ),

@@ -151,70 +151,80 @@ class ForecastHomeWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        ///
-                        /// WEATHER DESCRIPTION
-                        ///
-                        Text(
-                          weatherDescription,
-                          style: PromajaTextStyles.homeWidgetDescription,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-
-                        ///
-                        /// CHANCE OF RAIN
-                        ///
-                        if (showRain && !showSnow)
-                          Positioned(
-                            right: -28,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image(
-                                  image: umbrellaIconWidget,
-                                  color: PromajaColors.white,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                Text(
-                                  '$dailyChanceOfRain%',
-                                  style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          ///
+                          /// WEATHER DESCRIPTION
+                          ///
+                          TextSpan(
+                            text: weatherDescription,
                           ),
 
-                        ///
-                        /// CHANCE OF SNOW
-                        ///
-                        if (showSnow)
-                          Positioned(
-                            right: -28,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image(
-                                  image: snowIconWidget,
-                                  color: PromajaColors.white,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                Text(
-                                  '$dailyChanceOfSnow%',
-                                  style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                          ///
+                          /// CHANCE OF RAIN
+                          ///
+                          if (showRain && !showSnow) ...[
+                            const WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: SizedBox(width: 4),
                             ),
-                          ),
-                      ],
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image: umbrellaIconWidget,
+                                    color: PromajaColors.white,
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '$dailyChanceOfRain%',
+                                    style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+
+                          ///
+                          /// CHANCE OF SNOW
+                          ///
+                          if (showSnow) ...[
+                            const WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: SizedBox(width: 4),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image: snowIconWidget,
+                                    color: PromajaColors.white,
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '$dailyChanceOfSnow%',
+                                    style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      style: PromajaTextStyles.homeWidgetDescription,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

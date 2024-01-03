@@ -79,9 +79,13 @@ class WeatherCardSummary extends ConsumerWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: '${location.name}, ${location.country} ',
+                            text: '${location.name}, ${location.country}',
                           ),
-                          if (isPhoneLocation)
+                          if (!isPhoneLocation) ...[
+                            const WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: SizedBox(width: 8),
+                            ),
                             WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
                               child: Image.asset(
@@ -91,6 +95,7 @@ class WeatherCardSummary extends ConsumerWidget {
                                 color: PromajaColors.white,
                               ),
                             ),
+                          ]
                         ],
                       ),
                       maxLines: 2,

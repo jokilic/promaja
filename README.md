@@ -36,5 +36,4 @@ Tweak settings, change units used to show the weather, update data that notifica
 
 ## Things I still want to do 👷‍♂️
 
-- [ ] Publish app on App Store
-- [ ] Text.rich instead of those Stack widgets
+- [ ] Nothing for now

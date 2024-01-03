@@ -115,6 +115,12 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// WEATHER CARD SUMMARY
     ///
     if (widget.forecast == null) {
+      // return Container(
+      //   height: 200,
+      //   width: 200,
+      //   color: Colors.pink,
+      // );
+
       return WeatherCardSummary(
         location: widget.location,
         forecastWeather: widget.forecastWeather,
