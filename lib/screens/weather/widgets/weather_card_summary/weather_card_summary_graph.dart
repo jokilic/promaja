@@ -22,18 +22,6 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeSummaryWeather = ref.watch(activeSummaryWeatherProvider);
 
-    final minHourWeather = activeSummaryWeather?.hours.reduce(
-      (currentMax, weather) => (showCelsius ? (currentMax.tempC < weather.tempC) : (currentMax.tempF > weather.tempF)) ? currentMax : weather,
-    );
-    final maxHourWeather = activeSummaryWeather?.hours.reduce(
-      (currentMax, weather) => (showCelsius ? (currentMax.tempC > weather.tempC) : (currentMax.tempF > weather.tempF)) ? currentMax : weather,
-    );
-
-    final minTemp = showCelsius ? minHourWeather?.tempC : minHourWeather?.tempF;
-    final maxTemp = showCelsius ? maxHourWeather?.tempC : maxHourWeather?.tempF;
-
-    final interval = ((minTemp ?? 1) + (maxTemp ?? 1)) / 2;
-
     return Center(
       child: SizedBox(
         height: 136,
@@ -101,7 +89,7 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
                           style: PromajaTextStyles.summaryGraphTitles,
                         ),
                         showTitles: true,
-                        interval: interval,
+                        interval: 100,
                       ),
                     ),
                     bottomTitles: AxisTitles(
@@ -123,8 +111,6 @@ class WeatherCardSummaryGraph extends ConsumerWidget {
                   borderData: FlBorderData(
                     show: false,
                   ),
-                  minY: minTemp != null ? minTemp - 2 : null,
-                  maxY: maxTemp != null ? maxTemp + 2 : null,
                 ),
                 duration: PromajaDurations.summaryGraphAnimation,
                 curve: Curves.easeIn,
