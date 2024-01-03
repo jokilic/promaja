@@ -45,9 +45,9 @@ class WeatherCardSummary extends ConsumerWidget {
           ),
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
               children: AnimateList(
                 delay: PromajaDurations.weatherDataAnimationDelay,
                 interval: PromajaDurations.weatherDataAnimationDelay,
@@ -60,7 +60,7 @@ class WeatherCardSummary extends ConsumerWidget {
                 ],
                 children: [
                   SizedBox(
-                    height: MediaQuery.paddingOf(context).top + 24,
+                    height: MediaQuery.paddingOf(context).top + 40,
                   ),
 
                   ///
@@ -75,29 +75,27 @@ class WeatherCardSummary extends ConsumerWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        Text(
-                          '${location.name}, ${location.country}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: PromajaTextStyles.settingsTitle,
-                        ),
-                        if (isPhoneLocation)
-                          Positioned(
-                            right: -44,
-                            top: 0,
-                            bottom: 0,
-                            child: Image.asset(
-                              PromajaIcons.location,
-                              height: 32,
-                              width: 32,
-                              color: PromajaColors.white,
-                            ),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${location.name}, ${location.country} ',
                           ),
-                      ],
+                          if (isPhoneLocation)
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Image.asset(
+                                PromajaIcons.location,
+                                height: 32,
+                                width: 32,
+                                color: PromajaColors.white,
+                              ),
+                            ),
+                        ],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: PromajaTextStyles.settingsTitle,
                     ),
                   ),
 
@@ -147,22 +145,26 @@ class WeatherCardSummary extends ConsumerWidget {
                   ///
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'weatherSummaryGraphTitle'.tr(
-                        args: [
-                          getForecastDate(
-                            dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
-                            isShortMonth: true,
-                            isLowercase: true,
-                          ),
-                        ],
+                    child: AnimatedOpacity(
+                      opacity: ref.watch(weatherCardIndexProvider) == 0 ? 1 : 0,
+                      duration: PromajaDurations.opacityAnimation,
+                      curve: Curves.easeIn,
+                      child: Text(
+                        'weatherSummaryGraphTitle'.tr(
+                          args: [
+                            getForecastDate(
+                              dateEpoch: ref.watch(activeSummaryWeatherProvider)?.dateEpoch ?? DateTime.now(),
+                              isLowercase: true,
+                            ),
+                          ],
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: PromajaTextStyles.settingsSubtitle,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: PromajaTextStyles.settingsSubtitle,
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 36),
 
                   ///
                   /// TEMPERATURE CHART
@@ -171,6 +173,8 @@ class WeatherCardSummary extends ConsumerWidget {
                     forecastWeather: forecastWeather,
                     showCelsius: showCelsius,
                   ),
+
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

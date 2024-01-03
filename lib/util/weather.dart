@@ -6,7 +6,6 @@ import '../constants/icons.dart';
 
 String getForecastDate({
   required DateTime dateEpoch,
-  bool isShortMonth = false,
   bool isLowercase = false,
 }) {
   /// Current date and time
@@ -25,7 +24,7 @@ String getForecastDate({
   } else if (passedDate.isAtSameMomentAs(tomorrow)) {
     return isLowercase ? 'tomorrow'.tr().toLowerCase() : 'tomorrow'.tr();
   } else {
-    return isShortMonth ? DateFormat.MMMd().format(dateEpoch) : DateFormat.MMMMd().format(dateEpoch);
+    return DateFormat.MMMMd().format(dateEpoch);
   }
 }
 

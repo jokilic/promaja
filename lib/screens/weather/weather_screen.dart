@@ -40,7 +40,7 @@ class WeatherScreen extends ConsumerWidget {
           ),
         ],
         child: originalLocation != null
-            ? ref.watch(getForecastWeatherProvider((location: originalLocation!, days: 3))).when(
+            ? ref.watch(getForecastWeatherProvider((location: originalLocation!, days: 5))).when(
                   data: (data) {
                     ///
                     /// DATA SUCCESSFULLY FETCHED
@@ -69,7 +69,7 @@ class WeatherScreen extends ConsumerWidget {
                       isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                       refreshPressed: () => ref.invalidate(
                         getForecastWeatherProvider(
-                          (location: originalLocation!, days: 3),
+                          (location: originalLocation!, days: 5),
                         ),
                       ),
                     );
@@ -80,7 +80,7 @@ class WeatherScreen extends ConsumerWidget {
                     isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                     refreshPressed: () => ref.invalidate(
                       getForecastWeatherProvider(
-                        (location: originalLocation!, days: 3),
+                        (location: originalLocation!, days: 5),
                       ),
                     ),
                   ),

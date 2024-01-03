@@ -63,6 +63,10 @@ class WeatherSuccess extends ConsumerWidget {
         );
       }
 
+      if (ref.read(weatherCardIndexProvider) == 0) {
+        ref.read(activeSummaryWeatherProvider.notifier).state = forecastWeather.forecastDays.first;
+      }
+
       ref.read(hiveProvider.notifier).logPromajaEvent(
             text: 'Card swipe -> ${location.name}, ${location.country}',
             logGroup: PromajaLogGroup.forecastWeather,

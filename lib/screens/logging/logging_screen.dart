@@ -124,7 +124,9 @@ class LoggingScreen extends ConsumerWidget {
                           groupSeparatorBuilder: (groupByValue) => Padding(
                             padding: const EdgeInsets.fromLTRB(24, 24, 24, 4),
                             child: Text(
-                              getForecastDate(dateEpoch: DateTime.parse(groupByValue)),
+                              getForecastDate(
+                                dateEpoch: DateTime.parse(groupByValue),
+                              ),
                               style: PromajaTextStyles.settingsSubtitle,
                             ),
                           ),

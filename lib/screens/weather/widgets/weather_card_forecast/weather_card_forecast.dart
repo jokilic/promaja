@@ -124,7 +124,9 @@ class WeatherCardForecast extends ConsumerWidget {
                         children: [
                           const SizedBox(height: 24),
                           Text(
-                            getForecastDate(dateEpoch: forecast.dateEpoch),
+                            getForecastDate(
+                              dateEpoch: forecast.dateEpoch,
+                            ),
                             style: PromajaTextStyles.weatherCardLastUpdated,
                             textAlign: TextAlign.center,
                           ),

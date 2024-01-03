@@ -37,7 +37,6 @@ class WeatherCardSummaryListTile extends StatelessWidget {
           title: Text(
             getForecastDate(
               dateEpoch: forecast.dateEpoch,
-              isShortMonth: true,
             ),
             style: PromajaTextStyles.settingsSubtitle,
           ),
@@ -46,7 +45,7 @@ class WeatherCardSummaryListTile extends StatelessWidget {
               code: forecast.day.condition.code,
               isDay: true,
             ),
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: PromajaTextStyles.settingsText,
           ),
