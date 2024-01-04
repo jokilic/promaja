@@ -46,13 +46,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
   void initState() {
     super.initState();
 
-    /// Initialize [WeatherCardSummary]
-    if (widget.forecast == null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(activeSummaryWeatherProvider.notifier).state = widget.forecastWeather.forecastDays.first,
-      );
-    }
-
     /// Initialize [WeatherCardForecast]
     if (widget.forecast != null) {
       WidgetsBinding.instance.addPostFrameCallback(

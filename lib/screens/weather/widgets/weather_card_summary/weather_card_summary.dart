@@ -11,7 +11,6 @@ import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 import '../../weather_notifiers.dart';
-import 'weather_card_summary_graph.dart';
 import 'weather_card_summary_list_tile.dart';
 
 class WeatherCardSummary extends ConsumerWidget {
@@ -45,7 +44,6 @@ class WeatherCardSummary extends ConsumerWidget {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
             child: ListView(
-              controller: ref.watch(weatherSummaryProvider),
               padding: EdgeInsets.zero,
               physics: const BouncingScrollPhysics(),
               children: AnimateList(
@@ -60,7 +58,7 @@ class WeatherCardSummary extends ConsumerWidget {
                 ],
                 children: [
                   SizedBox(
-                    height: MediaQuery.paddingOf(context).top + 40,
+                    height: MediaQuery.paddingOf(context).top + 32,
                   ),
 
                   ///
@@ -127,41 +125,12 @@ class WeatherCardSummary extends ConsumerWidget {
 
                       return WeatherCardSummaryListTile(
                         forecast: forecast,
-                        onPressed: () async {
-                          ref.read(activeSummaryWeatherProvider.notifier).state = forecast;
-
-                          WidgetsBinding.instance.addPostFrameCallback(
-                            (_) => ref.read(weatherSummaryProvider).animateTo(
-                                  ref.read(weatherSummaryProvider).positions.last.maxScrollExtent,
-                                  duration: PromajaDurations.scrollAnimation,
-                                  curve: Curves.fastOutSlowIn,
-                                ),
-                          );
-                        },
-                        isSelected: ref.watch(activeSummaryWeatherProvider) == forecast,
+                        onPressed: () {},
                         showCelsius: showCelsius,
                       );
                     },
                   ),
 
-                  ///
-                  /// DIVIDER
-                  ///
-                  const SizedBox(height: 4),
-                  const Divider(
-                    indent: 120,
-                    endIndent: 120,
-                    color: PromajaColors.white,
-                  ),
-                  const SizedBox(height: 28),
-
-                  ///
-                  /// TEMPERATURE CHART
-                  ///
-                  WeatherCardSummaryGraph(
-                    forecastWeather: forecastWeather,
-                    showCelsius: showCelsius,
-                  ),
                   const SizedBox(height: 40),
                 ],
               ),

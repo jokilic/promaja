@@ -10,20 +10,17 @@ class WeatherCardSummaryListTile extends StatelessWidget {
   final ForecastDayWeather forecast;
   final Function() onPressed;
   final bool showCelsius;
-  final bool isSelected;
 
   const WeatherCardSummaryListTile({
     required this.forecast,
     required this.onPressed,
     required this.showCelsius,
-    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) => Material(
         color: Colors.transparent,
         child: ListTile(
-          selected: isSelected,
           selectedTileColor: PromajaColors.white.withOpacity(0.15),
           onTap: onPressed,
           shape: RoundedRectangleBorder(

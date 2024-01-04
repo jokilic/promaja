@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/error/response_error.dart';
-import '../../models/forecast_weather/forecast_day_weather.dart';
 import '../../models/forecast_weather/hour_weather.dart';
 import '../../models/forecast_weather/response_forecast_weather.dart';
 import '../../models/location/location.dart';
@@ -48,11 +47,6 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   name: 'ActiveWeatherProvider',
 );
 
-final activeSummaryWeatherProvider = StateProvider.autoDispose<ForecastDayWeather?>(
-  (_) => null,
-  name: 'ActiveSummaryWeatherProvider',
-);
-
 final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, int>(
   (ref, index) {
     final controller = PageController(
@@ -85,13 +79,4 @@ final weatherCardControllerProvider = Provider.autoDispose.family<ScrollControll
     return controller;
   },
   name: 'WeatherCardControllerProvider',
-);
-
-final weatherSummaryProvider = Provider.autoDispose<ScrollController>(
-  (ref) {
-    final controller = ScrollController();
-    ref.onDispose(controller.dispose);
-    return controller;
-  },
-  name: 'WeatherSummaryProvider',
 );
