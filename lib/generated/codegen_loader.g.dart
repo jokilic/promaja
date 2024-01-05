@@ -16,6 +16,7 @@ class CodegenLoader extends AssetLoader{
 
   static const Map<String,dynamic> en = {
   "appNameString": "Promaja",
+  "okay": "Okay",
   "today": "Today",
   "tomorrow": "Tomorrow",
   "noMoreLocations": "No more locations",
@@ -66,6 +67,9 @@ class CodegenLoader extends AssetLoader{
   "eveningNotificationSubtitle": "Each night, show a notification with forecast for tomorrow",
   "testNotificationTitle": "Test notification",
   "testNotificationSubtitle": "Show a test notification on your device",
+  "notificationDialog1": "When Promaja is not running, notifications get triggered when the system decides.",
+  "notificationDialog2": "This is a system limitation which cannot be worked around.",
+  "notificationDialog3": "I can't guarantee it, but I hope you will have a stable notification experience.",
   "widgetTitle": "Widget",
   "widgetSubtitle": "Data shown in widget which is displayed on your home screen",
   "widgetDescription": "Regarding the widget which can be shown on the home screen of your device.",
@@ -247,6 +251,7 @@ class CodegenLoader extends AssetLoader{
 };
 static const Map<String,dynamic> hr = {
   "appNameString": "Promaja",
+  "okay": "U redu",
   "today": "Danas",
   "tomorrow": "Sutra",
   "noMoreLocations": "Nema više lokacija",
@@ -297,6 +302,9 @@ static const Map<String,dynamic> hr = {
   "eveningNotificationSubtitle": "Svaku večer prikaži notifikaciju sa sutrašnjom prognozom",
   "testNotificationTitle": "Isprobaj notifikaciju",
   "testNotificationSubtitle": "Prikaži testnu notifikaciju na svom uređaju",
+  "notificationDialog1": "Kada Promaja ne radi, obavijesti se aktiviraju kada sustav odluči.",
+  "notificationDialog2": "Ovo je ograničenje sustava koje se ne može zaobići.",
+  "notificationDialog3": "Ne mogu garantirati, ali nadam se da ćete imati stabilne obavijesti.",
   "widgetTitle": "Widget",
   "widgetSubtitle": "Podaci prikazani u widgetu koji je prikazan na početnom zaslonu",
   "widgetDescription": "U vezi widgeta koji možete prikazati na početnom zaslonu vašeg uređaja.",

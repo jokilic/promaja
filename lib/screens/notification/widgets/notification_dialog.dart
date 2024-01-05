@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/colors.dart';
@@ -13,21 +14,21 @@ class NotificationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AlertDialog(
         elevation: 0,
-        content: const Column(
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'When Promaja is not running, notifications get triggered when the system decides.',
+              'notificationDialog1'.tr(),
               style: PromajaTextStyles.settingsDialog,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
-              'This is a system limitation which I cannot work around.',
+              'notificationDialog2'.tr(),
               style: PromajaTextStyles.settingsDialog,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
-              "I can't guarantee it, but I hope you have a stable notification experience.",
+              'notificationDialog3'.tr(),
               style: PromajaTextStyles.settingsDialog,
             ),
           ],
@@ -43,7 +44,7 @@ class NotificationDialog extends StatelessWidget {
             ),
             onPressed: onPressed,
             child: Text(
-              'Okay'.toUpperCase(),
+              'okay'.tr().toUpperCase(),
               style: PromajaTextStyles.settingsDialogButton,
             ),
           ),
