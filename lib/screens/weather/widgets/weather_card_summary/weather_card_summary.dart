@@ -123,10 +123,21 @@ class WeatherCardSummary extends ConsumerWidget {
                     itemBuilder: (_, index) {
                       final forecast = forecastWeather.forecastDays[index];
 
-                      return WeatherCardSummaryListTile(
-                        forecast: forecast,
-                        onPressed: () {},
-                        showCelsius: showCelsius,
+                      return Animate(
+                        key: ValueKey(location),
+                        delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                        effects: [
+                          if (ref.watch(weatherCardSummaryShowAnimationProvider))
+                            FadeEffect(
+                              curve: Curves.easeIn,
+                              duration: PromajaDurations.fadeAnimation,
+                            ),
+                        ],
+                        child: WeatherCardSummaryListTile(
+                          forecast: forecast,
+                          onPressed: () {},
+                          showCelsius: showCelsius,
+                        ),
                       );
                     },
                   ),
