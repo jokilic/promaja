@@ -450,7 +450,9 @@ class NotificationService {
       );
 
       const title = 'Hourly notification';
-      final text = 'Hello! Current weather in <b>$locationName</b> is <b>${weatherDescription.toLowerCase()}</b> with a temperature of <b>$temp</b>.';
+      final text = Platform.isAndroid
+          ? 'Hello! Current weather in <b>$locationName</b> is <b>${weatherDescription.toLowerCase()}</b> with a temperature of <b>$temp</b>.'
+          : 'Hello! Current weather in $locationName is ${weatherDescription.toLowerCase()} with a temperature of $temp.';
 
       await showNotification(
         title: title,
@@ -502,8 +504,9 @@ class NotificationService {
         final whichDay = isEvening ? 'Tomorrow' : 'Today';
 
         final title = '$partOfDay notification';
-        final text =
-            'Good ${partOfDay.toLowerCase()}! $whichDay the weather in <b>$locationName</b> will be <b>${weatherDescription.toLowerCase()}</b> with a temperature between <b>$minTemp</b> and <b>$maxTemp</b>.';
+        final text = Platform.isAndroid
+            ? 'Good ${partOfDay.toLowerCase()}! $whichDay the weather in <b>$locationName</b> will be <b>${weatherDescription.toLowerCase()}</b> with a temperature between <b>$minTemp</b> and <b>$maxTemp</b>.'
+            : 'Good ${partOfDay.toLowerCase()}! $whichDay the weather in $locationName will be ${weatherDescription.toLowerCase()} with a temperature between $minTemp and $maxTemp.';
 
         await showNotification(
           title: title,

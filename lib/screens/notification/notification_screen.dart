@@ -15,6 +15,7 @@ import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
+import 'widgets/notification_dialog.dart';
 
 class NotificationScreen extends ConsumerStatefulWidget {
   @override
@@ -26,13 +27,20 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   void initState() {
     super.initState();
 
-    // if (ref.read(settingsProvider.notifier).showNotificationDialog) {
-    if (true) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog();
-        },
+    /// Show notification dialog if necessary
+    if (ref.read(settingsProvider.notifier).showNotificationDialog) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => showDialog(
+          context: context,
+          barrierColor: PromajaColors.black.withOpacity(0.6),
+          barrierDismissible: false,
+          builder: (context) => NotificationDialog(
+            onPressed: () {
+              ref.read(hiveProvider.notifier).addNotificationDialogShownToBox();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
       );
     }
   }

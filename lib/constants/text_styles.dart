@@ -194,6 +194,17 @@ class PromajaTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static const settingsDialog = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    height: 1.45,
+  );
+  static const settingsDialogButton = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
   static const settingsAbbreviation = TextStyle(
     color: PromajaColors.white,
     fontSize: 22,

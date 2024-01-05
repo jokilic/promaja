@@ -40,6 +40,7 @@ class HiveService extends StateNotifier<List<Location>> {
   late final Box<PromajaSettings> promajaSettingsBox;
   late final Box<NotificationLastShown> notificationLastShownBox;
   late final Box<PromajaLog> promajaLogBox;
+  late final Box<bool> notificationDialogShownBox;
 
   late final PromajaSettings defaultSettings;
 
@@ -117,6 +118,7 @@ class HiveService extends StateNotifier<List<Location>> {
     promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
     notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
     promajaLogBox = await Hive.openBox<PromajaLog>('promajaLogBox');
+    notificationDialogShownBox = await Hive.openBox<bool>('notificationDialogShownBox');
 
     state = getLocationsFromBox();
 
@@ -155,6 +157,7 @@ class HiveService extends StateNotifier<List<Location>> {
     await promajaSettingsBox.close();
     await notificationLastShownBox.close();
     await promajaLogBox.close();
+    await notificationDialogShownBox.close();
 
     await Hive.close();
   }
@@ -177,6 +180,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to add a new active [Location] index to [Hive]
   Future<void> addActiveLocationIndexToBox({required int index}) async => activeLocationIndexBox.put(0, index);
+
+  /// Called to add notification dialog shown to [Hive]
+  Future<void> addNotificationDialogShownToBox() async => notificationDialogShownBox.put(0, true);
 
   /// Called to add [CustomColor] to [Hive]
   Future<void> addCustomColorToBox({required CustomColor customColor}) async {
@@ -225,6 +231,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to get notification last shown from [Hive]
   NotificationLastShown? getNotificationLastShownFromBox() => notificationLastShownBox.get(0);
+
+  /// Called to get notification dialog shown from [Hive]
+  bool getNotificationDialogShownFromBox() => notificationDialogShownBox.get(0) ?? false;
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -59,6 +61,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         updateWidgetLocation(locations.first);
       }
     }
+
+    showNotificationDialog = shouldShowNotificationDialog();
   }
 
   ///
@@ -66,6 +70,8 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   ///
 
   TapDownDetails? tapDownDetails;
+
+  late bool showNotificationDialog;
 
   ///
   /// METHODS
@@ -80,6 +86,9 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   ///
   /// NOTIFICATIONS
   ///
+
+  /// Returns if notification dialog should be shown when opening `Notifications`
+  bool shouldShowNotificationDialog() => Platform.isIOS && !hive.getNotificationDialogShownFromBox();
 
   /// Opens popup menu which chooses location to be used in notifications
   Future<Location?> showNotificationLocationPopupMenu(BuildContext context) async {
