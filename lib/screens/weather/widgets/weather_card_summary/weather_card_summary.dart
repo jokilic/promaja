@@ -79,7 +79,7 @@ class WeatherCardSummary extends ConsumerWidget {
                           TextSpan(
                             text: '${location.name}, ${location.country}',
                           ),
-                          if (!isPhoneLocation) ...[
+                          if (isPhoneLocation) ...[
                             const WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
                               child: SizedBox(width: 8),
