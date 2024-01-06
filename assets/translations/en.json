@@ -51,7 +51,7 @@
     "eveningNotificationSubtitle": "Each night, show a notification with forecast for tomorrow",
     "testNotificationTitle": "Test notification",
     "testNotificationSubtitle": "Show a test notification on your device",
-    "notificationDialog1": "When Promaja is not running, notifications get triggered when the system decides.",
+    "notificationDialog1": "If Promaja is not running, notifications get shown when the system decides.",
     "notificationDialog2": "This is a system limitation which cannot be worked around.",
     "notificationDialog3": "I can't guarantee it, but I hope you will have a stable notification experience.",
     "widgetTitle": "Widget",

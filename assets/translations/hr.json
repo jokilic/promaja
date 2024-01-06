@@ -51,7 +51,7 @@
     "eveningNotificationSubtitle": "Svaku večer prikaži notifikaciju sa sutrašnjom prognozom",
     "testNotificationTitle": "Isprobaj notifikaciju",
     "testNotificationSubtitle": "Prikaži testnu notifikaciju na svom uređaju",
-    "notificationDialog1": "Kada Promaja ne radi, obavijesti se aktiviraju kada sustav odluči.",
+    "notificationDialog1": "Ako Promaja ne radi, obavijesti se prikazuju kad sustav odluči.",
     "notificationDialog2": "Ovo je ograničenje sustava koje se ne može zaobići.",
     "notificationDialog3": "Ne mogu garantirati, ali nadam se da ćete imati stabilne obavijesti.",
     "widgetTitle": "Widget",
