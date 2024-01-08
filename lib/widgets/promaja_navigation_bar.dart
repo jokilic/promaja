@@ -12,14 +12,12 @@ import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
-import '../services/home_widget_service.dart';
 import '../services/logger_service.dart';
 
 final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
   (ref) => PromajaNavigationBarController(
     logger: ref.watch(loggerProvider),
     hiveService: ref.watch(hiveProvider.notifier),
-    homeWidgetService: ref.watch(homeWidgetProvider),
   ),
   name: 'NavigationBarIndexProvider',
 );
@@ -46,12 +44,10 @@ enum NavigationBarItems { cards, weather, list, settings }
 class PromajaNavigationBarController extends StateNotifier<int> {
   final LoggerService logger;
   final HiveService hiveService;
-  final HomeWidgetService homeWidgetService;
 
   PromajaNavigationBarController({
     required this.logger,
     required this.hiveService,
-    required this.homeWidgetService,
   }) : super(2) {
     state = getInitialNavigationBarIndex();
   }
