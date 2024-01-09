@@ -32,7 +32,7 @@ class WeatherCardSummaryListTile extends StatelessWidget {
             vertical: 8,
           ),
           title: Text(
-            getForecastDate(
+            getTodayDateMonth(
               dateEpoch: forecast.dateEpoch,
             ),
             style: PromajaTextStyles.settingsSubtitle,

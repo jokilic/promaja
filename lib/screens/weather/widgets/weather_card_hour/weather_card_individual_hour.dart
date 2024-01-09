@@ -66,7 +66,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               Text(
-                hourWeather != null ? getForecastDate(dateEpoch: hourWeather!.timeEpoch) : '',
+                hourWeather != null ? getTodayDateMonth(dateEpoch: hourWeather!.timeEpoch) : '',
                 style: PromajaTextStyles.currentLastUpdated,
                 textAlign: TextAlign.center,
               ),
