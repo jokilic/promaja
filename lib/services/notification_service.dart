@@ -298,7 +298,7 @@ class NotificationService {
   /// Returns a random weather joke
   String getRandomWeatherJoke() {
     final random = Random();
-    final index = random.nextInt(15);
+    final index = random.nextInt(50);
     return 'weatherJoke${index + 1}'.tr();
   }
 
