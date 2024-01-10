@@ -140,6 +140,8 @@ class HiveService extends StateNotifier<List<Location>> {
         pressure: PressureUnit.hectopascal,
       ),
     );
+
+    await deleteOldLogs();
   }
 
   ///
@@ -322,4 +324,16 @@ class HiveService extends StateNotifier<List<Location>> {
           isError: isError,
         ),
       );
+
+  /// Deletes logs which are older than the passed number of days
+  Future<void> deleteOldLogs({int days = 3}) async {
+    /// Generate logs with values newer than passed number of days
+    final logs = getPromajaLogsFromBox();
+    final timeAgo = DateTime.now().subtract(Duration(days: days));
+    logs.removeWhere((log) => log.time.isBefore(timeAgo));
+
+    /// Delete all entries & store new logs in box
+    await promajaLogBox.clear();
+    await promajaLogBox.addAll(logs);
+  }
 }
