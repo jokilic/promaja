@@ -281,7 +281,7 @@ class NotificationService {
       if (permissionsGranted) {
         /// Show notification
         await showNotification(
-          title: 'Test notification',
+          title: 'testNotificationTitle'.tr(),
           text: getRandomWeatherJoke(),
           notificationType: NotificationType.test,
         );
@@ -449,10 +449,21 @@ class NotificationService {
         isDay: currentWeather.current.isDay == 1,
       );
 
-      const title = 'Hourly notification';
-      final text = Platform.isAndroid
-          ? 'Hello! Current weather in <b>$locationName</b> is <b>${weatherDescription.toLowerCase()}</b> with a temperature of <b>$temp</b>.'
-          : 'Hello! Current weather in $locationName is ${weatherDescription.toLowerCase()} with a temperature of $temp.';
+      final title = 'hourlyNotificationTitle'.tr();
+
+      final text = 'hourlyNotificationText'.tr(
+        args: Platform.isAndroid
+            ? [
+                '<b>$locationName</b>',
+                '<b>${weatherDescription.toLowerCase()}</b>',
+                '<b>$temp</b>',
+              ]
+            : [
+                locationName,
+                weatherDescription.toLowerCase(),
+                temp,
+              ],
+      );
 
       await showNotification(
         title: title,
@@ -500,13 +511,39 @@ class NotificationService {
           isDay: true,
         );
 
-        final partOfDay = isEvening ? 'Evening' : 'Morning';
-        final whichDay = isEvening ? 'Tomorrow' : 'Today';
+        final title = isEvening ? 'eveningNotificationTitle'.tr() : 'morningNotificationTitle'.tr();
 
-        final title = '$partOfDay notification';
-        final text = Platform.isAndroid
-            ? 'Good ${partOfDay.toLowerCase()}! $whichDay the weather in <b>$locationName</b> will be <b>${weatherDescription.toLowerCase()}</b> with a temperature between <b>$minTemp</b> and <b>$maxTemp</b>.'
-            : 'Good ${partOfDay.toLowerCase()}! $whichDay the weather in $locationName will be ${weatherDescription.toLowerCase()} with a temperature between $minTemp and $maxTemp.';
+        final text = isEvening
+            ? 'eveningNotificationText'.tr(
+                args: Platform.isAndroid
+                    ? [
+                        '<b>$locationName</b>',
+                        '<b>${weatherDescription.toLowerCase()}</b>',
+                        '<b>$minTemp</b>',
+                        '<b>$maxTemp</b>',
+                      ]
+                    : [
+                        locationName,
+                        weatherDescription.toLowerCase(),
+                        minTemp,
+                        maxTemp,
+                      ],
+              )
+            : 'morningNotificationText'.tr(
+                args: Platform.isAndroid
+                    ? [
+                        '<b>$locationName</b>',
+                        '<b>${weatherDescription.toLowerCase()}</b>',
+                        '<b>$minTemp</b>',
+                        '<b>$maxTemp</b>',
+                      ]
+                    : [
+                        locationName,
+                        weatherDescription.toLowerCase(),
+                        minTemp,
+                        maxTemp,
+                      ],
+              );
 
         await showNotification(
           title: title,
