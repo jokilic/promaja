@@ -45,7 +45,7 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
   Future<void> refreshPhoneLocation() async {
     /// Check if phone location is active
     final hasPhoneLocation = hiveService.state.any(
-      (location) => location.isPhoneLocation,
+      (location) => location.isPhoneLocation ?? false,
     );
 
     /// Enable phone location with new position
@@ -132,15 +132,15 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
   /// Checks if phone location is active and removes it
   Future<void> removeActivePhoneLocation() async {
     final hasPhoneLocation = hiveService.state.any(
-      (location) => location.isPhoneLocation,
+      (location) => location.isPhoneLocation ?? false,
     );
 
     if (hasPhoneLocation) {
       final phoneLocation = hiveService.state.firstWhere(
-        (location) => location.isPhoneLocation,
+        (location) => location.isPhoneLocation ?? false,
       );
       final phoneLocationIndex = hiveService.state.indexWhere(
-        (location) => location.isPhoneLocation,
+        (location) => location.isPhoneLocation ?? false,
       );
 
       await hiveService.deleteLocationFromBox(

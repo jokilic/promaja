@@ -17,7 +17,7 @@ class Location extends HiveObject {
   @HiveField(5)
   final double lon;
   @HiveField(6)
-  final bool isPhoneLocation;
+  final bool? isPhoneLocation;
 
   Location({
     required this.name,

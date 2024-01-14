@@ -62,7 +62,7 @@ class ListCardWidget extends ConsumerWidget {
 
                     return ListCardSuccess(
                       locationName: fetchedLocation.name,
-                      isPhoneLocation: location.isPhoneLocation,
+                      isPhoneLocation: location.isPhoneLocation ?? false,
                       currentWeather: currentWeather,
                       onTap: onTap,
                       showCelsius: showCelsius,
@@ -74,7 +74,7 @@ class ListCardWidget extends ConsumerWidget {
                   ///
                   return ListCardError(
                     locationName: location.name,
-                    isPhoneLocation: location.isPhoneLocation,
+                    isPhoneLocation: location.isPhoneLocation ?? false,
                     error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                     onTap: onTap,
                   );
@@ -85,7 +85,7 @@ class ListCardWidget extends ConsumerWidget {
                 ///
                 error: (error, _) => ListCardError(
                   locationName: location.name,
-                  isPhoneLocation: location.isPhoneLocation,
+                  isPhoneLocation: location.isPhoneLocation ?? false,
                   error: '$error',
                   onTap: () {},
                 ),
@@ -95,7 +95,7 @@ class ListCardWidget extends ConsumerWidget {
                 ///
                 loading: () => ListCardLoading(
                   locationName: location.name,
-                  isPhoneLocation: location.isPhoneLocation,
+                  isPhoneLocation: location.isPhoneLocation ?? false,
                   onTap: onTap,
                 ),
               ),

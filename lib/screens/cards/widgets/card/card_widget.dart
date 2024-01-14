@@ -38,7 +38,7 @@ class CardWidget extends ConsumerWidget {
                   return CardSuccess(
                     location: location,
                     currentWeather: currentWeather,
-                    isPhoneLocation: originalLocation.isPhoneLocation,
+                    isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                     showCelsius: showCelsius,
                     showKph: showKph,
                     showMm: showMm,
@@ -52,7 +52,7 @@ class CardWidget extends ConsumerWidget {
                 return CardError(
                   location: originalLocation,
                   error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
-                  isPhoneLocation: originalLocation.isPhoneLocation,
+                  isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                   refreshPressed: () => ref.invalidate(
                     getCurrentWeatherProvider(originalLocation),
                   ),
@@ -65,7 +65,7 @@ class CardWidget extends ConsumerWidget {
               error: (error, _) => CardError(
                 location: originalLocation,
                 error: '$error',
-                isPhoneLocation: originalLocation.isPhoneLocation,
+                isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                 refreshPressed: () => ref.invalidate(
                   getCurrentWeatherProvider(originalLocation),
                 ),

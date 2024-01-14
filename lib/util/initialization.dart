@@ -1,5 +1,7 @@
 // ignore_for_file: implementation_imports
 
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
@@ -30,7 +32,9 @@ Future<ProviderContainer?> initializeServices() async {
       ..read(loggerProvider)
       ..read(dioProvider);
 
-    await container.read(backgroundFetchInitProvider.future);
+    if (Platform.isAndroid || Platform.isIOS) {
+      await container.read(backgroundFetchInitProvider.future);
+    }
 
     final hive = container.read(hiveProvider.notifier);
     await hive.init();

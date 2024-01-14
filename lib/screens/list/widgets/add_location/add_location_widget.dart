@@ -34,7 +34,7 @@ class AddLocationWidget extends ConsumerWidget {
 
     final isLoadingPhone = ref.watch(phoneLocationProvider).loading;
     final hasPhoneLocation = ref.watch(hiveProvider).any(
-          (location) => location.isPhoneLocation,
+          (location) => location.isPhoneLocation ?? false,
         );
 
     ///

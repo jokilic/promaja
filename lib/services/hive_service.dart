@@ -265,7 +265,7 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
-    final hasPhoneLocation = state.any((location) => location.isPhoneLocation);
+    final hasPhoneLocation = state.any((location) => location.isPhoneLocation ?? false);
 
     /// User tried moving [AddLocationResult]
     /// User tried moving location below [AddLocationResult]
