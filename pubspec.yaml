@@ -1,7 +1,7 @@
 name: promaja
 description: Weather app made in Flutter.
 publish_to: 'none'
-version: 1.5.6+156
+version: 1.5.7+157
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  animated_reorderable_list: 0.0.7
   animated_shimmer: 1.0.0
   appinio_swiper: 2.0.3
   background_fetch: 1.2.1

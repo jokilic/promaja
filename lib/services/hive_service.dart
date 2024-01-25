@@ -265,38 +265,9 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
-    final hasPhoneLocation = state.any((location) => location.isPhoneLocation ?? false);
-
-    /// User tried moving [AddLocationResult]
-    /// User tried moving location below [AddLocationResult]
-    if (oldIndex == state.length || newIndex > state.length) {
-      logPromajaEvent(
-        text: 'Reorder -> Faulty move',
-        logGroup: PromajaLogGroup.list,
-        isError: true,
-      );
-      return;
-    }
-
-    /// Phone location is active and user tried moving it or moving some location above it
-    if (hasPhoneLocation && (oldIndex == 0 || newIndex == 0)) {
-      logPromajaEvent(
-        text: 'Reorder -> Phone location moved',
-        logGroup: PromajaLogGroup.list,
-        isError: true,
-      );
-      return;
-    }
-
-    var index = newIndex;
-
-    if (oldIndex < newIndex) {
-      index -= 1;
-    }
-
     /// Modify `state`
     final item = state.removeAt(oldIndex);
-    state.insert(index, item);
+    state.insert(newIndex, item);
 
     /// Modify [Hive]
     await locationsBox.clear();
