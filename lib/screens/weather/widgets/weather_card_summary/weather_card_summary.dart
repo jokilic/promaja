@@ -34,7 +34,7 @@ class WeatherCardSummary extends ConsumerWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                lightenColor(PromajaColors.indigo),
+                lightenColor(PromajaColors.black),
                 darkenColor(PromajaColors.indigo),
               ],
               begin: Alignment.topRight,
