@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 part 'location.g.dart';
@@ -60,10 +58,6 @@ class Location extends HiveObject {
         lat: map['lat'] as double,
         lon: map['lon'] as double,
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory Location.fromJson(String source) => Location.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'Location(name: $name, region: $region, country: $country, lat: $lat, lon: $lon, isPhoneLocation: $isPhoneLocation)';

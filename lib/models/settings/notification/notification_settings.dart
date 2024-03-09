@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import '../../location/location.dart';
@@ -50,10 +48,6 @@ class NotificationSettings extends HiveObject {
         morningNotification: map['morningNotification'] as bool,
         eveningNotification: map['eveningNotification'] as bool,
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory NotificationSettings.fromJson(String source) => NotificationSettings.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>

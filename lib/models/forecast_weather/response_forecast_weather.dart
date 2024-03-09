@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../current_weather/current_weather.dart';
 import '../location/location.dart';
 import 'forecast_weather.dart';
@@ -15,32 +13,11 @@ class ResponseForecastWeather {
     required this.forecast,
   });
 
-  ResponseForecastWeather copyWith({
-    Location? location,
-    CurrentWeather? current,
-    ForecastWeather? forecast,
-  }) =>
-      ResponseForecastWeather(
-        location: location ?? this.location,
-        current: current ?? this.current,
-        forecast: forecast ?? this.forecast,
-      );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'location': location.toMap(),
-        'current': current.toMap(),
-        'forecast': forecast.toMap(),
-      };
-
   factory ResponseForecastWeather.fromMap(Map<String, dynamic> map) => ResponseForecastWeather(
         location: Location.fromMap(map['location'] as Map<String, dynamic>),
         current: CurrentWeather.fromMap(map['current'] as Map<String, dynamic>),
         forecast: ForecastWeather.fromMap(map['forecast'] as Map<String, dynamic>),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory ResponseForecastWeather.fromJson(String source) => ResponseForecastWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ResponseForecastWeather(location: $location, current: $current, forecast: $forecast)';

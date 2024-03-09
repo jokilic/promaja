@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -20,32 +18,11 @@ class CustomColor extends HiveObject {
     required this.color,
   });
 
-  CustomColor copyWith({
-    int? code,
-    bool? isDay,
-    Color? color,
-  }) =>
-      CustomColor(
-        code: code ?? this.code,
-        isDay: isDay ?? this.isDay,
-        color: color ?? this.color,
-      );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'code': code,
-        'isDay': isDay,
-        'color': color,
-      };
-
   factory CustomColor.fromMap(Map<String, dynamic> map) => CustomColor(
         code: map['code'] as int,
         isDay: map['isDay'] as bool,
         color: map['color'] as Color,
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory CustomColor.fromJson(String source) => CustomColor.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'CustomColor(code: $code, isDay: $isDay, color: $color)';

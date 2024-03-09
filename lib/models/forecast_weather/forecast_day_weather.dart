@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 
 import 'day_weather.dart';
@@ -16,17 +14,6 @@ class ForecastDayWeather {
     required this.hours,
   });
 
-  ForecastDayWeather copyWith({
-    DateTime? dateEpoch,
-    DayWeather? day,
-    List<HourWeather>? hours,
-  }) =>
-      ForecastDayWeather(
-        dateEpoch: dateEpoch ?? this.dateEpoch,
-        day: day ?? this.day,
-        hours: hours ?? this.hours,
-      );
-
   Map<String, dynamic> toMap() => <String, dynamic>{
         'date_epoch': dateEpoch.millisecondsSinceEpoch,
         'day': day.toMap(),
@@ -42,10 +29,6 @@ class ForecastDayWeather {
           ),
         ),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory ForecastDayWeather.fromJson(String source) => ForecastDayWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ForecastDayWeather(dateEpoch: $dateEpoch, day: $day, hours: $hours)';

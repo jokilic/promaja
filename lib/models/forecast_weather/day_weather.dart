@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../condition/condition.dart';
 
 class DayWeather {
@@ -25,29 +23,6 @@ class DayWeather {
     required this.condition,
   });
 
-  DayWeather copyWith({
-    double? maxTempC,
-    double? maxTempF,
-    double? minTempC,
-    double? minTempF,
-    int? dailyWillItRain,
-    int? dailyChanceOfRain,
-    int? dailyWillItSnow,
-    int? dailyChanceOfSnow,
-    Condition? condition,
-  }) =>
-      DayWeather(
-        maxTempC: maxTempC ?? this.maxTempC,
-        maxTempF: maxTempF ?? this.maxTempF,
-        minTempC: minTempC ?? this.minTempC,
-        minTempF: minTempF ?? this.minTempF,
-        dailyWillItRain: dailyWillItRain ?? this.dailyWillItRain,
-        dailyChanceOfRain: dailyChanceOfRain ?? this.dailyChanceOfRain,
-        dailyWillItSnow: dailyWillItSnow ?? this.dailyWillItSnow,
-        dailyChanceOfSnow: dailyChanceOfSnow ?? this.dailyChanceOfSnow,
-        condition: condition ?? this.condition,
-      );
-
   Map<String, dynamic> toMap() => <String, dynamic>{
         'maxtemp_c': maxTempC,
         'maxtemp_f': maxTempF,
@@ -71,10 +46,6 @@ class DayWeather {
         dailyChanceOfSnow: map['daily_chance_of_snow'] as int,
         condition: Condition.fromMap(map['condition'] as Map<String, dynamic>),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory DayWeather.fromJson(String source) => DayWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>

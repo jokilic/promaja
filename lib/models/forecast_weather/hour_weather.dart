@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../condition/condition.dart';
 
 class HourWeather {
@@ -57,61 +55,6 @@ class HourWeather {
     required this.uv,
   });
 
-  HourWeather copyWith({
-    DateTime? timeEpoch,
-    double? tempC,
-    double? tempF,
-    int? isDay,
-    Condition? condition,
-    double? windKph,
-    double? windMph,
-    int? windDegree,
-    double? pressurehPa,
-    double? pressureIn,
-    double? precipMm,
-    double? precipIn,
-    int? humidity,
-    int? cloud,
-    double? feelsLikeC,
-    double? feelsLikeF,
-    int? willItRain,
-    int? chanceOfRain,
-    int? willItSnow,
-    int? chanceOfSnow,
-    double? visKm,
-    double? visMiles,
-    double? gustKph,
-    double? gustMph,
-    double? uv,
-  }) =>
-      HourWeather(
-        timeEpoch: timeEpoch ?? this.timeEpoch,
-        tempC: tempC ?? this.tempC,
-        tempF: tempF ?? this.tempF,
-        isDay: isDay ?? this.isDay,
-        condition: condition ?? this.condition,
-        windKph: windKph ?? this.windKph,
-        windMph: windMph ?? this.windMph,
-        windDegree: windDegree ?? this.windDegree,
-        pressurehPa: pressurehPa ?? this.pressurehPa,
-        pressureIn: pressureIn ?? this.pressureIn,
-        precipMm: precipMm ?? this.precipMm,
-        precipIn: precipIn ?? this.precipIn,
-        humidity: humidity ?? this.humidity,
-        cloud: cloud ?? this.cloud,
-        feelsLikeC: feelsLikeC ?? this.feelsLikeC,
-        feelsLikeF: feelsLikeF ?? this.feelsLikeF,
-        willItRain: willItRain ?? this.willItRain,
-        chanceOfRain: chanceOfRain ?? this.chanceOfRain,
-        willItSnow: willItSnow ?? this.willItSnow,
-        chanceOfSnow: chanceOfSnow ?? this.chanceOfSnow,
-        visKm: visKm ?? this.visKm,
-        visMiles: visMiles ?? this.visMiles,
-        gustKph: gustKph ?? this.gustKph,
-        gustMph: gustMph ?? this.gustMph,
-        uv: uv ?? this.uv,
-      );
-
   Map<String, dynamic> toMap() => <String, dynamic>{
         'time_epoch': timeEpoch.millisecondsSinceEpoch,
         'temp_c': tempC,
@@ -167,10 +110,6 @@ class HourWeather {
         gustMph: map['gust_mph'] as double,
         uv: map['uv'] as double,
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory HourWeather.fromJson(String source) => HourWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>

@@ -12,15 +12,6 @@ class NotificationPayload {
     required this.notificationType,
   });
 
-  NotificationPayload copyWith({
-    Location? location,
-    NotificationType? notificationType,
-  }) =>
-      NotificationPayload(
-        location: location ?? this.location,
-        notificationType: notificationType ?? this.notificationType,
-      );
-
   Map<String, dynamic> toMap() => <String, dynamic>{
         'location': location?.toMap(),
         'notificationType': notificationType.name,

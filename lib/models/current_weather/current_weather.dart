@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../condition/condition.dart';
 
 class CurrentWeather {
@@ -49,53 +47,6 @@ class CurrentWeather {
     required this.gustMph,
   });
 
-  CurrentWeather copyWith({
-    DateTime? lastUpdatedEpoch,
-    double? tempC,
-    double? tempF,
-    int? isDay,
-    Condition? condition,
-    double? windKph,
-    double? windMph,
-    int? windDegree,
-    double? pressurehPa,
-    double? pressureIn,
-    double? precipMm,
-    double? precipIn,
-    int? humidity,
-    int? cloud,
-    double? feelsLikeC,
-    double? feelsLikeF,
-    double? visKm,
-    double? visMiles,
-    double? uv,
-    double? gustKph,
-    double? gustMph,
-  }) =>
-      CurrentWeather(
-        lastUpdatedEpoch: lastUpdatedEpoch ?? this.lastUpdatedEpoch,
-        tempC: tempC ?? this.tempC,
-        tempF: tempF ?? this.tempF,
-        isDay: isDay ?? this.isDay,
-        condition: condition ?? this.condition,
-        windKph: windKph ?? this.windKph,
-        windMph: windMph ?? this.windMph,
-        windDegree: windDegree ?? this.windDegree,
-        pressurehPa: pressurehPa ?? this.pressurehPa,
-        pressureIn: pressureIn ?? this.pressureIn,
-        precipMm: precipMm ?? this.precipMm,
-        precipIn: precipIn ?? this.precipIn,
-        humidity: humidity ?? this.humidity,
-        cloud: cloud ?? this.cloud,
-        feelsLikeC: feelsLikeC ?? this.feelsLikeC,
-        feelsLikeF: feelsLikeF ?? this.feelsLikeF,
-        visKm: visKm ?? this.visKm,
-        visMiles: visMiles ?? this.visMiles,
-        uv: uv ?? this.uv,
-        gustKph: gustKph ?? this.gustKph,
-        gustMph: gustMph ?? this.gustMph,
-      );
-
   Map<String, dynamic> toMap() => <String, dynamic>{
         'last_updated_epoch': lastUpdatedEpoch.millisecondsSinceEpoch,
         'temp_c': tempC,
@@ -143,10 +94,6 @@ class CurrentWeather {
         gustKph: map['gust_kph'] as double,
         gustMph: map['gust_mph'] as double,
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory CurrentWeather.fromJson(String source) => CurrentWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>

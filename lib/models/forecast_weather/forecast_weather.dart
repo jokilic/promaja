@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 
 import 'forecast_day_weather.dart';
@@ -10,13 +8,6 @@ class ForecastWeather {
   ForecastWeather({
     required this.forecastDays,
   });
-
-  ForecastWeather copyWith({
-    List<ForecastDayWeather>? forecastDays,
-  }) =>
-      ForecastWeather(
-        forecastDays: forecastDays ?? this.forecastDays,
-      );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'forecastday': forecastDays.map((x) => x.toMap()).toList(),
@@ -29,10 +20,6 @@ class ForecastWeather {
           ),
         ),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory ForecastWeather.fromJson(String source) => ForecastWeather.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ForecastWeather(forecastDays: $forecastDays)';

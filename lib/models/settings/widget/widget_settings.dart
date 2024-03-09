@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import '../../location/location.dart';
@@ -37,10 +35,6 @@ class WidgetSettings extends HiveObject {
         location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
         weatherType: WeatherType.values.byName(map['weatherType'] as String),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory WidgetSettings.fromJson(String source) => WidgetSettings.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'WidgetSettings(location: $location, weatherType: $weatherType)';

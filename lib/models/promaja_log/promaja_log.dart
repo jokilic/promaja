@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import 'promaja_log_level.dart';
@@ -23,37 +21,6 @@ class PromajaLog extends HiveObject {
     required this.logGroup,
     required this.isError,
   });
-
-  PromajaLog copyWith({
-    String? text,
-    DateTime? time,
-    PromajaLogGroup? logGroup,
-    bool? isError,
-  }) =>
-      PromajaLog(
-        text: text ?? this.text,
-        time: time ?? this.time,
-        logGroup: logGroup ?? this.logGroup,
-        isError: isError ?? this.isError,
-      );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'text': text,
-        'time': time.millisecondsSinceEpoch,
-        'logGroup': logGroup.name,
-        'isError': isError,
-      };
-
-  factory PromajaLog.fromMap(Map<String, dynamic> map) => PromajaLog(
-        text: map['text'] as String,
-        time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
-        logGroup: PromajaLogGroup.values.byName(map['logGroup'] as String),
-        isError: map['isError'] as bool,
-      );
-
-  String toJson() => json.encode(toMap());
-
-  factory PromajaLog.fromJson(String source) => PromajaLog.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'PromajaLog(text: $text, time: $time, logGroup: $logGroup, isError: $isError)';

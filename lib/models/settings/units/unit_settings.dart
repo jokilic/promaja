@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import 'distance_speed_unit.dart';
@@ -53,10 +51,6 @@ class UnitSettings extends HiveObject {
         precipitation: PrecipitationUnit.values.byName(map['precipitation'] as String),
         pressure: PressureUnit.values.byName(map['pressure'] as String),
       );
-
-  String toJson() => json.encode(toMap());
-
-  factory UnitSettings.fromJson(String source) => UnitSettings.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'UnitSettings(temperature: $temperature, distanceSpeed: $distanceSpeed, precipitation: $precipitation, pressure: $pressure)';

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import 'notification/notification_settings.dart';
@@ -33,22 +31,6 @@ class PromajaSettings extends HiveObject {
         widget: widget ?? this.widget,
         unit: unit ?? this.unit,
       );
-
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'notification': notification.toMap(),
-        'widget': widget.toMap(),
-        'unit': unit.toMap(),
-      };
-
-  factory PromajaSettings.fromMap(Map<String, dynamic> map) => PromajaSettings(
-        notification: NotificationSettings.fromMap(map['notification'] as Map<String, dynamic>),
-        widget: WidgetSettings.fromMap(map['widget'] as Map<String, dynamic>),
-        unit: UnitSettings.fromMap(map['unit'] as Map<String, dynamic>),
-      );
-
-  String toJson() => json.encode(toMap());
-
-  factory PromajaSettings.fromJson(String source) => PromajaSettings.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'PromajaSettings(notification: $notification, widget: $widget, unit: $unit)';
