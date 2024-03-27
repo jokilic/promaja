@@ -12,6 +12,7 @@ import 'models/promaja_log/promaja_log_level.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'util/initialization.dart';
+import 'widgets/promaja_error_widget.dart';
 import 'widgets/promaja_navigation_bar.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -21,6 +22,11 @@ Future<void> main() async {
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();
+
+    /// Override the default error widget
+    ErrorWidget.builder = (details) => PromajaErrorWidget(
+          error: details.exceptionAsString(),
+        );
 
     /// Parsing of [StackTrace]
     FlutterError.demangleStackTrace = (stack) {
