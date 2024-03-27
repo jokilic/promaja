@@ -96,9 +96,8 @@ class SettingsScreen extends ConsumerWidget {
                           );
                     },
                     icon: PromajaIcons.arrow,
-                    // TODO: Localize
-                    title: 'Appearance',
-                    subtitle: 'Change app elements and behaviour',
+                    title: 'appearanceTitle'.tr(),
+                    subtitle: 'appearanceSubtitle'.tr(),
                   ),
 
                   ///

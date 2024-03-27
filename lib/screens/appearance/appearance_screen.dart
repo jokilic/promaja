@@ -52,11 +52,10 @@ class AppearanceScreen extends ConsumerWidget {
               ///
               /// APPEARANCE TITLE
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  // TODO: Localize
-                  'Appearance',
+                  'appearanceTitle'.tr(),
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
@@ -65,11 +64,10 @@ class AppearanceScreen extends ConsumerWidget {
               ///
               /// APPEARANCE DESCRIPTION
               ///
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  // TODO: Localize
-                  'Change card colors and other behaviour logic used throughout Promaja.',
+                  'appearanceDescription'.tr(),
                   style: PromajaTextStyles.settingsText,
                 ),
               ),
@@ -124,7 +122,7 @@ class AppearanceScreen extends ConsumerWidget {
                   }
                 },
                 activeValue: localizeInitialSection(settings.appearance.initialSection),
-                subtitle: 'Section which will be opened on app start',
+                subtitle: 'appearanceInitialSectionSubtitle'.tr(),
               ),
             ],
           ),

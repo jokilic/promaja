@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 
 part 'initial_section.g.dart';
@@ -17,10 +18,9 @@ enum InitialSection {
 }
 
 String localizeInitialSection(InitialSection initialSection) => switch (initialSection) {
-      // TODO: Localize
-      InitialSection.lastOpened => 'Last opened',
-      InitialSection.current => 'Current',
-      InitialSection.forecast => 'Forecast',
-      InitialSection.list => 'List',
-      InitialSection.settings => 'Settings',
+      InitialSection.lastOpened => 'appearanceInitialSectionLastOpened'.tr(),
+      InitialSection.current => 'appearanceInitialSectionCurrent'.tr(),
+      InitialSection.forecast => 'appearanceInitialSectionForecast'.tr(),
+      InitialSection.list => 'appearanceInitialSectionList'.tr(),
+      InitialSection.settings => 'appearanceInitialSectionSettings'.tr(),
     };
