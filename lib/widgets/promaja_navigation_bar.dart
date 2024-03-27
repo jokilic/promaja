@@ -5,6 +5,7 @@ import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../constants/icons.dart';
 import '../models/promaja_log/promaja_log_level.dart';
+import '../models/settings/appearance/initial_section.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
@@ -65,13 +66,28 @@ class PromajaNavigationBarController extends StateNotifier<int> {
       return NavigationBarItems.list.index;
     }
 
-    /// Index is set at `SettingsScreen`, open `CardsScreen`
-    if (indexValue == 3) {
-      return NavigationBarItems.cards.index;
+    /// Get initial section
+    final initialSection = hiveService.getPromajaSettingsFromBox().appearance.initialSection;
+
+    /// Initial section is not `last opened`, open the active one
+    if (initialSection != InitialSection.lastOpened) {
+      return switch (initialSection) {
+        InitialSection.current => 0,
+        InitialSection.forecast => 1,
+        InitialSection.list => 2,
+        InitialSection.settings => 3,
+        InitialSection.lastOpened => 2,
+      };
     }
 
-    /// Return currently opened screen or `ListScreen` if there's no stored `index`
-    return indexValue ?? 2;
+    /// Initial section is set to `last opened`, open section from [Hive]
+    if (initialSection == InitialSection.lastOpened) {
+      /// Return currently opened screen or `ListScreen` if there's no stored `index`
+      return indexValue ?? 2;
+    }
+
+    /// Return `ListScreen`
+    return 2;
   }
 
   /// Triggered when navigation bar needs changing

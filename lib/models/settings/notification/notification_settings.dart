@@ -35,20 +35,6 @@ class NotificationSettings extends HiveObject {
         eveningNotification: eveningNotification ?? this.eveningNotification,
       );
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'location': location?.toMap(),
-        'hourlyNotification': hourlyNotification,
-        'morningNotification': morningNotification,
-        'eveningNotification': eveningNotification,
-      };
-
-  factory NotificationSettings.fromMap(Map<String, dynamic> map) => NotificationSettings(
-        location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
-        hourlyNotification: map['hourlyNotification'] as bool,
-        morningNotification: map['morningNotification'] as bool,
-        eveningNotification: map['eveningNotification'] as bool,
-      );
-
   @override
   String toString() =>
       'NotificationSettings(location: $location, hourlyNotification: $hourlyNotification, morningNotification: $morningNotification, eveningNotification: $eveningNotification)';

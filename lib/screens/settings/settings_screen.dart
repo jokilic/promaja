@@ -12,7 +12,7 @@ import '../../constants/text_styles.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
-import '../card_colors/card_colors_screen.dart';
+import '../appearance/appearance_screen.dart';
 import '../logging/logging_screen.dart';
 import '../notification/notification_screen.dart';
 import '../unit/unit_screen.dart';
@@ -80,24 +80,25 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
 
                   ///
-                  /// CARD COLORS
+                  /// APPEARANCE
                   ///
                   SettingsListTile(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => CardColorsScreen(),
+                          builder: (context) => AppearanceScreen(),
                         ),
                       );
 
                       ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Card colors',
+                            text: 'Open -> Appearance',
                             logGroup: PromajaLogGroup.settings,
                           );
                     },
                     icon: PromajaIcons.arrow,
-                    title: 'cardColorsTitle'.tr(),
-                    subtitle: 'cardColorsSubtitle'.tr(),
+                    // TODO: Localize
+                    title: 'Appearance',
+                    subtitle: 'Change app elements and behaviour',
                   ),
 
                   ///

@@ -26,16 +26,6 @@ class WidgetSettings extends HiveObject {
         weatherType: weatherType ?? this.weatherType,
       );
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'location': location?.toMap(),
-        'weatherType': weatherType.name,
-      };
-
-  factory WidgetSettings.fromMap(Map<String, dynamic> map) => WidgetSettings(
-        location: map['location'] != null ? Location.fromMap(map['location'] as Map<String, dynamic>) : null,
-        weatherType: WeatherType.values.byName(map['weatherType'] as String),
-      );
-
   @override
   String toString() => 'WidgetSettings(location: $location, weatherType: $weatherType)';
 

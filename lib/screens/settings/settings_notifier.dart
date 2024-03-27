@@ -7,6 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
 import '../../models/location/location.dart';
 import '../../models/promaja_log/promaja_log_level.dart';
+import '../../models/settings/appearance/initial_section.dart';
 import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
@@ -82,6 +83,53 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     state = newSettings;
     await hive.addPromajaSettingsToBox(promajaSettings: newSettings);
   }
+
+  ///
+  /// APPEARANCE
+  ///
+
+  /// Opens popup menu which chooses initial section to be used
+  Future<InitialSection?> showInitialSectionPopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    const initialSections = InitialSection.values;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: initialSections
+          .map(
+            (initialSection) => PopupMenuItem(
+              value: initialSection,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                localizeInitialSection(initialSection),
+                style: PromajaTextStyles.settingsPopupMenuItem,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Updates initial section to be used
+  Future<void> updateInitialSection(InitialSection newSection) async => updateSettings(
+        state.copyWith(
+          appearance: state.appearance.copyWith(
+            initialSection: newSection,
+          ),
+        ),
+      );
 
   ///
   /// NOTIFICATIONS

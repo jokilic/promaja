@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+import 'appearance/appearance_settings.dart';
 import 'notification/notification_settings.dart';
 import 'units/unit_settings.dart';
 import 'widget/widget_settings.dart';
@@ -14,26 +15,31 @@ class PromajaSettings extends HiveObject {
   final WidgetSettings widget;
   @HiveField(2)
   final UnitSettings unit;
+  @HiveField(3)
+  final AppearanceSettings appearance;
 
   PromajaSettings({
     required this.notification,
     required this.widget,
     required this.unit,
+    required this.appearance,
   });
 
   PromajaSettings copyWith({
     NotificationSettings? notification,
     WidgetSettings? widget,
     UnitSettings? unit,
+    AppearanceSettings? appearance,
   }) =>
       PromajaSettings(
         notification: notification ?? this.notification,
         widget: widget ?? this.widget,
         unit: unit ?? this.unit,
+        appearance: appearance ?? this.appearance,
       );
 
   @override
-  String toString() => 'PromajaSettings(notification: $notification, widget: $widget, unit: $unit)';
+  String toString() => 'PromajaSettings(notification: $notification, widget: $widget, unit: $unit, appearance: $appearance)';
 
   @override
   bool operator ==(covariant PromajaSettings other) {
@@ -41,9 +47,9 @@ class PromajaSettings extends HiveObject {
       return true;
     }
 
-    return other.notification == notification && other.widget == widget && other.unit == unit;
+    return other.notification == notification && other.widget == widget && other.unit == unit && other.appearance == appearance;
   }
 
   @override
-  int get hashCode => notification.hashCode ^ widget.hashCode ^ unit.hashCode;
+  int get hashCode => notification.hashCode ^ widget.hashCode ^ unit.hashCode ^ appearance.hashCode;
 }

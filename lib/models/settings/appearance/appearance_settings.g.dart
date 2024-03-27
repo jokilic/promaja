@@ -1,41 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'promaja_settings.dart';
+part of 'appearance_settings.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PromajaSettingsAdapter extends TypeAdapter<PromajaSettings> {
+class AppearanceSettingsAdapter extends TypeAdapter<AppearanceSettings> {
   @override
-  final int typeId = 12;
+  final int typeId = 18;
 
   @override
-  PromajaSettings read(BinaryReader reader) {
+  AppearanceSettings read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PromajaSettings(
-      notification: fields[0] as NotificationSettings,
-      widget: fields[1] as WidgetSettings,
-      unit: fields[2] as UnitSettings,
-      appearance: fields[3] as AppearanceSettings,
+    return AppearanceSettings(
+      initialSection: fields[0] as InitialSection,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PromajaSettings obj) {
+  void write(BinaryWriter writer, AppearanceSettings obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.notification)
       ..writeByte(1)
-      ..write(obj.widget)
-      ..writeByte(2)
-      ..write(obj.unit)
-      ..writeByte(3)
-      ..write(obj.appearance);
+      ..writeByte(0)
+      ..write(obj.initialSection);
   }
 
   @override
@@ -44,7 +35,7 @@ class PromajaSettingsAdapter extends TypeAdapter<PromajaSettings> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PromajaSettingsAdapter &&
+      other is AppearanceSettingsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

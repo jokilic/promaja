@@ -5,6 +5,8 @@ import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
 import '../models/promaja_log/promaja_log.dart';
 import '../models/promaja_log/promaja_log_level.dart';
+import '../models/settings/appearance/appearance_settings.dart';
+import '../models/settings/appearance/initial_section.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_settings.dart';
 import '../models/settings/promaja_settings.dart';
@@ -63,6 +65,10 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(ColorAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(AppearanceSettingsAdapter().typeId)) {
+      Hive.registerAdapter(AppearanceSettingsAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(NotificationSettingsAdapter().typeId)) {
       Hive.registerAdapter(NotificationSettingsAdapter());
     }
@@ -77,6 +83,10 @@ class HiveService extends StateNotifier<List<Location>> {
 
     if (!Hive.isAdapterRegistered(UnitSettingsAdapter().typeId)) {
       Hive.registerAdapter(UnitSettingsAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(InitialSectionAdapter().typeId)) {
+      Hive.registerAdapter(InitialSectionAdapter());
     }
 
     if (!Hive.isAdapterRegistered(TemperatureUnitAdapter().typeId)) {
@@ -123,6 +133,9 @@ class HiveService extends StateNotifier<List<Location>> {
     state = getLocationsFromBox();
 
     defaultSettings = PromajaSettings(
+      appearance: AppearanceSettings(
+        initialSection: InitialSection.lastOpened,
+      ),
       notification: NotificationSettings(
         location: state.firstOrNull,
         hourlyNotification: false,

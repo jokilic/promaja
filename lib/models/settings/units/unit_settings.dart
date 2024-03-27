@@ -38,20 +38,6 @@ class UnitSettings extends HiveObject {
         pressure: pressure ?? this.pressure,
       );
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'temperature': temperature.name,
-        'distanceSpeed': distanceSpeed.name,
-        'precipitation': precipitation.name,
-        'pressure': pressure.name,
-      };
-
-  factory UnitSettings.fromMap(Map<String, dynamic> map) => UnitSettings(
-        temperature: TemperatureUnit.values.byName(map['temperature'] as String),
-        distanceSpeed: DistanceSpeedUnit.values.byName(map['distanceSpeed'] as String),
-        precipitation: PrecipitationUnit.values.byName(map['precipitation'] as String),
-        pressure: PressureUnit.values.byName(map['pressure'] as String),
-      );
-
   @override
   String toString() => 'UnitSettings(temperature: $temperature, distanceSpeed: $distanceSpeed, precipitation: $precipitation, pressure: $pressure)';
 
