@@ -105,6 +105,14 @@ class HomeWidgetService {
   /// Handles widget logic, depending on `WidgetSettings`
   Future<void> handleWidget() async {
     try {
+      /// Check if user uses widgets
+      final widgets = await HomeWidget.getInstalledWidgets();
+
+      /// There are no widgets active, return
+      if (widgets.isEmpty) {
+        return;
+      }
+
       final settings = hive.getPromajaSettingsFromBox();
 
       final location = settings.widget.location;
