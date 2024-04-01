@@ -48,7 +48,7 @@ class PromajaErrorWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   const Text(
-                    'Something here',
+                    'Promaja',
                     style: PromajaTextStyles.currentLocation,
                     textAlign: TextAlign.center,
                   ),

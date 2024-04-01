@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
@@ -11,6 +12,7 @@ import 'generated/codegen_loader.g.dart';
 import 'models/promaja_log/promaja_log_level.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
+import 'util/env.dart';
 import 'util/initialization.dart';
 import 'widgets/promaja_error_widget.dart';
 import 'widgets/promaja_navigation_bar.dart';
@@ -55,18 +57,37 @@ Future<void> main() async {
     /// Initialize services
     final container = await initializeServices();
 
-    /// Run [Promaja]
-    runApp(
-      UncontrolledProviderScope(
-        container: container!,
-        child: PromajaApp(),
-      ),
-    );
+    if (container != null) {
+      /// Init [Sentry] & run [Promaja]
+      await SentryFlutter.init(
+        (options) => options.dsn = Env.sentryDsn,
+        appRunner: () => runApp(
+          UncontrolledProviderScope(
+            container: container,
+            child: PromajaApp(),
+          ),
+        ),
+      );
 
-    container.read(hiveProvider.notifier).logPromajaEvent(
-          text: 'App start',
-          logGroup: PromajaLogGroup.initialization,
-        );
+      container.read(hiveProvider.notifier).logPromajaEvent(
+            text: 'App start',
+            logGroup: PromajaLogGroup.initialization,
+          );
+    } else {
+      runApp(
+        MaterialApp(
+          home: const Scaffold(
+            body: PromajaErrorWidget(
+              error: 'Initialization error',
+            ),
+          ),
+          theme: ThemeData(
+            fontFamily: 'Jost',
+            scaffoldBackgroundColor: PromajaColors.black,
+          ),
+        ),
+      );
+    }
   } catch (e) {
     final logger = LoggerService();
     final hive = HiveService(logger);
