@@ -32,8 +32,6 @@ class ListCards extends ConsumerWidget {
   }) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    final locationsBeforeDelete = ref.read(hiveProvider);
-
     await ref.read(hiveProvider.notifier).deleteLocationFromBox(
           passedLocation: location,
           index: index,
@@ -44,8 +42,6 @@ class ListCards extends ConsumerWidget {
           logGroup: PromajaLogGroup.list,
         );
 
-    final showUndo = ref.read(hiveProvider).isNotEmpty;
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -54,19 +50,6 @@ class ListCards extends ConsumerWidget {
           ),
           style: PromajaTextStyles.snackbar,
         ),
-        action: showUndo
-            ? SnackBarAction(
-                label: 'undo'.tr().toUpperCase(),
-                textColor: PromajaColors.white,
-                onPressed: () async {
-                  await ref.read(hiveProvider.notifier).writeAllLocationsToHive(locations: locationsBeforeDelete);
-                  ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Undo -> ${location.name}, ${location.country}',
-                        logGroup: PromajaLogGroup.list,
-                      );
-                },
-              )
-            : null,
         backgroundColor: PromajaColors.indigo,
         behavior: SnackBarBehavior.floating,
         elevation: 0,
@@ -129,31 +112,37 @@ class ListCards extends ConsumerWidget {
               ],
               items: locations,
               itemBuilder: (_, index) {
-                final location = locations[index];
+                final location = locations.elementAtOrNull(index);
 
-                return Animate(
-                  key: ValueKey(location),
-                  delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                  effects: [
-                    FadeEffect(
-                      curve: Curves.easeIn,
-                      duration: PromajaDurations.fadeAnimation,
-                    ),
-                  ],
-                  child: ListCardWidget(
-                    location: location,
-                    showCelsius: showCelsius,
-                    onTap: () => openWeatherScreen(
-                      index: index,
-                      ref: ref,
-                    ),
-                    onTapDelete: () => deleteLocation(
-                      ref: ref,
-                      context: context,
+                if (location != null) {
+                  return Animate(
+                    key: ValueKey(location),
+                    delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                    effects: [
+                      FadeEffect(
+                        curve: Curves.easeIn,
+                        duration: PromajaDurations.fadeAnimation,
+                      ),
+                    ],
+                    child: ListCardWidget(
                       location: location,
-                      index: index,
+                      showCelsius: showCelsius,
+                      onTap: () => openWeatherScreen(
+                        index: index,
+                        ref: ref,
+                      ),
+                      onTapDelete: () => deleteLocation(
+                        ref: ref,
+                        context: context,
+                        location: location,
+                        index: index,
+                      ),
                     ),
-                  ),
+                  );
+                }
+
+                return SizedBox.shrink(
+                  key: UniqueKey(),
                 );
               },
             ),

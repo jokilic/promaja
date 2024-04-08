@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +61,9 @@ Future<void> main() async {
     if (container != null) {
       /// Init [Sentry] & run [Promaja]
       await SentryFlutter.init(
-        (options) => options.dsn = Env.sentryDsn,
+        (options) => options
+          ..dsn = kDebugMode ? '' : Env.sentryDsn
+          ..debug = kDebugMode,
         appRunner: () => runApp(
           UncontrolledProviderScope(
             container: container,
