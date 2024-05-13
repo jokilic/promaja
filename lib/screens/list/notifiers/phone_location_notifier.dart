@@ -136,12 +136,12 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
     );
 
     if (hasPhoneLocation) {
-      final phoneLocation = hiveService.state.firstWhere(
+      final phoneLocationIndex = hiveService.state.indexWhere(
         (location) => location.isPhoneLocation ?? false,
       );
 
       await hiveService.deleteLocationFromBox(
-        passedLocation: phoneLocation,
+        index: phoneLocationIndex,
       );
     }
   }

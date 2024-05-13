@@ -28,12 +28,11 @@ class ListCards extends ConsumerWidget {
     required WidgetRef ref,
     required BuildContext context,
     required Location location,
+    required int index,
   }) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    await ref.read(hiveProvider.notifier).deleteLocationFromBox(
-          passedLocation: location,
-        );
+    await ref.read(hiveProvider.notifier).deleteLocationFromBox(index: index);
 
     ref.read(hiveProvider.notifier).logPromajaEvent(
           text: 'Delete -> ${location.name}, ${location.country}',
@@ -129,13 +128,14 @@ class ListCards extends ConsumerWidget {
                         index: index,
                         ref: ref,
                       ),
-                      onTapDelete: (handler) async {
-                        await handler(true);
+                      onTapDelete: (handler) {
+                        handler(false);
 
-                        await deleteLocation(
+                        deleteLocation(
                           ref: ref,
                           context: context,
                           location: location,
+                          index: index,
                         );
                       },
                     ),

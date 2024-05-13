@@ -254,16 +254,9 @@ class HiveService extends StateNotifier<List<Location>> {
   bool getNotificationDialogShownFromBox() => notificationDialogShownBox.get(0) ?? false;
 
   /// Called to delete a [Location] value from [Hive]
-  Future<void> deleteLocationFromBox({required Location passedLocation}) async {
-    /// Modify location `state`
-    final newState = [
-      for (final location in state)
-        if (location != passedLocation) location,
-    ];
-
-    /// Update all locations in [Hive]
-    await writeAllLocationsToHive(locations: newState);
-  }
+  Future<void> deleteLocationFromBox({required int index}) async => writeAllLocationsToHive(
+        locations: state..removeAt(index),
+      );
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
