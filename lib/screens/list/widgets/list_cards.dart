@@ -107,7 +107,16 @@ class ListCards extends ConsumerWidget {
                   curve: Curves.easeIn,
                 ),
               ],
-              items: locations,
+              items: [
+                ...locations,
+                Location(
+                  name: '',
+                  region: '',
+                  country: '',
+                  lat: 0,
+                  lon: 0,
+                ),
+              ],
               itemBuilder: (_, index) {
                 final location = locations.elementAtOrNull(index);
 
@@ -142,8 +151,8 @@ class ListCards extends ConsumerWidget {
                   );
                 }
 
-                return const SizedBox.shrink(
-                  key: ValueKey(-1),
+                return SizedBox.shrink(
+                  key: UniqueKey(),
                 );
               },
             ),

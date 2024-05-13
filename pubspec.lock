@@ -21,10 +21,10 @@ packages:
     dependency: "direct main"
     description:
       name: animated_reorderable_list
-      sha256: db9ec2f79b4df762461755806a534d91955b321b2c5ce0c0138bd3ab5eb0611b
+      sha256: b8f7013144870e679bdcf8db70cb222ddc2f49d164866e8ecf81cb2a83d3bd3d
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.5"
   animated_shimmer:
     dependency: "direct main"
     description:
