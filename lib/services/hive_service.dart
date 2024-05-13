@@ -251,7 +251,7 @@ class HiveService extends StateNotifier<List<Location>> {
   bool getNotificationDialogShownFromBox() => notificationDialogShownBox.get(0) ?? false;
 
   /// Called to delete a [Location] value from [Hive]
-  Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {
+  Future<void> deleteLocationFromBox({required Location passedLocation}) async {
     /// Modify location `state`
     final newState = [
       for (final location in state)

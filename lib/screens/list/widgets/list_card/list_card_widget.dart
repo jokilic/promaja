@@ -14,7 +14,7 @@ class ListCardWidget extends ConsumerWidget {
   final int index;
   final Location location;
   final Function() onTap;
-  final Function() onTapDelete;
+  final Function(CompletionHandler handler) onTapDelete;
   final bool showCelsius;
 
   const ListCardWidget({
@@ -32,7 +32,7 @@ class ListCardWidget extends ConsumerWidget {
         closeAnimationCurve: Curves.easeIn,
         trailingActions: [
           SwipeAction(
-            onTap: (_) => onTapDelete(),
+            onTap: onTapDelete,
             color: Colors.transparent,
             backgroundRadius: 100,
             content: Container(
