@@ -45,7 +45,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             /// If task is triggered between `00:00` and `06:00`, don't do anything
             final hour = DateTime.now().hour;
             if (hour >= 0 && hour <= 6) {
-              BackgroundFetch.finish(taskId);
+              await BackgroundFetch.finish(taskId);
               return;
             }
 
@@ -87,7 +87,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           }
 
           /// Finish task
-          BackgroundFetch.finish(taskId);
+          await BackgroundFetch.finish(taskId);
         },
 
         /// Task timeout logic
@@ -102,7 +102,7 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             isError: true,
           );
 
-          BackgroundFetch.finish(taskId);
+          await BackgroundFetch.finish(taskId);
         },
       );
 
@@ -149,7 +149,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
       isError: true,
     );
 
-    BackgroundFetch.finish(taskId);
+    await BackgroundFetch.finish(taskId);
     return;
   }
 
@@ -160,7 +160,7 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     /// If task is triggered between `00:00` and `06:00`, don't do anything
     final hour = DateTime.now().hour;
     if (hour >= 0 && hour <= 6) {
-      BackgroundFetch.finish(taskId);
+      await BackgroundFetch.finish(taskId);
       return;
     }
 
@@ -211,5 +211,5 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   }
 
   /// Finish task
-  BackgroundFetch.finish(taskId);
+  await BackgroundFetch.finish(taskId);
 }

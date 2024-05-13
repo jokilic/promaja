@@ -114,7 +114,7 @@ class ListCards extends ConsumerWidget {
 
                 if (location != null) {
                   return Animate(
-                    key: ValueKey(index),
+                    key: ValueKey(location),
                     delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
                     effects: [
                       FadeEffect(
@@ -123,7 +123,6 @@ class ListCards extends ConsumerWidget {
                       ),
                     ],
                     child: ListCardWidget(
-                      index: index,
                       location: location,
                       showCelsius: showCelsius,
                       onTap: () => openWeatherScreen(

@@ -4,18 +4,17 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
+import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 
 class ListCardError extends StatelessWidget {
-  final int index;
-  final String locationName;
+  final Location location;
   final bool isPhoneLocation;
   final String error;
   final Function() onTap;
 
   const ListCardError({
-    required this.index,
-    required this.locationName,
+    required this.location,
     required this.isPhoneLocation,
     required this.error,
     required this.onTap,
@@ -64,7 +63,7 @@ class ListCardError extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                locationName,
+                                location.name,
                                 style: PromajaTextStyles.listLocation,
                               ),
                             ),
@@ -97,7 +96,7 @@ class ListCardError extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Animate(
-                      key: ValueKey(index),
+                      key: ValueKey(location),
                       onPlay: (controller) => controller.loop(reverse: true),
                       delay: 10.seconds,
                       effects: [

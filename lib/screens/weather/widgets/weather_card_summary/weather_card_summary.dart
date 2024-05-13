@@ -121,24 +121,28 @@ class WeatherCardSummary extends ConsumerWidget {
                     physics: const BouncingScrollPhysics(),
                     itemCount: forecastWeather.forecastDays.length,
                     itemBuilder: (_, index) {
-                      final forecast = forecastWeather.forecastDays[index];
+                      final forecast = forecastWeather.forecastDays.elementAtOrNull(index);
 
-                      return Animate(
-                        key: ValueKey(index),
-                        delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                        effects: [
-                          if (ref.watch(weatherCardSummaryShowAnimationProvider))
-                            FadeEffect(
-                              curve: Curves.easeIn,
-                              duration: PromajaDurations.fadeAnimation,
-                            ),
-                        ],
-                        child: WeatherCardSummaryListTile(
-                          forecast: forecast,
-                          onPressed: () {},
-                          showCelsius: showCelsius,
-                        ),
-                      );
+                      if (forecast != null) {
+                        return Animate(
+                          key: ValueKey(forecast),
+                          delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                          effects: [
+                            if (ref.watch(weatherCardSummaryShowAnimationProvider))
+                              FadeEffect(
+                                curve: Curves.easeIn,
+                                duration: PromajaDurations.fadeAnimation,
+                              ),
+                          ],
+                          child: WeatherCardSummaryListTile(
+                            forecast: forecast,
+                            onPressed: () {},
+                            showCelsius: showCelsius,
+                          ),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
                     },
                   ),
 
