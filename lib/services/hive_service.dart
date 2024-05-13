@@ -255,8 +255,8 @@ class HiveService extends StateNotifier<List<Location>> {
   bool getNotificationDialogShownFromBox() => notificationDialogShownBox.get(0) ?? false;
 
   /// Called to delete a [Location] value from [Hive]
-  Future<void> deleteLocationFromBox({required int index}) async => writeAllLocationsToHive(
-        locations: state..removeAt(index),
+  Future<void> deleteLocationFromBox({required int index}) => writeAllLocationsToHive(
+        locations: List.from(state..removeAt(index)),
       );
 
   /// Replace [Hive] box with passed `List<Location>`
@@ -267,13 +267,15 @@ class HiveService extends StateNotifier<List<Location>> {
     /// Clear current [Hive] box
     await locationsBox.clear();
 
-    /// Add passed `List<Location` to [Hive]
-    for (var i = 0; i < locations.length; i++) {
-      await addLocationToBox(location: locations[i], index: i);
-    }
+    if (locations.isNotEmpty) {
+      /// Add passed `List<Location` to [Hive]
+      for (var i = 0; i < locations.length; i++) {
+        await addLocationToBox(location: locations[i], index: i);
+      }
 
-    /// Update `state` again (needed because issues with `GlobalKey`)
-    state = locations;
+      /// Update `state` again (needed because issues with `GlobalKey`)
+      state = locations;
+    }
   }
 
   /// Triggered when reordering locations in [ListScreen]

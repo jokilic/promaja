@@ -152,7 +152,7 @@ class ListCards extends ConsumerWidget {
                 }
 
                 return SizedBox.shrink(
-                  key: ValueKey(index),
+                  key: UniqueKey(),
                 );
               },
             ),
