@@ -18,15 +18,18 @@ class AppearanceSettingsAdapter extends TypeAdapter<AppearanceSettings> {
     };
     return AppearanceSettings(
       initialSection: fields[0] as InitialSection,
+      weatherSummaryFirst: fields[1] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppearanceSettings obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.initialSection);
+      ..write(obj.initialSection)
+      ..writeByte(1)
+      ..write(obj.weatherSummaryFirst);
   }
 
   @override

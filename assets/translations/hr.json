@@ -165,6 +165,8 @@
     "appearanceInitialSectionList": "Popis",
     "appearanceInitialSectionSettings": "Postavke",
     "appearanceInitialSectionSubtitle": "Stavka koja će biti otvorena kad se aplikacija upali",
+    "appearanceWeatherSummaryFirstTitle": "Prvo pregled vremena",
+    "appearanceWeatherSummaryFirstSubtitle": "Tijekom otvaranja vremenske prognoze, prikaži pregled vremena za sve dostupne dane",
     "weatherTypeCurrent": "Trenutno vrijeme",
     "weatherTypeForecast": "Prognoza vremena",
     "addLocation": "Dodaj svoju lokaciju",

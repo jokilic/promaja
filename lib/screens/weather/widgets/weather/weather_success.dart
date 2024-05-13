@@ -11,10 +11,11 @@ import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
+import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_success.dart';
 
-class WeatherSuccess extends ConsumerWidget {
+class WeatherSuccess extends ConsumerStatefulWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
@@ -32,6 +33,24 @@ class WeatherSuccess extends ConsumerWidget {
     required this.showMm,
     required this.showhPa,
   });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherSuccessState();
+}
+
+class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
+  @override
+  void initState() {
+    final summaryFirst = ref.read(settingsProvider).appearance.weatherSummaryFirst;
+
+    if (!summaryFirst) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(weatherAppinioControllerProvider).swipe(),
+      );
+    }
+
+    super.initState();
+  }
 
   void cardSwiped({required int index, required WidgetRef ref}) {
     if (ref.read(weatherCardIndexProvider) != index) {
@@ -64,16 +83,16 @@ class WeatherSuccess extends ConsumerWidget {
       }
 
       ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Card swipe -> ${location.name}, ${location.country}',
+            text: 'Card swipe -> ${widget.location.name}, ${widget.location.country}',
             logGroup: PromajaLogGroup.forecastWeather,
           );
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final index = ref.watch(weatherCardIndexProvider);
-    final cardCount = 1 + forecastWeather.forecastDays.length;
+    final cardCount = 1 + widget.forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
@@ -83,6 +102,7 @@ class WeatherSuccess extends ConsumerWidget {
         Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
           child: AppinioSwiper(
+            controller: ref.watch(weatherAppinioControllerProvider),
             loop: true,
             padding: const EdgeInsets.only(bottom: 24),
             isDisabled: cardCount <= 1,
@@ -97,15 +117,15 @@ class WeatherSuccess extends ConsumerWidget {
             onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
             onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
             cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
-              location: location,
-              forecastWeather: forecastWeather,
-              forecast: cardIndex == 0 ? null : forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
+              location: widget.location,
+              forecastWeather: widget.forecastWeather,
+              forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
               index: cardIndex,
-              isPhoneLocation: isPhoneLocation,
-              showCelsius: showCelsius,
-              showKph: showKph,
-              showMm: showMm,
-              showhPa: showhPa,
+              isPhoneLocation: widget.isPhoneLocation,
+              showCelsius: widget.showCelsius,
+              showKph: widget.showKph,
+              showMm: widget.showMm,
+              showhPa: widget.showhPa,
             ),
           ),
         ),

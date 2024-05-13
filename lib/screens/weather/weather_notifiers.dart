@@ -1,3 +1,4 @@
+import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -86,4 +87,9 @@ final weatherCardControllerProvider = Provider.autoDispose.family<ScrollControll
     return controller;
   },
   name: 'WeatherCardControllerProvider',
+);
+
+final weatherAppinioControllerProvider = Provider.autoDispose<AppinioSwiperController>(
+  (_) => AppinioSwiperController(),
+  name: 'WeatherAppinioControllerProvider',
 );

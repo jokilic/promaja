@@ -165,6 +165,8 @@
     "appearanceInitialSectionList": "List",
     "appearanceInitialSectionSettings": "Settings",
     "appearanceInitialSectionSubtitle": "Section which will be opened on app start",
+    "appearanceWeatherSummaryFirstTitle": "Weather summary first",
+    "appearanceWeatherSummaryFirstSubtitle": "When opening weather section, show weather summary for all available days",
     "weatherTypeCurrent": "Current weather",
     "weatherTypeForecast": "Forecast weather",
     "addLocation": "Add your location",

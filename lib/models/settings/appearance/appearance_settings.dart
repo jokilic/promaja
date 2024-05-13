@@ -8,20 +8,25 @@ part 'appearance_settings.g.dart';
 class AppearanceSettings extends HiveObject {
   @HiveField(0)
   final InitialSection initialSection;
+  @HiveField(1)
+  final bool weatherSummaryFirst;
 
   AppearanceSettings({
     required this.initialSection,
+    required this.weatherSummaryFirst,
   });
 
   AppearanceSettings copyWith({
     InitialSection? initialSection,
+    bool? weatherSummaryFirst,
   }) =>
       AppearanceSettings(
         initialSection: initialSection ?? this.initialSection,
+        weatherSummaryFirst: weatherSummaryFirst ?? this.weatherSummaryFirst,
       );
 
   @override
-  String toString() => 'AppearanceSettings(initialSection: $initialSection)';
+  String toString() => 'AppearanceSettings(initialSection: $initialSection, weatherSummaryFirst: $weatherSummaryFirst)';
 
   @override
   bool operator ==(covariant AppearanceSettings other) {
@@ -29,9 +34,9 @@ class AppearanceSettings extends HiveObject {
       return true;
     }
 
-    return other.initialSection == initialSection;
+    return other.initialSection == initialSection && other.weatherSummaryFirst == weatherSummaryFirst;
   }
 
   @override
-  int get hashCode => initialSection.hashCode;
+  int get hashCode => initialSection.hashCode ^ weatherSummaryFirst.hashCode;
 }

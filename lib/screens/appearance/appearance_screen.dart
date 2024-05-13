@@ -13,6 +13,7 @@ import '../../services/hive_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../card_colors/card_colors_screen.dart';
 import '../settings/settings_notifier.dart';
+import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
@@ -123,6 +124,16 @@ class AppearanceScreen extends ConsumerWidget {
                 },
                 activeValue: localizeInitialSection(settings.appearance.initialSection),
                 subtitle: 'appearanceInitialSectionSubtitle'.tr(),
+              ),
+
+              ///
+              /// WEATHER SUMMARY FIRST
+              ///
+              SettingsCheckboxListTile(
+                value: settings.appearance.weatherSummaryFirst,
+                onTap: ref.read(settingsProvider.notifier).toggleWeatherSummaryFirst,
+                title: 'appearanceWeatherSummaryFirstTitle'.tr(),
+                subtitle: 'appearanceWeatherSummaryFirstSubtitle'.tr(),
               ),
             ],
           ),

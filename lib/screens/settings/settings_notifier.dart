@@ -131,6 +131,20 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
         ),
       );
 
+  /// Triggered when the user taps the `Weather summary first` checkbox
+  Future<void> toggleWeatherSummaryFirst() async {
+    /// Update `state` and [Hive] with proper value
+    final newState = !state.appearance.weatherSummaryFirst;
+
+    await updateSettings(
+      state.copyWith(
+        appearance: state.appearance.copyWith(
+          weatherSummaryFirst: newState,
+        ),
+      ),
+    );
+  }
+
   ///
   /// NOTIFICATIONS
   ///

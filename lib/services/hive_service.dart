@@ -135,6 +135,7 @@ class HiveService extends StateNotifier<List<Location>> {
     defaultSettings = PromajaSettings(
       appearance: AppearanceSettings(
         initialSection: InitialSection.lastOpened,
+        weatherSummaryFirst: true,
       ),
       notification: NotificationSettings(
         location: state.firstOrNull,

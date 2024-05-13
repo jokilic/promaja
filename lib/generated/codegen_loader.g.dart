@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
 
 import 'dart:ui';
 
@@ -181,6 +181,8 @@ class CodegenLoader extends AssetLoader{
   "appearanceInitialSectionList": "List",
   "appearanceInitialSectionSettings": "Settings",
   "appearanceInitialSectionSubtitle": "Section which will be opened on app start",
+  "appearanceWeatherSummaryFirstTitle": "Weather summary first",
+  "appearanceWeatherSummaryFirstSubtitle": "When opening weather section, show weather summary for all available days",
   "weatherTypeCurrent": "Current weather",
   "weatherTypeForecast": "Forecast weather",
   "addLocation": "Add your location",
@@ -463,6 +465,8 @@ static const Map<String,dynamic> hr = {
   "appearanceInitialSectionList": "Popis",
   "appearanceInitialSectionSettings": "Postavke",
   "appearanceInitialSectionSubtitle": "Stavka koja će biti otvorena kad se aplikacija upali",
+  "appearanceWeatherSummaryFirstTitle": "Prvo pregled vremena",
+  "appearanceWeatherSummaryFirstSubtitle": "Tijekom otvaranja vremenske prognoze, prikaži pregled vremena za sve dostupne dane",
   "weatherTypeCurrent": "Trenutno vrijeme",
   "weatherTypeForecast": "Prognoza vremena",
   "addLocation": "Dodaj svoju lokaciju",

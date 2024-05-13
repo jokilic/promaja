@@ -68,6 +68,7 @@ class CardsScreen extends ConsumerWidget {
             Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
               child: AppinioSwiper(
+                controller: ref.watch(cardsAppinioControllerProvider),
                 loop: true,
                 padding: const EdgeInsets.only(bottom: 24),
                 isDisabled: cardCount <= 1,

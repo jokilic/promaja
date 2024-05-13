@@ -614,7 +614,7 @@ class NotificationService {
               await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
               await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
               for (var i = 0; i < locationIndex; i++) {
-                ref.read(appinioControllerProvider).swipe();
+                ref.read(cardsAppinioControllerProvider).swipe();
               }
             }
 

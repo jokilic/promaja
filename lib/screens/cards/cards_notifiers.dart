@@ -7,9 +7,9 @@ import '../../models/error/response_error.dart';
 import '../../models/location/location.dart';
 import '../../services/api_service.dart';
 
-final appinioControllerProvider = Provider<AppinioSwiperController>(
+final cardsAppinioControllerProvider = Provider.autoDispose<AppinioSwiperController>(
   (_) => AppinioSwiperController(),
-  name: 'appinioControllerProvider',
+  name: 'CardsAppinioControllerProvider',
 );
 
 final cardIndexProvider = StateProvider<int>(
