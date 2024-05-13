@@ -11,14 +11,12 @@ import 'list_card_loading.dart';
 import 'list_card_success.dart';
 
 class ListCardWidget extends ConsumerWidget {
-  final int index;
   final Location location;
   final Function() onTap;
   final Function(CompletionHandler handler) onTapDelete;
   final bool showCelsius;
 
   const ListCardWidget({
-    required this.index,
     required this.location,
     required this.onTap,
     required this.onTapDelete,
@@ -27,7 +25,7 @@ class ListCardWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => SwipeActionCell(
-        key: ValueKey(index),
+        key: ValueKey(location),
         openAnimationCurve: Curves.easeIn,
         closeAnimationCurve: Curves.easeIn,
         trailingActions: [
@@ -63,8 +61,7 @@ class ListCardWidget extends ConsumerWidget {
                     final fetchedLocation = data.response!.location;
 
                     return ListCardSuccess(
-                      index: index,
-                      locationName: fetchedLocation.name,
+                      location: fetchedLocation,
                       isPhoneLocation: location.isPhoneLocation ?? false,
                       currentWeather: currentWeather,
                       onTap: onTap,
@@ -76,8 +73,7 @@ class ListCardWidget extends ConsumerWidget {
                   /// ERROR WHILE FETCHING
                   ///
                   return ListCardError(
-                    index: index,
-                    locationName: location.name,
+                    location: location,
                     isPhoneLocation: location.isPhoneLocation ?? false,
                     error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                     onTap: onTap,
@@ -88,8 +84,7 @@ class ListCardWidget extends ConsumerWidget {
                 /// ERROR STATE
                 ///
                 error: (error, _) => ListCardError(
-                  index: index,
-                  locationName: location.name,
+                  location: location,
                   isPhoneLocation: location.isPhoneLocation ?? false,
                   error: '$error',
                   onTap: () {},

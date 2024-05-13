@@ -221,7 +221,10 @@ class HiveService extends StateNotifier<List<Location>> {
   }
 
   /// Called to add a new [Location] value to [Hive]
-  Future<void> addLocationToBox({required Location location, required int index}) async {
+  Future<void> addLocationToBox({
+    required Location location,
+    required int index,
+  }) async {
     state = [...state, location];
     await locationsBox.put(index, location);
   }
