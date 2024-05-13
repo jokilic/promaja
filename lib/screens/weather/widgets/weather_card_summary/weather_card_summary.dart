@@ -124,7 +124,7 @@ class WeatherCardSummary extends ConsumerWidget {
                       final forecast = forecastWeather.forecastDays[index];
 
                       return Animate(
-                        key: ValueKey(location),
+                        key: ValueKey(index),
                         delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
                         effects: [
                           if (ref.watch(weatherCardSummaryShowAnimationProvider))

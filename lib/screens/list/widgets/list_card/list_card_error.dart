@@ -7,12 +7,14 @@ import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
 class ListCardError extends StatelessWidget {
+  final int index;
   final String locationName;
   final bool isPhoneLocation;
   final String error;
   final Function() onTap;
 
   const ListCardError({
+    required this.index,
     required this.locationName,
     required this.isPhoneLocation,
     required this.error,
@@ -95,7 +97,7 @@ class ListCardError extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Animate(
-                      key: UniqueKey(),
+                      key: ValueKey(index),
                       onPlay: (controller) => controller.loop(reverse: true),
                       delay: 10.seconds,
                       effects: [

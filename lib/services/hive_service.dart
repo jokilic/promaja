@@ -252,11 +252,14 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required Location passedLocation, required int index}) async {
-    state = [
+    /// Modify location `state`
+    final newState = [
       for (final location in state)
         if (location != passedLocation) location,
     ];
-    await locationsBox.deleteAt(index);
+
+    /// Update all locations in [Hive]
+    await writeAllLocationsToHive(locations: newState);
   }
 
   /// Replace [Hive] box with passed `List<Location>`
@@ -282,11 +285,8 @@ class HiveService extends StateNotifier<List<Location>> {
     final item = state.removeAt(oldIndex);
     state.insert(newIndex, item);
 
-    /// Modify [Hive]
-    await locationsBox.clear();
-    for (var i = 0; i < state.length; i++) {
-      await locationsBox.put(i, state[i]);
-    }
+    /// Update all locations in [Hive]
+    await writeAllLocationsToHive(locations: state);
 
     logPromajaEvent(
       text: 'Reorder done',

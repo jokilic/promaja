@@ -83,7 +83,7 @@ class SettingsCardWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Animate(
-                      key: UniqueKey(),
+                      key: ValueKey(weatherIcon),
                       onPlay: (controller) => controller.loop(reverse: true),
                       delay: 10.seconds,
                       effects: [

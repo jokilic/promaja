@@ -12,6 +12,7 @@ import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 
 class ListCardSuccess extends ConsumerWidget {
+  final int index;
   final String locationName;
   final bool isPhoneLocation;
   final CurrentWeather currentWeather;
@@ -19,6 +20,7 @@ class ListCardSuccess extends ConsumerWidget {
   final bool showCelsius;
 
   const ListCardSuccess({
+    required this.index,
     required this.locationName,
     required this.isPhoneLocation,
     required this.currentWeather,
@@ -126,7 +128,7 @@ class ListCardSuccess extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Animate(
-                    key: UniqueKey(),
+                    key: ValueKey(index),
                     onPlay: (controller) => controller.loop(reverse: true),
                     delay: 10.seconds,
                     effects: [

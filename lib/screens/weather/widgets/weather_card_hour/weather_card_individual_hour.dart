@@ -78,7 +78,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
           /// WEATHER ICON
           ///
           Animate(
-            key: UniqueKey(),
+            key: ValueKey(key),
             onPlay: (controller) => controller.loop(reverse: true),
             delay: 10.seconds,
             effects: [

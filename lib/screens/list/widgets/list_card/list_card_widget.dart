@@ -11,12 +11,14 @@ import 'list_card_loading.dart';
 import 'list_card_success.dart';
 
 class ListCardWidget extends ConsumerWidget {
+  final int index;
   final Location location;
   final Function() onTap;
   final Function() onTapDelete;
   final bool showCelsius;
 
   const ListCardWidget({
+    required this.index,
     required this.location,
     required this.onTap,
     required this.onTapDelete,
@@ -25,7 +27,7 @@ class ListCardWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => SwipeActionCell(
-        key: ValueKey(location),
+        key: ValueKey(index),
         openAnimationCurve: Curves.easeIn,
         closeAnimationCurve: Curves.easeIn,
         trailingActions: [
@@ -61,6 +63,7 @@ class ListCardWidget extends ConsumerWidget {
                     final fetchedLocation = data.response!.location;
 
                     return ListCardSuccess(
+                      index: index,
                       locationName: fetchedLocation.name,
                       isPhoneLocation: location.isPhoneLocation ?? false,
                       currentWeather: currentWeather,
@@ -73,6 +76,7 @@ class ListCardWidget extends ConsumerWidget {
                   /// ERROR WHILE FETCHING
                   ///
                   return ListCardError(
+                    index: index,
                     locationName: location.name,
                     isPhoneLocation: location.isPhoneLocation ?? false,
                     error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
@@ -84,6 +88,7 @@ class ListCardWidget extends ConsumerWidget {
                 /// ERROR STATE
                 ///
                 error: (error, _) => ListCardError(
+                  index: index,
                   locationName: location.name,
                   isPhoneLocation: location.isPhoneLocation ?? false,
                   error: '$error',

@@ -12,6 +12,7 @@ import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 
 class WeatherCardHourSuccess extends ConsumerWidget {
+  final int index;
   final HourWeather hourWeather;
   final bool isActive;
   final Color borderColor;
@@ -19,6 +20,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
   final Function() onPressed;
 
   const WeatherCardHourSuccess({
+    required this.index,
     required this.hourWeather,
     required this.isActive,
     required this.borderColor,
@@ -110,7 +112,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                 /// WEATHER ICON
                 ///
                 Animate(
-                  key: UniqueKey(),
+                  key: ValueKey(index),
                   onPlay: (controller) => controller.loop(reverse: true),
                   delay: 10.seconds,
                   effects: [
