@@ -42,7 +42,14 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
     final weatherIndex = ref.watch(hiveProvider.notifier).getActiveLocationIndexFromBox();
     final weatherList = ref.watch(hiveProvider);
 
-    return weatherList.isNotEmpty ? weatherList[weatherIndex] : null;
+    late final Location? location;
+    try {
+      location = weatherList.elementAt(weatherIndex);
+    } catch (e) {
+      location = weatherList.elementAtOrNull(0);
+    }
+
+    return weatherList.isNotEmpty ? location : null;
   },
   name: 'ActiveWeatherProvider',
 );
