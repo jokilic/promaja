@@ -28,6 +28,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
     required this.showKph,
     required this.showMm,
     required this.showhPa,
+    super.key,
   });
 
   @override
@@ -77,7 +78,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
           /// WEATHER ICON
           ///
           Animate(
-            key: ValueKey(hourWeather),
+            key: ValueKey(key),
             onPlay: (controller) => controller.loop(reverse: true),
             delay: 10.seconds,
             effects: [

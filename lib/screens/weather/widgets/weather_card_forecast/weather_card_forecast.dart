@@ -358,6 +358,7 @@ class WeatherCardForecast extends ConsumerWidget {
                                 final hourWeather = forecast.hours[properIndex];
 
                                 return WeatherCardHourSuccess(
+                                  index: properIndex,
                                   hourWeather: hourWeather,
                                   isActive: activeHourWeather == hourWeather,
                                   borderColor: backgroundColor,
@@ -383,6 +384,7 @@ class WeatherCardForecast extends ConsumerWidget {
                 ///
                 WeatherCardIndividualHour(
                   hourWeather: activeHourWeather,
+                  key: ValueKey(activeHourWeather),
                   showCelsius: showCelsius,
                   showKph: showKph,
                   showMm: showMm,

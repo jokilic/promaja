@@ -7,20 +7,21 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/custom_color/custom_color.dart';
-import '../../../../models/location/location.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 
 class ListCardSuccess extends ConsumerWidget {
-  final Location location;
+  final int index;
+  final String locationName;
   final bool isPhoneLocation;
   final CurrentWeather currentWeather;
   final Function() onTap;
   final bool showCelsius;
 
   const ListCardSuccess({
-    required this.location,
+    required this.index,
+    required this.locationName,
     required this.isPhoneLocation,
     required this.currentWeather,
     required this.onTap,
@@ -96,7 +97,7 @@ class ListCardSuccess extends ConsumerWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              location.name,
+                              locationName,
                               style: PromajaTextStyles.listLocation,
                             ),
                           ),
@@ -127,7 +128,7 @@ class ListCardSuccess extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Animate(
-                    key: ValueKey(location),
+                    key: ValueKey(index),
                     onPlay: (controller) => controller.loop(reverse: true),
                     delay: 10.seconds,
                     effects: [

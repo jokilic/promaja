@@ -99,7 +99,6 @@ class AddLocationWidget extends ConsumerWidget {
         child: Column(
           children: [
             SearchBar(
-              onSubmitted: ref.read(addLocationProvider.notifier).searchPlace,
               controller: ref.watch(addLocationProvider.notifier).textEditingController,
               backgroundColor: MaterialStateProperty.all(
                 PromajaColors.white,
@@ -143,6 +142,7 @@ class AddLocationWidget extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
+              onSubmitted: ref.read(addLocationProvider.notifier).searchPlace,
             ),
 
             ///
@@ -178,9 +178,7 @@ class AddLocationWidget extends ConsumerWidget {
                   final location = locations[index];
 
                   return ListTile(
-                    onTap: () => ref.read(addLocationProvider.notifier).addPlace(
-                          location: location,
-                        ),
+                    onTap: () => ref.read(addLocationProvider.notifier).addPlace(location: location),
                     tileColor: PromajaColors.white,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     shape: RoundedRectangleBorder(
