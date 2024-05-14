@@ -115,18 +115,18 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
             SearchBar(
               onSubmitted: ref.read(addLocationProvider.notifier).searchPlace,
               controller: ref.watch(addLocationProvider.notifier).textEditingController,
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 PromajaColors.white,
               ),
-              elevation: MaterialStateProperty.all(0),
-              textStyle: MaterialStateProperty.all(
+              elevation: WidgetStateProperty.all(0),
+              textStyle: WidgetStateProperty.all(
                 PromajaTextStyles.searchTextField,
               ),
-              hintStyle: MaterialStateProperty.all(
+              hintStyle: WidgetStateProperty.all(
                 PromajaTextStyles.searchTextFieldHint,
               ),
               hintText: 'searchForPlace'.tr(),
-              padding: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 12),
               ),
               leading: Image.asset(
@@ -152,7 +152,7 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
                           ),
                   ),
               ],
-              shape: MaterialStateProperty.all(
+              shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                 ),
