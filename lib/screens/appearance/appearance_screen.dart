@@ -7,9 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/appearance/initial_section.dart';
-import '../../services/hive_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../card_colors/card_colors_screen.dart';
 import '../settings/settings_notifier.dart';
@@ -94,11 +92,6 @@ class AppearanceScreen extends ConsumerWidget {
                       builder: (context) => CardColorsScreen(),
                     ),
                   );
-
-                  ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Open -> Card colors',
-                        logGroup: PromajaLogGroup.settings,
-                      );
                 },
                 icon: PromajaIcons.arrow,
                 title: 'cardColorsTitle'.tr(),
@@ -115,11 +108,6 @@ class AppearanceScreen extends ConsumerWidget {
 
                   if (newSection != null) {
                     await ref.read(settingsProvider.notifier).updateInitialSection(newSection);
-
-                    ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Initial section -> ${newSection.name}',
-                          logGroup: PromajaLogGroup.unit,
-                        );
                   }
                 },
                 activeValue: localizeInitialSection(settings.appearance.initialSection),

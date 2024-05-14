@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/durations.dart';
 import '../../../models/error/response_error.dart';
 import '../../../models/location/location.dart';
-import '../../../models/promaja_log/promaja_log_level.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/logger_service.dart';
@@ -82,11 +81,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         loading: true,
       );
 
-      hiveService.logPromajaEvent(
-        text: 'Search -> $value',
-        logGroup: PromajaLogGroup.list,
-      );
-
       final response = await ref.read(getSearchProvider(value).future);
 
       state = (
@@ -124,12 +118,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         loading: false,
       );
 
-      hiveService.logPromajaEvent(
-        text: 'Location limit',
-        logGroup: PromajaLogGroup.list,
-        isError: true,
-      );
-
       return;
     }
 
@@ -145,12 +133,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
           args: [location.name, location.country],
         ),
         loading: false,
-      );
-
-      hiveService.logPromajaEvent(
-        text: 'Location exists',
-        logGroup: PromajaLogGroup.list,
-        isError: true,
       );
 
       return;
@@ -179,11 +161,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
           duration: PromajaDurations.scrollAnimation,
           curve: Curves.fastOutSlowIn,
         ),
-      );
-
-      hiveService.logPromajaEvent(
-        text: 'Added -> ${location.name}, ${location.country}',
-        logGroup: PromajaLogGroup.list,
       );
     }
   }

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../models/promaja_log/promaja_log_level.dart';
 import 'hive_service.dart';
 import 'logger_service.dart';
 
@@ -34,11 +33,7 @@ class LocationService {
       /// Location services are not enabled, return error
       if (!serviceEnabled) {
         const error = 'Location services not enabled';
-        hive.logPromajaEvent(
-          text: error,
-          logGroup: PromajaLogGroup.location,
-          isError: true,
-        );
+
         return (position: null, error: error);
       }
 
@@ -52,11 +47,7 @@ class LocationService {
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
           const error = 'Location permissions denied';
-          hive.logPromajaEvent(
-            text: error,
-            logGroup: PromajaLogGroup.location,
-            isError: true,
-          );
+
           return (position: null, error: error);
         }
       }
@@ -64,28 +55,17 @@ class LocationService {
       /// Permission are denied forever, return error
       if (permission == LocationPermission.deniedForever) {
         const error = 'Location permissions permanently denied';
-        hive.logPromajaEvent(
-          text: error,
-          logGroup: PromajaLogGroup.location,
-          isError: true,
-        );
+
         return (position: null, error: error);
       }
 
       /// Permissions are granted, access position
       final position = await Geolocator.getCurrentPosition();
-      hive.logPromajaEvent(
-        text: 'Location fetched',
-        logGroup: PromajaLogGroup.location,
-      );
+
       return (position: position, error: null);
     } catch (e) {
       final error = 'Location -> $e';
-      hive.logPromajaEvent(
-        text: error,
-        logGroup: PromajaLogGroup.location,
-        isError: true,
-      );
+
       return (position: null, error: error);
     }
   }

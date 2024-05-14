@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../constants/icons.dart';
-import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/appearance/initial_section.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
@@ -97,11 +96,6 @@ class PromajaNavigationBarController extends StateNotifier<int> {
     if (state != newState) {
       state = newState;
       await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
-
-      hiveService.logPromajaEvent(
-        text: 'Open -> ${NavigationBarItems.values[state].name.substring(0, 1).toUpperCase()}${NavigationBarItems.values[state].name.substring(1)}',
-        logGroup: PromajaLogGroup.navigation,
-      );
     }
   }
 }

@@ -9,8 +9,6 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../models/promaja_log/promaja_log_level.dart';
-import '../../../../services/hive_service.dart';
 import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_success.dart';
@@ -81,11 +79,6 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
               ),
         );
       }
-
-      ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Card swipe -> ${widget.location.name}, ${widget.location.country}',
-            logGroup: PromajaLogGroup.forecastWeather,
-          );
     }
   }
 

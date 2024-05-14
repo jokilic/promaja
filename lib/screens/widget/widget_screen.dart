@@ -7,9 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/widget/weather_type.dart';
-import '../../services/hive_service.dart';
 import '../../services/home_widget_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
@@ -93,11 +91,6 @@ class WidgetScreen extends ConsumerWidget {
 
                   if (newLocation != null) {
                     await ref.read(settingsProvider.notifier).updateWidgetLocation(newLocation);
-
-                    ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Location -> ${newLocation.name}, ${newLocation.country}',
-                          logGroup: PromajaLogGroup.widget,
-                        );
                   }
                 },
                 activeValue: '${settings.widget.location?.name}, ${settings.widget.location?.country}',
@@ -114,11 +107,6 @@ class WidgetScreen extends ConsumerWidget {
 
                   if (newWeatherType != null) {
                     await ref.read(settingsProvider.notifier).updateWidgetWeatherType(newWeatherType);
-
-                    ref.read(hiveProvider.notifier).logPromajaEvent(
-                          text: 'Weather type -> ${newWeatherType.name}',
-                          logGroup: PromajaLogGroup.widget,
-                        );
                   }
                 },
                 activeValue: localizeWeatherType(settings.widget.weatherType),
@@ -131,11 +119,6 @@ class WidgetScreen extends ConsumerWidget {
               SettingsListTile(
                 onTap: () async {
                   await ref.read(homeWidgetProvider).handleWidget();
-
-                  ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Manual widget update',
-                        logGroup: PromajaLogGroup.widget,
-                      );
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

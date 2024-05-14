@@ -10,7 +10,6 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
 import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/location/location.dart';
-import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
@@ -209,10 +208,6 @@ class CardSuccess extends ConsumerWidget {
               height: 144,
               child: PageView(
                 controller: ref.watch(cardAdditionalControllerProvider),
-                onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
-                      text: 'Additional info swipe -> ${location.name}, ${location.country}',
-                      logGroup: PromajaLogGroup.currentWeather,
-                    ),
                 physics: const BouncingScrollPhysics(),
                 children: [
                   ///

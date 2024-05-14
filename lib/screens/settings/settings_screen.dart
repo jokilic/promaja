@@ -9,11 +9,8 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
-import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import '../appearance/appearance_screen.dart';
-import '../logging/logging_screen.dart';
 import '../notification/notification_screen.dart';
 import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
@@ -83,18 +80,11 @@ class SettingsScreen extends ConsumerWidget {
                   /// APPEARANCE
                   ///
                   SettingsListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AppearanceScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Appearance',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AppearanceScreen(),
+                      ),
+                    ),
                     icon: PromajaIcons.arrow,
                     title: 'appearanceTitle'.tr(),
                     subtitle: 'appearanceSubtitle'.tr(),
@@ -110,11 +100,6 @@ class SettingsScreen extends ConsumerWidget {
                           builder: (context) => UnitScreen(),
                         ),
                       );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Units',
-                            logGroup: PromajaLogGroup.settings,
-                          );
                     },
                     icon: PromajaIcons.arrow,
                     title: 'unitsTitle'.tr(),
@@ -125,18 +110,11 @@ class SettingsScreen extends ConsumerWidget {
                   /// NOTIFICATION
                   ///
                   SettingsListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => NotificationScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Notifications',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => NotificationScreen(),
+                      ),
+                    ),
                     icon: PromajaIcons.arrow,
                     title: 'notificationTitle'.tr(),
                     subtitle: 'notificationSubtitle'.tr(),
@@ -146,64 +124,29 @@ class SettingsScreen extends ConsumerWidget {
                   /// WIDGET
                   ///
                   SettingsListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => WidgetScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Widget',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => WidgetScreen(),
+                      ),
+                    ),
                     icon: PromajaIcons.arrow,
                     title: 'widgetTitle'.tr(),
                     subtitle: 'widgetSubtitle'.tr(),
                   ),
 
                   ///
-                  /// LOGGING
-                  ///
-                  SettingsListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => LoggingScreen(),
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Logging',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
-                    icon: PromajaIcons.arrow,
-                    title: 'loggingTitle'.tr(),
-                    subtitle: 'loggingSubtitle'.tr(),
-                  ),
-
-                  ///
                   /// CONTACT
                   ///
                   SettingsListTile(
-                    onTap: () {
-                      launchUrl(
-                        Uri(
-                          scheme: 'mailto',
-                          path: 'neksuses@gmail.com',
-                          queryParameters: {
-                            'subject': Uri.encodeComponent('Regarding Promaja...'),
-                          },
-                        ),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> Contact',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
+                    onTap: () => launchUrl(
+                      Uri(
+                        scheme: 'mailto',
+                        path: 'neksuses@gmail.com',
+                        queryParameters: {
+                          'subject': Uri.encodeComponent('Regarding Promaja...'),
+                        },
+                      ),
+                    ),
                     icon: PromajaIcons.arrow,
                     title: 'contactTitle'.tr(),
                     subtitle: 'contactSubtitle'.tr(),
@@ -239,16 +182,9 @@ class SettingsScreen extends ConsumerWidget {
                               color: PromajaColors.blue,
                             ),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                launchUrl(
-                                  Uri(scheme: 'https', host: 'www.weatherapi.com'),
-                                );
-
-                                ref.read(hiveProvider.notifier).logPromajaEvent(
-                                      text: 'Open -> WeatherAPI link',
-                                      logGroup: PromajaLogGroup.settings,
-                                    );
-                              },
+                              ..onTap = () => launchUrl(
+                                    Uri(scheme: 'https', host: 'www.weatherapi.com'),
+                                  ),
                           ),
                           const TextSpan(
                             text: '.',
@@ -260,16 +196,9 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () {
-                      launchUrl(
-                        Uri(scheme: 'https', host: 'www.weatherapi.com'),
-                      );
-
-                      ref.read(hiveProvider.notifier).logPromajaEvent(
-                            text: 'Open -> WeatherAPI logo',
-                            logGroup: PromajaLogGroup.settings,
-                          );
-                    },
+                    onTap: () => launchUrl(
+                      Uri(scheme: 'https', host: 'www.weatherapi.com'),
+                    ),
                     child: Image.asset(
                       PromajaIcons.weatherAPI,
                       height: 80,

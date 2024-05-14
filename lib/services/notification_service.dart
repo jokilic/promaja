@@ -14,7 +14,6 @@ import '../models/current_weather/response_current_weather.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
 import '../models/location/location.dart';
 import '../models/notification_payload/notification_payload.dart';
-import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
 import '../models/settings/units/temperature_unit.dart';
@@ -113,11 +112,7 @@ class NotificationService {
 
       return initialized ?? false;
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Notification initialize -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Notification initialize -> $e');
       return false;
     }
   }
@@ -158,29 +153,17 @@ class NotificationService {
 
       /// Error while granting permissions
       if (permissionsGranted == null) {
-        hive.logPromajaEvent(
-          text: 'Notification platform different than Android, iOS or MacOS',
-          logGroup: PromajaLogGroup.notification,
-          isError: true,
-        );
+        logger.e('Notification platform different than Android, iOS or MacOS');
         return false;
       }
 
       if (!permissionsGranted) {
-        hive.logPromajaEvent(
-          text: 'Notification permissions denied',
-          logGroup: PromajaLogGroup.notification,
-          isError: true,
-        );
+        logger.e('Notification permissions denied');
       }
 
       return permissionsGranted;
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Notification permission -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Notification permission -> $e');
       return false;
     }
   }
@@ -190,11 +173,7 @@ class NotificationService {
     try {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Notification cancel -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Notification cancel -> $e');
     }
   }
 
@@ -252,17 +231,8 @@ class NotificationService {
         notificationDetails,
         payload: payload,
       );
-
-      hive.logPromajaEvent(
-        text: 'Notification show -> ${notificationType.name}',
-        logGroup: PromajaLogGroup.notification,
-      );
     } catch (e) {
-      hive.logPromajaEvent(
-        text: ' Notification show -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Notification show -> $e');
     }
   }
 
@@ -287,11 +257,7 @@ class NotificationService {
         );
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Test notification -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Test notification -> $e');
     }
   }
 
@@ -417,18 +383,10 @@ class NotificationService {
 
       /// Location doesn't exist
       else {
-        hive.logPromajaEvent(
-          text: 'Handle notification -> Location null',
-          logGroup: PromajaLogGroup.notification,
-          isError: true,
-        );
+        logger.e('Handle notification -> Location null');
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Handle notification -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Handle notification -> $e');
     }
   }
 
@@ -472,11 +430,7 @@ class NotificationService {
         location: location,
       );
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Hourly notification -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Hourly notification -> $e');
     }
   }
 
@@ -553,11 +507,7 @@ class NotificationService {
         );
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: '${isEvening ? 'Evening' : 'Morning'} notification -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('${isEvening ? 'Evening' : 'Morning'} notification -> $e');
     }
   }
 
@@ -638,27 +588,14 @@ class NotificationService {
           case NotificationType.test:
             logger.f('Hello testy test');
         }
-
-        hive.logPromajaEvent(
-          text: 'Notification pressed -> ${notificationPayload.notificationType.name}',
-          logGroup: PromajaLogGroup.notification,
-        );
       }
 
       /// Payload or context is null
       else {
-        hive.logPromajaEvent(
-          text: 'Notification pressed -> Payload or context null',
-          logGroup: PromajaLogGroup.notification,
-          isError: true,
-        );
+        logger.e('Notification pressed -> Payload or context null');
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Notification pressed -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('Notification pressed -> $e');
     }
   }
 
@@ -672,11 +609,7 @@ class NotificationService {
     try {
       await handlePressedNotification(payload: payload);
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'onDidReceiveLocalNotification -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('onDidReceiveLocalNotification -> $e');
     }
   }
 
@@ -687,11 +620,7 @@ class NotificationService {
         payload: notificationResponse.payload,
       );
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'onDidReceiveNotificationResponse -> $e',
-        logGroup: PromajaLogGroup.notification,
-        isError: true,
-      );
+      logger.e('onDidReceiveNotificationResponse -> $e');
     }
   }
 }
@@ -720,10 +649,6 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     final hive = HiveService(logger);
     await hive.init();
 
-    hive.logPromajaEvent(
-      text: 'onDidReceiveBackgroundNotificationResponse -> $e',
-      logGroup: PromajaLogGroup.notification,
-      isError: true,
-    );
+    logger.e('onDidReceiveBackgroundNotificationResponse -> $e');
   }
 }

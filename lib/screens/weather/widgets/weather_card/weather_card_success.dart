@@ -7,8 +7,6 @@ import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../models/promaja_log/promaja_log_level.dart';
-import '../../../../services/hive_service.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card_forecast/weather_card_forecast.dart';
 import '../weather_card_summary/weather_card_summary.dart';
@@ -73,11 +71,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
             duration: PromajaDurations.scrollAnimation,
             curve: Curves.easeIn,
           );
-
-      ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Hour dismiss -> ${widget.location.name}, ${widget.location.country}',
-            logGroup: PromajaLogGroup.forecastWeather,
-          );
     }
 
     /// User pressed inactive hour
@@ -96,11 +89,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
               curve: Curves.easeIn,
             ),
       );
-
-      ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Hour ${DateFormat.Hm().format(hourWeather.timeEpoch)} -> ${widget.location.name}, ${widget.location.country}',
-            logGroup: PromajaLogGroup.forecastWeather,
-          );
     }
   }
 

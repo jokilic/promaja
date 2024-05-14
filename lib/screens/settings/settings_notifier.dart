@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
 import '../../models/location/location.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/appearance/initial_section.dart';
 import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
@@ -210,11 +209,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
     /// Initialize notifications if necessary
     await notification.init();
-
-    hive.logPromajaEvent(
-      text: 'Hourly notification -> ${newState ? 'enabled' : 'disabled'}',
-      logGroup: PromajaLogGroup.notification,
-    );
   }
 
   /// Triggered when the user taps the `Morning notification` checkbox
@@ -233,11 +227,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
     /// Initialize notifications if necessary
     await notification.init();
-
-    hive.logPromajaEvent(
-      text: 'Morning notification -> ${newState ? 'enabled' : 'disabled'}',
-      logGroup: PromajaLogGroup.notification,
-    );
   }
 
   /// Triggered when the user taps the `Evening notification` checkbox
@@ -256,11 +245,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
     /// Initialize notifications if necessary
     await notification.init();
-
-    hive.logPromajaEvent(
-      text: 'Evening notification -> ${newState ? 'enabled' : 'disabled'}',
-      logGroup: PromajaLogGroup.notification,
-    );
   }
 
   ///

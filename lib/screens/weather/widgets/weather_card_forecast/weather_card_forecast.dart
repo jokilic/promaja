@@ -10,7 +10,6 @@ import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/forecast_weather/forecast_day_weather.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
-import '../../../../models/promaja_log/promaja_log_level.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
@@ -344,10 +343,6 @@ class WeatherCardForecast extends ConsumerWidget {
                             weatherHoursControllerProvider(index),
                           ),
                           itemCount: (forecast.hours.length / 4).round(),
-                          onPageChanged: (index) => ref.read(hiveProvider.notifier).logPromajaEvent(
-                                text: 'Hours swipe -> ${location.name}, ${location.country}',
-                                logGroup: PromajaLogGroup.forecastWeather,
-                              ),
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (_, pageViewIndex) => Row(
                             mainAxisSize: MainAxisSize.min,

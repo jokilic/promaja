@@ -8,7 +8,6 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
 import '../../models/custom_color/custom_color.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
 import '../../services/hive_service.dart';
 import '../../util/weather.dart';
 import '../../widgets/promaja_back_button.dart';
@@ -66,11 +65,6 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
 
                   Navigator.of(context).pop();
 
-                  ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Reverted -> $weatherDescription',
-                        logGroup: PromajaLogGroup.cardColor,
-                      );
-
                   setState(() {});
                 },
                 style: ElevatedButton.styleFrom(
@@ -96,11 +90,6 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
                       );
 
                   Navigator.of(context).pop();
-
-                  ref.read(hiveProvider.notifier).logPromajaEvent(
-                        text: 'Saved -> $weatherDescription',
-                        logGroup: PromajaLogGroup.cardColor,
-                      );
 
                   setState(() {});
                 },

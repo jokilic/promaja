@@ -3,8 +3,6 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
-import '../models/promaja_log/promaja_log.dart';
-import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/appearance/appearance_settings.dart';
 import '../models/settings/appearance/initial_section.dart';
 import '../models/settings/notification/notification_last_shown.dart';
@@ -41,7 +39,6 @@ class HiveService extends StateNotifier<List<Location>> {
   late final Box<int> activeNavigationValueIndexToBox;
   late final Box<PromajaSettings> promajaSettingsBox;
   late final Box<NotificationLastShown> notificationLastShownBox;
-  late final Box<PromajaLog> promajaLogBox;
   late final Box<bool> notificationDialogShownBox;
 
   late final PromajaSettings defaultSettings;
@@ -113,21 +110,12 @@ class HiveService extends StateNotifier<List<Location>> {
       Hive.registerAdapter(NotificationLastShownAdapter());
     }
 
-    if (!Hive.isAdapterRegistered(PromajaLogGroupAdapter().typeId)) {
-      Hive.registerAdapter(PromajaLogGroupAdapter());
-    }
-
-    if (!Hive.isAdapterRegistered(PromajaLogAdapter().typeId)) {
-      Hive.registerAdapter(PromajaLogAdapter());
-    }
-
     locationsBox = await Hive.openBox<Location>('locationsBox');
     customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
     activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
     activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
     promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
     notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
-    promajaLogBox = await Hive.openBox<PromajaLog>('promajaLogBox');
     notificationDialogShownBox = await Hive.openBox<bool>('notificationDialogShownBox');
 
     state = getLocationsFromBox();
@@ -154,8 +142,6 @@ class HiveService extends StateNotifier<List<Location>> {
         pressure: PressureUnit.hectopascal,
       ),
     );
-
-    await deleteOldLogs();
   }
 
   ///
@@ -172,7 +158,6 @@ class HiveService extends StateNotifier<List<Location>> {
     await activeNavigationValueIndexToBox.close();
     await promajaSettingsBox.close();
     await notificationLastShownBox.close();
-    await promajaLogBox.close();
     await notificationDialogShownBox.close();
 
     await Hive.close();
@@ -181,9 +166,6 @@ class HiveService extends StateNotifier<List<Location>> {
   ///
   /// METHODS
   ///
-
-  /// Called to add a new `PromajaLog` value to [Hive]
-  Future<void> addPromajaLogToBox({required PromajaLog promajaLog}) async => promajaLogBox.add(promajaLog);
 
   /// Called to add a new active navigation value index to [Hive]
   Future<void> addActiveNavigationValueIndexToBox({required int index}) async => activeNavigationValueIndexToBox.put(0, index);
@@ -229,9 +211,6 @@ class HiveService extends StateNotifier<List<Location>> {
     state = [...state, location];
     await locationsBox.put(index, location);
   }
-
-  /// Called to get all `PromajaLog` values from [Hive]
-  List<PromajaLog> getPromajaLogsFromBox() => promajaLogBox.values.toList();
 
   /// Called to get all [Location] values from [Hive]
   List<Location> getLocationsFromBox() => locationsBox.values.toList();
@@ -286,37 +265,5 @@ class HiveService extends StateNotifier<List<Location>> {
 
     /// Update all locations in [Hive]
     await writeAllLocationsToHive(locations: state);
-
-    logPromajaEvent(
-      text: 'Reorder done',
-      logGroup: PromajaLogGroup.list,
-    );
-  }
-
-  /// Logs & saves `PromajaLog` in [Hive]
-  void logPromajaEvent({
-    required String text,
-    required PromajaLogGroup logGroup,
-    bool isError = false,
-  }) =>
-      addPromajaLogToBox(
-        promajaLog: PromajaLog(
-          text: text,
-          time: DateTime.now(),
-          logGroup: logGroup,
-          isError: isError,
-        ),
-      );
-
-  /// Deletes logs which are older than the passed number of days
-  Future<void> deleteOldLogs({int days = 3}) async {
-    /// Generate logs with values newer than passed number of days
-    final logs = getPromajaLogsFromBox();
-    final timeAgo = DateTime.now().subtract(Duration(days: days));
-    logs.removeWhere((log) => log.time.isBefore(timeAgo));
-
-    /// Delete all entries & store new logs in box
-    await promajaLogBox.clear();
-    await promajaLogBox.addAll(logs);
   }
 }

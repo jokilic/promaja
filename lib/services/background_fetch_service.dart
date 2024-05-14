@@ -5,7 +5,6 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/promaja_log/promaja_log_level.dart';
 import '../util/initialization.dart';
 import 'hive_service.dart';
 import 'home_widget_service.dart';
@@ -78,12 +77,6 @@ final backgroundFetchInitProvider = FutureProvider<void>(
             final logger = LoggerService();
             final hive = HiveService(logger);
             await hive.init();
-
-            hive.logPromajaEvent(
-              text: 'Background task -> $e',
-              logGroup: PromajaLogGroup.background,
-              isError: true,
-            );
           }
 
           /// Finish task
@@ -96,12 +89,6 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           final hive = HiveService(logger);
           await hive.init();
 
-          hive.logPromajaEvent(
-            text: 'Background task -> Task timed-out',
-            logGroup: PromajaLogGroup.background,
-            isError: true,
-          );
-
           await BackgroundFetch.finish(taskId);
         },
       );
@@ -112,21 +99,10 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       final logger = LoggerService();
       final hive = HiveService(logger);
       await hive.init();
-
-      hive.logPromajaEvent(
-        text: 'Background done',
-        logGroup: PromajaLogGroup.background,
-      );
     } catch (e) {
       final logger = LoggerService();
       final hive = HiveService(logger);
       await hive.init();
-
-      hive.logPromajaEvent(
-        text: 'Background -> $e',
-        logGroup: PromajaLogGroup.background,
-        isError: true,
-      );
     }
   },
   name: 'BackgroundFetchInitProvider',
@@ -142,12 +118,6 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
-
-    hive.logPromajaEvent(
-      text: 'HeadlessTask -> Task timed-out',
-      logGroup: PromajaLogGroup.background,
-      isError: true,
-    );
 
     await BackgroundFetch.finish(taskId);
     return;
@@ -190,11 +160,6 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
-
-    hive.logPromajaEvent(
-      text: 'HeadlessTask done',
-      logGroup: PromajaLogGroup.background,
-    );
   }
 
   /// Some generic error happened, throw error
@@ -202,12 +167,6 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
-
-    hive.logPromajaEvent(
-      text: 'HeadlessTask -> $e',
-      logGroup: PromajaLogGroup.background,
-      isError: true,
-    );
   }
 
   /// Finish task

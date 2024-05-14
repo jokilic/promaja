@@ -10,7 +10,6 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
-import 'models/promaja_log/promaja_log_level.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'util/env.dart';
@@ -71,11 +70,6 @@ Future<void> main() async {
           ),
         ),
       );
-
-      container.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'App start',
-            logGroup: PromajaLogGroup.initialization,
-          );
     } else {
       runApp(
         MaterialApp(
@@ -95,12 +89,6 @@ Future<void> main() async {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
-
-    hive.logPromajaEvent(
-      text: 'App start -> $e',
-      logGroup: PromajaLogGroup.initialization,
-      isError: true,
-    );
   }
 }
 

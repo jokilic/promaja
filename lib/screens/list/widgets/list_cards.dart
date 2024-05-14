@@ -8,7 +8,6 @@ import '../../../constants/colors.dart';
 import '../../../constants/durations.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/location/location.dart';
-import '../../../models/promaja_log/promaja_log_level.dart';
 import '../../../services/hive_service.dart';
 import '../../../widgets/promaja_navigation_bar.dart';
 import '../notifiers/add_location_notifier.dart';
@@ -33,11 +32,6 @@ class ListCards extends ConsumerWidget {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     await ref.read(hiveProvider.notifier).deleteLocationFromBox(index: index);
-
-    ref.read(hiveProvider.notifier).logPromajaEvent(
-          text: 'Delete -> ${location.name}, ${location.country}',
-          logGroup: PromajaLogGroup.list,
-        );
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

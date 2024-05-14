@@ -8,7 +8,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
-import '../../models/promaja_log/promaja_log_level.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
@@ -26,13 +25,6 @@ class CardsScreen extends ConsumerWidget {
       if (ref.read(cardAdditionalControllerProvider).hasClients) {
         ref.read(cardAdditionalControllerProvider).jumpTo(0);
       }
-
-      final activeLocation = ref.read(hiveProvider)[index];
-
-      ref.read(hiveProvider.notifier).logPromajaEvent(
-            text: 'Card swipe -> ${activeLocation.name}, ${activeLocation.country}',
-            logGroup: PromajaLogGroup.currentWeather,
-          );
     }
   }
 

@@ -10,7 +10,6 @@ import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
 import '../models/forecast_weather/response_forecast_weather.dart';
 import '../models/location/location.dart';
-import '../models/promaja_log/promaja_log_level.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../models/settings/widget/weather_type.dart';
 import '../util/preload_image.dart';
@@ -76,11 +75,7 @@ class HomeWidgetService {
         key: 'filePath',
       );
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Render widget -> $e',
-        logGroup: PromajaLogGroup.widget,
-        isError: true,
-      );
+      logger.e('Render widget -> $e');
     }
   }
 
@@ -94,11 +89,7 @@ class HomeWidgetService {
         qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
       );
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Update widget -> $e',
-        logGroup: PromajaLogGroup.widget,
-        isError: true,
-      );
+      logger.e('Update widget -> $e');
     }
   }
 
@@ -135,11 +126,6 @@ class HomeWidgetService {
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
             );
-
-            hive.logPromajaEvent(
-              text: 'Current widget updated',
-              logGroup: PromajaLogGroup.widget,
-            );
           }
         }
 
@@ -160,29 +146,16 @@ class HomeWidgetService {
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
             );
-
-            hive.logPromajaEvent(
-              text: 'Forecast widget updated',
-              logGroup: PromajaLogGroup.widget,
-            );
           }
         }
       }
 
       /// Location doesn't exist
       else {
-        hive.logPromajaEvent(
-          text: 'Handle widget -> Location null',
-          logGroup: PromajaLogGroup.widget,
-          isError: true,
-        );
+        logger.e('Handle widget -> Location null');
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Handle widget -> $e',
-        logGroup: PromajaLogGroup.widget,
-        isError: true,
-      );
+      logger.e('Handle widget -> $e');
     }
   }
 
@@ -249,11 +222,7 @@ class HomeWidgetService {
       /// Update [HomeWidget]
       await createHomeWidget(widget);
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Trigger current widget -> $e',
-        logGroup: PromajaLogGroup.widget,
-        isError: true,
-      );
+      logger.e('Trigger current widget -> $e');
     }
   }
 
@@ -348,11 +317,7 @@ class HomeWidgetService {
         await createHomeWidget(widget);
       }
     } catch (e) {
-      hive.logPromajaEvent(
-        text: 'Trigger forecast widget -> $e',
-        logGroup: PromajaLogGroup.widget,
-        isError: true,
-      );
+      logger.e('Trigger forecast widget -> $e');
     }
   }
 }
