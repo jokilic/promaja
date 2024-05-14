@@ -11,7 +11,21 @@ import '../../../../services/hive_service.dart';
 import '../../notifiers/add_location_notifier.dart';
 import '../../notifiers/phone_location_notifier.dart';
 
-class AddLocationWidget extends ConsumerWidget {
+class AddLocationWidget extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _AddLocationWidgetState();
+}
+
+class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ref.read(phoneLocationProvider.notifier).refreshPhoneLocation(),
+    );
+  }
+
   String? getErrorText(({ResponseError? error, String? genericError, bool loading, List<Location>? response}) state) {
     /// Response is empty, there is no locations
     if (state.response?.isEmpty ?? false) {
@@ -28,7 +42,7 @@ class AddLocationWidget extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final isLoading = ref.watch(addLocationProvider).loading;
     final locations = ref.watch(addLocationProvider).response;
 

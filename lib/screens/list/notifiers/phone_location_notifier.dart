@@ -70,17 +70,8 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
     /// Get position
     final position = await ref.read(getPhonePositionProvider.future);
 
-    state = (
-      position: position.position,
-      error: position.error,
-      loading: false,
-    );
-
     /// Position is properly calculated
     if (position.position != null) {
-      /// Remove phone location if it's active
-      await removeActivePhoneLocation();
-
       /// Generate a [Location] model
       final location = Location(
         name: 'Current location',
@@ -101,6 +92,9 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
 
       /// Response successfully fetched
       if (response.response != null && response.error == null) {
+        /// Remove phone location if it's active
+        await removeActivePhoneLocation();
+
         /// Add location to [Hive]
         await hiveService.writeAllLocationsToHive(
           locations: [
@@ -108,23 +102,36 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
             ...hiveService.state,
           ],
         );
+
+        state = (
+          position: position.position,
+          error: null,
+          loading: false,
+        );
+      }
+
+      /// Response returned an error
+      else {
+        state = (
+          position: position.position,
+          error: response.error?.error.message,
+          loading: false,
+        );
       }
     }
 
     /// Error getting position
     else {
+      state = (
+        position: null,
+        error: position.error,
+        loading: false,
+      );
+
       hiveService.logPromajaEvent(
         text: 'Error getting phone position${position.error != null ? ' -> ${position.error}' : ''}',
         logGroup: PromajaLogGroup.location,
         isError: true,
-      );
-    }
-
-    if (mounted) {
-      state = (
-        position: position.position,
-        error: position.error,
-        loading: false,
       );
     }
   }
