@@ -63,17 +63,23 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
 
           /// Show snackbar if error exists
           if (errorText != null) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
                   errorText,
                   style: PromajaTextStyles.snackbar,
                 ),
-                backgroundColor: PromajaColors.indigo,
+                backgroundColor: PromajaColors.black,
                 behavior: SnackBarBehavior.floating,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(
+                    color: PromajaColors.white,
+                    width: 2,
+                  ),
                 ),
               ),
             );
@@ -84,6 +90,8 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
         phoneLocationProvider,
         (_, state) {
           if (state.error != null) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
             /// Show snackbar
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -91,11 +99,15 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
                   '${state.error}',
                   style: PromajaTextStyles.snackbar,
                 ),
-                backgroundColor: PromajaColors.indigo,
+                backgroundColor: PromajaColors.black,
                 behavior: SnackBarBehavior.floating,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(
+                    color: PromajaColors.white,
+                    width: 2,
+                  ),
                 ),
               ),
             );

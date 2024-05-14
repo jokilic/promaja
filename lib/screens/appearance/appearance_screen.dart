@@ -86,13 +86,11 @@ class AppearanceScreen extends ConsumerWidget {
               /// CARD COLORS
               ///
               SettingsListTile(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => CardColorsScreen(),
-                    ),
-                  );
-                },
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CardColorsScreen(),
+                  ),
+                ),
                 icon: PromajaIcons.arrow,
                 title: 'cardColorsTitle'.tr(),
                 subtitle: 'cardColorsSubtitle'.tr(),

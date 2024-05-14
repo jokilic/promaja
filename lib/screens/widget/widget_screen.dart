@@ -120,17 +120,23 @@ class WidgetScreen extends ConsumerWidget {
                 onTap: () async {
                   await ref.read(homeWidgetProvider).handleWidget();
 
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         'widgetUpdated'.tr(),
                         style: PromajaTextStyles.snackbar,
                       ),
-                      backgroundColor: PromajaColors.indigo,
+                      backgroundColor: PromajaColors.black,
                       behavior: SnackBarBehavior.floating,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(
+                          color: PromajaColors.white,
+                          width: 2,
+                        ),
                       ),
                     ),
                   );
