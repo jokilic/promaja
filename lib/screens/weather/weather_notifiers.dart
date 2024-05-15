@@ -9,7 +9,7 @@ import '../../models/location/location.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
 
-final weatherCardIndexProvider = StateProvider<int>(
+final weatherCardIndexProvider = StateProvider.autoDispose<int>(
   (_) => 0,
   name: 'WeatherCardIndexProvider',
 );

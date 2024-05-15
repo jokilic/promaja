@@ -39,15 +39,16 @@ class WeatherSuccess extends ConsumerStatefulWidget {
 class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
   @override
   void initState() {
+    super.initState();
+
     final summaryFirst = ref.read(settingsProvider).appearance.weatherSummaryFirst;
 
     if (!summaryFirst) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(weatherAppinioControllerProvider).swipe(),
+      Future.delayed(
+        Duration.zero,
+        () => ref.read(weatherAppinioControllerProvider).swipeDefault(),
       );
     }
-
-    super.initState();
   }
 
   void cardSwiped({required int index, required WidgetRef ref}) {
@@ -93,23 +94,22 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
         /// WEATHER
         ///
         Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 40),
+          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
           child: AppinioSwiper(
             controller: ref.watch(weatherAppinioControllerProvider),
             loop: true,
-            padding: const EdgeInsets.only(bottom: 24),
             isDisabled: cardCount <= 1,
             duration: PromajaDurations.cardSwiperAnimation,
-            backgroundCardsCount: min(cardCount - 1, 3),
-            cardsCount: cardCount,
-            onSwiping: (_) {
+            backgroundCardCount: min(cardCount - 1, 3),
+            cardCount: cardCount,
+            onCardPositionChanged: (_) {
               if (!ref.read(weatherCardMovingProvider)) {
                 ref.read(weatherCardMovingProvider.notifier).state = true;
               }
             },
-            onSwipeCancelled: () => ref.read(weatherCardMovingProvider.notifier).state = false,
-            onSwipe: (index, __) => cardSwiped(index: index, ref: ref),
-            cardsBuilder: (_, cardIndex) => WeatherCardSuccess(
+            onSwipeCancelled: (_) => ref.read(weatherCardMovingProvider.notifier).state = false,
+            onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
+            cardBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: widget.location,
               forecastWeather: widget.forecastWeather,
               forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
