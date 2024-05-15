@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/current_weather/current_weather.dart';
@@ -129,12 +130,12 @@ class ListCardSuccess extends ConsumerWidget {
                   child: Animate(
                     key: ValueKey(location),
                     onPlay: (controller) => controller.loop(reverse: true),
-                    delay: 10.seconds,
+                    delay: PromajaDurations.weatherIconScaleDelay,
                     effects: [
                       ScaleEffect(
                         curve: Curves.easeIn,
                         end: const Offset(1.5, 1.5),
-                        duration: 60.seconds,
+                        duration: PromajaDurations.weatherIconScalAnimation,
                       ),
                     ],
                     child: Transform.scale(

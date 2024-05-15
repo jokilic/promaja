@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../constants/colors.dart';
+import '../../../constants/durations.dart';
 import '../../../constants/text_styles.dart';
 import '../../../util/color.dart';
 
@@ -85,12 +86,12 @@ class SettingsCardWidget extends StatelessWidget {
                     child: Animate(
                       key: ValueKey(weatherIcon),
                       onPlay: (controller) => controller.loop(reverse: true),
-                      delay: 10.seconds,
+                      delay: PromajaDurations.weatherIconScaleDelay,
                       effects: [
                         ScaleEffect(
                           curve: Curves.easeIn,
                           end: const Offset(1.5, 1.5),
-                          duration: 60.seconds,
+                          duration: PromajaDurations.weatherIconScalAnimation,
                         ),
                       ],
                       child: Transform.scale(

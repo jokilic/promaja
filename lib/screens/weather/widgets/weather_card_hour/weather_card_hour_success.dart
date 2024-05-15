@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/forecast_weather/hour_weather.dart';
@@ -112,12 +113,12 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                 Animate(
                   key: ValueKey(hourWeather),
                   onPlay: (controller) => controller.loop(reverse: true),
-                  delay: 10.seconds,
+                  delay: PromajaDurations.weatherIconScaleDelay,
                   effects: [
                     ScaleEffect(
                       curve: Curves.easeIn,
                       end: const Offset(1.15, 1.15),
-                      duration: 60.seconds,
+                      duration: PromajaDurations.weatherIconScalAnimation,
                     ),
                   ],
                   child: Transform.scale(

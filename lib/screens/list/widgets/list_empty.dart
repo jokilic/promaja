@@ -50,12 +50,12 @@ class ListEmpty extends StatelessWidget {
           ///
           Animate(
             onPlay: (controller) => controller.loop(reverse: true),
-            delay: 10.seconds,
+            delay: PromajaDurations.weatherIconScaleDelay,
             effects: [
               ScaleEffect(
                 curve: Curves.easeIn,
                 end: const Offset(1.5, 1.5),
-                duration: 60.seconds,
+                duration: PromajaDurations.weatherIconScalAnimation,
               ),
             ],
             child: Animate(
