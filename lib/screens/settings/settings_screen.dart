@@ -142,9 +142,7 @@ class SettingsScreen extends ConsumerWidget {
                       Uri(
                         scheme: 'mailto',
                         path: 'neksuses@gmail.com',
-                        queryParameters: {
-                          'subject': Uri.encodeComponent('Regarding Promaja...'),
-                        },
+                        query: 'subject=${'Regarding Promaja...'}',
                       ),
                     ),
                     icon: PromajaIcons.arrow,
