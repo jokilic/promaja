@@ -34,7 +34,6 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           requiresCharging: false,
           requiresStorageNotLow: false,
           requiresDeviceIdle: false,
-          forceAlarmManager: true,
           requiredNetworkType: NetworkType.NONE,
         ),
 
