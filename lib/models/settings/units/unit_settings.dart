@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'distance_speed_unit.dart';
 import 'precipitation_unit.dart';

@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import 'appearance/appearance_settings.dart';
 import 'notification/notification_settings.dart';
