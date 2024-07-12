@@ -17,7 +17,7 @@ class CustomColorAdapter extends TypeAdapter<CustomColor> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomColor(
-      code: fields[1] as int,
+      code: (fields[1] as num).toInt(),
       isDay: fields[2] as bool,
       color: fields[3] as Color,
     );

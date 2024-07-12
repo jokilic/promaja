@@ -20,8 +20,8 @@ class LocationAdapter extends TypeAdapter<Location> {
       name: fields[1] as String,
       region: fields[2] as String,
       country: fields[3] as String,
-      lat: fields[4] as double,
-      lon: fields[5] as double,
+      lat: (fields[4] as num).toDouble(),
+      lon: (fields[5] as num).toDouble(),
       isPhoneLocation: fields[6] as bool?,
     );
   }

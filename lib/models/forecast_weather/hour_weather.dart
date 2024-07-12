@@ -108,7 +108,7 @@ class HourWeather {
         visMiles: map['vis_miles'] as double,
         gustKph: map['gust_kph'] as double,
         gustMph: map['gust_mph'] as double,
-        uv: map['uv'] as double,
+        uv: (map['uv'] is int) ? (map['uv'] as int).toDouble() : map['uv'] as double,
       );
 
   @override
