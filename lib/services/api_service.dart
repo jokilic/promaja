@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
@@ -58,17 +57,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        unawaited(Sentry.captureException(parsedError));
+        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Current weather -> catch -> $e';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -96,17 +95,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        unawaited(Sentry.captureException(parsedError));
+        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -143,17 +142,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        unawaited(Sentry.captureException(parsedError));
+        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Search -> catch -> $e';
-      unawaited(Sentry.captureException(error));
+      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }

@@ -47,7 +47,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// Initialize [WeatherCardForecast]
     if (widget.forecast != null) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast!.hours.firstWhere(
+        (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast?.hours.firstWhere(
           (hour) => hour.timeEpoch.hour == DateTime.now().hour,
         ),
       );
