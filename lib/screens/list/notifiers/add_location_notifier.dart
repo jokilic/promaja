@@ -61,9 +61,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
   /// VARIABLES
   ///
 
-  /// Limiting locations because of free API
-  final locationLimit = 5;
-
   late final textEditingController = TextEditingController();
   late final scrollController = ScrollController();
 
@@ -106,20 +103,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
   /// Adds place in `Hive`
   Future<void> addPlace({required Location location}) async {
     textEditingController.clear();
-
-    /// If user has more than `locationLimit` locations, throw error
-    if (ref.read(hiveProvider).length >= locationLimit) {
-      state = (
-        response: null,
-        error: null,
-        genericError: 'noMoreThanXLocations'.tr(
-          args: ['$locationLimit'],
-        ),
-        loading: false,
-      );
-
-      return;
-    }
 
     /// Check if location already exists
     final locationExists = ref.read(hiveProvider).contains(location);
