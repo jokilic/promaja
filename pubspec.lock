@@ -22,14 +22,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.0"
-  animated_reorderable_list:
-    dependency: "direct main"
-    description:
-      name: animated_reorderable_list
-      sha256: "57b1a313d6843d3afc82b8710be02440584e5421dc675009d545a88a78e38b8d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   animated_shimmer:
     dependency: "direct main"
     description:

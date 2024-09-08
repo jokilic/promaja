@@ -86,16 +86,6 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
         genericError: response.genericError,
         loading: false,
       );
-
-      if (scrollController.positions.isNotEmpty) {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => scrollController.animateTo(
-            scrollController.positions.last.maxScrollExtent,
-            duration: PromajaDurations.scrollAnimation,
-            curve: Curves.fastOutSlowIn,
-          ),
-        );
-      }
     }
   }
 
@@ -138,13 +128,15 @@ class AddLocationNotifier extends StateNotifier<({List<Location>? response, Resp
       );
 
       /// Scroll to the bottom
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => scrollController.animateTo(
-          scrollController.positions.last.maxScrollExtent,
-          duration: PromajaDurations.scrollAnimation,
-          curve: Curves.fastOutSlowIn,
-        ),
-      );
+      if (scrollController.positions.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => scrollController.animateTo(
+            scrollController.positions.last.maxScrollExtent,
+            duration: PromajaDurations.scrollAnimation,
+            curve: Curves.fastOutSlowIn,
+          ),
+        );
+      }
     }
   }
 }

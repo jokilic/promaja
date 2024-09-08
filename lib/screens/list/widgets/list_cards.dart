@@ -1,4 +1,3 @@
-import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -86,73 +85,54 @@ class ListCards extends ConsumerWidget {
           /// LIST OF LOCATIONS
           ///
           Flexible(
-            child: AnimatedReorderableListView(
-              onReorder: ref.read(hiveProvider.notifier).reorderLocations,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              physics: const BouncingScrollPhysics(),
-              controller: ref.watch(addLocationProvider.notifier).scrollController,
-              insertDuration: PromajaDurations.fadeAnimation,
-              removeDuration: PromajaDurations.fadeAnimation,
-              enterTransition: [
-                FlipInX(
-                  duration: PromajaDurations.fadeAnimation,
-                  curve: Curves.easeIn,
-                ),
-              ],
-              exitTransition: [
-                FlipInX(
-                  duration: PromajaDurations.fadeAnimation,
-                  curve: Curves.easeIn,
-                ),
-              ],
-              items: [
-                ...locations,
-                Location(
-                  name: '',
-                  region: '',
-                  country: '',
-                  lat: 0,
-                  lon: 0,
-                ),
-              ],
-              itemBuilder: (_, index) {
-                final location = locations.elementAtOrNull(index);
-                final locationKey = ValueKey(location);
-
-                if (location != null) {
-                  return Animate(
-                    key: locationKey,
-                    delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                    effects: [
-                      FadeEffect(
-                        curve: Curves.easeIn,
-                        duration: PromajaDurations.fadeAnimation,
-                      ),
-                    ],
-                    child: ListCardWidget(
-                      key: locationKey,
-                      location: location,
-                      showCelsius: showCelsius,
-                      onTap: () => openWeatherScreen(
-                        index: index,
-                        ref: ref,
-                      ),
-                      onTapDelete: (handler) {
-                        handler(false);
-
-                        deleteLocation(
-                          ref: ref,
-                          context: context,
-                          location: location,
-                          index: index,
-                        );
-                      },
-                    ),
-                  );
+            child: ReorderableListView.builder(
+              onReorder: (oldIndex, newIndex) {
+                if (newIndex > oldIndex) {
+                  newIndex--;
                 }
 
-                return SizedBox.shrink(
-                  key: UniqueKey(),
+                ref.read(hiveProvider.notifier).reorderLocations(oldIndex, newIndex);
+              },
+
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              physics: const BouncingScrollPhysics(),
+              scrollController: ref.watch(addLocationProvider.notifier).scrollController,
+              itemCount: locations.length + 1, // + 1 for the empty item at the end
+              itemBuilder: (context, index) {
+                if (index == locations.length) {
+                  return SizedBox.shrink(key: UniqueKey());
+                }
+
+                final location = locations[index];
+                final locationKey = ValueKey(location);
+
+                return Animate(
+                  key: locationKey,
+                  delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                  effects: [
+                    FadeEffect(
+                      curve: Curves.easeIn,
+                      duration: PromajaDurations.fadeAnimation,
+                    ),
+                  ],
+                  child: ListCardWidget(
+                    key: locationKey,
+                    location: location,
+                    showCelsius: showCelsius,
+                    onTap: () => openWeatherScreen(
+                      index: index,
+                      ref: ref,
+                    ),
+                    onTapDelete: (handler) {
+                      handler(false);
+                      deleteLocation(
+                        ref: ref,
+                        context: context,
+                        location: location,
+                        index: index,
+                      );
+                    },
+                  ),
                 );
               },
             ),
