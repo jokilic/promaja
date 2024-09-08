@@ -21,11 +21,12 @@ class ListCardWidget extends ConsumerWidget {
     required this.onTap,
     required this.onTapDelete,
     required this.showCelsius,
+    required super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => SwipeActionCell(
-        key: ValueKey(location),
+        key: key!,
         openAnimationCurve: Curves.easeIn,
         closeAnimationCurve: Curves.easeIn,
         trailingActions: [
