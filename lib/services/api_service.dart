@@ -38,7 +38,9 @@ class APIService {
   ///
   /// `current.json`
   ///
-  Future<({ResponseCurrentWeather? response, ResponseError? error, String? genericError})> getCurrentWeather({required String query}) async {
+  Future<({ResponseCurrentWeather? response, ResponseError? error, String? genericError})> getCurrentWeather({
+    required String query,
+  }) async {
     try {
       final response = await dio.get(
         '/current.json',
@@ -57,17 +59,14 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
-      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Current weather -> catch -> $e';
-      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -75,7 +74,10 @@ class APIService {
   ///
   /// `forecast.json`
   ///
-  Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getForecastWeather({required String query, int? days = 1}) async {
+  Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getForecastWeather({
+    required String query,
+    int? days = 1,
+  }) async {
     try {
       final response = await dio.get(
         '/forecast.json',
@@ -95,17 +97,52 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
-      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
-      // unawaited(Sentry.captureException(error));
+      return (response: null, error: null, genericError: error);
+    }
+  }
+
+  ///
+  /// `history.json`
+  ///
+  Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getHistoryWeather({
+    required String query,
+    required String date,
+  }) async {
+    try {
+      final response = await dio.get(
+        '/history.json',
+        queryParameters: {
+          'key': Env.apiKey,
+          'q': query,
+          'dt': date,
+        },
+      );
+
+      /// Status code is `200`, response is successful
+      if (response.statusCode == 200) {
+        final parsedResponse = await computeForecastWeather(response.data);
+        return (response: parsedResponse, error: null, genericError: null);
+      }
+
+      /// Status code starts with a `4`, some API error happened
+      if ((response.statusCode ?? 0) ~/ 100 == 4) {
+        final parsedError = await computeError(response.data);
+        return (response: null, error: parsedError, genericError: null);
+      }
+
+      /// Some weird error happened
+      final error = 'History weather -> StatusCode ${response.statusCode} -> Generic error';
+      return (response: null, error: null, genericError: error);
+    } catch (e) {
+      final error = 'History weather -> catch -> $e';
       return (response: null, error: null, genericError: error);
     }
   }
@@ -113,7 +150,9 @@ class APIService {
   ///
   /// `search.json`
   ///
-  Future<({List<Location>? response, ResponseError? error, String? genericError})> getSearch({required String query}) async {
+  Future<({List<Location>? response, ResponseError? error, String? genericError})> getSearch({
+    required String query,
+  }) async {
     try {
       final response = await dio.get(
         '/search.json',
@@ -142,23 +181,28 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        // unawaited(Sentry.captureException(parsedError));
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
-      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Search -> catch -> $e';
-      // unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
 
+  ///
+  /// NOTIFICATIONS & WIDGETS
+  ///
+
+  ///
   /// Fetches current weather data
-  Future<ResponseCurrentWeather?> fetchCurrentWeather({required Location location}) async {
+  ///
+  Future<ResponseCurrentWeather?> fetchCurrentWeather({
+    required Location location,
+  }) async {
     final response = await getCurrentWeather(
       query: '${location.lat},${location.lon}',
     );
@@ -172,7 +216,10 @@ class APIService {
     return null;
   }
 
+  ///
   /// Fetches forecast weather data
+  ///
+
   Future<ResponseForecastWeather?> fetchForecastWeather({
     required Location location,
     required bool isTomorrow,

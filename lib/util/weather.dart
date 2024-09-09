@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../constants/icons.dart';
 
+String getHistoryDate(DateTime dateTime) {
+  final year = dateTime.year.toString().padLeft(2, '0');
+  final month = dateTime.month.toString().padLeft(2, '0');
+  final day = dateTime.day.toString().padLeft(2, '0');
+
+  return '$year-$month-$day';
+}
+
 String getTodayDateMonth({required DateTime dateEpoch}) {
   /// Current date and time
   final now = DateTime.now();
