@@ -1,7 +1,8 @@
-import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
@@ -77,12 +78,25 @@ class ListCardLoading extends StatelessWidget {
                         ),
 
                         /// Loading
-                        AnimatedShimmer(
-                          height: 48,
-                          width: 80,
-                          startColor: PromajaColors.white.withOpacity(0.5),
-                          endColor: PromajaColors.white.withOpacity(0.25),
-                          borderRadius: BorderRadius.circular(8),
+                        Animate(
+                          onPlay: (controller) => controller.loop(
+                            reverse: true,
+                            min: 0.6,
+                          ),
+                          effects: [
+                            FadeEffect(
+                              curve: Curves.easeIn,
+                              duration: PromajaDurations.shimmerAnimation,
+                            ),
+                          ],
+                          child: Container(
+                            height: 48,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: PromajaColors.white.withOpacity(0.5),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -91,10 +105,25 @@ class ListCardLoading extends StatelessWidget {
                   ///
                   /// LOADING ICON
                   ///
-                  AnimatedShimmer.round(
-                    size: 96,
-                    startColor: PromajaColors.white.withOpacity(0.5),
-                    endColor: PromajaColors.white.withOpacity(0.25),
+                  Animate(
+                    onPlay: (controller) => controller.loop(
+                      reverse: true,
+                      min: 0.6,
+                    ),
+                    effects: [
+                      FadeEffect(
+                        curve: Curves.easeIn,
+                        duration: PromajaDurations.shimmerAnimation,
+                      ),
+                    ],
+                    child: Container(
+                      height: 88,
+                      width: 88,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: PromajaColors.white.withOpacity(0.5),
+                      ),
+                    ),
                   ),
                 ],
               ),

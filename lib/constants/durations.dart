@@ -22,4 +22,5 @@ class PromajaDurations {
   static final hoursScrollAnimation = 187.5.milliseconds;
   static final weatherIconScaleDelay = 7.5.seconds;
   static final weatherIconScalAnimation = 45.seconds;
+  static final shimmerAnimation = 1500.milliseconds;
 }

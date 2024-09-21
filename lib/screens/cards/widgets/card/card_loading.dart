@@ -1,7 +1,8 @@
-import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 
@@ -33,24 +34,38 @@ class CardLoading extends StatelessWidget {
             ///
             /// LAST UPDATED & LOCATION
             ///
-            Column(
-              children: [
-                AnimatedShimmer(
-                  height: 16,
-                  width: 104,
-                  startColor: PromajaColors.white.withOpacity(0.5),
-                  endColor: PromajaColors.white.withOpacity(0.25),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                const SizedBox(height: 16),
-                AnimatedShimmer(
-                  height: 32,
-                  width: 200,
-                  startColor: PromajaColors.white.withOpacity(0.5),
-                  endColor: PromajaColors.white.withOpacity(0.25),
-                  borderRadius: BorderRadius.circular(8),
+            Animate(
+              onPlay: (controller) => controller.loop(
+                reverse: true,
+                min: 0.6,
+              ),
+              effects: [
+                FadeEffect(
+                  curve: Curves.easeIn,
+                  duration: PromajaDurations.shimmerAnimation,
                 ),
               ],
+              child: Column(
+                children: [
+                  Container(
+                    height: 16,
+                    width: 104,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: PromajaColors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 32,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: PromajaColors.white.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             ...List.generate(5, (index) => const SizedBox.shrink()),
@@ -58,10 +73,25 @@ class CardLoading extends StatelessWidget {
             ///
             /// WEATHER ICON
             ///
-            AnimatedShimmer.round(
-              size: 176,
-              startColor: PromajaColors.white.withOpacity(0.5),
-              endColor: PromajaColors.white.withOpacity(0.25),
+            Animate(
+              onPlay: (controller) => controller.loop(
+                reverse: true,
+                min: 0.6,
+              ),
+              effects: [
+                FadeEffect(
+                  curve: Curves.easeIn,
+                  duration: PromajaDurations.shimmerAnimation,
+                ),
+              ],
+              child: Container(
+                height: 176,
+                width: 176,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: PromajaColors.white.withOpacity(0.5),
+                ),
+              ),
             ),
 
             ...List.generate(5, (index) => const SizedBox.shrink()),
@@ -69,22 +99,38 @@ class CardLoading extends StatelessWidget {
             ///
             /// TEMPERATURE & WEATHER
             ///
-            Column(
-              children: [
-                AnimatedShimmer(
-                  width: 144,
-                  height: 104,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                const SizedBox(height: 16),
-                AnimatedShimmer(
-                  height: 32,
-                  width: 200,
-                  startColor: PromajaColors.white.withOpacity(0.5),
-                  endColor: PromajaColors.white.withOpacity(0.25),
-                  borderRadius: BorderRadius.circular(8),
+            Animate(
+              onPlay: (controller) => controller.loop(
+                reverse: true,
+                min: 0.6,
+              ),
+              effects: [
+                FadeEffect(
+                  curve: Curves.easeIn,
+                  duration: PromajaDurations.shimmerAnimation,
                 ),
               ],
+              child: Column(
+                children: [
+                  Container(
+                    height: 104,
+                    width: 144,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: PromajaColors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 32,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: PromajaColors.white.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             ///
