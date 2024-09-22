@@ -86,6 +86,7 @@ class WeatherScreen extends ConsumerWidget {
                   ),
                   loading: () => WeatherLoading(
                     location: originalLocation!,
+                    isWeatherSummary: settings.appearance.weatherSummaryFirst,
                   ),
                 )
             : WeatherError(
