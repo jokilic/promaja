@@ -21,6 +21,8 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
   void initState() {
     super.initState();
 
+    ref.read(addLocationProvider.notifier).textEditingController.clear();
+
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ref.read(phoneLocationProvider.notifier).refreshPhoneLocation(),
     );
