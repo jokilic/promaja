@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/forecast_weather/forecast_day_weather.dart';
+import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../util/weather.dart';
 
 class WeatherCardSummaryListTile extends StatelessWidget {

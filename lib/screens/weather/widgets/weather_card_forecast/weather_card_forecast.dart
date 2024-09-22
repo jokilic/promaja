@@ -7,12 +7,13 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/custom_color/custom_color.dart';
-import '../../../../models/forecast_weather/forecast_day_weather.dart';
-import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/weather/forecast_day_weather.dart';
+import '../../../../models/weather/hour_weather.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
+import '../../../../widgets/promaja_back_button.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
@@ -32,6 +33,7 @@ class WeatherCardForecast extends ConsumerWidget {
     required HourWeather hourWeather,
     required int index,
   }) weatherCardHourPressed;
+  final bool isHistoricWeather;
 
   const WeatherCardForecast({
     required this.location,
@@ -43,6 +45,7 @@ class WeatherCardForecast extends ConsumerWidget {
     required this.showMm,
     required this.showhPa,
     required this.weatherCardHourPressed,
+    this.isHistoricWeather = false,
   });
 
   @override
@@ -121,7 +124,16 @@ class WeatherCardForecast extends ConsumerWidget {
                       ///
                       Column(
                         children: [
-                          const SizedBox(height: 24),
+                          if (isHistoricWeather)
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 16, top: 24),
+                                child: PromajaBackButton(),
+                              ),
+                            )
+                          else
+                            const SizedBox(height: 24),
                           Text(
                             getTodayDateMonth(
                               dateEpoch: forecast.dateEpoch,

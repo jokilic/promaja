@@ -7,7 +7,7 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/forecast_weather/hour_weather.dart';
+import '../../../../models/weather/hour_weather.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';

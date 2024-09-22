@@ -7,8 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
-import '../models/forecast_weather/response_forecast_weather.dart';
 import '../models/location/location.dart';
+import '../models/weather/response_forecast_weather.dart';
+import '../models/weather/response_history_weather.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
 import 'dio_service.dart';
@@ -112,7 +113,7 @@ class APIService {
   ///
   /// `history.json`
   ///
-  Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getHistoryWeather({
+  Future<({ResponseHistoryWeather? response, ResponseError? error, String? genericError})> getHistoryWeather({
     required String query,
     required String date,
   }) async {
@@ -128,7 +129,7 @@ class APIService {
 
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
-        final parsedResponse = await computeForecastWeather(response.data);
+        final parsedResponse = await computeHistoryWeather(response.data);
         return (response: parsedResponse, error: null, genericError: null);
       }
 

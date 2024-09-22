@@ -8,18 +8,21 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../../../widgets/promaja_back_button.dart';
 
 class WeatherError extends StatelessWidget {
   final Location location;
   final String error;
   final bool isPhoneLocation;
   final Function()? refreshPressed;
+  final bool isHistoricWeather;
 
   const WeatherError({
     required this.location,
     required this.error,
     required this.isPhoneLocation,
     this.refreshPressed,
+    this.isHistoricWeather = false,
   });
 
   @override
@@ -58,7 +61,16 @@ class WeatherError extends StatelessWidget {
               ///
               Column(
                 children: [
-                  const SizedBox(height: 24),
+                  if (isHistoricWeather)
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16, top: 24),
+                        child: PromajaBackButton(),
+                      ),
+                    )
+                  else
+                    const SizedBox(height: 24),
                   Text(
                     DateFormat.yMMMMd().format(DateTime.now()),
                     style: PromajaTextStyles.weatherCardLastUpdated,

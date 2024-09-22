@@ -240,4 +240,16 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w700,
     height: 1,
   );
+  static const calendarButton = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
+  static const calendarWeekday = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
 }

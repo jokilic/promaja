@@ -24,6 +24,7 @@ class PromajaIcons {
   static const dot = 'assets/icons/dot.png';
   static const check = 'assets/icons/check.png';
   static const weatherAPI = 'assets/icons/weatherapi.webp';
+  static const calendar = 'assets/icons/calendar.png';
 
   /// Weather
   static const bigRainDrops = 'assets/weather/big_rain_drops.png';

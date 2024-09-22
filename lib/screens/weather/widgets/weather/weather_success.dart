@@ -7,11 +7,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
-import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/weather/forecast_weather.dart';
 import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_success.dart';
+import '../weather_card_historic/weather_card_historic_notifier.dart';
 
 class WeatherSuccess extends ConsumerStatefulWidget {
   final Location location;
@@ -119,6 +120,7 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
               showKph: widget.showKph,
               showMm: widget.showMm,
               showhPa: widget.showhPa,
+              calendarPressed: () => ref.read(weatherCardHistoricProvider(widget.location).notifier).showCalendar(context),
             ),
           ),
         ),

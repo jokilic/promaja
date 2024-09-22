@@ -7,8 +7,8 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/forecast_weather/forecast_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
 import '../../weather_notifiers.dart';
 import 'weather_card_summary_list_tile.dart';
@@ -18,12 +18,14 @@ class WeatherCardSummary extends ConsumerWidget {
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
+  final Function() calendarPressed;
 
   const WeatherCardSummary({
     required this.location,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
+    required this.calendarPressed,
   });
 
   @override
@@ -66,9 +68,24 @@ class WeatherCardSummary extends ConsumerWidget {
                   ///
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'weatherSummary'.tr(),
-                      style: PromajaTextStyles.settingsSubtitle,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'weatherSummary'.tr(),
+                            style: PromajaTextStyles.settingsSubtitle,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: calendarPressed,
+                          icon: Image.asset(
+                            PromajaIcons.calendar,
+                            height: 26,
+                            width: 26,
+                            color: PromajaColors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(

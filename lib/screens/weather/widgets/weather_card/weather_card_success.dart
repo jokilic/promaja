@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/durations.dart';
-import '../../../../models/forecast_weather/forecast_day_weather.dart';
-import '../../../../models/forecast_weather/forecast_weather.dart';
-import '../../../../models/forecast_weather/hour_weather.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/weather/forecast_day_weather.dart';
+import '../../../../models/weather/forecast_weather.dart';
+import '../../../../models/weather/hour_weather.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card_forecast/weather_card_forecast.dart';
 import '../weather_card_summary/weather_card_summary.dart';
@@ -22,6 +22,7 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
   final bool showKph;
   final bool showMm;
   final bool showhPa;
+  final Function() calendarPressed;
 
   const WeatherCardSuccess({
     required this.location,
@@ -33,6 +34,7 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
     required this.showKph,
     required this.showMm,
     required this.showhPa,
+    required this.calendarPressed,
   });
 
   @override
@@ -103,6 +105,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         forecastWeather: widget.forecastWeather,
         isPhoneLocation: widget.isPhoneLocation,
         showCelsius: widget.showCelsius,
+        calendarPressed: widget.calendarPressed,
       );
     }
 
