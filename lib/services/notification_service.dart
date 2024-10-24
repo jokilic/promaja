@@ -46,7 +46,7 @@ class NotificationService {
   final LoggerService logger;
   final HiveService hive;
   final APIService api;
-  final ProviderRef ref;
+  final Ref ref;
 
   NotificationService({
     required this.logger,

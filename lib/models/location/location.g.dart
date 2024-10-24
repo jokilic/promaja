@@ -22,7 +22,7 @@ class LocationAdapter extends TypeAdapter<Location> {
       country: fields[3] as String,
       lat: (fields[4] as num).toDouble(),
       lon: (fields[5] as num).toDouble(),
-      isPhoneLocation: fields[6] as bool?,
+      isPhoneLocation: fields[6] == null ? false : fields[6] as bool?,
     );
   }
 
