@@ -18,14 +18,12 @@ class WeatherCardSummary extends ConsumerWidget {
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
-  final Function() calendarPressed;
 
   const WeatherCardSummary({
     required this.location,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
-    required this.calendarPressed,
   });
 
   @override
@@ -68,24 +66,9 @@ class WeatherCardSummary extends ConsumerWidget {
                   ///
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'weatherSummary'.tr(),
-                            style: PromajaTextStyles.settingsSubtitle,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: calendarPressed,
-                          icon: Image.asset(
-                            PromajaIcons.calendar,
-                            height: 26,
-                            width: 26,
-                            color: PromajaColors.white,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'weatherSummary'.tr(),
+                      style: PromajaTextStyles.settingsSubtitle,
                     ),
                   ),
                   Padding(

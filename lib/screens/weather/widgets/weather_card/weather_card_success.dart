@@ -22,7 +22,6 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
   final bool showKph;
   final bool showMm;
   final bool showhPa;
-  final Function() calendarPressed;
 
   const WeatherCardSuccess({
     required this.location,
@@ -34,7 +33,6 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
     required this.showKph,
     required this.showMm,
     required this.showhPa,
-    required this.calendarPressed,
   });
 
   @override
@@ -105,7 +103,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         forecastWeather: widget.forecastWeather,
         isPhoneLocation: widget.isPhoneLocation,
         showCelsius: widget.showCelsius,
-        calendarPressed: widget.calendarPressed,
       );
     }
 

@@ -533,8 +533,6 @@ class NotificationService {
       final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
       unawaited(Sentry.captureException(error));
       logger.e(error);
-
-      logger.e('${isEvening ? 'Evening' : 'Morning'} notification -> $e');
     }
   }
 

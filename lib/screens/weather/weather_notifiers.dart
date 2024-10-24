@@ -9,7 +9,6 @@ import '../../models/error/response_error.dart';
 import '../../models/location/location.dart';
 import '../../models/weather/hour_weather.dart';
 import '../../models/weather/response_forecast_weather.dart';
-import '../../models/weather/response_history_weather.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
 
@@ -82,15 +81,6 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
         days: forecastParameters.days,
       ),
   name: 'GetForecastWeatherProvider',
-);
-
-final getHistoricWeatherProvider =
-    FutureProvider.family<({ResponseHistoryWeather? response, ResponseError? error, String? genericError}), ({Location location, String historicDate})>(
-  (ref, forecastParameters) async => ref.read(apiProvider).getHistoryWeather(
-        query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
-        date: forecastParameters.historicDate,
-      ),
-  name: 'GetHistoricWeatherProvider',
 );
 
 final activeHourWeatherProvider = StateProvider.autoDispose<HourWeather?>(

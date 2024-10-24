@@ -10,7 +10,6 @@ import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
 import '../models/location/location.dart';
 import '../models/weather/response_forecast_weather.dart';
-import '../models/weather/response_history_weather.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
 import 'dio_service.dart';
@@ -108,45 +107,6 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
-      unawaited(Sentry.captureException(error));
-      return (response: null, error: null, genericError: error);
-    }
-  }
-
-  ///
-  /// `history.json`
-  ///
-  Future<({ResponseHistoryWeather? response, ResponseError? error, String? genericError})> getHistoryWeather({
-    required String query,
-    required String date,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/history.json',
-        queryParameters: {
-          'key': Env.apiKey,
-          'q': query,
-          'dt': date,
-        },
-      );
-
-      /// Status code is `200`, response is successful
-      if (response.statusCode == 200) {
-        final parsedResponse = await computeHistoryWeather(response.data);
-        return (response: parsedResponse, error: null, genericError: null);
-      }
-
-      /// Status code starts with a `4`, some API error happened
-      if ((response.statusCode ?? 0) ~/ 100 == 4) {
-        final parsedError = await computeError(response.data);
-        return (response: null, error: parsedError, genericError: null);
-      }
-
-      /// Some weird error happened
-      final error = 'History weather -> StatusCode ${response.statusCode} -> Generic error';
-      return (response: null, error: null, genericError: error);
-    } catch (e) {
-      final error = 'History weather -> catch -> $e';
       unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
