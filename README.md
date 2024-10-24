@@ -33,7 +33,3 @@ Tapping on any location will bring you to Forecast weather.
 **Settings** ⚙️
 
 Tweak settings, change units used to show the weather, update data that notification & widget are showing and lots more.
-
-## Things I still want to do 👷‍♂️
-
-- [ ]  Pogledaj zašto se ne prikazuje home widget ako je release build na iOS-u

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
@@ -68,6 +69,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Current weather -> catch -> $e';
+      unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -106,6 +108,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
+      unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -144,6 +147,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'History weather -> catch -> $e';
+      unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }
@@ -190,6 +194,7 @@ class APIService {
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Search -> catch -> $e';
+      unawaited(Sentry.captureException(error));
       return (response: null, error: null, genericError: error);
     }
   }

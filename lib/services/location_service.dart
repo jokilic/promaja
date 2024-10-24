@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'hive_service.dart';
 import 'logger_service.dart';
@@ -34,7 +35,8 @@ class LocationService {
 
       /// Location services are not enabled, return error
       if (!serviceEnabled) {
-        const error = 'Location services not enabled';
+        const error = 'GetPosition -> Location services not enabled';
+        unawaited(Sentry.captureException(error));
         return (position: null, error: error);
       }
 
@@ -47,14 +49,16 @@ class LocationService {
 
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
-          const error = 'Location permissions denied';
+          const error = 'GetPosition -> Location permissions denied';
+          unawaited(Sentry.captureException(error));
           return (position: null, error: error);
         }
       }
 
       /// Permission are denied forever, return error
       if (permission == LocationPermission.deniedForever) {
-        const error = 'Location permissions permanently denied';
+        const error = 'GetPosition -> Location permissions permanently denied';
+        unawaited(Sentry.captureException(error));
         return (position: null, error: error);
       }
 
@@ -63,8 +67,8 @@ class LocationService {
 
       return (position: position, error: null);
     } catch (e) {
-      final error = 'Location -> $e';
-      // unawaited(Sentry.captureException(error));
+      final error = 'GetPosition -> catch -> $e';
+      unawaited(Sentry.captureException(error));
       return (position: null, error: error);
     }
   }

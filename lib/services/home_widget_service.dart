@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
@@ -75,7 +76,9 @@ class HomeWidgetService {
         key: 'filePath',
       );
     } catch (e) {
-      logger.e('Render widget -> $e');
+      final error = 'RenderHomeWidget -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -89,7 +92,9 @@ class HomeWidgetService {
         qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
       );
     } catch (e) {
-      logger.e('Update widget -> $e');
+      final error = 'UpdateHomeWidget -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -155,7 +160,9 @@ class HomeWidgetService {
         logger.e('Handle widget -> Location null');
       }
     } catch (e) {
-      logger.e('Handle widget -> $e');
+      final error = 'HandleWidget -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -222,7 +229,9 @@ class HomeWidgetService {
       /// Update [HomeWidget]
       await createHomeWidget(widget);
     } catch (e) {
-      logger.e('Trigger current widget -> $e');
+      final error = 'TriggerCurrentWidget -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -317,7 +326,9 @@ class HomeWidgetService {
         await createHomeWidget(widget);
       }
     } catch (e) {
-      logger.e('Trigger forecast widget -> $e');
+      final error = 'TriggerForecastWidget -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 }

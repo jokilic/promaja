@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -6,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../constants/durations.dart';
 import '../constants/icons.dart';
@@ -112,7 +114,9 @@ class NotificationService {
 
       return initialized ?? false;
     } catch (e) {
-      logger.e('Notification initialize -> $e');
+      final error = 'InitializeNotifications -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
       return false;
     }
   }
@@ -153,17 +157,24 @@ class NotificationService {
 
       /// Error while granting permissions
       if (permissionsGranted == null) {
-        logger.e('Notification platform different than Android, iOS or MacOS');
+        const error = 'RequestNotificationPermissions -> Notification platform different than Android, iOS or MacOS';
+        unawaited(Sentry.captureException(error));
+        logger.e(error);
         return false;
       }
 
       if (!permissionsGranted) {
-        logger.e('Notification permissions denied');
+        const error = 'RequestNotificationPermissions -> Notification permissions denied';
+        unawaited(Sentry.captureException(error));
+        logger.e(error);
       }
 
       return permissionsGranted;
     } catch (e) {
-      logger.e('Notification permission -> $e');
+      final error = 'RequestNotificationPermissions -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
+
       return false;
     }
   }
@@ -173,7 +184,9 @@ class NotificationService {
     try {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
-      logger.e('Notification cancel -> $e');
+      final error = 'CancelNotifications -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -232,7 +245,9 @@ class NotificationService {
         payload: payload,
       );
     } catch (e) {
-      logger.e('Notification show -> $e');
+      final error = 'ShowNotification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -257,7 +272,9 @@ class NotificationService {
         );
       }
     } catch (e) {
-      logger.e('Test notification -> $e');
+      final error = 'TestNotification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -383,10 +400,14 @@ class NotificationService {
 
       /// Location doesn't exist
       else {
-        logger.e('Handle notification -> Location null');
+        const error = 'HandleNotifications -> Location is null';
+        unawaited(Sentry.captureException(error));
+        logger.e(error);
       }
     } catch (e) {
-      logger.e('Handle notification -> $e');
+      final error = 'HandleNotifications -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -430,7 +451,9 @@ class NotificationService {
         location: location,
       );
     } catch (e) {
-      logger.e('Hourly notification -> $e');
+      final error = 'TriggerHourlyNotification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -507,6 +530,10 @@ class NotificationService {
         );
       }
     } catch (e) {
+      final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
+
       logger.e('${isEvening ? 'Evening' : 'Morning'} notification -> $e');
     }
   }
@@ -592,10 +619,14 @@ class NotificationService {
 
       /// Payload or context is null
       else {
-        logger.e('Notification pressed -> Payload or context null');
+        const error = 'HandlePressedNotification -> Payload or context is null';
+        unawaited(Sentry.captureException(error));
+        logger.e(error);
       }
     } catch (e) {
-      logger.e('Notification pressed -> $e');
+      final error = 'HandlePressedNotification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -609,7 +640,9 @@ class NotificationService {
     try {
       await handlePressedNotification(payload: payload);
     } catch (e) {
-      logger.e('onDidReceiveLocalNotification -> $e');
+      final error = 'OnDidReceiveLocalNotification -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 
@@ -620,7 +653,9 @@ class NotificationService {
         payload: notificationResponse.payload,
       );
     } catch (e) {
-      logger.e('onDidReceiveNotificationResponse -> $e');
+      final error = 'onDidReceiveNotificationResponse -> catch -> $e';
+      unawaited(Sentry.captureException(error));
+      logger.e(error);
     }
   }
 }
@@ -648,7 +683,5 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
-
-    logger.e('onDidReceiveBackgroundNotificationResponse -> $e');
   }
 }
