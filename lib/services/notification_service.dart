@@ -88,9 +88,7 @@ class NotificationService {
       const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
 
       /// `iOS`
-      final initializationSettingsDarwin = DarwinInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-      );
+      const initializationSettingsDarwin = DarwinInitializationSettings();
 
       /// `Linux`
       final initializationSettingsLinux = LinuxInitializationSettings(
@@ -623,22 +621,6 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'HandlePressedNotification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
-      logger.e(error);
-    }
-  }
-
-  /// Triggered when a notification is received while the app is in foreground on `iOS`
-  Future<void> onDidReceiveLocalNotification(
-    int id,
-    String? title,
-    String? body,
-    String? payload,
-  ) async {
-    try {
-      await handlePressedNotification(payload: payload);
-    } catch (e) {
-      final error = 'OnDidReceiveLocalNotification -> catch -> $e';
       unawaited(Sentry.captureException(error));
       logger.e(error);
     }
