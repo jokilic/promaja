@@ -130,7 +130,7 @@ class PromajaNavigationBar extends ConsumerWidget {
                 PromajaIcons.globe,
                 height: 20,
                 width: 20,
-                color: PromajaColors.white.withOpacity(0.15),
+                color: PromajaColors.white.withValues(alpha: 0.15),
               ),
               selectedIcon: Image.asset(
                 PromajaIcons.globe,
@@ -149,7 +149,7 @@ class PromajaNavigationBar extends ConsumerWidget {
                 PromajaIcons.temperature,
                 height: 20,
                 width: 20,
-                color: PromajaColors.white.withOpacity(0.15),
+                color: PromajaColors.white.withValues(alpha: 0.15),
               ),
               selectedIcon: Image.asset(
                 PromajaIcons.temperature,
@@ -168,7 +168,7 @@ class PromajaNavigationBar extends ConsumerWidget {
                 PromajaIcons.list,
                 height: 20,
                 width: 20,
-                color: PromajaColors.white.withOpacity(0.15),
+                color: PromajaColors.white.withValues(alpha: 0.15),
               ),
               selectedIcon: Image.asset(
                 PromajaIcons.list,
@@ -187,7 +187,7 @@ class PromajaNavigationBar extends ConsumerWidget {
                 PromajaIcons.settings,
                 height: 20,
                 width: 20,
-                color: PromajaColors.white.withOpacity(0.15),
+                color: PromajaColors.white.withValues(alpha: 0.15),
               ),
               selectedIcon: Image.asset(
                 PromajaIcons.settings,

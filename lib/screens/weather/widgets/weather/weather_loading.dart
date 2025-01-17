@@ -114,7 +114,7 @@ class WeatherLoading extends StatelessWidget {
                                   width: 144,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withOpacity(0.5),
+                                    color: PromajaColors.white.withValues(alpha: 0.5),
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -123,7 +123,7 @@ class WeatherLoading extends StatelessWidget {
                                   width: 104,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withOpacity(0.5),
+                                    color: PromajaColors.white.withValues(alpha: 0.5),
                                   ),
                                 ),
                               ],
@@ -135,7 +135,7 @@ class WeatherLoading extends StatelessWidget {
                                   width: 48,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withOpacity(0.25),
+                                    color: PromajaColors.white.withValues(alpha: 0.25),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -144,7 +144,7 @@ class WeatherLoading extends StatelessWidget {
                                   width: 48,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withOpacity(0.5),
+                                    color: PromajaColors.white.withValues(alpha: 0.5),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -153,7 +153,7 @@ class WeatherLoading extends StatelessWidget {
                                   width: 56,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: PromajaColors.white.withOpacity(0.5),
+                                    color: PromajaColors.white.withValues(alpha: 0.5),
                                   ),
                                 ),
                               ],
@@ -208,7 +208,7 @@ class WeatherLoading extends StatelessWidget {
                       width: 104,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: PromajaColors.white.withOpacity(0.5),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -217,7 +217,7 @@ class WeatherLoading extends StatelessWidget {
                       width: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: PromajaColors.white.withOpacity(0.5),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -245,7 +245,7 @@ class WeatherLoading extends StatelessWidget {
                   width: 176,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: PromajaColors.white.withOpacity(0.5),
+                    color: PromajaColors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -273,7 +273,7 @@ class WeatherLoading extends StatelessWidget {
                       width: 144,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: PromajaColors.white.withOpacity(0.5),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -282,7 +282,7 @@ class WeatherLoading extends StatelessWidget {
                       width: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: PromajaColors.white.withOpacity(0.5),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
                       ),
                     ),
                   ],

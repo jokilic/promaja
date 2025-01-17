@@ -22,12 +22,12 @@ class WeatherCardSummaryListTile extends StatelessWidget {
   Widget build(BuildContext context) => Material(
         color: Colors.transparent,
         child: ListTile(
-          selectedTileColor: PromajaColors.white.withOpacity(0.15),
+          selectedTileColor: PromajaColors.white.withValues(alpha: 0.15),
           onTap: onPressed,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          splashColor: PromajaColors.white.withOpacity(0.15),
+          splashColor: PromajaColors.white.withValues(alpha: 0.15),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 8,

@@ -25,7 +25,7 @@ class AdditionalWPF extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(
-          color: PromajaColors.black.withOpacity(0.4),
+          color: PromajaColors.black.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(50),
         ),
         margin: const EdgeInsets.all(8),
@@ -60,7 +60,7 @@ class AdditionalWPF extends StatelessWidget {
               Container(
                 height: 40,
                 width: 0.5,
-                color: PromajaColors.white.withOpacity(0.4),
+                color: PromajaColors.white.withValues(alpha: 0.4),
               ),
 
               ///
@@ -77,7 +77,7 @@ class AdditionalWPF extends StatelessWidget {
               Container(
                 height: 40,
                 width: 0.5,
-                color: PromajaColors.white.withOpacity(0.4),
+                color: PromajaColors.white.withValues(alpha: 0.4),
               ),
 
               ///

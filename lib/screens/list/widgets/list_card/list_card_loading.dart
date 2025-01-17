@@ -41,7 +41,7 @@ class ListCardLoading extends StatelessWidget {
             onTap: onTap,
             borderRadius: BorderRadius.circular(50),
             splashColor: Colors.transparent,
-            highlightColor: PromajaColors.white.withOpacity(0.15),
+            highlightColor: PromajaColors.white.withValues(alpha: 0.15),
             child: Container(
               height: 136,
               padding: const EdgeInsets.fromLTRB(32, 16, 24, 8),
@@ -94,7 +94,7 @@ class ListCardLoading extends StatelessWidget {
                             width: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: PromajaColors.white.withOpacity(0.5),
+                              color: PromajaColors.white.withValues(alpha: 0.5),
                             ),
                           ),
                         ),
@@ -121,7 +121,7 @@ class ListCardLoading extends StatelessWidget {
                       width: 88,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: PromajaColors.white.withOpacity(0.5),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
                       ),
                     ),
                   ),

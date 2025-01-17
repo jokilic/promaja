@@ -29,7 +29,7 @@ class SettingsPopupMenuListTile extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          splashColor: PromajaColors.white.withOpacity(0.15),
+          splashColor: PromajaColors.white.withValues(alpha: 0.15),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 8,

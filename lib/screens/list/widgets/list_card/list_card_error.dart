@@ -44,7 +44,7 @@ class ListCardError extends StatelessWidget {
             onTap: onTap,
             borderRadius: BorderRadius.circular(50),
             splashColor: Colors.transparent,
-            highlightColor: PromajaColors.white.withOpacity(0.15),
+            highlightColor: PromajaColors.white.withValues(alpha: 0.15),
             child: Container(
               height: 136,
               padding: const EdgeInsets.fromLTRB(32, 16, 24, 8),

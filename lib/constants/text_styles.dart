@@ -8,11 +8,11 @@ class PromajaTextStyles {
     fontSize: 14,
   );
   static final searchResultSubtitle = TextStyle(
-    color: PromajaColors.black.withOpacity(0.8),
+    color: PromajaColors.black.withValues(alpha: 0.8),
     fontSize: 12,
   );
   static final searchTextFieldHint = TextStyle(
-    color: PromajaColors.black.withOpacity(0.8),
+    color: PromajaColors.black.withValues(alpha: 0.8),
     fontSize: 16,
   );
   static const searchTextField = TextStyle(
@@ -25,7 +25,7 @@ class PromajaTextStyles {
     height: 1,
   );
   static final weatherTemperatureMin = TextStyle(
-    color: PromajaColors.white.withOpacity(0.5),
+    color: PromajaColors.white.withValues(alpha: 0.5),
     fontSize: 64,
     height: 1,
   );
@@ -35,7 +35,7 @@ class PromajaTextStyles {
     height: 1,
   );
   static final weatherSummaryTemperatureMin = TextStyle(
-    color: PromajaColors.white.withOpacity(0.5),
+    color: PromajaColors.white.withValues(alpha: 0.5),
     fontSize: 40,
     height: 1,
   );
@@ -60,7 +60,7 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w500,
   );
   static final currentLastUpdated = TextStyle(
-    color: PromajaColors.white.withOpacity(0.4),
+    color: PromajaColors.white.withValues(alpha: 0.4),
     fontSize: 16,
   );
   static const currentLocation = TextStyle(
@@ -89,7 +89,7 @@ class PromajaTextStyles {
     fontSize: 11,
   );
   static final currentListDescription = TextStyle(
-    color: PromajaColors.white.withOpacity(0.4),
+    color: PromajaColors.white.withValues(alpha: 0.4),
     fontSize: 11,
   );
   static const snackbar = TextStyle(
@@ -127,11 +127,11 @@ class PromajaTextStyles {
     height: 1,
   );
   static final weatherCardHourHour = TextStyle(
-    color: PromajaColors.white.withOpacity(0.8),
+    color: PromajaColors.white.withValues(alpha: 0.8),
     fontSize: 12,
   );
   static final weatherCardLastUpdated = TextStyle(
-    color: PromajaColors.white.withOpacity(0.8),
+    color: PromajaColors.white.withValues(alpha: 0.8),
     fontSize: 16,
   );
   static const weatherCardHourChanceOfRain = TextStyle(
@@ -155,7 +155,7 @@ class PromajaTextStyles {
     height: 1,
   );
   static final homeWidgetForecastTemperatureMin = TextStyle(
-    color: PromajaColors.white.withOpacity(0.5),
+    color: PromajaColors.white.withValues(alpha: 0.5),
     fontSize: 32,
     height: 1,
   );

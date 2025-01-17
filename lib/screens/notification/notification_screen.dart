@@ -31,7 +31,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => showDialog(
           context: context,
-          barrierColor: PromajaColors.black.withOpacity(0.6),
+          barrierColor: PromajaColors.black.withValues(alpha: 0.6),
           barrierDismissible: false,
           builder: (context) => NotificationDialog(
             onPressed: () {

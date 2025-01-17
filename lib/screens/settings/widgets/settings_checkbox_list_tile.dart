@@ -23,7 +23,7 @@ class SettingsCheckboxListTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        splashColor: PromajaColors.white.withOpacity(0.15),
+        splashColor: PromajaColors.white.withValues(alpha: 0.15),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,

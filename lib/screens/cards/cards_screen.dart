@@ -98,7 +98,7 @@ class CardsScreen extends ConsumerWidget {
                     activeDotColor: PromajaColors.white,
                     dotHeight: 8,
                     dotWidth: 8,
-                    dotColor: PromajaColors.black.withOpacity(0.25),
+                    dotColor: PromajaColors.black.withValues(alpha: 0.25),
                   ),
                   axisDirection: Axis.vertical,
                   curve: Curves.easeIn,

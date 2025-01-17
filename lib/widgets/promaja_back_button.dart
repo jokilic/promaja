@@ -11,10 +11,10 @@ class PromajaBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
         style: IconButton.styleFrom(
-          highlightColor: PromajaColors.white.withOpacity(0.15),
+          highlightColor: PromajaColors.white.withValues(alpha: 0.15),
           shape: const CircleBorder(),
         ),
-        splashColor: PromajaColors.white.withOpacity(0.15),
+        splashColor: PromajaColors.white.withValues(alpha: 0.15),
         onPressed: Navigator.of(context).pop,
         icon: Transform.rotate(
           angle: 180 * pi / 180,

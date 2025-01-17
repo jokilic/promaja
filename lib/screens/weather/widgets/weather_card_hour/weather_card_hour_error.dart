@@ -93,7 +93,7 @@ class WeatherCardHourError extends StatelessWidget {
                   onTap: onPressed,
                   borderRadius: BorderRadius.circular(32),
                   splashColor: Colors.transparent,
-                  highlightColor: PromajaColors.white.withOpacity(0.15),
+                  highlightColor: PromajaColors.white.withValues(alpha: 0.15),
                 ),
               ),
             ),

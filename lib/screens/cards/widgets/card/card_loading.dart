@@ -52,7 +52,7 @@ class CardLoading extends StatelessWidget {
                     width: 104,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: PromajaColors.white.withOpacity(0.5),
+                      color: PromajaColors.white.withValues(alpha: 0.5),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -61,7 +61,7 @@ class CardLoading extends StatelessWidget {
                     width: 200,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: PromajaColors.white.withOpacity(0.5),
+                      color: PromajaColors.white.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -89,7 +89,7 @@ class CardLoading extends StatelessWidget {
                 width: 176,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: PromajaColors.white.withOpacity(0.5),
+                  color: PromajaColors.white.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -117,7 +117,7 @@ class CardLoading extends StatelessWidget {
                     width: 144,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: PromajaColors.white.withOpacity(0.5),
+                      color: PromajaColors.white.withValues(alpha: 0.5),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -126,7 +126,7 @@ class CardLoading extends StatelessWidget {
                     width: 200,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: PromajaColors.white.withOpacity(0.5),
+                      color: PromajaColors.white.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
