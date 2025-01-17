@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,7 +125,7 @@ class NotificationService {
       bool? permissionsGranted;
 
       /// `Android` notifications
-      if (Platform.isAndroid) {
+      if (defaultTargetPlatform == TargetPlatform.android) {
         permissionsGranted =
             await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
 
@@ -136,7 +136,7 @@ class NotificationService {
       }
 
       /// `iOS` notifications
-      if (Platform.isIOS) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
         permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
                   alert: true,
                   badge: true,
@@ -145,7 +145,7 @@ class NotificationService {
       }
 
       /// `MacOS` notifications
-      if (Platform.isMacOS) {
+      if (defaultTargetPlatform == TargetPlatform.macOS) {
         permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
                   alert: true,
                   badge: true,
@@ -429,7 +429,7 @@ class NotificationService {
       final title = 'hourlyNotificationTitle'.tr();
 
       final text = 'hourlyNotificationText'.tr(
-        args: Platform.isAndroid
+        args: defaultTargetPlatform == TargetPlatform.android
             ? [
                 '<b>$locationName</b>',
                 '<b>${weatherDescription.toLowerCase()}</b>',
@@ -490,7 +490,7 @@ class NotificationService {
 
         final text = isEvening
             ? 'eveningNotificationText'.tr(
-                args: Platform.isAndroid
+                args: defaultTargetPlatform == TargetPlatform.android
                     ? [
                         '<b>$locationName</b>',
                         '<b>${weatherDescription.toLowerCase()}</b>',
@@ -505,7 +505,7 @@ class NotificationService {
                       ],
               )
             : 'morningNotificationText'.tr(
-                args: Platform.isAndroid
+                args: defaultTargetPlatform == TargetPlatform.android
                     ? [
                         '<b>$locationName</b>',
                         '<b>${weatherDescription.toLowerCase()}</b>',

@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -149,7 +148,7 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   ///
 
   /// Returns if notification dialog should be shown when opening `Notifications`
-  bool shouldShowNotificationDialog() => Platform.isIOS && !hive.getNotificationDialogShownFromBox();
+  bool shouldShowNotificationDialog() => defaultTargetPlatform == TargetPlatform.iOS && !hive.getNotificationDialogShownFromBox();
 
   /// Opens popup menu which chooses location to be used in notifications
   Future<Location?> showNotificationLocationPopupMenu(BuildContext context) async {

@@ -1,10 +1,9 @@
 // ignore_for_file: implementation_imports
 
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -31,7 +30,7 @@ Future<ProviderContainer?> initializeServices() async {
       ..read(loggerProvider)
       ..read(dioProvider);
 
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
       await container.read(backgroundFetchInitProvider.future);
     }
 
@@ -50,6 +49,8 @@ Future<ProviderContainer?> initializeServices() async {
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();
+
+    logger.e(e);
 
     return null;
   }

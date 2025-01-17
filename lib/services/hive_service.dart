@@ -15,6 +15,7 @@ import '../models/settings/units/temperature_unit.dart';
 import '../models/settings/units/unit_settings.dart';
 import '../models/settings/widget/weather_type.dart';
 import '../models/settings/widget/widget_settings.dart';
+import '../util/path.dart';
 import 'logger_service.dart';
 
 final hiveProvider = StateNotifierProvider<HiveService, List<Location>>(
@@ -48,7 +49,9 @@ class HiveService extends StateNotifier<List<Location>> {
   ///
 
   Future<void> init() async {
-    await Hive.initFlutter();
+    final directory = await getHiveDirectory();
+
+    Hive.init(directory?.path);
 
     if (!Hive.isAdapterRegistered(LocationAdapter().typeId)) {
       Hive.registerAdapter(LocationAdapter());

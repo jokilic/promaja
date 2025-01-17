@@ -23,7 +23,6 @@ Future<void> main() async {
   try {
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
 
     /// Override the default error widget
     ErrorWidget.builder = (details) => PromajaErrorWidget(
@@ -61,7 +60,7 @@ Future<void> main() async {
       /// Init [Sentry] & run [Promaja]
       await SentryFlutter.init(
         (options) => options
-          ..dsn = kDebugMode ? '' : Env.sentryDsn
+          ..dsn = kDebugMode || kIsWeb ? '' : Env.sentryDsn
           ..debug = kDebugMode,
         appRunner: () => runApp(
           UncontrolledProviderScope(

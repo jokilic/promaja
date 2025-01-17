@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -123,16 +124,17 @@ class SettingsScreen extends ConsumerWidget {
                   ///
                   /// WIDGET
                   ///
-                  SettingsListTile(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => WidgetScreen(),
+                  if (!kIsWeb)
+                    SettingsListTile(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => WidgetScreen(),
+                        ),
                       ),
+                      icon: PromajaIcons.arrow,
+                      title: 'widgetTitle'.tr(),
+                      subtitle: 'widgetSubtitle'.tr(),
                     ),
-                    icon: PromajaIcons.arrow,
-                    title: 'widgetTitle'.tr(),
-                    subtitle: 'widgetSubtitle'.tr(),
-                  ),
 
                   ///
                   /// CONTACT
