@@ -27,10 +27,8 @@ class WeatherTypeAdapter extends TypeAdapter<WeatherType> {
     switch (obj) {
       case WeatherType.current:
         writer.writeByte(0);
-        break;
       case WeatherType.forecast:
         writer.writeByte(1);
-        break;
     }
   }
 

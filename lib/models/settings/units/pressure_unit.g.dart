@@ -27,10 +27,8 @@ class PressureUnitAdapter extends TypeAdapter<PressureUnit> {
     switch (obj) {
       case PressureUnit.hectopascal:
         writer.writeByte(0);
-        break;
       case PressureUnit.inchesOfMercury:
         writer.writeByte(1);
-        break;
     }
   }
 

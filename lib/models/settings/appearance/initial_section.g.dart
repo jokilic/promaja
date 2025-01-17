@@ -33,19 +33,14 @@ class InitialSectionAdapter extends TypeAdapter<InitialSection> {
     switch (obj) {
       case InitialSection.lastOpened:
         writer.writeByte(0);
-        break;
       case InitialSection.current:
         writer.writeByte(1);
-        break;
       case InitialSection.forecast:
         writer.writeByte(2);
-        break;
       case InitialSection.list:
         writer.writeByte(3);
-        break;
       case InitialSection.settings:
         writer.writeByte(4);
-        break;
     }
   }
 

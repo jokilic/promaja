@@ -27,10 +27,8 @@ class PrecipitationUnitAdapter extends TypeAdapter<PrecipitationUnit> {
     switch (obj) {
       case PrecipitationUnit.millimeters:
         writer.writeByte(0);
-        break;
       case PrecipitationUnit.inches:
         writer.writeByte(1);
-        break;
     }
   }
 

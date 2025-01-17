@@ -27,10 +27,8 @@ class TemperatureUnitAdapter extends TypeAdapter<TemperatureUnit> {
     switch (obj) {
       case TemperatureUnit.celsius:
         writer.writeByte(0);
-        break;
       case TemperatureUnit.fahrenheit:
         writer.writeByte(1);
-        break;
     }
   }
 

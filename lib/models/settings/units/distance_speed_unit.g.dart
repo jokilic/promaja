@@ -27,10 +27,8 @@ class DistanceSpeedUnitAdapter extends TypeAdapter<DistanceSpeedUnit> {
     switch (obj) {
       case DistanceSpeedUnit.kilometers:
         writer.writeByte(0);
-        break;
       case DistanceSpeedUnit.miles:
         writer.writeByte(1);
-        break;
     }
   }
 
