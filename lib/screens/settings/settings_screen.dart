@@ -107,24 +107,24 @@ class SettingsScreen extends ConsumerWidget {
                     subtitle: 'unitsSubtitle'.tr(),
                   ),
 
-                  ///
-                  /// NOTIFICATION
-                  ///
-                  SettingsListTile(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => NotificationScreen(),
+                  if (!kIsWeb) ...[
+                    ///
+                    /// NOTIFICATION
+                    ///
+                    SettingsListTile(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => NotificationScreen(),
+                        ),
                       ),
+                      icon: PromajaIcons.arrow,
+                      title: 'notificationTitle'.tr(),
+                      subtitle: 'notificationSubtitle'.tr(),
                     ),
-                    icon: PromajaIcons.arrow,
-                    title: 'notificationTitle'.tr(),
-                    subtitle: 'notificationSubtitle'.tr(),
-                  ),
 
-                  ///
-                  /// WIDGET
-                  ///
-                  if (!kIsWeb)
+                    ///
+                    /// WIDGET
+                    ///
                     SettingsListTile(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -135,6 +135,7 @@ class SettingsScreen extends ConsumerWidget {
                       title: 'widgetTitle'.tr(),
                       subtitle: 'widgetSubtitle'.tr(),
                     ),
+                  ],
 
                   ///
                   /// CONTACT
