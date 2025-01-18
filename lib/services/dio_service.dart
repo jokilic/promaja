@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../util/env.dart';
 import 'logger_service.dart';
 
 ///
@@ -30,7 +32,7 @@ class DioService {
   {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://api.weatherapi.com/v1',
+        baseUrl: kIsWeb ? Env.cloudflareWorkerUrl : Env.weatherApiBaseUrl,
         validateStatus: (_) => true,
       ),
     )..interceptors.add(

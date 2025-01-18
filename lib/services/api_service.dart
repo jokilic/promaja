@@ -46,7 +46,7 @@ class APIService {
       final response = await dio.get(
         '/current.json',
         queryParameters: {
-          'key': Env.apiKey,
+          'key': Env.weatherApiKey,
           'q': query,
         },
       );
@@ -84,7 +84,7 @@ class APIService {
       final response = await dio.get(
         '/forecast.json',
         queryParameters: {
-          'key': Env.apiKey,
+          'key': Env.weatherApiKey,
           'q': query,
           'days': days,
         },
@@ -122,7 +122,7 @@ class APIService {
       final response = await dio.get(
         '/search.json',
         queryParameters: {
-          'key': Env.apiKey,
+          'key': Env.weatherApiKey,
           'q': query,
         },
       );
