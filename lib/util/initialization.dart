@@ -19,6 +19,8 @@ import '../services/notification_service.dart';
 
 /// Initialize services & pass `container`
 Future<ProviderContainer?> initializeServices() async {
+  final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+
   try {
     final container = ProviderContainer(
       observers: [
@@ -30,28 +32,25 @@ Future<ProviderContainer?> initializeServices() async {
       ..read(loggerProvider)
       ..read(dioProvider);
 
-    if (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
+    if (isMobile) {
       await container.read(backgroundFetchInitProvider.future);
     }
 
     final hive = container.read(hiveProvider.notifier);
     await hive.init();
 
-    container
-      ..read(apiProvider)
-      ..read(homeWidgetProvider);
+    container.read(apiProvider);
 
-    final notifications = container.read(notificationProvider);
-    await notifications.init();
+    if (isMobile) {
+      container.read(homeWidgetProvider);
+
+      final notifications = container.read(notificationProvider);
+      await notifications.init();
+    }
 
     return container;
   } catch (e) {
-    final logger = LoggerService();
-    final hive = HiveService(logger);
-    await hive.init();
-
-    logger.e(e);
-
+    LoggerService().e(e);
     return null;
   }
 }
