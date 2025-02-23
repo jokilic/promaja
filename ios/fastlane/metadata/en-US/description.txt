@@ -1,0 +1,17 @@
+Promaja features beautiful weather icons and accurate weather information for any location you can think of.
+Weather is shown in a simple card UI which gives you all data at a glance.
+You can use a simple widget which shows current weather for the chosen location.
+
+Current weather
+Using a simple card UI, check current weather for all enabled locations.
+All relevant information is accurate and easily visible.
+
+Forecast weather
+Like in Current weather, data is shown in a simple card UI.
+Forecast shows a single location, the one you decided to check out.
+Weather for multiple days is shown and hourly weather is visible at a glance.
+
+List of locations
+Here you can add new locations, delete unwanted ones and reorder them how you desire.
+You can also see current weather for them in one simple place.
+Tapping on any location will bring you to Forecast weather.
