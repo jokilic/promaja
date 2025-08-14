@@ -8,7 +8,7 @@ part of 'precipitation_unit.dart';
 
 class PrecipitationUnitAdapter extends TypeAdapter<PrecipitationUnit> {
   @override
-  final int typeId = 13;
+  final typeId = 13;
 
   @override
   PrecipitationUnit read(BinaryReader reader) {

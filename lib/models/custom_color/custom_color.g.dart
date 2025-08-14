@@ -8,7 +8,7 @@ part of 'custom_color.dart';
 
 class CustomColorAdapter extends TypeAdapter<CustomColor> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   CustomColor read(BinaryReader reader) {

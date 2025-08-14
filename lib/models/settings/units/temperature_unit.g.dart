@@ -8,7 +8,7 @@ part of 'temperature_unit.dart';
 
 class TemperatureUnitAdapter extends TypeAdapter<TemperatureUnit> {
   @override
-  final int typeId = 11;
+  final typeId = 11;
 
   @override
   TemperatureUnit read(BinaryReader reader) {

@@ -8,7 +8,7 @@ part of 'pressure_unit.dart';
 
 class PressureUnitAdapter extends TypeAdapter<PressureUnit> {
   @override
-  final int typeId = 10;
+  final typeId = 10;
 
   @override
   PressureUnit read(BinaryReader reader) {

@@ -8,7 +8,7 @@ part of 'promaja_settings.dart';
 
 class PromajaSettingsAdapter extends TypeAdapter<PromajaSettings> {
   @override
-  final int typeId = 12;
+  final typeId = 12;
 
   @override
   PromajaSettings read(BinaryReader reader) {

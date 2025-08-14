@@ -8,7 +8,7 @@ part of 'notification_last_shown.dart';
 
 class NotificationLastShownAdapter extends TypeAdapter<NotificationLastShown> {
   @override
-  final int typeId = 14;
+  final typeId = 14;
 
   @override
   NotificationLastShown read(BinaryReader reader) {

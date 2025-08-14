@@ -8,7 +8,7 @@ part of 'notification_settings.dart';
 
 class NotificationSettingsAdapter extends TypeAdapter<NotificationSettings> {
   @override
-  final int typeId = 3;
+  final typeId = 3;
 
   @override
   NotificationSettings read(BinaryReader reader) {

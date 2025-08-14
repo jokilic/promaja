@@ -8,7 +8,7 @@ part of 'weather_type.dart';
 
 class WeatherTypeAdapter extends TypeAdapter<WeatherType> {
   @override
-  final int typeId = 7;
+  final typeId = 7;
 
   @override
   WeatherType read(BinaryReader reader) {

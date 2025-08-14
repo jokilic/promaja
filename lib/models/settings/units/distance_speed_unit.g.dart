@@ -8,7 +8,7 @@ part of 'distance_speed_unit.dart';
 
 class DistanceSpeedUnitAdapter extends TypeAdapter<DistanceSpeedUnit> {
   @override
-  final int typeId = 9;
+  final typeId = 9;
 
   @override
   DistanceSpeedUnit read(BinaryReader reader) {

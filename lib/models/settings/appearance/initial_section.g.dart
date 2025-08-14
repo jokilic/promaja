@@ -8,7 +8,7 @@ part of 'initial_section.dart';
 
 class InitialSectionAdapter extends TypeAdapter<InitialSection> {
   @override
-  final int typeId = 17;
+  final typeId = 17;
 
   @override
   InitialSection read(BinaryReader reader) {

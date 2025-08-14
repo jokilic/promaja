@@ -8,7 +8,7 @@ part of 'widget_settings.dart';
 
 class WidgetSettingsAdapter extends TypeAdapter<WidgetSettings> {
   @override
-  final int typeId = 6;
+  final typeId = 6;
 
   @override
   WidgetSettings read(BinaryReader reader) {

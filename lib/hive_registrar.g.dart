@@ -36,3 +36,22 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(WidgetSettingsAdapter());
   }
 }
+
+extension IsolatedHiveRegistrar on IsolatedHiveInterface {
+  void registerAdapters() {
+    registerAdapter(AppearanceSettingsAdapter());
+    registerAdapter(CustomColorAdapter());
+    registerAdapter(DistanceSpeedUnitAdapter());
+    registerAdapter(InitialSectionAdapter());
+    registerAdapter(LocationAdapter());
+    registerAdapter(NotificationLastShownAdapter());
+    registerAdapter(NotificationSettingsAdapter());
+    registerAdapter(PrecipitationUnitAdapter());
+    registerAdapter(PressureUnitAdapter());
+    registerAdapter(PromajaSettingsAdapter());
+    registerAdapter(TemperatureUnitAdapter());
+    registerAdapter(UnitSettingsAdapter());
+    registerAdapter(WeatherTypeAdapter());
+    registerAdapter(WidgetSettingsAdapter());
+  }
+}
