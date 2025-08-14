@@ -1,5 +1,3 @@
-* My own shimmer animation
-* Additional loading UIs
-* Trigger error handling for exceptions
-* Dismiss text field in ListScreen when going to other section
+* Update Android syntax
+* New API key
 * Update dependencies

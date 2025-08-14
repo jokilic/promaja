@@ -17,7 +17,7 @@ platform :android do
 
     # Upload to Play Store
     supply(
-      json_key: "/Users/josipkilic/Documents/fastlane-451713-01bb44a559be.json",
+      json_key: "/Users/josip_fastlane_android_key.json",
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       track: "production",
       skip_upload_apk: true,
@@ -58,7 +58,7 @@ platform :android do
       name: "Promaja v#{pubspec_version}",
       tag_name: "v#{pubspec_version}",
       description: (File.read("metadata/android/en-GB/changelogs/default.txt") rescue "No changelog provided"),
-      commitish: "master",
+      commitish: "main",
       upload_assets: ["../build/app/outputs/flutter-apk/promaja.apk"],
       )
 

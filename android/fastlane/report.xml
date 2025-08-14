@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000414">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: puro flutter clean" time="1.550089">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: puro flutter pub get" time="2.345123">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: puro flutter build apk --target-platform=android-arm64" time="72.077569">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: mv ../../build/app/outputs/flutter-apk/app-release.apk ../../build/app/outputs/flutter-apk/promaja.apk" time="0.004442">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: set_github_release" time="25.56404">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: notification" time="0.426824">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
