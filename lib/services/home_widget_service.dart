@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
@@ -27,11 +28,7 @@ import 'logger_service.dart';
 ///
 
 final homeWidgetProvider = Provider<HomeWidgetService>(
-  (ref) => HomeWidgetService(
-    logger: ref.watch(loggerProvider),
-    hive: ref.watch(hiveProvider.notifier),
-    api: ref.watch(apiProvider),
-  ),
+  (ref) => HomeWidgetService(logger: ref.watch(loggerProvider), hive: ref.watch(hiveProvider.notifier), api: ref.watch(apiProvider)),
   name: 'HomeWidgetProvider',
 );
 
@@ -44,18 +41,14 @@ class HomeWidgetService {
   final HiveService hive;
   final APIService api;
 
-  HomeWidgetService({
-    required this.logger,
-    required this.hive,
-    required this.api,
-  })
-
+  HomeWidgetService({required this.logger, required this.hive, required this.api})
   ///
   /// INIT
   ///
-
   {
-    HomeWidget.setAppGroupId('group.promaja.widget');
+    if (!kIsWeb) {
+      HomeWidget.setAppGroupId('group.promaja.widget');
+    }
   }
 
   ///
@@ -71,10 +64,7 @@ class HomeWidgetService {
   /// Renders a Flutter widget  as a `HomeWidget`
   Future<void> renderHomeWidget(Widget widget) async {
     try {
-      await HomeWidget.renderFlutterWidget(
-        widget,
-        key: 'filePath',
-      );
+      await HomeWidget.renderFlutterWidget(widget, key: 'filePath');
     } catch (e) {
       final error = 'RenderHomeWidget -> catch -> $e';
       unawaited(Sentry.captureException(error));
@@ -85,12 +75,7 @@ class HomeWidgetService {
   /// Updates `HomeWidget`
   Future<void> updateHomeWidget() async {
     try {
-      await HomeWidget.updateWidget(
-        name: 'WidgetView',
-        androidName: 'WidgetView',
-        iOSName: 'PromajaWidget',
-        qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
-      );
+      await HomeWidget.updateWidget(name: 'WidgetView', androidName: 'WidgetView', iOSName: 'PromajaWidget', qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView');
     } catch (e) {
       final error = 'UpdateHomeWidget -> catch -> $e';
       unawaited(Sentry.captureException(error));
@@ -120,17 +105,11 @@ class HomeWidgetService {
         ///
         if (settings.widget.weatherType == WeatherType.current) {
           /// Fetch current weather
-          final currentWeather = await api.fetchCurrentWeather(
-            location: location,
-          );
+          final currentWeather = await api.fetchCurrentWeather(location: location);
 
           /// Current weather is successfully fetched
           if (currentWeather != null) {
-            await triggerCurrentWidget(
-              response: currentWeather,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
-            );
+            await triggerCurrentWidget(response: currentWeather, showCelsius: settings.unit.temperature == TemperatureUnit.celsius, location: location);
           }
         }
 
@@ -139,22 +118,14 @@ class HomeWidgetService {
         ///
         if (settings.widget.weatherType == WeatherType.forecast) {
           /// Fetch today's forecast
-          final forecastWeather = await api.fetchForecastWeather(
-            location: location,
-            isTomorrow: false,
-          );
+          final forecastWeather = await api.fetchForecastWeather(location: location, isTomorrow: false);
 
           /// Forecast weather is successfully fetched
           if (forecastWeather != null) {
-            await triggerForecastWidget(
-              response: forecastWeather,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
-            );
+            await triggerForecastWidget(response: forecastWeather, showCelsius: settings.unit.temperature == TemperatureUnit.celsius, location: location);
           }
         }
       }
-
       /// Location doesn't exist
       else {
         logger.e('Handle widget -> Location null');
@@ -167,11 +138,7 @@ class HomeWidgetService {
   }
 
   /// Triggers widget with current weather
-  Future<void> triggerCurrentWidget({
-    required ResponseCurrentWeather response,
-    required bool showCelsius,
-    required Location location,
-  }) async {
+  Future<void> triggerCurrentWidget({required ResponseCurrentWeather response, required bool showCelsius, required Location location}) async {
     try {
       /// Store relevant values in variables
       final locationName = response.location.name;
@@ -189,23 +156,14 @@ class HomeWidgetService {
             orElse: () => CustomColor(
               code: conditionCode,
               isDay: isDay,
-              color: getWeatherColor(
-                code: conditionCode,
-                isDay: isDay,
-              ),
+              color: getWeatherColor(code: conditionCode, isDay: isDay),
             ),
           )
           .color;
 
-      final weatherIcon = getWeatherIcon(
-        code: conditionCode,
-        isDay: isDay,
-      );
+      final weatherIcon = getWeatherIcon(code: conditionCode, isDay: isDay);
 
-      final weatherDescription = getWeatherDescription(
-        code: conditionCode,
-        isDay: isDay,
-      );
+      final weatherDescription = getWeatherDescription(code: conditionCode, isDay: isDay);
 
       final weatherIconWidget = AssetImage(weatherIcon);
       const promajaIconWidget = AssetImage(PromajaIcons.icon);
@@ -236,11 +194,7 @@ class HomeWidgetService {
   }
 
   /// Triggers widget with forecast weather
-  Future<void> triggerForecastWidget({
-    required ResponseForecastWeather response,
-    required bool showCelsius,
-    required Location location,
-  }) async {
+  Future<void> triggerForecastWidget({required ResponseForecastWeather response, required bool showCelsius, required Location location}) async {
     try {
       /// Store relevant values in variables
       final locationName = response.location.name;
@@ -248,9 +202,7 @@ class HomeWidgetService {
       final time = DateTime.now();
 
       final forecast = response.forecast.forecastDays
-          .where(
-            (forecastDay) => forecastDay.dateEpoch.year == time.year && forecastDay.dateEpoch.month == time.month && forecastDay.dateEpoch.day == time.day,
-          )
+          .where((forecastDay) => forecastDay.dateEpoch.year == time.year && forecastDay.dateEpoch.month == time.month && forecastDay.dateEpoch.day == time.day)
           .toList()
           .firstOrNull;
 
@@ -268,23 +220,14 @@ class HomeWidgetService {
               orElse: () => CustomColor(
                 code: conditionCode,
                 isDay: isDay,
-                color: getWeatherColor(
-                  code: conditionCode,
-                  isDay: isDay,
-                ),
+                color: getWeatherColor(code: conditionCode, isDay: isDay),
               ),
             )
             .color;
 
-        final weatherIcon = getWeatherIcon(
-          code: conditionCode,
-          isDay: isDay,
-        );
+        final weatherIcon = getWeatherIcon(code: conditionCode, isDay: isDay);
 
-        final weatherDescription = getWeatherDescription(
-          code: conditionCode,
-          isDay: isDay,
-        );
+        final weatherDescription = getWeatherDescription(code: conditionCode, isDay: isDay);
 
         final showRain = forecast.day.dailyWillItRain == 1;
         final showSnow = forecast.day.dailyWillItSnow == 1;

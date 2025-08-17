@@ -5,6 +5,10 @@ analyzer:
     - "**/*.freezed.dart"
     - "**/l10n/**"
 
+formatter:
+  page_width: 180
+  trailing_commas: preserve
+
 linter:
   rules:
     - avoid_empty_else
