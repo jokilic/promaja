@@ -63,11 +63,19 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
 
       if (ref.read(weatherCardControllerProvider(index)).hasClients) {
         WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref
-              .read(weatherCardControllerProvider(index))
-              .animateTo(
+          (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
                 0,
                 duration: PromajaDurations.scrollAnimation,
+                curve: Curves.easeIn,
+              ),
+        );
+      }
+
+      if (ref.read(weatherHoursControllerProvider(index)).hasClients) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ref.read(weatherHoursControllerProvider(index)).animateToPage(
+                ((ref.read(weatherCardIndexProvider) == 1 ? DateTime.now().hour : 8) / 4).floor(),
+                duration: PromajaDurations.hoursScrollAnimation,
                 curve: Curves.easeIn,
               ),
         );
