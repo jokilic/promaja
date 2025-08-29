@@ -24,8 +24,8 @@ Future<void> main() async {
 
     /// Override the default error widget
     ErrorWidget.builder = (details) => PromajaErrorWidget(
-          error: details.exceptionAsString(),
-        );
+      error: details.exceptionAsString(),
+    );
 
     /// Parsing of [StackTrace]
     FlutterError.demangleStackTrace = (stack) {
@@ -43,11 +43,6 @@ Future<void> main() async {
       [DeviceOrientation.portraitUp],
     );
 
-    /// Make sure the status bar shows white text
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light,
-    );
-
     /// Initialize [EasyLocalization]
     await initializeLocalization();
 
@@ -63,7 +58,16 @@ Future<void> main() async {
         appRunner: () => runApp(
           UncontrolledProviderScope(
             container: container,
-            child: PromajaApp(),
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.light,
+                statusBarBrightness: Brightness.dark,
+                systemNavigationBarColor: Colors.black,
+                systemNavigationBarIconBrightness: Brightness.light,
+              ),
+              child: PromajaApp(),
+            ),
           ),
         ),
       );
@@ -92,24 +96,24 @@ Future<void> main() async {
 class PromajaApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => EasyLocalization(
-        useOnlyLangCode: true,
-        supportedLocales: const [Locale('hr'), Locale('en')],
-        path: 'assets/translations',
-        fallbackLocale: const Locale('hr'),
-        assetLoader: const CodegenLoader(),
-        child: Builder(
-          builder: (context) => MaterialApp(
-            navigatorKey: navigatorKey,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            home: ref.watch(screenProvider),
-            onGenerateTitle: (_) => 'appNameString'.tr(),
-            theme: ThemeData(
-              fontFamily: 'Jost',
-              scaffoldBackgroundColor: PromajaColors.black,
-            ),
-          ),
+    useOnlyLangCode: true,
+    supportedLocales: const [Locale('hr'), Locale('en')],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('hr'),
+    assetLoader: const CodegenLoader(),
+    child: Builder(
+      builder: (context) => MaterialApp(
+        navigatorKey: navigatorKey,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        home: ref.watch(screenProvider),
+        onGenerateTitle: (_) => 'appNameString'.tr(),
+        theme: ThemeData(
+          fontFamily: 'Jost',
+          scaffoldBackgroundColor: PromajaColors.black,
         ),
-      );
+      ),
+    ),
+  );
 }
