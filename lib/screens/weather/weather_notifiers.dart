@@ -66,7 +66,7 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
 final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, int>(
   (ref, index) {
     final controller = PageController(
-      initialPage: index == 0 ? (DateTime.now().hour / 4).floor() : 1,
+      initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
     );
     ref.onDispose(controller.dispose);
 
@@ -76,7 +76,9 @@ final weatherHoursControllerProvider = Provider.autoDispose.family<PageControlle
 );
 
 final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int? days})>(
-  (ref, forecastParameters) async => ref.read(apiProvider).getForecastWeather(
+  (ref, forecastParameters) async => ref
+      .read(apiProvider)
+      .getForecastWeather(
         query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
         days: forecastParameters.days,
       ),
