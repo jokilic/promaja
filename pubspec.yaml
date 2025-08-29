@@ -1,7 +1,7 @@
 name: promaja
 description: Weather app made in Flutter.
 publish_to: 'none'
-version: 1.8.0+180
+version: 1.8.1+181
 
 #
 # DEPLOYING APP
@@ -35,13 +35,13 @@ dependencies:
   envied: 1.2.0
   flutter_animate: 4.5.2
   flutter_colorpicker: 1.1.0
-  flutter_local_notifications: 19.4.0
+  flutter_local_notifications: 19.4.1
   flutter_riverpod: 2.6.1
   flutter_swipe_action_cell: 3.1.5
   flutter_timezone: 4.1.1
   geolocator: 14.0.2
   hive_ce: 2.11.3
-  hive_ce_flutter: 2.3.1
+  hive_ce_flutter: 2.3.2
   home_widget: 0.8.0
   intl: 0.20.2
   logger: 2.6.1
@@ -50,7 +50,7 @@ dependencies:
   url_launcher: 6.3.2
 
 dev_dependencies:
-  build_runner: 2.6.1
+  build_runner: 2.7.0
   envied_generator: 1.2.0
   flutter_launcher_icons: 0.14.4
   flutter_native_splash: 2.4.6
