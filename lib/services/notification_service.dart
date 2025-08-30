@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../constants/durations.dart';
 import '../constants/icons.dart';
@@ -113,7 +112,6 @@ class NotificationService {
       return initialized ?? false;
     } catch (e) {
       final error = 'InitializeNotifications -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
       return false;
     }
@@ -137,40 +135,39 @@ class NotificationService {
 
       /// `iOS` notifications
       if (defaultTargetPlatform == TargetPlatform.iOS) {
-        permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-                  alert: true,
-                  badge: true,
-                ) ??
+        permissionsGranted =
+            await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+              alert: true,
+              badge: true,
+            ) ??
             false;
       }
 
       /// `MacOS` notifications
       if (defaultTargetPlatform == TargetPlatform.macOS) {
-        permissionsGranted = await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-                  alert: true,
-                  badge: true,
-                ) ??
+        permissionsGranted =
+            await flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+              alert: true,
+              badge: true,
+            ) ??
             false;
       }
 
       /// Error while granting permissions
       if (permissionsGranted == null) {
         const error = 'RequestNotificationPermissions -> Notification platform different than Android, iOS or MacOS';
-        unawaited(Sentry.captureException(error));
         logger.e(error);
         return false;
       }
 
       if (!permissionsGranted) {
         const error = 'RequestNotificationPermissions -> Notification permissions denied';
-        unawaited(Sentry.captureException(error));
         logger.e(error);
       }
 
       return permissionsGranted;
     } catch (e) {
       final error = 'RequestNotificationPermissions -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
 
       return false;
@@ -183,7 +180,6 @@ class NotificationService {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
       final error = 'CancelNotifications -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -244,7 +240,6 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'ShowNotification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -271,7 +266,6 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TestNotification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -395,16 +389,13 @@ class NotificationService {
           }
         }
       }
-
       /// Location doesn't exist
       else {
         const error = 'HandleNotifications -> Location is null';
-        unawaited(Sentry.captureException(error));
         logger.e(error);
       }
     } catch (e) {
       final error = 'HandleNotifications -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -450,7 +441,6 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'TriggerHourlyNotification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -529,7 +519,6 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -545,7 +534,8 @@ class NotificationService {
     if (now.hour >= startHour && now.hour <= endHour) {
       /// Get [DateTime] when the last notification is triggered
       final lastShownNotification = hive.getNotificationLastShownFromBox();
-      final lastShownNotificationDateTime = (isEveningNotification ? lastShownNotification?.eveningNotificationLastShown : lastShownNotification?.morningNotificationLastShown) ??
+      final lastShownNotificationDateTime =
+          (isEveningNotification ? lastShownNotification?.eveningNotificationLastShown : lastShownNotification?.morningNotificationLastShown) ??
           DateTime.fromMillisecondsSinceEpoch(0);
 
       /// Calculate difference between the last notification and current time
@@ -612,16 +602,13 @@ class NotificationService {
             logger.f('Hello testy test');
         }
       }
-
       /// Payload or context is null
       else {
         const error = 'HandlePressedNotification -> Payload or context is null';
-        unawaited(Sentry.captureException(error));
         logger.e(error);
       }
     } catch (e) {
       final error = 'HandlePressedNotification -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -634,7 +621,6 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'onDidReceiveNotificationResponse -> catch -> $e';
-      unawaited(Sentry.captureException(error));
       logger.e(error);
     }
   }
@@ -655,7 +641,9 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     final container = await initializeServices();
 
     if (container != null) {
-      await container.read(notificationProvider).handlePressedNotification(
+      await container
+          .read(notificationProvider)
+          .handlePressedNotification(
             payload: notificationResponse.payload,
           );
     }

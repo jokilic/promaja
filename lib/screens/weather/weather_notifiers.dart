@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../models/error/response_error.dart';
 import '../../models/location/location.dart';
@@ -50,11 +49,6 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
     try {
       location = weatherList.elementAt(weatherIndex);
     } catch (e) {
-      unawaited(
-        Sentry.captureException(
-          'ActiveWeatherProvider -> catch -> element at index $weatherIndex is not found',
-        ),
-      );
       location = weatherList.elementAtOrNull(0);
     }
 

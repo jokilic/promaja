@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'hive_service.dart';
 import 'logger_service.dart';

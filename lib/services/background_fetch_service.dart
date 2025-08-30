@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../util/initialization.dart';
 import 'hive_service.dart';
@@ -71,10 +70,8 @@ final backgroundFetchInitProvider = FutureProvider<void>(
               await container.read(homeWidgetProvider).handleWidget();
             }
           }
-
           /// Some generic error happened, throw error
           catch (e) {
-            unawaited(Sentry.captureException('BackgroundFetchInitProvider -> taskCallback -> catch -> $e'));
             final logger = LoggerService();
             final hive = HiveService(logger);
             await hive.init();
@@ -101,7 +98,6 @@ final backgroundFetchInitProvider = FutureProvider<void>(
       final hive = HiveService(logger);
       await hive.init();
     } catch (e) {
-      unawaited(Sentry.captureException('BackgroundFetchInitProvider -> catch -> $e'));
       final logger = LoggerService();
       final hive = HiveService(logger);
       await hive.init();
@@ -163,10 +159,8 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     final hive = HiveService(logger);
     await hive.init();
   }
-
   /// Some generic error happened, throw error
   catch (e) {
-    unawaited(Sentry.captureException('BackgroundFetchInitProvider -> catch -> $e'));
     final logger = LoggerService();
     final hive = HiveService(logger);
     await hive.init();

@@ -1,3 +1,4 @@
-* Update Android syntax
-* New API key
-* Update dependencies
+* White status bar text
+* Fix initial hour scroll in forecast
+* Fix scroll when pressing hour
+* Remove unnecessary error logging
