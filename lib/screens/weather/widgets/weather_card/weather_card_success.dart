@@ -59,6 +59,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     required HourWeather? activeHourWeather,
     required HourWeather hourWeather,
     required int index,
+    required ScrollController scrollController,
   }) {
     /// User pressed already active hour
     /// Disable active hour and scroll up
@@ -66,13 +67,12 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
       ref.read(activeHourWeatherProvider.notifier).state = null;
       ref.read(showWeatherTopContainerProvider.notifier).state = false;
 
-      ref.read(weatherCardControllerProvider(index)).animateTo(
-            0,
-            duration: PromajaDurations.scrollAnimation,
-            curve: Curves.easeIn,
-          );
+      scrollController.animateTo(
+        0,
+        duration: PromajaDurations.scrollAnimation,
+        curve: Curves.easeIn,
+      );
     }
-
     /// User pressed inactive hour
     /// Enable active hour and scroll down
     else {
@@ -83,11 +83,11 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
       }
 
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
-              ref.read(weatherCardControllerProvider(index)).position.maxScrollExtent,
-              duration: PromajaDurations.scrollAnimation,
-              curve: Curves.easeIn,
-            ),
+        (_) => scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: PromajaDurations.scrollAnimation,
+          curve: Curves.easeIn,
+        ),
       );
     }
   }
@@ -119,7 +119,9 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
         showKph: widget.showKph,
         showMm: widget.showMm,
         showhPa: widget.showhPa,
+        scrollController: ScrollController(),
         weatherCardHourPressed: weatherCardHourPressed,
+        key: ValueKey(widget.index),
       );
     }
 

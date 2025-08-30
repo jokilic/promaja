@@ -18,6 +18,7 @@ import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
 class WeatherCardForecast extends ConsumerWidget {
+  final ScrollController scrollController;
   final Location location;
   final ForecastDayWeather forecast;
   final int index;
@@ -31,9 +32,12 @@ class WeatherCardForecast extends ConsumerWidget {
     required HourWeather? activeHourWeather,
     required HourWeather hourWeather,
     required int index,
-  }) weatherCardHourPressed;
+    required ScrollController scrollController,
+  })
+  weatherCardHourPressed;
 
   const WeatherCardForecast({
+    required this.scrollController,
     required this.location,
     required this.forecast,
     required this.index,
@@ -43,6 +47,7 @@ class WeatherCardForecast extends ConsumerWidget {
     required this.showMm,
     required this.showhPa,
     required this.weatherCardHourPressed,
+    required super.key,
   });
 
   @override
@@ -102,7 +107,7 @@ class WeatherCardForecast extends ConsumerWidget {
               ),
             ),
             child: ListView(
-              controller: ref.watch(weatherCardControllerProvider(index)),
+              controller: scrollController,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               children: [
@@ -339,8 +344,9 @@ class WeatherCardForecast extends ConsumerWidget {
                         ),
                         height: 160,
                         child: PageView.builder(
-                          controller: ref.watch(
-                            weatherHoursControllerProvider(index),
+                          key: ValueKey(index),
+                          controller: PageController(
+                            initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
                           ),
                           itemCount: (forecast.hours.length / 4).round(),
                           physics: const BouncingScrollPhysics(),
@@ -362,6 +368,7 @@ class WeatherCardForecast extends ConsumerWidget {
                                     activeHourWeather: activeHourWeather,
                                     ref: ref,
                                     index: index,
+                                    scrollController: scrollController,
                                   ),
                                 );
                               },

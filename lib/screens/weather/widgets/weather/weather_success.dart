@@ -51,7 +51,10 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
     }
   }
 
-  void cardSwiped({required int index, required WidgetRef ref}) {
+  void cardSwiped({
+    required int index,
+    required WidgetRef ref,
+  }) {
     if (ref.read(weatherCardIndexProvider) != index) {
       ref.read(weatherCardSummaryShowAnimationProvider.notifier).state = false;
       ref.read(weatherCardMovingProvider.notifier).state = false;
@@ -60,33 +63,13 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }
-
-      if (ref.read(weatherCardControllerProvider(index)).hasClients) {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref.read(weatherCardControllerProvider(index)).animateTo(
-                0,
-                duration: PromajaDurations.scrollAnimation,
-                curve: Curves.easeIn,
-              ),
-        );
-      }
-
-      if (ref.read(weatherHoursControllerProvider(index)).hasClients) {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref.read(weatherHoursControllerProvider(index)).animateToPage(
-                ((ref.read(weatherCardIndexProvider) == 1 ? DateTime.now().hour : 8) / 4).floor(),
-                duration: PromajaDurations.hoursScrollAnimation,
-                curve: Curves.easeIn,
-              ),
-        );
-      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final index = ref.watch(weatherCardIndexProvider);
-    final cardCount = 1 + widget.forecastWeather.forecastDays.length;
+    final activeIndex = ref.watch(weatherCardIndexProvider);
+    late final cardCount = 1 + widget.forecastWeather.forecastDays.length;
 
     return Stack(
       children: [
@@ -108,7 +91,10 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
               }
             },
             onSwipeCancelled: (_) => ref.read(weatherCardMovingProvider.notifier).state = false,
-            onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
+            onSwipeEnd: (_, index, __) => cardSwiped(
+              index: index,
+              ref: ref,
+            ),
             cardBuilder: (_, cardIndex) => WeatherCardSuccess(
               location: widget.location,
               forecastWeather: widget.forecastWeather,
@@ -132,7 +118,7 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
           bottom: 0,
           child: Align(
             child: AnimatedSmoothIndicator(
-              activeIndex: index,
+              activeIndex: activeIndex,
               count: cardCount,
               effect: WormEffect(
                 activeDotColor: PromajaColors.white,

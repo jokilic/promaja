@@ -63,20 +63,10 @@ final activeWeatherProvider = StateProvider.autoDispose<Location?>(
   name: 'ActiveWeatherProvider',
 );
 
-final weatherHoursControllerProvider = Provider.autoDispose.family<PageController, int>(
-  (ref, index) {
-    final controller = PageController(
-      initialPage: index == 0 ? (DateTime.now().hour / 4).floor() : 1,
-    );
-    ref.onDispose(controller.dispose);
-
-    return controller;
-  },
-  name: 'WeatherHoursControllerProvider',
-);
-
 final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int? days})>(
-  (ref, forecastParameters) async => ref.read(apiProvider).getForecastWeather(
+  (ref, forecastParameters) async => ref
+      .read(apiProvider)
+      .getForecastWeather(
         query: '${forecastParameters.location.lat},${forecastParameters.location.lon}',
         days: forecastParameters.days,
       ),
@@ -86,15 +76,6 @@ final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeath
 final activeHourWeatherProvider = StateProvider.autoDispose<HourWeather?>(
   (_) => null,
   name: 'ActiveHourWeatherProvider',
-);
-
-final weatherCardControllerProvider = Provider.autoDispose.family<ScrollController, int>(
-  (ref, index) {
-    final controller = ScrollController();
-    ref.onDispose(controller.dispose);
-    return controller;
-  },
-  name: 'WeatherCardControllerProvider',
 );
 
 final weatherAppinioControllerProvider = Provider.autoDispose<AppinioSwiperController>(
