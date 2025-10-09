@@ -1,4 +1,2 @@
-* White status bar text
-* Fix initial hour scroll in forecast
-* Fix scroll when pressing hour
-* Remove unnecessary error logging
+* Remove error logging
+* Dependency updates
