@@ -12,7 +12,4 @@ abstract class Env {
 
   @EnviedField(varName: 'CLOUDFLARE_WORKER_URL', obfuscate: true)
   static final String cloudflareWorkerUrl = _Env.cloudflareWorkerUrl;
-
-  @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
-  static final String sentryDsn = _Env.sentryDsn;
 }
