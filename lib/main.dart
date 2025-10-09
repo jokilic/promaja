@@ -10,6 +10,7 @@ import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
+import 'util/display_mode.dart';
 import 'util/env.dart';
 import 'util/initialization.dart';
 import 'widgets/promaja_error_widget.dart';
@@ -48,6 +49,12 @@ Future<void> main() async {
 
     /// Initialize services
     final container = await initializeServices();
+
+    /// Use `edge-to-edge` display
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    /// Set refresh rate to high
+    await setDisplayMode();
 
     if (container != null) {
       /// Init [Sentry] & run [Promaja]
