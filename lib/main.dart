@@ -41,17 +41,17 @@ Future<void> main() async {
       [DeviceOrientation.portraitUp],
     );
 
-    /// Initialize [EasyLocalization]
-    await initializeLocalization();
-
-    /// Initialize services
-    final container = await initializeServices();
-
     /// Use `edge-to-edge` display
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     /// Set refresh rate to high
     await setDisplayMode();
+
+    /// Initialize [EasyLocalization]
+    await initializeLocalization();
+
+    /// Initialize services
+    final container = await initializeServices();
 
     if (container != null) {
       /// Run [Promaja]
@@ -63,7 +63,7 @@ Future<void> main() async {
               statusBarColor: Colors.transparent,
               statusBarIconBrightness: Brightness.light,
               statusBarBrightness: Brightness.dark,
-              systemNavigationBarColor: Colors.black,
+              systemNavigationBarColor: PromajaColors.black,
               systemNavigationBarIconBrightness: Brightness.light,
             ),
             child: PromajaApp(),
