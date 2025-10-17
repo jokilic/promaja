@@ -29,17 +29,18 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-      compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-        coreLibraryDesugaringEnabled true
+    namespace "com.josipkilic.promaja"
+    compileSdkVersion 36
+    ndkVersion "28.0.12433566"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
-    namespace "com.josipkilic.promaja"
-
-    ndkVersion = "27.0.12077973"
-
-    compileSdkVersion 36
+    kotlinOptions {
+        jvmTarget = '21'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
