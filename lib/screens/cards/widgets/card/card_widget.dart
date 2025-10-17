@@ -25,58 +25,62 @@ class CardWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
-        borderRadius: BorderRadius.circular(40),
-        child: ref.watch(getCurrentWeatherProvider(originalLocation)).when(
-              data: (data) {
-                ///
-                /// DATA SUCCESSFULLY FETCHED
-                ///
-                if (data.response != null && data.error == null) {
-                  final location = data.response!.location;
-                  final currentWeather = data.response!.current;
+    borderRadius: const BorderRadius.vertical(
+      bottom: Radius.circular(40),
+    ),
+    child: ref
+        .watch(getCurrentWeatherProvider(originalLocation))
+        .when(
+          data: (data) {
+            ///
+            /// DATA SUCCESSFULLY FETCHED
+            ///
+            if (data.response != null && data.error == null) {
+              final location = data.response!.location;
+              final currentWeather = data.response!.current;
 
-                  return CardSuccess(
-                    location: location,
-                    currentWeather: currentWeather,
-                    isPhoneLocation: originalLocation.isPhoneLocation ?? false,
-                    showCelsius: showCelsius,
-                    showKph: showKph,
-                    showMm: showMm,
-                    showhPa: showhPa,
-                  );
-                }
-
-                ///
-                /// ERROR WHILE FETCHING
-                ///
-                return CardError(
-                  location: originalLocation,
-                  error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
-                  isPhoneLocation: originalLocation.isPhoneLocation ?? false,
-                  refreshPressed: () => ref.invalidate(
-                    getCurrentWeatherProvider(originalLocation),
-                  ),
-                );
-              },
-
-              ///
-              /// ERROR STATE
-              ///
-              error: (error, _) => CardError(
-                location: originalLocation,
-                error: '$error',
+              return CardSuccess(
+                location: location,
+                currentWeather: currentWeather,
                 isPhoneLocation: originalLocation.isPhoneLocation ?? false,
-                refreshPressed: () => ref.invalidate(
-                  getCurrentWeatherProvider(originalLocation),
-                ),
-              ),
+                showCelsius: showCelsius,
+                showKph: showKph,
+                showMm: showMm,
+                showhPa: showhPa,
+              );
+            }
 
-              ///
-              /// LOADING STATE
-              ///
-              loading: () => CardLoading(
-                location: originalLocation,
+            ///
+            /// ERROR WHILE FETCHING
+            ///
+            return CardError(
+              location: originalLocation,
+              error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
+              isPhoneLocation: originalLocation.isPhoneLocation ?? false,
+              refreshPressed: () => ref.invalidate(
+                getCurrentWeatherProvider(originalLocation),
               ),
+            );
+          },
+
+          ///
+          /// ERROR STATE
+          ///
+          error: (error, _) => CardError(
+            location: originalLocation,
+            error: '$error',
+            isPhoneLocation: originalLocation.isPhoneLocation ?? false,
+            refreshPressed: () => ref.invalidate(
+              getCurrentWeatherProvider(originalLocation),
             ),
-      );
+          ),
+
+          ///
+          /// LOADING STATE
+          ///
+          loading: () => CardLoading(
+            location: originalLocation,
+          ),
+        ),
+  );
 }

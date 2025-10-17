@@ -20,7 +20,9 @@ class WeatherLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => isWeatherSummary
       ? ClipRRect(
-          borderRadius: BorderRadius.circular(40),
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(40),
+          ),
           child: Container(
             width: MediaQuery.sizeOf(context).width,
             decoration: BoxDecoration(
@@ -172,7 +174,9 @@ class WeatherLoading extends StatelessWidget {
           width: MediaQuery.sizeOf(context).width,
           margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(40),
+            ),
             gradient: LinearGradient(
               colors: [
                 lightenColor(Colors.amberAccent),

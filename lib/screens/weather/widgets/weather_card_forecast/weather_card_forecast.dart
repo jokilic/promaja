@@ -86,7 +86,9 @@ class WeatherCardForecast extends ConsumerWidget {
     final showSnow = forecast.day.dailyWillItSnow == 1;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
+      ),
       child: Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,

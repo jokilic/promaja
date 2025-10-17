@@ -36,7 +36,7 @@ dependencies:
   flutter_animate: 4.5.2
   flutter_colorpicker: 1.1.0
   flutter_displaymode: 0.7.0
-  flutter_local_notifications: 19.4.2
+  flutter_local_notifications: 19.5.0
   flutter_riverpod: 2.6.1
   flutter_swipe_action_cell: 3.1.6
   geolocator: 14.0.2
@@ -54,6 +54,24 @@ dev_dependencies:
   flutter_launcher_icons: 0.14.4
   flutter_native_splash: 2.4.7
   hive_ce_generator: 1.10.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/icons/
+    - assets/translations/
+    - assets/weather/
+  fonts:
+    - family: Jost
+      fonts:
+        - asset: assets/fonts/Jost-500.ttf
+          weight: 500
+        - asset: assets/fonts/Jost-600.ttf
+          weight: 600
+        - asset: assets/fonts/Jost-700.ttf
+          weight: 700
 
 # Run code generation - `dart run build_runner build -d`
 
