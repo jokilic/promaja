@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,11 +40,9 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
     required this.hive,
     required this.notification,
   }) : super(hive.getPromajaSettingsFromBox())
-
   ///
   /// INIT
   ///
-
   {
     final locations = hive.getLocationsFromBox();
 
@@ -122,12 +121,50 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates initial section to be used
   Future<void> updateInitialSection(InitialSection newSection) async => updateSettings(
-        state.copyWith(
-          appearance: state.appearance.copyWith(
-            initialSection: newSection,
+    state.copyWith(
+      appearance: state.appearance.copyWith(
+        initialSection: newSection,
+      ),
+    ),
+  );
+
+  /// Opens popup menu which chooses language to be used
+  Future<Locale?> showLanguagePopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: [
+        PopupMenuItem(
+          value: const Locale('hr'),
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'appearanceLanguageHr'.tr(),
+            style: PromajaTextStyles.settingsPopupMenuItem,
           ),
         ),
-      );
+        PopupMenuItem(
+          value: const Locale('en'),
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'appearanceLanguageEn'.tr(),
+            style: PromajaTextStyles.settingsPopupMenuItem,
+          ),
+        ),
+      ],
+    );
+  }
 
   /// Triggered when the user taps the `Weather summary first` checkbox
   Future<void> toggleWeatherSummaryFirst() async {
@@ -186,12 +223,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates location to be used in notifications
   Future<void> updateNotificationLocation(Location newLocation) async => updateSettings(
-        state.copyWith(
-          notification: state.notification.copyWith(
-            location: newLocation,
-          ),
-        ),
-      );
+    state.copyWith(
+      notification: state.notification.copyWith(
+        location: newLocation,
+      ),
+    ),
+  );
 
   /// Triggered when the user taps the `Hourly notification` checkbox
   Future<void> toggleHourlyNotification() async {
@@ -286,12 +323,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates temperature unit to be used
   Future<void> updateTemperatureUnit(TemperatureUnit newTemperature) async => updateSettings(
-        state.copyWith(
-          unit: state.unit.copyWith(
-            temperature: newTemperature,
-          ),
-        ),
-      );
+    state.copyWith(
+      unit: state.unit.copyWith(
+        temperature: newTemperature,
+      ),
+    ),
+  );
 
   /// Opens popup menu which chooses distance & speed units to be used
   Future<DistanceSpeedUnit?> showDistanceSpeedUnitPopupMenu(BuildContext context) async {
@@ -329,12 +366,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates distance & speed unit to be used
   Future<void> updateDistanceSpeedUnit(DistanceSpeedUnit newDistanceSpeed) async => updateSettings(
-        state.copyWith(
-          unit: state.unit.copyWith(
-            distanceSpeed: newDistanceSpeed,
-          ),
-        ),
-      );
+    state.copyWith(
+      unit: state.unit.copyWith(
+        distanceSpeed: newDistanceSpeed,
+      ),
+    ),
+  );
 
   /// Opens popup menu which chooses precipitation units to be used
   Future<PrecipitationUnit?> showPrecipitationUnitPopupMenu(BuildContext context) async {
@@ -372,12 +409,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates precipitation unit to be used
   Future<void> updatePrecipitationUnit(PrecipitationUnit newPrecipitation) async => updateSettings(
-        state.copyWith(
-          unit: state.unit.copyWith(
-            precipitation: newPrecipitation,
-          ),
-        ),
-      );
+    state.copyWith(
+      unit: state.unit.copyWith(
+        precipitation: newPrecipitation,
+      ),
+    ),
+  );
 
   /// Opens popup menu which chooses pressure units to be used
   Future<PressureUnit?> showPressureUnitPopupMenu(BuildContext context) async {
@@ -415,12 +452,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates pressure unit to be used
   Future<void> updatePressureUnit(PressureUnit newPressureUnit) async => updateSettings(
-        state.copyWith(
-          unit: state.unit.copyWith(
-            pressure: newPressureUnit,
-          ),
-        ),
-      );
+    state.copyWith(
+      unit: state.unit.copyWith(
+        pressure: newPressureUnit,
+      ),
+    ),
+  );
 
   ///
   /// WIDGET
@@ -462,12 +499,12 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates location to be used in widget
   Future<void> updateWidgetLocation(Location newLocation) async => updateSettings(
-        state.copyWith(
-          widget: state.widget.copyWith(
-            location: newLocation,
-          ),
-        ),
-      );
+    state.copyWith(
+      widget: state.widget.copyWith(
+        location: newLocation,
+      ),
+    ),
+  );
 
   /// Opens popup menu which chooses weather type to be used in widget
   Future<WeatherType?> showWidgetWeatherTypePopupMenu(BuildContext context) async {
@@ -505,10 +542,10 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
 
   /// Updates weather type to be used in widget
   Future<void> updateWidgetWeatherType(WeatherType newWeatherType) async => updateSettings(
-        state.copyWith(
-          widget: state.widget.copyWith(
-            weatherType: newWeatherType,
-          ),
-        ),
-      );
+    state.copyWith(
+      widget: state.widget.copyWith(
+        weatherType: newWeatherType,
+      ),
+    ),
+  );
 }

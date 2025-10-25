@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
 
 import 'dart:ui';
 
@@ -14,7 +14,7 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-  static const Map<String,dynamic> en = {
+  static const Map<String,dynamic> _en = {
   "appNameString": "Promaja",
   "okay": "Okay",
   "today": "Today",
@@ -178,16 +178,21 @@ class CodegenLoader extends AssetLoader{
   "appearanceInitialSectionLastOpened": "Last opened",
   "appearanceInitialSectionCurrent": "Current",
   "appearanceInitialSectionForecast": "Forecast",
+  "appearanceInitialSectionMap": "Map",
   "appearanceInitialSectionList": "List",
   "appearanceInitialSectionSettings": "Settings",
   "appearanceInitialSectionSubtitle": "Section which will be opened on app start",
   "appearanceWeatherSummaryFirstTitle": "Weather summary first",
   "appearanceWeatherSummaryFirstSubtitle": "When opening weather section, show weather summary for all available days",
+  "appearanceLanguageSubtitle": "Language used throughout Promaja",
+  "appearanceLanguageHr": "Croatian",
+  "appearanceLanguageEn": "English",
   "weatherTypeCurrent": "Current weather",
   "weatherTypeForecast": "Forecast weather",
   "addLocation": "Add your location",
   "navigationDescriptionCurrent": "Opens cards which show current weather for all locations you added.",
   "navigationDescriptionWeather": "Opens cards which show forecast weather for a single location.",
+  "navigationDescriptionMap": "Opens map which shows temperature, precipitation, pressure and wind speed for the next three days.",
   "navigationDescriptionList": "Opens a list where you can add, remove or reorder locations.",
   "navigationDescriptionSettings": "Opens a place where you can tweak app settings.",
   "calendarCancel": "Cancel",
@@ -301,7 +306,7 @@ class CodegenLoader extends AssetLoader{
   "9001Error": "JSON body contains too many locations for bulk request. Please keep it below 50 in a single request",
   "9999Error": "Internal application error"
 };
-static const Map<String,dynamic> hr = {
+static const Map<String,dynamic> _hr = {
   "appNameString": "Promaja",
   "okay": "U redu",
   "today": "Danas",
@@ -465,16 +470,21 @@ static const Map<String,dynamic> hr = {
   "appearanceInitialSectionLastOpened": "Zadnje otvoreno",
   "appearanceInitialSectionCurrent": "Trenutno vrijeme",
   "appearanceInitialSectionForecast": "Vremenska prognoza",
+  "appearanceInitialSectionMap": "Karta",
   "appearanceInitialSectionList": "Popis",
   "appearanceInitialSectionSettings": "Postavke",
   "appearanceInitialSectionSubtitle": "Stavka koja će biti otvorena kad se aplikacija upali",
   "appearanceWeatherSummaryFirstTitle": "Prvo pregled vremena",
   "appearanceWeatherSummaryFirstSubtitle": "Tijekom otvaranja vremenske prognoze, prikaži pregled vremena za sve dostupne dane",
+  "appearanceLanguageSubtitle": "Jezik korišten kroz Promaju",
+  "appearanceLanguageHr": "Hrvatski",
+  "appearanceLanguageEn": "Engleski",
   "weatherTypeCurrent": "Trenutno vrijeme",
   "weatherTypeForecast": "Prognoza vremena",
   "addLocation": "Dodaj svoju lokaciju",
   "navigationDescriptionCurrent": "Otvara kartice koje prikazuju trenutno vrijeme za sve lokacije koje si dodao.",
   "navigationDescriptionWeather": "Otvara kartice koje prikazuju vremensku prognozu za jednu lokaciju.",
+  "navigationDescriptionMap": "Otvara kartu koja pokazuje temperaturu, padaline, pritisak i vjetar za sljedeća tri dana.",
   "navigationDescriptionList": "Otvara popis gdje možeš dodati, maknuti ili pomaknuti lokacije.",
   "navigationDescriptionSettings": "Otvara mjesto gdje možeš promijeniti postavke aplikacije.",
   "calendarCancel": "Odustani",
@@ -588,5 +598,5 @@ static const Map<String,dynamic> hr = {
   "9001Error": "JSON tijelo sadrži previše lokacija za masovni zahtjev. Molimo zadržite ih ispod 50 u jednom zahtjevu",
   "9999Error": "Interna pogreška aplikacije"
 };
-static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "hr": hr};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "hr": _hr};
 }

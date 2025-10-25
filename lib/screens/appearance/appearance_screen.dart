@@ -121,6 +121,22 @@ class AppearanceScreen extends ConsumerWidget {
                 title: 'appearanceWeatherSummaryFirstTitle'.tr(),
                 subtitle: 'appearanceWeatherSummaryFirstSubtitle'.tr(),
               ),
+
+              ///
+              /// LANGUAGE
+              ///
+              SettingsPopupMenuListTile(
+                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapUp: (_) async {
+                  final newLanguage = await ref.read(settingsProvider.notifier).showLanguagePopupMenu(context);
+
+                  if (newLanguage != null) {
+                    await context.setLocale(newLanguage);
+                  }
+                },
+                activeValue: context.locale.languageCode == 'hr' ? 'appearanceLanguageHr'.tr() : 'appearanceLanguageEn'.tr(),
+                subtitle: 'appearanceLanguageSubtitle'.tr(),
+              ),
             ],
           ),
         ),

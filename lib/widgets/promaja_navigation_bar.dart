@@ -32,8 +32,8 @@ final screenProvider = StateProvider.autoDispose<Widget>(
       1 => WeatherScreen(
         originalLocation: ref.watch(activeWeatherProvider),
       ),
-      2 => ListScreen(),
-      3 => MapScreen(),
+      2 => MapScreen(),
+      3 => ListScreen(),
       4 => SettingsScreen(),
       _ => ListScreen(),
     };
