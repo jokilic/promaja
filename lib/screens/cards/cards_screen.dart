@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart' as animate;
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -44,10 +44,10 @@ class CardsScreen extends ConsumerWidget {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: PromajaNavigationBar(),
-      body: animate.Animate(
+      body: Animate(
         key: ValueKey(ref.read(navigationBarIndexProvider)),
         effects: [
-          animate.FadeEffect(
+          FadeEffect(
             curve: Curves.easeIn,
             duration: PromajaDurations.fadeAnimation,
           ),

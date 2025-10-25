@@ -8,6 +8,7 @@ import '../models/settings/appearance/initial_section.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
+import '../screens/map/map_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
@@ -29,17 +30,24 @@ final screenProvider = StateProvider.autoDispose<Widget>(
     return switch (navigationBarIndex) {
       0 => CardsScreen(),
       1 => WeatherScreen(
-          originalLocation: ref.watch(activeWeatherProvider),
-        ),
+        originalLocation: ref.watch(activeWeatherProvider),
+      ),
       2 => ListScreen(),
-      3 => SettingsScreen(),
+      3 => MapScreen(),
+      4 => SettingsScreen(),
       _ => ListScreen(),
     };
   },
   name: 'ScreenProvider',
 );
 
-enum NavigationBarItems { cards, weather, list, settings }
+enum NavigationBarItems {
+  cards,
+  weather,
+  map,
+  list,
+  settings,
+}
 
 class PromajaNavigationBarController extends StateNotifier<int> {
   final LoggerService logger;
@@ -48,7 +56,7 @@ class PromajaNavigationBarController extends StateNotifier<int> {
   PromajaNavigationBarController({
     required this.logger,
     required this.hiveService,
-  }) : super(2) {
+  }) : super(3) {
     state = getInitialNavigationBarIndex();
   }
 
@@ -73,20 +81,21 @@ class PromajaNavigationBarController extends StateNotifier<int> {
       return switch (initialSection) {
         InitialSection.current => 0,
         InitialSection.forecast => 1,
-        InitialSection.list => 2,
-        InitialSection.settings => 3,
-        InitialSection.lastOpened => 2,
+        InitialSection.map => 2,
+        InitialSection.list => 3,
+        InitialSection.settings => 4,
+        InitialSection.lastOpened => 3,
       };
     }
 
     /// Initial section is set to `last opened`, open section from [Hive]
     if (initialSection == InitialSection.lastOpened) {
       /// Return currently opened screen or `ListScreen` if there's no stored `index`
-      return indexValue ?? 2;
+      return indexValue ?? 3;
     }
 
     /// Return `ListScreen`
-    return 2;
+    return 3;
   }
 
   /// Triggered when navigation bar needs changing
@@ -103,101 +112,120 @@ class PromajaNavigationBarController extends StateNotifier<int> {
 class PromajaNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(32),
+    borderRadius: const BorderRadius.vertical(
+      top: Radius.circular(32),
+    ),
+    child: NavigationBar(
+      backgroundColor: PromajaColors.black,
+      elevation: 0,
+      indicatorColor: Colors.transparent,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      selectedIndex: ref.watch(navigationBarIndexProvider),
+      onDestinationSelected: (newIndex) {
+        if (ref.read(navigationBarIndexProvider) != newIndex) {
+          ref.read(cardIndexProvider.notifier).state = 0;
+          ref.read(weatherCardIndexProvider.notifier).state = 0;
+
+          ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
+        }
+      },
+      animationDuration: PromajaDurations.navigationAnimation,
+      destinations: [
+        ///
+        /// CARDS
+        ///
+        NavigationDestination(
+          icon: Image.asset(
+            PromajaIcons.globe,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white.withValues(alpha: 0.15),
+          ),
+          selectedIcon: Image.asset(
+            PromajaIcons.globe,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white,
+          ),
+          label: '',
         ),
-        child: NavigationBar(
-          backgroundColor: PromajaColors.black,
-          elevation: 0,
-          indicatorColor: Colors.transparent,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          selectedIndex: ref.watch(navigationBarIndexProvider),
-          onDestinationSelected: (newIndex) {
-            if (ref.read(navigationBarIndexProvider) != newIndex) {
-              ref.read(cardIndexProvider.notifier).state = 0;
-              ref.read(weatherCardIndexProvider.notifier).state = 0;
 
-              ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
-            }
-          },
-          animationDuration: PromajaDurations.navigationAnimation,
-          destinations: [
-            ///
-            /// CARDS
-            ///
-            NavigationDestination(
-              icon: Image.asset(
-                PromajaIcons.globe,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white.withValues(alpha: 0.15),
-              ),
-              selectedIcon: Image.asset(
-                PromajaIcons.globe,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white,
-              ),
-              label: '',
-            ),
-
-            ///
-            /// WEATHER
-            ///
-            NavigationDestination(
-              icon: Image.asset(
-                PromajaIcons.temperature,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white.withValues(alpha: 0.15),
-              ),
-              selectedIcon: Image.asset(
-                PromajaIcons.temperature,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white,
-              ),
-              label: '',
-            ),
-
-            ///
-            /// LIST
-            ///
-            NavigationDestination(
-              icon: Image.asset(
-                PromajaIcons.list,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white.withValues(alpha: 0.15),
-              ),
-              selectedIcon: Image.asset(
-                PromajaIcons.list,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white,
-              ),
-              label: '',
-            ),
-
-            ///
-            /// SETTINGS
-            ///
-            NavigationDestination(
-              icon: Image.asset(
-                PromajaIcons.settings,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white.withValues(alpha: 0.15),
-              ),
-              selectedIcon: Image.asset(
-                PromajaIcons.settings,
-                height: 20,
-                width: 20,
-                color: PromajaColors.white,
-              ),
-              label: '',
-            ),
-          ],
+        ///
+        /// WEATHER
+        ///
+        NavigationDestination(
+          icon: Image.asset(
+            PromajaIcons.temperature,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white.withValues(alpha: 0.15),
+          ),
+          selectedIcon: Image.asset(
+            PromajaIcons.temperature,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white,
+          ),
+          label: '',
         ),
-      );
+
+        ///
+        /// MAP
+        ///
+        NavigationDestination(
+          icon: Image.asset(
+            PromajaIcons.map,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white.withValues(alpha: 0.15),
+          ),
+          selectedIcon: Image.asset(
+            PromajaIcons.map,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white,
+          ),
+          label: '',
+        ),
+
+        ///
+        /// LIST
+        ///
+        NavigationDestination(
+          icon: Image.asset(
+            PromajaIcons.list,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white.withValues(alpha: 0.15),
+          ),
+          selectedIcon: Image.asset(
+            PromajaIcons.list,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white,
+          ),
+          label: '',
+        ),
+
+        ///
+        /// SETTINGS
+        ///
+        NavigationDestination(
+          icon: Image.asset(
+            PromajaIcons.settings,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white.withValues(alpha: 0.15),
+          ),
+          selectedIcon: Image.asset(
+            PromajaIcons.settings,
+            height: 20,
+            width: 20,
+            color: PromajaColors.white,
+          ),
+          label: '',
+        ),
+      ],
+    ),
+  );
 }
