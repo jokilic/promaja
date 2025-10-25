@@ -6,7 +6,6 @@ class PromajaIcons {
   static const settings = 'assets/icons/settings.png';
   static const search = 'assets/icons/search.png';
   static const location = 'assets/icons/location.png';
-  static const noLogging = 'assets/icons/nologging.png';
   static const umbrella = 'assets/icons/umbrella.png';
   static const snow = 'assets/icons/snow.png';
   static const wind = 'assets/icons/wind.png';
@@ -18,13 +17,10 @@ class PromajaIcons {
   static const feelsLike = 'assets/icons/feelslike.png';
   static const uv = 'assets/icons/uv.png';
   static const gust = 'assets/icons/gust.png';
-  static const tempMaxMin = 'assets/icons/tempmaxmin.png';
-  static const dontKnow = 'assets/icons/dontknow.png';
   static const arrow = 'assets/icons/arrow.png';
   static const dot = 'assets/icons/dot.png';
   static const check = 'assets/icons/check.png';
   static const weatherAPI = 'assets/icons/weatherapi.webp';
-  static const calendar = 'assets/icons/calendar.png';
 
   /// Weather
   static const bigRainDrops = 'assets/weather/big_rain_drops.png';
