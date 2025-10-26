@@ -6,7 +6,7 @@ enum WeatherMapOverlayType {
 }
 
 String getTileSegment(WeatherMapOverlayType overlayType) => switch (overlayType) {
-  WeatherMapOverlayType.temperature => 'tm2pm',
+  WeatherMapOverlayType.temperature => 'tmp2m',
   WeatherMapOverlayType.precipitation => 'precip',
   WeatherMapOverlayType.pressure => 'pressure',
   WeatherMapOverlayType.windSpeed => 'wind',

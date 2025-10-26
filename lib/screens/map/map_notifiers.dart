@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../../constants/durations.dart';
+import '../../models/location/location.dart';
 import '../../models/map/weather_map_overlay_style.dart';
 import '../../services/logger_service.dart';
 import 'map_state.dart';
@@ -172,5 +175,68 @@ class MapNotifier extends StateNotifier<MapState> {
   void stopTimer() {
     timer?.cancel();
     timer = null;
+  }
+
+  LatLng initialCenter({
+    required List<Location> locations,
+  }) {
+    if (locations.isEmpty) {
+      return const LatLng(0, 0);
+    }
+
+    final first = locations.first;
+
+    return LatLng(
+      first.lat,
+      first.lon,
+    );
+  }
+
+  void fitToLocations({
+    required MapController controller,
+    required List<Location> locations,
+  }) {
+    if (locations.isEmpty) {
+      return;
+    }
+
+    if (locations.length == 1) {
+      controller.move(
+        LatLng(locations.first.lat, locations.first.lon),
+        8,
+      );
+
+      return;
+    }
+
+    final points = locations
+        .map(
+          (location) => LatLng(
+            location.lat,
+            location.lon,
+          ),
+        )
+        .toList();
+
+    final bounds = LatLngBounds.fromPoints(points);
+
+    controller.fitCamera(
+      CameraFit.bounds(
+        bounds: bounds,
+      ),
+    );
+  }
+
+  String? overlayUrlTemplate({required MapState state}) {
+    if (state.timeline.isEmpty) {
+      return null;
+    }
+
+    final date = DateFormat('yyyyMMdd').format(state.selectedTimeUtc);
+    final hour = DateFormat('HH').format(state.selectedTimeUtc);
+
+    final tileSegment = getTileSegment(state.overlay);
+
+    return 'https://weathermaps.weatherapi.com/$tileSegment/tiles/$date$hour/{z}/{x}/{y}.png';
   }
 }

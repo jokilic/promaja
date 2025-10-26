@@ -21,6 +21,7 @@ class PromajaIcons {
   static const arrow = 'assets/icons/arrow.png';
   static const dot = 'assets/icons/dot.png';
   static const check = 'assets/icons/check.png';
+  static const pin = 'assets/icons/pin.png';
   static const weatherAPI = 'assets/icons/weatherapi.webp';
 
   /// Weather

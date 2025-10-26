@@ -8,61 +8,66 @@ import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
-import '../../constants/text_styles.dart';
-import '../../models/location/location.dart';
 import '../../models/map/weather_map_overlay_style.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'map_notifiers.dart';
-import 'map_state.dart';
+import 'widgets/map_marker.dart';
 
-class MapScreen extends ConsumerWidget {
+class MapScreen extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locations = ref.watch(hiveProvider);
-    final mapState = ref.watch(mapProvider);
-    final mapController = ref.watch(mapControllerProvider);
-    final hasCentered = ref.watch(mapHasCenteredProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _MapScreenState();
+}
 
-    final mapNotifier = ref.read(mapProvider.notifier);
+class _MapScreenState extends ConsumerState<MapScreen> {
+  @override
+  void initState() {
+    super.initState();
 
-    ref.listen<List<Location>>(
-      hiveProvider,
-      (_, next) {
-        if (next.isEmpty) {
-          if (hasCentered) {
-            ref.read(mapHasCenteredProvider.notifier).state = false;
-          }
-          return;
-        }
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(mapHasCenteredProvider.notifier).state = true;
-          _fitToLocations(mapController, next);
-        });
-      },
-    );
+    final hasCentered = ref.read(mapHasCenteredProvider);
+    final locations = ref.read(hiveProvider);
 
     if (!hasCentered && locations.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(mapHasCenteredProvider.notifier).state = true;
-        _fitToLocations(mapController, locations);
+        ref
+            .read(mapProvider.notifier)
+            .fitToLocations(
+              controller: ref.read(mapControllerProvider),
+              locations: locations,
+            );
       });
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locations = ref.watch(hiveProvider);
+    final mapState = ref.watch(mapProvider);
+    final mapController = ref.watch(mapControllerProvider);
+
+    final mapNotifier = ref.read(mapProvider.notifier);
 
     final markers = locations
         .map(
           (location) => Marker(
-            point: LatLng(location.lat, location.lon),
-            width: 160,
-            height: 80,
+            point: LatLng(
+              location.lat,
+              location.lon,
+            ),
+            height: 24,
+            width: 24,
             alignment: Alignment.topCenter,
-            child: _MapMarker(location: location),
+            child: MapMarker(
+              location: location,
+            ),
           ),
         )
         .toList();
 
-    final overlayTemplate = _overlayUrlTemplate(mapState);
+    final overlayTemplate = mapNotifier.overlayUrlTemplate(
+      state: mapState,
+    );
     final selectedTime = mapState.selectedTimeUtc.toLocal();
 
     return Scaffold(
@@ -89,7 +94,9 @@ class MapScreen extends ConsumerWidget {
                       FlutterMap(
                         mapController: mapController,
                         options: MapOptions(
-                          initialCenter: _initialCenter(locations),
+                          initialCenter: mapNotifier.initialCenter(
+                            locations: locations,
+                          ),
                           initialZoom: locations.isNotEmpty ? 6 : 4,
                           minZoom: 2,
                           maxZoom: 16,
@@ -135,7 +142,12 @@ class MapScreen extends ConsumerWidget {
                             ),
                         ],
                       ),
-                      if (locations.isEmpty) const _EmptyMapState(),
+
+                      // TODO: Widget
+                      if (locations.isEmpty)
+                        Container(
+                          color: Colors.pink,
+                        ),
                       SafeArea(
                         child: Padding(
                           padding: const EdgeInsets.all(16),
@@ -185,45 +197,6 @@ class MapScreen extends ConsumerWidget {
             ),
       ),
     );
-  }
-
-  static LatLng _initialCenter(List<Location> locations) {
-    if (locations.isEmpty) {
-      return const LatLng(0, 0);
-    }
-
-    final first = locations.first;
-    return LatLng(first.lat, first.lon);
-  }
-
-  static void _fitToLocations(MapController controller, List<Location> locations) {
-    if (locations.isEmpty) {
-      return;
-    }
-
-    if (locations.length == 1) {
-      controller.move(LatLng(locations.first.lat, locations.first.lon), 8);
-      return;
-    }
-
-    final points = locations.map((location) => LatLng(location.lat, location.lon)).toList();
-    final bounds = LatLngBounds.fromPoints(points);
-
-    controller.fitCamera(
-      CameraFit.bounds(
-        bounds: bounds,
-        padding: const EdgeInsets.all(48),
-      ),
-    );
-  }
-
-  static String? _overlayUrlTemplate(MapState state) {
-    if (state.timeline.isEmpty) {
-      return null;
-    }
-    final date = DateFormat('yyyyMMdd').format(state.selectedTimeUtc);
-    final hour = DateFormat('HH').format(state.selectedTimeUtc);
-    return 'https://weathermaps.weatherapi.com/${getTileSegment(state.overlay)}/tiles/$date$hour/{z}/{x}/{y}.png';
   }
 }
 
@@ -380,92 +353,6 @@ class _PlayPauseButton extends StatelessWidget {
         size: 24,
       ),
       splashRadius: 28,
-    ),
-  );
-}
-
-class _MapMarker extends StatelessWidget {
-  final Location location;
-
-  const _MapMarker({
-    required this.location,
-  });
-
-  @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: PromajaColors.black.withValues(alpha: 0.75),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: PromajaColors.white.withValues(alpha: 0.25),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              location.name,
-              style: const TextStyle(
-                color: PromajaColors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            if (location.region.isNotEmpty || location.country.isNotEmpty) ...[
-              const SizedBox(height: 2),
-              Text(
-                _markerSubtitle(location),
-                style: TextStyle(
-                  color: PromajaColors.white.withValues(alpha: 0.6),
-                  fontSize: 11,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ],
-        ),
-      ),
-      const SizedBox(height: 6),
-      const Icon(
-        Icons.location_on,
-        color: PromajaColors.red,
-        size: 30,
-      ),
-    ],
-  );
-
-  static String _markerSubtitle(Location location) {
-    final buffer = StringBuffer();
-    if (location.region.isNotEmpty) {
-      buffer.write(location.region);
-    }
-    if (location.country.isNotEmpty) {
-      if (buffer.isNotEmpty) {
-        buffer.write(', ');
-      }
-      buffer.write(location.country);
-    }
-    return buffer.toString();
-  }
-}
-
-class _EmptyMapState extends StatelessWidget {
-  const _EmptyMapState();
-
-  @override
-  Widget build(BuildContext context) => Center(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Text(
-        'noLocationsFound'.tr(),
-        style: PromajaTextStyles.noLocations,
-        textAlign: TextAlign.center,
-      ),
     ),
   );
 }

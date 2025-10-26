@@ -252,4 +252,10 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w700,
     height: 1,
   );
+  static const mapLocation = TextStyle(
+    color: PromajaColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    height: 1,
+  );
 }
