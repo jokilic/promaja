@@ -8,6 +8,7 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../../../util/spacing.dart';
 
 class WeatherError extends StatelessWidget {
   final Location location;
@@ -25,8 +26,9 @@ class WeatherError extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     width: MediaQuery.sizeOf(context).width,
-    // TODO
-    margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
+    margin: EdgeInsets.only(
+      bottom: getCardBottomPadding(context),
+    ),
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.vertical(
         bottom: Radius.circular(40),

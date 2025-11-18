@@ -62,7 +62,6 @@ class CardsScreen extends ConsumerWidget {
             /// WEATHER
             ///
             Padding(
-              // TODO
               padding: EdgeInsets.only(
                 bottom: getCardBottomPadding(context),
               ),

@@ -10,6 +10,7 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
+import '../../../../util/spacing.dart';
 import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
@@ -79,8 +80,9 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
         /// WEATHER
         ///
         Padding(
-          // TODO
-          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
+          padding: EdgeInsets.only(
+            bottom: getCardBottomPadding(context),
+          ),
           child: cardCount == 0
               ? WeatherCardError(
                   locationName: widget.location.name,
