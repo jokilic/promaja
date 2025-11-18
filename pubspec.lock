@@ -456,6 +456,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_browser:
+    dependency: "direct main"
+    description:
+      name: flutter_web_browser
+      sha256: "15809b5a7b0cd9a6acf2ff5d8b975a08596923ea15efa759e607993a399de8e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
