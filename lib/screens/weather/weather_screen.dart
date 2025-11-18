@@ -11,7 +11,6 @@ import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../util/error.dart';
-import '../../util/spacing.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'weather_notifiers.dart';
 import 'widgets/weather/weather_error.dart';

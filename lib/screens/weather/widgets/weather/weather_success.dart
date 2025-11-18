@@ -92,6 +92,7 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
           )
         else
           CardSwiper(
+            backCardOffset: const Offset(0, 48),
             padding: EdgeInsets.only(
               bottom: getWeatherCardBottomPadding(context),
             ),

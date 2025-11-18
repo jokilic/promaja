@@ -21,6 +21,7 @@ class WeatherLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => isWeatherSummary
       ? Container(
+          height: getWeatherCardContentHeight(context),
           width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.vertical(
@@ -167,6 +168,7 @@ class WeatherLoading extends StatelessWidget {
           ),
         )
       : Container(
+          height: getWeatherCardContentHeight(context),
           width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.vertical(

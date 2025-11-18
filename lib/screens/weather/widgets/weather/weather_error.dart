@@ -8,6 +8,7 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../../../util/spacing.dart';
 
 class WeatherError extends StatelessWidget {
   final Location location;
@@ -24,6 +25,7 @@ class WeatherError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+    height: getWeatherCardContentHeight(context),
     width: MediaQuery.sizeOf(context).width,
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.vertical(
