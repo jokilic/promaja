@@ -4,5 +4,4 @@
 * Upgrade state management syntax
 * Tweaked card layout to be consistent on all screens
 * Using in-app browser for links
-* MapScreen
 * Dependency updates

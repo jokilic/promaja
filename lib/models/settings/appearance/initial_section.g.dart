@@ -20,10 +20,8 @@ class InitialSectionAdapter extends TypeAdapter<InitialSection> {
       case 2:
         return InitialSection.forecast;
       case 3:
-        return InitialSection.map;
-      case 4:
         return InitialSection.list;
-      case 5:
+      case 4:
         return InitialSection.settings;
       default:
         return InitialSection.lastOpened;
@@ -39,12 +37,10 @@ class InitialSectionAdapter extends TypeAdapter<InitialSection> {
         writer.writeByte(1);
       case InitialSection.forecast:
         writer.writeByte(2);
-      case InitialSection.map:
-        writer.writeByte(3);
       case InitialSection.list:
-        writer.writeByte(4);
+        writer.writeByte(3);
       case InitialSection.settings:
-        writer.writeByte(5);
+        writer.writeByte(4);
     }
   }
 

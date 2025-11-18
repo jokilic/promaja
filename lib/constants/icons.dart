@@ -3,7 +3,6 @@ class PromajaIcons {
   static const globe = 'assets/icons/globe.png';
   static const temperature = 'assets/icons/temperature.png';
   static const list = 'assets/icons/list.png';
-  static const map = 'assets/icons/map.png';
   static const settings = 'assets/icons/settings.png';
   static const search = 'assets/icons/search.png';
   static const location = 'assets/icons/location.png';

@@ -12,10 +12,8 @@ enum InitialSection {
   @HiveField(2)
   forecast,
   @HiveField(3)
-  map,
-  @HiveField(4)
   list,
-  @HiveField(5)
+  @HiveField(4)
   settings,
 }
 
@@ -23,7 +21,6 @@ String localizeInitialSection(InitialSection initialSection) => switch (initialS
   InitialSection.lastOpened => 'appearanceInitialSectionLastOpened'.tr(),
   InitialSection.current => 'appearanceInitialSectionCurrent'.tr(),
   InitialSection.forecast => 'appearanceInitialSectionForecast'.tr(),
-  InitialSection.map => 'appearanceInitialSectionMap'.tr(),
   InitialSection.list => 'appearanceInitialSectionList'.tr(),
   InitialSection.settings => 'appearanceInitialSectionSettings'.tr(),
 };

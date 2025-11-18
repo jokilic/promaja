@@ -8,7 +8,6 @@ import '../models/settings/appearance/initial_section.dart';
 import '../screens/cards/cards_notifiers.dart';
 import '../screens/cards/cards_screen.dart';
 import '../screens/list/list_screen.dart';
-import '../screens/map/map_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
@@ -29,9 +28,8 @@ final screenProvider = Provider.autoDispose<Widget>(
       1 => WeatherScreen(
         originalLocation: ref.watch(activeWeatherProvider),
       ),
-      2 => MapScreen(),
-      3 => ListScreen(),
-      4 => SettingsScreen(),
+      2 => ListScreen(),
+      3 => SettingsScreen(),
       _ => ListScreen(),
     };
   },
@@ -41,7 +39,6 @@ final screenProvider = Provider.autoDispose<Widget>(
 enum NavigationBarItems {
   cards,
   weather,
-  map,
   list,
   settings,
 }
@@ -74,10 +71,9 @@ class PromajaNavigationBarController extends Notifier<int> {
       return switch (initialSection) {
         InitialSection.current => 0,
         InitialSection.forecast => 1,
-        InitialSection.map => 2,
-        InitialSection.list => 3,
-        InitialSection.settings => 4,
-        InitialSection.lastOpened => 3,
+        InitialSection.list => 2,
+        InitialSection.settings => 3,
+        InitialSection.lastOpened => 4,
       };
     }
 
@@ -155,25 +151,6 @@ class PromajaNavigationBar extends ConsumerWidget {
           ),
           selectedIcon: Image.asset(
             PromajaIcons.temperature,
-            height: 20,
-            width: 20,
-            color: PromajaColors.white,
-          ),
-          label: '',
-        ),
-
-        ///
-        /// MAP
-        ///
-        NavigationDestination(
-          icon: Image.asset(
-            PromajaIcons.map,
-            height: 20,
-            width: 20,
-            color: PromajaColors.white.withValues(alpha: 0.15),
-          ),
-          selectedIcon: Image.asset(
-            PromajaIcons.map,
             height: 20,
             width: 20,
             color: PromajaColors.white,

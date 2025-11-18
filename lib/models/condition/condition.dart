@@ -6,12 +6,12 @@ class Condition {
   });
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'code': code,
-      };
+    'code': code,
+  };
 
   factory Condition.fromMap(Map<String, dynamic> map) => Condition(
-        code: map['code'] as int,
-      );
+    code: map['code'] as int,
+  );
 
   @override
   String toString() => 'Condition(code: $code)';

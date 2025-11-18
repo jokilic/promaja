@@ -91,10 +91,6 @@ class ListEmpty extends StatelessWidget {
             description: 'navigationDescriptionWeather'.tr(),
           ),
           ListDescriptionValue(
-            icon: PromajaIcons.map,
-            description: 'navigationDescriptionMap'.tr(),
-          ),
-          ListDescriptionValue(
             icon: PromajaIcons.list,
             description: 'navigationDescriptionList'.tr(),
           ),
