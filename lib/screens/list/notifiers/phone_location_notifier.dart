@@ -7,12 +7,8 @@ import '../../../services/location_service.dart';
 import '../../../services/logger_service.dart';
 import '../../cards/cards_notifiers.dart';
 
-final phoneLocationProvider = StateNotifierProvider<PhoneLocationNotifier, ({Position? position, String? error, bool loading})>(
-  (ref) => PhoneLocationNotifier(
-    logger: ref.watch(loggerProvider),
-    hiveService: ref.watch(hiveProvider.notifier),
-    ref: ref,
-  ),
+final phoneLocationProvider = NotifierProvider<PhoneLocationNotifier, ({Position? position, String? error, bool loading})>(
+  PhoneLocationNotifier.new,
   name: 'PhoneLocationProvider',
 );
 
@@ -21,23 +17,23 @@ final getPhonePositionProvider = FutureProvider<({Position? position, String? er
   name: 'GetPhonePositionProvider',
 );
 
-class PhoneLocationNotifier extends StateNotifier<({Position? position, String? error, bool loading})> {
-  final LoggerService logger;
-  final HiveService hiveService;
-  final Ref ref;
-
-  PhoneLocationNotifier({
-    required this.logger,
-    required this.hiveService,
-    required this.ref,
-  }) : super((
-          position: null,
-          error: null,
-          loading: false,
-        ));
+class PhoneLocationNotifier extends Notifier<({Position? position, String? error, bool loading})> {
+  late final logger = ref.read(loggerProvider);
+  late final hiveService = ref.read(hiveProvider.notifier);
 
   ///
   /// INIT
+  ///
+
+  @override
+  ({Position? position, String? error, bool loading}) build() => (
+    position: null,
+    error: null,
+    loading: false,
+  );
+
+  ///
+  /// METHODS
   ///
 
   /// Refreshes phone location if it's active
@@ -52,10 +48,6 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
       await enablePhoneLocation();
     }
   }
-
-  ///
-  /// METHODS
-  ///
 
   /// Gets phone position
   Future<void> enablePhoneLocation() async {
@@ -103,7 +95,6 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
           loading: false,
         );
       }
-
       /// Response returned an error
       else {
         state = (
@@ -113,7 +104,6 @@ class PhoneLocationNotifier extends StateNotifier<({Position? position, String? 
         );
       }
     }
-
     /// Error getting position
     else {
       state = (

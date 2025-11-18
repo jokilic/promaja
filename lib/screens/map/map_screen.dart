@@ -29,7 +29,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
     if (!hasCentered && locations.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(mapHasCenteredProvider.notifier).state = true;
+        ref.read(mapHasCenteredProvider.notifier).hasCentered = true;
         ref
             .read(mapProvider.notifier)
             .fitToLocations(

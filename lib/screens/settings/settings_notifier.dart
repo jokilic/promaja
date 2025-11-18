@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,53 +16,28 @@ import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../models/settings/widget/weather_type.dart';
 import '../../services/hive_service.dart';
-import '../../services/logger_service.dart';
 import '../../services/notification_service.dart';
 
-final settingsProvider = StateNotifierProvider.autoDispose<SettingsNotifier, PromajaSettings>(
-  (ref) => SettingsNotifier(
-    logger: ref.watch(loggerProvider),
-    hive: ref.watch(hiveProvider.notifier),
-    notification: ref.watch(notificationProvider),
-  ),
+final settingsProvider = NotifierProvider.autoDispose<SettingsNotifier, PromajaSettings>(
+  SettingsNotifier.new,
   name: 'SettingsProvider',
 );
 
-class SettingsNotifier extends StateNotifier<PromajaSettings> {
-  ///
-  /// CONSTRUCTOR
-  ///
+class SettingsNotifier extends Notifier<PromajaSettings> {
+  late final hive = ref.read(hiveProvider.notifier);
+  late final notification = ref.read(notificationProvider);
 
-  final LoggerService logger;
-  final HiveService hive;
-  final NotificationService notification;
-
-  SettingsNotifier({
-    required this.logger,
-    required this.hive,
-    required this.notification,
-  }) : super(hive.getPromajaSettingsFromBox())
   ///
   /// INIT
   ///
-  {
-    final locations = hive.getLocationsFromBox();
 
-    /// Notification location is `null`, set it to the first location from [Hive]
-    if (state.notification.location == null) {
-      if (locations.isNotEmpty) {
-        updateNotificationLocation(locations.first);
-      }
-    }
-
-    /// Widget location is `null`, set it to the first location from [Hive]
-    if (state.widget.location == null) {
-      if (locations.isNotEmpty) {
-        updateWidgetLocation(locations.first);
-      }
-    }
+  @override
+  PromajaSettings build() {
+    final initialSettings = hive.getPromajaSettingsFromBox();
 
     showNotificationDialog = shouldShowNotificationDialog();
+
+    return initialSettings;
   }
 
   ///
@@ -68,7 +45,6 @@ class SettingsNotifier extends StateNotifier<PromajaSettings> {
   ///
 
   TapDownDetails? tapDownDetails;
-
   late bool showNotificationDialog;
 
   ///

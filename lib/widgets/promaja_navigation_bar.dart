@@ -15,15 +15,12 @@ import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
 import '../services/logger_service.dart';
 
-final navigationBarIndexProvider = StateNotifierProvider<PromajaNavigationBarController, int>(
-  (ref) => PromajaNavigationBarController(
-    logger: ref.watch(loggerProvider),
-    hiveService: ref.watch(hiveProvider.notifier),
-  ),
+final navigationBarIndexProvider = NotifierProvider<PromajaNavigationBarController, int>(
+  PromajaNavigationBarController.new,
   name: 'NavigationBarIndexProvider',
 );
 
-final screenProvider = StateProvider.autoDispose<Widget>(
+final screenProvider = Provider.autoDispose<Widget>(
   (ref) {
     final navigationBarIndex = ref.watch(navigationBarIndexProvider);
 
@@ -49,16 +46,12 @@ enum NavigationBarItems {
   settings,
 }
 
-class PromajaNavigationBarController extends StateNotifier<int> {
-  final LoggerService logger;
-  final HiveService hiveService;
+class PromajaNavigationBarController extends Notifier<int> {
+  late final logger = ref.read(loggerProvider);
+  late final hiveService = ref.read(hiveProvider.notifier);
 
-  PromajaNavigationBarController({
-    required this.logger,
-    required this.hiveService,
-  }) : super(3) {
-    state = getInitialNavigationBarIndex();
-  }
+  @override
+  int build() => getInitialNavigationBarIndex();
 
   ///
   /// METHODS
@@ -123,8 +116,8 @@ class PromajaNavigationBar extends ConsumerWidget {
       selectedIndex: ref.watch(navigationBarIndexProvider),
       onDestinationSelected: (newIndex) {
         if (ref.read(navigationBarIndexProvider) != newIndex) {
-          ref.read(cardIndexProvider.notifier).state = 0;
-          ref.read(weatherCardIndexProvider.notifier).state = 0;
+          ref.read(cardIndexProvider.notifier).reset();
+          ref.read(weatherCardIndexProvider.notifier).reset();
 
           ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
         }

@@ -58,9 +58,9 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
     required WidgetRef ref,
   }) {
     if (ref.read(weatherCardIndexProvider) != index) {
-      ref.read(weatherCardSummaryShowAnimationProvider.notifier).state = false;
-      ref.read(weatherCardMovingProvider.notifier).state = false;
-      ref.read(weatherCardIndexProvider.notifier).state = index;
+      ref.read(weatherCardSummaryShowAnimationProvider.notifier).visible = false;
+      ref.read(weatherCardMovingProvider.notifier).moving = false;
+      ref.read(weatherCardIndexProvider.notifier).activeIndex = index;
 
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
@@ -97,10 +97,11 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
                     final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
 
                     final movingNotifier = ref.read(weatherCardMovingProvider.notifier);
+                    final currentMoving = ref.read(weatherCardMovingProvider);
 
-                    if (movingNotifier.state != isMoving) {
-                      movingNotifier.state = isMoving;
-                    }
+                        if (currentMoving != isMoving) {
+                          movingNotifier.moving = isMoving;
+                        }
                   },
                   onSwipe: (previousIndex, index, __) {
                     cardSwiped(index: index ?? previousIndex, ref: ref);

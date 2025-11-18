@@ -570,8 +570,8 @@ class NotificationService {
               final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
 
               /// Go to `CardsScreen` with proper location
-              ref.read(cardMovingProvider.notifier).state = false;
-              ref.read(cardIndexProvider.notifier).state = locationIndex;
+              ref.read(cardMovingProvider.notifier).moving = false;
+              ref.read(cardIndexProvider.notifier).currentIndex = locationIndex;
               if (ref.read(cardAdditionalControllerProvider).hasClients) {
                 ref.read(cardAdditionalControllerProvider).jumpTo(0);
               }
@@ -631,27 +631,21 @@ class NotificationService {
 /// Triggered when a notification is received while the app is terminated
 @pragma('vm:entry-point')
 Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) async {
-  try {
-    /// Initialize Flutter related tasks
-    WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
+  /// Initialize Flutter related tasks
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
 
-    /// Initialize [EasyLocalization]
-    await initializeLocalization();
+  /// Initialize [EasyLocalization]
+  await initializeLocalization();
 
-    /// Initialize services
-    final container = await initializeServices();
+  /// Initialize services
+  final container = await initializeServices();
 
-    if (container != null) {
-      await container
-          .read(notificationProvider)
-          .handlePressedNotification(
-            payload: notificationResponse.payload,
-          );
-    }
-  } catch (e) {
-    final logger = LoggerService();
-    final hive = HiveService(logger);
-    await hive.init();
+  if (container != null) {
+    await container
+        .read(notificationProvider)
+        .handlePressedNotification(
+          payload: notificationResponse.payload,
+        );
   }
 }

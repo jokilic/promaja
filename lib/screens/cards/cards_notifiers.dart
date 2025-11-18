@@ -16,13 +16,13 @@ final cardsSwiperControllerProvider = Provider.autoDispose<CardSwiperController>
   name: 'CardsSwiperControllerProvider',
 );
 
-final cardIndexProvider = StateProvider<int>(
-  (_) => 0,
+final cardIndexProvider = NotifierProvider<CardIndexNotifier, int>(
+  CardIndexNotifier.new,
   name: 'CardIndexProvider',
 );
 
-final cardMovingProvider = StateProvider<bool>(
-  (_) => false,
+final cardMovingProvider = NotifierProvider<CardMovingNotifier, bool>(
+  CardMovingNotifier.new,
   name: 'CardMovingProvider',
 );
 
@@ -39,3 +39,19 @@ final getCurrentWeatherProvider = FutureProvider.family<({ResponseCurrentWeather
   (ref, location) async => ref.read(apiProvider).getCurrentWeather(query: '${location.lat},${location.lon}'),
   name: 'GetCurrentWeatherProvider',
 );
+
+class CardIndexNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  set currentIndex(int value) => state = value;
+
+  void reset() => state = 0;
+}
+
+class CardMovingNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  set moving(bool isMoving) => state = isMoving;
+}

@@ -11,17 +11,8 @@ import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/logger_service.dart';
 
-final addLocationProvider = StateNotifierProvider<AddLocationNotifier, ({List<Location>? response, ResponseError? error, String? genericError, bool loading})>(
-  (ref) {
-    final addLocationController = AddLocationNotifier(
-      logger: ref.watch(loggerProvider),
-      hiveService: ref.watch(hiveProvider.notifier),
-      ref: ref,
-    );
-    ref.onDispose(addLocationController.dispose);
-
-    return addLocationController;
-  },
+final addLocationProvider = NotifierProvider<AddLocationNotifier, ({List<Location>? response, ResponseError? error, String? genericError, bool loading})>(
+  AddLocationNotifier.new,
   name: 'AddLocationProvider',
 );
 
@@ -30,31 +21,33 @@ final getSearchProvider = FutureProvider.family<({List<Location>? response, Resp
   name: 'GetSearchProvider',
 );
 
-class AddLocationNotifier extends StateNotifier<({List<Location>? response, ResponseError? error, String? genericError, bool loading})> {
-  final LoggerService logger;
-  final HiveService hiveService;
-  final Ref ref;
-
-  AddLocationNotifier({
-    required this.logger,
-    required this.hiveService,
-    required this.ref,
-  }) : super((
-          response: null,
-          error: null,
-          genericError: null,
-          loading: false,
-        ));
+class AddLocationNotifier extends Notifier<({List<Location>? response, ResponseError? error, String? genericError, bool loading})> {
+  late final logger = ref.read(loggerProvider);
+  late final hiveService = ref.read(hiveProvider.notifier);
 
   ///
-  /// DISPOSE
+  /// INIT
   ///
 
   @override
-  void dispose() {
-    scrollController.dispose();
-    textEditingController.dispose();
-    super.dispose();
+  ({
+    List<Location>? response,
+    ResponseError? error,
+    String? genericError,
+    bool loading,
+  })
+  build() {
+    ref.onDispose(() {
+      scrollController.dispose();
+      textEditingController.dispose();
+    });
+
+    return (
+      response: null,
+      error: null,
+      genericError: null,
+      loading: false,
+    );
   }
 
   ///

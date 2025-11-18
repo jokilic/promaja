@@ -47,7 +47,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// Initialize [WeatherCardForecast]
     if (widget.forecast != null) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(activeHourWeatherProvider.notifier).state = widget.forecast?.hours.firstWhere(
+        (_) => ref.read(activeHourWeatherProvider.notifier).activeHour = widget.forecast?.hours.firstWhere(
           (hour) => hour.timeEpoch.hour == DateTime.now().hour,
         ),
       );
@@ -64,8 +64,8 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// User pressed already active hour
     /// Disable active hour and scroll up
     if (activeHourWeather == hourWeather) {
-      ref.read(activeHourWeatherProvider.notifier).state = null;
-      ref.read(showWeatherTopContainerProvider.notifier).state = false;
+      ref.read(activeHourWeatherProvider.notifier).activeHour = null;
+      ref.read(showWeatherTopContainerProvider.notifier).visible = false;
 
       scrollController.animateTo(
         0,
@@ -76,8 +76,8 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// User pressed inactive hour
     /// Enable active hour and scroll down
     else {
-      ref.read(activeHourWeatherProvider.notifier).state = hourWeather;
-      ref.read(showWeatherTopContainerProvider.notifier).state = true;
+      ref.read(activeHourWeatherProvider.notifier).activeHour = hourWeather;
+      ref.read(showWeatherTopContainerProvider.notifier).visible = true;
       if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
         ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
       }

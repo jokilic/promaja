@@ -22,8 +22,9 @@ import 'widgets/card/card_widget.dart';
 class CardsScreen extends ConsumerWidget {
   void cardSwiped({required int index, required WidgetRef ref}) {
     if (ref.read(cardIndexProvider) != index) {
-      ref.read(cardMovingProvider.notifier).state = false;
-      ref.read(cardIndexProvider.notifier).state = index;
+      ref.read(cardMovingProvider.notifier).moving = false;
+      ref.read(cardIndexProvider.notifier).currentIndex = index;
+
       if (ref.read(cardAdditionalControllerProvider).hasClients) {
         ref.read(cardAdditionalControllerProvider).jumpTo(0);
       }
@@ -78,9 +79,10 @@ class CardsScreen extends ConsumerWidget {
                         final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
 
                         final movingNotifier = ref.read(cardMovingProvider.notifier);
+                        final currentMoving = ref.read(cardMovingProvider);
 
-                        if (movingNotifier.state != isMoving) {
-                          movingNotifier.state = isMoving;
+                        if (currentMoving != isMoving) {
+                          movingNotifier.moving = isMoving;
                         }
                       },
                       onSwipe: (previousIndex, index, __) {

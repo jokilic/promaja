@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
@@ -18,21 +20,13 @@ import '../models/settings/widget/widget_settings.dart';
 import '../util/path.dart';
 import 'logger_service.dart';
 
-final hiveProvider = StateNotifierProvider<HiveService, List<Location>>(
-  (ref) => HiveService(
-    ref.watch(loggerProvider),
-  ),
+final hiveProvider = NotifierProvider<HiveService, List<Location>>(
+  HiveService.new,
   name: 'HiveProvider',
 );
 
-class HiveService extends StateNotifier<List<Location>> {
-  final LoggerService logger;
-
-  HiveService(this.logger) : super([]);
-
-  ///
-  /// VARIABLES
-  ///
+class HiveService extends Notifier<List<Location>> {
+  late final logger = ref.read(loggerProvider);
 
   late final Box<Location> locationsBox;
   late final Box<CustomColor> customColorsBox;
@@ -43,6 +37,12 @@ class HiveService extends StateNotifier<List<Location>> {
   late final Box<bool> notificationDialogShownBox;
 
   late final PromajaSettings defaultSettings;
+
+  @override
+  List<Location> build() {
+    ref.onDispose(dispose);
+    return const [];
+  }
 
   ///
   /// INIT
@@ -151,10 +151,7 @@ class HiveService extends StateNotifier<List<Location>> {
   /// DISPOSE
   ///
 
-  @override
   Future<void> dispose() async {
-    super.dispose();
-
     await locationsBox.close();
     await customColorsBox.close();
     await activeLocationIndexBox.close();
@@ -238,8 +235,8 @@ class HiveService extends StateNotifier<List<Location>> {
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required int index}) => writeAllLocationsToHive(
-        locations: List.from(state..removeAt(index)),
-      );
+    locations: List.from(state..removeAt(index)),
+  );
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
@@ -268,5 +265,102 @@ class HiveService extends StateNotifier<List<Location>> {
 
     /// Update all locations in [Hive]
     await writeAllLocationsToHive(locations: state);
+  }
+}
+
+class HiveInitializationResult {
+  final Box<Location> locationsBox;
+  final Box<CustomColor> customColorsBox;
+  final Box<int> activeLocationIndexBox;
+  final Box<int> activeNavigationValueIndexToBox;
+  final Box<PromajaSettings> promajaSettingsBox;
+  final Box<NotificationLastShown> notificationLastShownBox;
+  final Box<bool> notificationDialogShownBox;
+
+  HiveInitializationResult({
+    required this.locationsBox,
+    required this.customColorsBox,
+    required this.activeLocationIndexBox,
+    required this.activeNavigationValueIndexToBox,
+    required this.promajaSettingsBox,
+    required this.notificationLastShownBox,
+    required this.notificationDialogShownBox,
+  });
+
+  Future<void> close() async {
+    if (locationsBox.isOpen) {
+      await locationsBox.close();
+    }
+    if (customColorsBox.isOpen) {
+      await customColorsBox.close();
+    }
+    if (activeLocationIndexBox.isOpen) {
+      await activeLocationIndexBox.close();
+    }
+    if (activeNavigationValueIndexToBox.isOpen) {
+      await activeNavigationValueIndexToBox.close();
+    }
+    if (promajaSettingsBox.isOpen) {
+      await promajaSettingsBox.close();
+    }
+    if (notificationLastShownBox.isOpen) {
+      await notificationLastShownBox.close();
+    }
+    if (notificationDialogShownBox.isOpen) {
+      await notificationDialogShownBox.close();
+    }
+
+    await Hive.close();
+  }
+}
+
+Future<HiveInitializationResult> initializeHive({required LoggerService logger}) async {
+  try {
+    final directory = await getHiveDirectory();
+
+    Hive.init(directory?.path);
+
+    void registerAdapter(TypeAdapter<dynamic> adapter) {
+      if (!Hive.isAdapterRegistered(adapter.typeId)) {
+        Hive.registerAdapter(adapter);
+      }
+    }
+
+    registerAdapter(LocationAdapter());
+    registerAdapter(CustomColorAdapter());
+    registerAdapter(ColorAdapter());
+    registerAdapter(AppearanceSettingsAdapter());
+    registerAdapter(NotificationSettingsAdapter());
+    registerAdapter(WidgetSettingsAdapter());
+    registerAdapter(WeatherTypeAdapter());
+    registerAdapter(UnitSettingsAdapter());
+    registerAdapter(InitialSectionAdapter());
+    registerAdapter(TemperatureUnitAdapter());
+    registerAdapter(DistanceSpeedUnitAdapter());
+    registerAdapter(PrecipitationUnitAdapter());
+    registerAdapter(PressureUnitAdapter());
+    registerAdapter(PromajaSettingsAdapter());
+    registerAdapter(NotificationLastShownAdapter());
+
+    final locationsBox = await Hive.openBox<Location>('locationsBox');
+    final customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
+    final activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
+    final activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
+    final promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
+    final notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
+    final notificationDialogShownBox = await Hive.openBox<bool>('notificationDialogShownBox');
+
+    return HiveInitializationResult(
+      locationsBox: locationsBox,
+      customColorsBox: customColorsBox,
+      activeLocationIndexBox: activeLocationIndexBox,
+      activeNavigationValueIndexToBox: activeNavigationValueIndexToBox,
+      promajaSettingsBox: promajaSettingsBox,
+      notificationLastShownBox: notificationLastShownBox,
+      notificationDialogShownBox: notificationDialogShownBox,
+    );
+  } catch (e) {
+    logger.e(e);
+    rethrow;
   }
 }

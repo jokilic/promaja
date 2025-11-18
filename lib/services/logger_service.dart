@@ -53,21 +53,23 @@ class LoggerService {
   }
 }
 
-class RiverpodLogger extends ProviderObserver {
+final class RiverpodLogger extends ProviderObserver {
   final LoggerService logger;
 
   RiverpodLogger(this.logger);
 
   @override
-  void didAddProvider(ProviderBase<Object?> provider, Object? value, ProviderContainer container) {
+  void didAddProvider(ProviderObserverContext context, Object? value) {
+    final provider = context.provider;
     logger.t('✅ ${provider.name ?? provider.runtimeType} has been initialized');
-    super.didAddProvider(provider, value, container);
+    super.didAddProvider(context, value);
   }
 
   @override
-  void didDisposeProvider(ProviderBase<Object?> provider, ProviderContainer container) {
+  void didDisposeProvider(ProviderObserverContext context) {
+    final provider = context.provider;
     logger.t('❌ ${provider.name ?? provider.runtimeType} has been disposed');
-    super.didDisposeProvider(provider, container);
+    super.didDisposeProvider(context);
   }
 }
 

@@ -22,15 +22,16 @@ Future<ProviderContainer?> initializeServices() async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   try {
-    final container = ProviderContainer(
-      observers: [
-        RiverpodLogger(
-          LoggerService(),
-        ),
-      ],
-    )
-      ..read(loggerProvider)
-      ..read(dioProvider);
+    final container =
+        ProviderContainer(
+            observers: [
+              RiverpodLogger(
+                LoggerService(),
+              ),
+            ],
+          )
+          ..read(loggerProvider)
+          ..read(dioProvider);
 
     if (isMobile) {
       await container.read(backgroundFetchInitProvider.future);
@@ -57,33 +58,27 @@ Future<ProviderContainer?> initializeServices() async {
 
 /// Initialize [EasyLocalization]
 Future<void> initializeLocalization() async {
-  try {
-    await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
-    final controller = EasyLocalizationController(
-      useOnlyLangCode: true,
-      supportedLocales: const [Locale('hr'), Locale('en')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('hr'),
-      saveLocale: true,
-      useFallbackTranslations: true,
-      assetLoader: const CodegenLoader(),
-      onLoadError: (e) {},
-    );
+  final controller = EasyLocalizationController(
+    useOnlyLangCode: true,
+    supportedLocales: const [Locale('hr'), Locale('en')],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('hr'),
+    saveLocale: true,
+    useFallbackTranslations: true,
+    assetLoader: const CodegenLoader(),
+    onLoadError: (e) {},
+  );
 
-    await controller.loadTranslations();
+  await controller.loadTranslations();
 
-    Localization.load(
-      controller.locale,
-      translations: controller.translations,
-      fallbackTranslations: controller.fallbackTranslations,
-    );
+  Localization.load(
+    controller.locale,
+    translations: controller.translations,
+    fallbackTranslations: controller.fallbackTranslations,
+  );
 
-    await initializeDateFormatting('en');
-    await initializeDateFormatting('hr');
-  } catch (e) {
-    final logger = LoggerService();
-    final hive = HiveService(logger);
-    await hive.init();
-  }
+  await initializeDateFormatting('en');
+  await initializeDateFormatting('hr');
 }

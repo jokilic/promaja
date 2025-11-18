@@ -14,8 +14,8 @@ import 'map_state.dart';
 
 const openFreeMapBrightVector = 'https://tiles.openfreemap.org/styles/bright';
 
-final mapHasCenteredProvider = StateProvider.autoDispose<bool>(
-  (_) => false,
+final mapHasCenteredProvider = NotifierProvider.autoDispose<MapHasCenteredNotifier, bool>(
+  MapHasCenteredNotifier.new,
 );
 
 final mapControllerProvider = Provider.autoDispose<MapController>(
@@ -44,34 +44,23 @@ final loadVectorMapsStyleProvider = FutureProvider<Style?>(
   name: 'LoadVectorMapsStyleProvider',
 );
 
-final mapProvider = StateNotifierProvider.autoDispose<MapNotifier, MapState>(
-  (ref) => MapNotifier(
-    logger: ref.watch(loggerProvider),
-  ),
+final mapProvider = NotifierProvider.autoDispose<MapNotifier, MapState>(
+  MapNotifier.new,
   name: 'MapProvider',
 );
 
-class MapNotifier extends StateNotifier<MapState> {
-  final LoggerService logger;
-  Timer? timer;
+class MapNotifier extends Notifier<MapState> {
+  late final logger = ref.read(loggerProvider);
 
-  static const timelineHours = 72;
-
-  MapNotifier({
-    required this.logger,
-  }) : super(
-         const MapState(
-           timeline: [],
-           timelineIndex: 0,
-           isPlaying: false,
-           overlay: WeatherMapOverlayType.temperature,
-         ),
-       )
   ///
   /// INIT
   ///
-  {
-    state = MapState(
+
+  @override
+  MapState build() {
+    ref.onDispose(stopTimer);
+
+    return MapState(
       timeline: generateTimeline(),
       timelineIndex: 0,
       isPlaying: false,
@@ -80,14 +69,15 @@ class MapNotifier extends StateNotifier<MapState> {
   }
 
   ///
-  /// DISPOSE
+  /// VARIABLES
   ///
 
-  @override
-  void dispose() {
-    stopTimer();
-    super.dispose();
-  }
+  Timer? timer;
+  static const timelineHours = 72;
+
+  ///
+  /// METHODS
+  ///
 
   static List<DateTime> generateTimeline() {
     final now = DateTime.now().toUtc();
@@ -239,4 +229,11 @@ class MapNotifier extends StateNotifier<MapState> {
 
     return 'https://weathermaps.weatherapi.com/$tileSegment/tiles/$date$hour/{z}/{x}/{y}.png';
   }
+}
+
+class MapHasCenteredNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  set hasCentered(bool centered) => state = centered;
 }
