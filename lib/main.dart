@@ -78,6 +78,10 @@ Future<void> main() async {
         theme: ThemeData(
           fontFamily: 'Jost',
           scaffoldBackgroundColor: PromajaColors.black,
+          canvasColor: PromajaColors.black,
+          colorScheme: const ColorScheme.dark(
+            surface: PromajaColors.black,
+          ),
         ),
       ),
     );
@@ -103,6 +107,10 @@ class PromajaApp extends ConsumerWidget {
         theme: ThemeData(
           fontFamily: 'Jost',
           scaffoldBackgroundColor: PromajaColors.black,
+          canvasColor: PromajaColors.black,
+          colorScheme: const ColorScheme.dark(
+            surface: PromajaColors.black,
+          ),
         ),
       ),
     ),
