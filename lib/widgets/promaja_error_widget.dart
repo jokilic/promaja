@@ -18,6 +18,7 @@ class PromajaErrorWidget extends StatelessWidget {
     extendBody: true,
     body: Container(
       width: MediaQuery.sizeOf(context).width,
+      // TODO
       margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(

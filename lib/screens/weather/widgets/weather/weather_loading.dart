@@ -36,11 +36,13 @@ class WeatherLoading extends StatelessWidget {
               ),
             ),
             child: SizedBox(
+              // TODO
               height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
               child: ListView(
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 children: [
+                  // TODO
                   SizedBox(
                     height: MediaQuery.paddingOf(context).top + 32,
                   ),
@@ -172,6 +174,7 @@ class WeatherLoading extends StatelessWidget {
         )
       : Container(
           width: MediaQuery.sizeOf(context).width,
+          // TODO
           margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.vertical(

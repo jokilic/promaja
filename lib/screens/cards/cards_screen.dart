@@ -14,6 +14,7 @@ import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
+import '../../util/spacing.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
 import 'widgets/card/card_error.dart';
@@ -61,7 +62,10 @@ class CardsScreen extends ConsumerWidget {
             /// WEATHER
             ///
             Padding(
-              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
+              // TODO
+              padding: EdgeInsets.only(
+                bottom: getCardBottomPadding(context),
+              ),
               child: cardCount == 0
                   ? CardError(
                       locationName: null,

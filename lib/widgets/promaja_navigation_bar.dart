@@ -13,6 +13,7 @@ import '../screens/weather/weather_notifiers.dart';
 import '../screens/weather/weather_screen.dart';
 import '../services/hive_service.dart';
 import '../services/logger_service.dart';
+import '../util/spacing.dart';
 
 final navigationBarIndexProvider = NotifierProvider<PromajaNavigationBarController, int>(
   PromajaNavigationBarController.new,
@@ -105,10 +106,12 @@ class PromajaNavigationBar extends ConsumerWidget {
       top: Radius.circular(32),
     ),
     child: NavigationBar(
-      backgroundColor: PromajaColors.black,
+      height: navigationBarHeight,
+      backgroundColor: PromajaColors.fastWindsZaps,
       elevation: 0,
       indicatorColor: Colors.transparent,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      animationDuration: PromajaDurations.navigationAnimation,
       selectedIndex: ref.watch(navigationBarIndexProvider),
       onDestinationSelected: (newIndex) {
         if (ref.read(navigationBarIndexProvider) != newIndex) {
@@ -118,7 +121,6 @@ class PromajaNavigationBar extends ConsumerWidget {
           ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
         }
       },
-      animationDuration: PromajaDurations.navigationAnimation,
       destinations: [
         ///
         /// CARDS

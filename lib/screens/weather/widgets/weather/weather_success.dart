@@ -79,6 +79,7 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
         /// WEATHER
         ///
         Padding(
+          // TODO
           padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
           child: cardCount == 0
               ? WeatherCardError(
@@ -99,9 +100,9 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
                     final movingNotifier = ref.read(weatherCardMovingProvider.notifier);
                     final currentMoving = ref.read(weatherCardMovingProvider);
 
-                        if (currentMoving != isMoving) {
-                          movingNotifier.moving = isMoving;
-                        }
+                    if (currentMoving != isMoving) {
+                      movingNotifier.moving = isMoving;
+                    }
                   },
                   onSwipe: (previousIndex, index, __) {
                     cardSwiped(index: index ?? previousIndex, ref: ref);
