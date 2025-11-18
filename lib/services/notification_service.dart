@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -577,7 +578,8 @@ class NotificationService {
               await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
               await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
               for (var i = 0; i < locationIndex; i++) {
-                await ref.read(cardsAppinioControllerProvider).swipeDefault();
+                ref.read(cardsSwiperControllerProvider).swipe(CardSwiperDirection.right);
+                await Future.delayed(PromajaDurations.cardSwiperAnimation);
               }
             }
 

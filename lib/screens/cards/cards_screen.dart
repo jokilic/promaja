@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -59,28 +59,35 @@ class CardsScreen extends ConsumerWidget {
             ///
             Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
-              child: AppinioSwiper(
-                controller: ref.watch(cardsAppinioControllerProvider),
-                loop: true,
-                isDisabled: cardCount <= 1,
-                duration: PromajaDurations.cardSwiperAnimation,
-                backgroundCardCount: min(cardCount - 1, 3),
-                cardCount: cardCount,
-                onCardPositionChanged: (_) {
-                  if (!ref.read(cardMovingProvider)) {
-                    ref.read(cardMovingProvider.notifier).state = true;
-                  }
-                },
-                onSwipeCancelled: (_) => ref.read(cardMovingProvider.notifier).state = false,
-                onSwipeEnd: (_, index, __) => cardSwiped(index: index, ref: ref),
-                cardBuilder: (_, cardIndex) => CardWidget(
-                  originalLocation: locations[cardIndex],
-                  showCelsius: showCelsius,
-                  showKph: showKph,
-                  showMm: showMm,
-                  showhPa: showhPa,
-                ),
-              ),
+              child: cardCount == 0
+                  ? const SizedBox.shrink()
+                  : CardSwiper(
+                      controller: ref.watch(cardsSwiperControllerProvider),
+                      isDisabled: cardCount <= 1,
+                      duration: PromajaDurations.cardSwiperAnimation,
+                      numberOfCardsDisplayed: min(cardCount, 4),
+                      cardsCount: cardCount,
+                      onSwipeDirectionChange: (horizontal, vertical) {
+                        final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
+
+                        final movingNotifier = ref.read(cardMovingProvider.notifier);
+
+                        if (movingNotifier.state != isMoving) {
+                          movingNotifier.state = isMoving;
+                        }
+                      },
+                      onSwipe: (previousIndex, index, __) {
+                        cardSwiped(index: index ?? previousIndex, ref: ref);
+                        return true;
+                      },
+                      cardBuilder: (_, cardIndex, __, ___) => CardWidget(
+                        originalLocation: locations[cardIndex],
+                        showCelsius: showCelsius,
+                        showKph: showKph,
+                        showMm: showMm,
+                        showhPa: showhPa,
+                      ),
+                    ),
             ),
 
             ///

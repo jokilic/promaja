@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
-        tools:replace="android:label"
         android:label="Promaja"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -43,7 +42,7 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/promaja_widget" />
         </receiver>
-        
+
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>

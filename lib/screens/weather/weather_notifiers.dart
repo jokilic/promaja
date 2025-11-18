@@ -1,5 +1,5 @@
-import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/error/response_error.dart';
@@ -70,7 +70,11 @@ final activeHourWeatherProvider = StateProvider.autoDispose<HourWeather?>(
   name: 'ActiveHourWeatherProvider',
 );
 
-final weatherAppinioControllerProvider = Provider.autoDispose<AppinioSwiperController>(
-  (_) => AppinioSwiperController(),
-  name: 'WeatherAppinioControllerProvider',
+final weatherSwiperControllerProvider = Provider.autoDispose<CardSwiperController>(
+  (ref) {
+    final controller = CardSwiperController();
+    ref.onDispose(controller.dispose);
+    return controller;
+  },
+  name: 'WeatherSwiperControllerProvider',
 );
