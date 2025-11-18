@@ -44,6 +44,7 @@
     "notificationSubtitle": "Change settings related to weather notifications",
     "notificationDescription": "Change settings related to weather notifications which you can receive if you're so inclined.",
     "notificationLocationDescription": "Location which will be shown in notifications",
+    "notificationNoLocationChosen": "No location chosen",
     "hourlyNotificationTitle": "Hourly notification",
     "hourlyNotificationSubtitle": "Show a weather notification each hour",
     "morningNotificationTitle": "Morning notification",

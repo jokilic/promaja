@@ -93,7 +93,7 @@ class WidgetScreen extends ConsumerWidget {
                     await ref.read(settingsProvider.notifier).updateWidgetLocation(newLocation);
                   }
                 },
-                activeValue: '${settings.widget.location?.name}, ${settings.widget.location?.country}',
+                activeValue: settings.widget.location != null ? '${settings.widget.location?.name}, ${settings.widget.location?.country}' : 'notificationNoLocationChosen'.tr(),
                 subtitle: 'widgetLocationDescription'.tr(),
               ),
 

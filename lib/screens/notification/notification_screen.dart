@@ -122,7 +122,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                     await ref.read(settingsProvider.notifier).updateNotificationLocation(newLocation);
                   }
                 },
-                activeValue: '${settings.notification.location?.name}, ${settings.notification.location?.country}',
+                activeValue: settings.notification.location != null
+                    ? '${settings.notification.location?.name}, ${settings.notification.location?.country}'
+                    : 'notificationNoLocationChosen'.tr(),
                 subtitle: 'notificationLocationDescription'.tr(),
               ),
 
