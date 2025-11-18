@@ -7,6 +7,7 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
+import '../../../../util/spacing.dart';
 
 class WeatherLoading extends StatelessWidget {
   final Location location;
@@ -19,163 +20,154 @@ class WeatherLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => isWeatherSummary
-      ? ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(40),
-          ),
-          child: Container(
-            width: MediaQuery.sizeOf(context).width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  lightenColor(PromajaColors.black),
-                  darkenColor(PromajaColors.indigo),
-                ],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-              ),
+      ? Container(
+          width: MediaQuery.sizeOf(context).width,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(40),
             ),
-            child: SizedBox(
-              // TODO
-              height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
-              child: ListView(
+            gradient: LinearGradient(
+              colors: [
+                lightenColor(PromajaColors.black),
+                darkenColor(PromajaColors.indigo),
+              ],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+            ),
+          ),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            physics: const BouncingScrollPhysics(),
+            children: [
+              SizedBox(
+                height: getWeatherSummaryCardTopPadding(context),
+              ),
+
+              ///
+              /// TITLE & LOCATION
+              ///
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'weatherSummary'.tr(),
+                  style: PromajaTextStyles.settingsSubtitle,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${location.name}, ${location.country}',
+                      ),
+                    ],
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: PromajaTextStyles.settingsTitle,
+                ),
+              ),
+
+              ///
+              /// DIVIDER
+              ///
+              const SizedBox(height: 16),
+              const Divider(
+                indent: 120,
+                endIndent: 120,
+                color: PromajaColors.white,
+              ),
+
+              ///
+              /// SUMMARY FORECASTS
+              ///
+              ListView.builder(
+                shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
-                children: [
-                  // TODO
-                  SizedBox(
-                    height: MediaQuery.paddingOf(context).top + 32,
+                itemCount: 5,
+                itemBuilder: (_, __) => Animate(
+                  onPlay: (controller) => controller.loop(
+                    reverse: true,
+                    min: 0.6,
                   ),
-
-                  ///
-                  /// TITLE & LOCATION
-                  ///
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'weatherSummary'.tr(),
-                      style: PromajaTextStyles.settingsSubtitle,
+                  effects: [
+                    FadeEffect(
+                      curve: Curves.easeIn,
+                      duration: PromajaDurations.shimmerAnimation,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${location.name}, ${location.country}',
-                          ),
-                        ],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: PromajaTextStyles.settingsTitle,
+                  ],
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
                     ),
-                  ),
-
-                  ///
-                  /// DIVIDER
-                  ///
-                  const SizedBox(height: 16),
-                  const Divider(
-                    indent: 120,
-                    endIndent: 120,
-                    color: PromajaColors.white,
-                  ),
-
-                  ///
-                  /// SUMMARY FORECASTS
-                  ///
-                  ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder: (_, __) => Animate(
-                      onPlay: (controller) => controller.loop(
-                        reverse: true,
-                        min: 0.6,
-                      ),
-                      effects: [
-                        FadeEffect(
-                          curve: Curves.easeIn,
-                          duration: PromajaDurations.shimmerAnimation,
-                        ),
-                      ],
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 16,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 28,
-                                  width: 144,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withValues(alpha: 0.5),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Container(
-                                  height: 16,
-                                  width: 104,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withValues(alpha: 0.5),
-                                  ),
-                                ),
-                              ],
+                            Container(
+                              height: 28,
+                              width: 144,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: PromajaColors.white.withValues(alpha: 0.5),
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Container(
-                                  height: 48,
-                                  width: 48,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withValues(alpha: 0.25),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Container(
-                                  height: 48,
-                                  width: 48,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: PromajaColors.white.withValues(alpha: 0.5),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Container(
-                                  height: 56,
-                                  width: 56,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: PromajaColors.white.withValues(alpha: 0.5),
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 10),
+                            Container(
+                              height: 16,
+                              width: 104,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: PromajaColors.white.withValues(alpha: 0.5),
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 48,
+                              width: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: PromajaColors.white.withValues(alpha: 0.25),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Container(
+                              height: 48,
+                              width: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: PromajaColors.white.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Container(
+                              height: 56,
+                              width: 56,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: PromajaColors.white.withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         )
       : Container(
           width: MediaQuery.sizeOf(context).width,
-          // TODO
-          margin: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.vertical(
               bottom: Radius.circular(40),

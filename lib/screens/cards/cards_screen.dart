@@ -105,25 +105,26 @@ class CardsScreen extends ConsumerWidget {
             ///
             /// DOTS
             ///
-            Positioned(
-              right: 16,
-              top: -160,
-              bottom: 0,
-              child: Align(
-                child: AnimatedSmoothIndicator(
-                  activeIndex: index,
-                  count: cardCount,
-                  effect: WormEffect(
-                    activeDotColor: PromajaColors.white,
-                    dotHeight: 8,
-                    dotWidth: 8,
-                    dotColor: PromajaColors.black.withValues(alpha: 0.25),
+            if (cardCount != 0)
+              Positioned(
+                right: 16,
+                top: -160,
+                bottom: 0,
+                child: Align(
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: index,
+                    count: cardCount,
+                    effect: WormEffect(
+                      activeDotColor: PromajaColors.white,
+                      dotHeight: 8,
+                      dotWidth: 8,
+                      dotColor: PromajaColors.black.withValues(alpha: 0.25),
+                    ),
+                    axisDirection: Axis.vertical,
+                    curve: Curves.easeIn,
                   ),
-                  axisDirection: Axis.vertical,
-                  curve: Curves.easeIn,
                 ),
               ),
-            ),
           ],
         ),
       ),

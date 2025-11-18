@@ -10,7 +10,6 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
-import '../../../../util/spacing.dart';
 import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
@@ -79,50 +78,46 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
         ///
         /// WEATHER
         ///
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: getCardBottomPadding(context),
+        if (cardCount == 0)
+          WeatherCardError(
+            locationName: widget.location.name,
+            error: 'noCards'.tr(),
+            isPhoneLocation: widget.isPhoneLocation,
+          )
+        else
+          CardSwiper(
+            padding: EdgeInsets.zero,
+            controller: ref.watch(weatherSwiperControllerProvider),
+            isDisabled: cardCount <= 1,
+            duration: PromajaDurations.cardSwiperAnimation,
+            numberOfCardsDisplayed: min(cardCount, 4),
+            cardsCount: cardCount,
+            onSwipeDirectionChange: (horizontal, vertical) {
+              final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
+
+              final movingNotifier = ref.read(weatherCardMovingProvider.notifier);
+              final currentMoving = ref.read(weatherCardMovingProvider);
+
+              if (currentMoving != isMoving) {
+                movingNotifier.moving = isMoving;
+              }
+            },
+            onSwipe: (previousIndex, index, __) {
+              cardSwiped(index: index ?? previousIndex, ref: ref);
+              return true;
+            },
+            cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
+              location: widget.location,
+              forecastWeather: widget.forecastWeather,
+              forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
+              index: cardIndex,
+              isPhoneLocation: widget.isPhoneLocation,
+              showCelsius: widget.showCelsius,
+              showKph: widget.showKph,
+              showMm: widget.showMm,
+              showhPa: widget.showhPa,
+            ),
           ),
-          child: cardCount == 0
-              ? WeatherCardError(
-                  locationName: widget.location.name,
-                  error: 'noCards'.tr(),
-                  isPhoneLocation: widget.isPhoneLocation,
-                )
-              : CardSwiper(
-                  padding: EdgeInsets.zero,
-                  controller: ref.watch(weatherSwiperControllerProvider),
-                  isDisabled: cardCount <= 1,
-                  duration: PromajaDurations.cardSwiperAnimation,
-                  numberOfCardsDisplayed: min(cardCount, 4),
-                  cardsCount: cardCount,
-                  onSwipeDirectionChange: (horizontal, vertical) {
-                    final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
-
-                    final movingNotifier = ref.read(weatherCardMovingProvider.notifier);
-                    final currentMoving = ref.read(weatherCardMovingProvider);
-
-                    if (currentMoving != isMoving) {
-                      movingNotifier.moving = isMoving;
-                    }
-                  },
-                  onSwipe: (previousIndex, index, __) {
-                    cardSwiped(index: index ?? previousIndex, ref: ref);
-                    return true;
-                  },
-                  cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
-                    location: widget.location,
-                    forecastWeather: widget.forecastWeather,
-                    forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
-                    index: cardIndex,
-                    isPhoneLocation: widget.isPhoneLocation,
-                    showCelsius: widget.showCelsius,
-                    showKph: widget.showKph,
-                    showMm: widget.showMm,
-                    showhPa: widget.showhPa,
-                  ),
-                ),
-        ),
 
         ///
         /// DOTS

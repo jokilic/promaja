@@ -72,6 +72,9 @@ class CardSuccess extends ConsumerWidget {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(40),
+        ),
         gradient: LinearGradient(
           colors: [
             lightenColor(backgroundColor),

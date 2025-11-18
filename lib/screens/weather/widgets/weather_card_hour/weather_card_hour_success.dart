@@ -80,8 +80,8 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                       color: showSnow
                           ? PromajaColors.white
                           : showRain
-                              ? PromajaColors.blue
-                              : borderColor,
+                          ? PromajaColors.blue
+                          : borderColor,
                       width: showRain || showSnow ? 4 : 2,
                     ),
               gradient: isActive

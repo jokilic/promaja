@@ -10,6 +10,7 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
+import '../../../../util/spacing.dart';
 import '../../weather_notifiers.dart';
 import 'weather_card_summary_list_tile.dart';
 
@@ -27,47 +28,44 @@ class WeatherCardSummary extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
-    borderRadius: const BorderRadius.vertical(
-      bottom: Radius.circular(40),
-    ),
-    child: Container(
-      width: MediaQuery.sizeOf(context).width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            lightenColor(PromajaColors.black),
-            darkenColor(PromajaColors.indigo),
-          ],
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-        ),
+  Widget build(BuildContext context, WidgetRef ref) => Container(
+    width: MediaQuery.sizeOf(context).width,
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
       ),
-      child: SizedBox(
-        // TODO
-        height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          physics: const BouncingScrollPhysics(),
-          children: AnimateList(
-            delay: PromajaDurations.weatherDataAnimationDelay,
-            interval: PromajaDurations.weatherDataAnimationDelay,
-            effects: [
-              if (ref.watch(weatherCardSummaryShowAnimationProvider))
-                FadeEffect(
-                  curve: Curves.easeIn,
-                  duration: PromajaDurations.fadeAnimation,
-                ),
-            ],
-            children: [
-              SizedBox(
-                // TODO
-                height: MediaQuery.paddingOf(context).top + 32,
-              ),
+      gradient: LinearGradient(
+        colors: [
+          lightenColor(PromajaColors.black),
+          darkenColor(PromajaColors.indigo),
+        ],
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+      ),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: AnimateList(
+        delay: PromajaDurations.weatherDataAnimationDelay,
+        interval: PromajaDurations.weatherDataAnimationDelay,
+        effects: [
+          if (ref.watch(weatherCardSummaryShowAnimationProvider))
+            FadeEffect(
+              curve: Curves.easeIn,
+              duration: PromajaDurations.fadeAnimation,
+            ),
+        ],
+        children: [
+          SizedBox(
+            height: getWeatherSummaryCardTopPadding(context),
+          ),
 
-              ///
-              /// TITLE & LOCATION
-              ///
+          ///
+          /// TITLE & LOCATION
+          ///
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -105,55 +103,56 @@ class WeatherCardSummary extends ConsumerWidget {
                   style: PromajaTextStyles.settingsTitle,
                 ),
               ),
-
-              ///
-              /// DIVIDER
-              ///
-              const SizedBox(height: 16),
-              const Divider(
-                indent: 120,
-                endIndent: 120,
-                color: PromajaColors.white,
-              ),
-
-              ///
-              /// SUMMARY FORECASTS
-              ///
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const BouncingScrollPhysics(),
-                itemCount: forecastWeather.forecastDays.length,
-                itemBuilder: (_, index) {
-                  final forecast = forecastWeather.forecastDays.elementAtOrNull(index);
-
-                  if (forecast != null) {
-                    return Animate(
-                      key: ValueKey(forecast),
-                      delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                      effects: [
-                        if (ref.watch(weatherCardSummaryShowAnimationProvider))
-                          FadeEffect(
-                            curve: Curves.easeIn,
-                            duration: PromajaDurations.fadeAnimation,
-                          ),
-                      ],
-                      child: WeatherCardSummaryListTile(
-                        forecast: forecast,
-                        onPressed: () {},
-                        showCelsius: showCelsius,
-                      ),
-                    );
-                  }
-
-                  return const SizedBox.shrink();
-                },
-              ),
-
-              const SizedBox(height: 40),
             ],
           ),
-        ),
+
+          ///
+          /// DIVIDER
+          ///
+          const SizedBox(height: 16),
+          const Divider(
+            indent: 120,
+            endIndent: 120,
+            color: PromajaColors.white,
+          ),
+
+          ///
+          /// SUMMARY FORECASTS
+          ///
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
+              itemCount: forecastWeather.forecastDays.length,
+              itemBuilder: (_, index) {
+                final forecast = forecastWeather.forecastDays.elementAtOrNull(index);
+
+                if (forecast != null) {
+                  return Animate(
+                    key: ValueKey(forecast),
+                    delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                    effects: [
+                      if (ref.watch(weatherCardSummaryShowAnimationProvider))
+                        FadeEffect(
+                          curve: Curves.easeIn,
+                          duration: PromajaDurations.fadeAnimation,
+                        ),
+                    ],
+                    child: WeatherCardSummaryListTile(
+                      forecast: forecast,
+                      onPressed: () {},
+                      showCelsius: showCelsius,
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+
+          const SizedBox(height: 40),
+        ],
       ),
     ),
   );

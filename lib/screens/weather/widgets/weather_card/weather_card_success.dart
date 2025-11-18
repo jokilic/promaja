@@ -92,8 +92,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget getWeatherCardSuccessWidget() {
     ///
     /// WEATHER CARD SUMMARY
     ///
@@ -134,4 +133,12 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
       isPhoneLocation: widget.isPhoneLocation,
     );
   }
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
+    borderRadius: const BorderRadius.vertical(
+      bottom: Radius.circular(40),
+    ),
+    child: getWeatherCardSuccessWidget(),
+  );
 }

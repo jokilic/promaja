@@ -25,6 +25,9 @@ class CardError extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     width: MediaQuery.sizeOf(context).width,
     decoration: BoxDecoration(
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
+      ),
       gradient: LinearGradient(
         colors: [
           lightenColor(PromajaColors.red),

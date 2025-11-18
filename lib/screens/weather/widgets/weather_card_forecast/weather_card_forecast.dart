@@ -15,7 +15,6 @@ import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
-import '../weather_card_hour/weather_card_individual_hour.dart';
 
 class WeatherCardForecast extends ConsumerWidget {
   final ScrollController scrollController;
@@ -85,6 +84,289 @@ class WeatherCardForecast extends ConsumerWidget {
     final showRain = forecast.day.dailyWillItRain == 1;
     final showSnow = forecast.day.dailyWillItSnow == 1;
 
+    return Container(
+      width: MediaQuery.sizeOf(context).width,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(40),
+        ),
+        gradient: LinearGradient(
+          colors: [
+            lightenColor(backgroundColor),
+            darkenColor(backgroundColor),
+          ],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox.shrink(),
+
+          ///
+          /// DATE & LOCATION
+          ///
+          Column(
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                getTodayDateMonth(
+                  dateEpoch: forecast.dateEpoch,
+                ),
+                style: PromajaTextStyles.weatherCardLastUpdated,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 2),
+              Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  Text(
+                    location.name,
+                    style: PromajaTextStyles.currentLocation,
+                    textAlign: TextAlign.center,
+                  ),
+                  if (isPhoneLocation)
+                    Positioned(
+                      left: -32,
+                      top: 4,
+                      child: Image.asset(
+                        PromajaIcons.location,
+                        height: 24,
+                        width: 24,
+                        color: PromajaColors.white,
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+
+          ///
+          /// WEATHER ICON
+          ///
+          Animate(
+            onPlay: (controller) => controller.loop(reverse: true),
+            delay: PromajaDurations.weatherIconScaleDelay,
+            effects: [
+              ScaleEffect(
+                curve: Curves.easeIn,
+                end: const Offset(1.5, 1.5),
+                duration: PromajaDurations.weatherIconScalAnimation,
+              ),
+            ],
+            child: Transform.scale(
+              scale: 1.2,
+              child: Image.asset(
+                weatherIcon,
+                height: 176,
+                width: 176,
+              ),
+            ),
+          ),
+
+          ///
+          /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
+          ///
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 104,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ///
+                    /// MIN TEMP
+                    ///
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            showCelsius ? '${forecast.day.minTempC.round()}' : '${forecast.day.minTempF.round()}',
+                            style: PromajaTextStyles.weatherTemperatureMin,
+                            textAlign: TextAlign.center,
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: -24,
+                            child: Text(
+                              '°',
+                              style: PromajaTextStyles.weatherTemperatureMin,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(width: 24),
+
+                    ///
+                    /// MAX TEMP
+                    ///
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            showCelsius ? '${forecast.day.maxTempC.round()}' : '${forecast.day.maxTempF.round()}',
+                            style: PromajaTextStyles.weatherTemperatureMax,
+                            textAlign: TextAlign.center,
+                          ),
+                          const Positioned(
+                            top: 0,
+                            right: -24,
+                            child: Text(
+                              '°',
+                              style: PromajaTextStyles.weatherTemperatureMax,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 80),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      ///
+                      /// WEATHER DESCRIPTION
+                      ///
+                      TextSpan(
+                        text: weatherDescription,
+                      ),
+
+                      ///
+                      /// CHANCE OF RAIN
+                      ///
+                      if (showRain && !showSnow) ...[
+                        const WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: SizedBox(width: 8),
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                PromajaIcons.umbrella,
+                                color: PromajaColors.white,
+                                height: 24,
+                                width: 24,
+                              ),
+                              Text(
+                                '${forecast.day.dailyChanceOfRain}%',
+                                style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+
+                      ///
+                      /// CHANCE OF SNOW
+                      ///
+                      if (showSnow) ...[
+                        const WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: SizedBox(width: 8),
+                        ),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                PromajaIcons.snow,
+                                color: PromajaColors.white,
+                                height: 24,
+                                width: 24,
+                              ),
+                              Text(
+                                '${forecast.day.dailyChanceOfSnow}%',
+                                style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  style: PromajaTextStyles.currentWeather,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+
+          ///
+          /// HOURS
+          ///
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 24,
+            ),
+            height: 160,
+            child: PageView.builder(
+              key: ValueKey(index),
+              controller: PageController(
+                initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
+              ),
+              itemCount: (forecast.hours.length / 4).round(),
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (_, pageViewIndex) => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(
+                  4,
+                  (listIndex) {
+                    final properIndex = (pageViewIndex * 4) + listIndex;
+                    final hourWeather = forecast.hours[properIndex];
+
+                    return WeatherCardHourSuccess(
+                      hourWeather: hourWeather,
+                      isActive: activeHourWeather == hourWeather,
+                      borderColor: backgroundColor,
+                      showCelsius: showCelsius,
+                      onPressed: () => weatherCardHourPressed(
+                        hourWeather: hourWeather,
+                        activeHourWeather: activeHourWeather,
+                        ref: ref,
+                        index: index,
+                        scrollController: scrollController,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    ///
+    /// IGNORE CODE BELOW
+    ///
+
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
         bottom: Radius.circular(40),
@@ -108,293 +390,556 @@ class WeatherCardForecast extends ConsumerWidget {
                 end: Alignment.bottomLeft,
               ),
             ),
-            child: ListView(
-              controller: scrollController,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ///
-                /// MAIN CARD CONTENT
-                ///
-                SizedBox(
-                  // TODO
-                  height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom - 16,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox.shrink(),
+                const SizedBox.shrink(),
 
-                      ///
-                      /// DATE & LOCATION
-                      ///
-                      Column(
-                        children: [
-                          const SizedBox(height: 24),
-                          Text(
-                            getTodayDateMonth(
-                              dateEpoch: forecast.dateEpoch,
-                            ),
-                            style: PromajaTextStyles.weatherCardLastUpdated,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 2),
-                          Stack(
-                            alignment: Alignment.center,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Text(
-                                location.name,
-                                style: PromajaTextStyles.currentLocation,
-                                textAlign: TextAlign.center,
-                              ),
-                              if (isPhoneLocation)
-                                Positioned(
-                                  left: -32,
-                                  top: 4,
-                                  child: Image.asset(
-                                    PromajaIcons.location,
-                                    height: 24,
-                                    width: 24,
-                                    color: PromajaColors.white,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
+                ///
+                /// DATE & LOCATION
+                ///
+                Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    Text(
+                      getTodayDateMonth(
+                        dateEpoch: forecast.dateEpoch,
                       ),
-
-                      ///
-                      /// WEATHER ICON
-                      ///
-                      Animate(
-                        onPlay: (controller) => controller.loop(reverse: true),
-                        delay: PromajaDurations.weatherIconScaleDelay,
-                        effects: [
-                          ScaleEffect(
-                            curve: Curves.easeIn,
-                            end: const Offset(1.5, 1.5),
-                            duration: PromajaDurations.weatherIconScalAnimation,
-                          ),
-                        ],
-                        child: Transform.scale(
-                          scale: 1.2,
-                          child: Image.asset(
-                            weatherIcon,
-                            height: 176,
-                            width: 176,
-                          ),
+                      style: PromajaTextStyles.weatherCardLastUpdated,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 2),
+                    Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Text(
+                          location.name,
+                          style: PromajaTextStyles.currentLocation,
+                          textAlign: TextAlign.center,
                         ),
-                      ),
+                        if (isPhoneLocation)
+                          Positioned(
+                            left: -32,
+                            top: 4,
+                            child: Image.asset(
+                              PromajaIcons.location,
+                              height: 24,
+                              width: 24,
+                              color: PromajaColors.white,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
 
-                      ///
-                      /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
-                      ///
-                      Column(
+                ///
+                /// WEATHER ICON
+                ///
+                Animate(
+                  onPlay: (controller) => controller.loop(reverse: true),
+                  delay: PromajaDurations.weatherIconScaleDelay,
+                  effects: [
+                    ScaleEffect(
+                      curve: Curves.easeIn,
+                      end: const Offset(1.5, 1.5),
+                      duration: PromajaDurations.weatherIconScalAnimation,
+                    ),
+                  ],
+                  child: Transform.scale(
+                    scale: 1.2,
+                    child: Image.asset(
+                      weatherIcon,
+                      height: 176,
+                      width: 176,
+                    ),
+                  ),
+                ),
+
+                ///
+                /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
+                ///
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 104,
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 104,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                          ///
+                          /// MIN TEMP
+                          ///
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
                               children: [
-                                ///
-                                /// MIN TEMP
-                                ///
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Text(
-                                        showCelsius ? '${forecast.day.minTempC.round()}' : '${forecast.day.minTempF.round()}',
-                                        style: PromajaTextStyles.weatherTemperatureMin,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      Positioned(
-                                        top: 0,
-                                        right: -24,
-                                        child: Text(
-                                          '°',
-                                          style: PromajaTextStyles.weatherTemperatureMin,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                Text(
+                                  showCelsius ? '${forecast.day.minTempC.round()}' : '${forecast.day.minTempF.round()}',
+                                  style: PromajaTextStyles.weatherTemperatureMin,
+                                  textAlign: TextAlign.center,
                                 ),
-
-                                const SizedBox(width: 24),
-
-                                ///
-                                /// MAX TEMP
-                                ///
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Text(
-                                        showCelsius ? '${forecast.day.maxTempC.round()}' : '${forecast.day.maxTempF.round()}',
-                                        style: PromajaTextStyles.weatherTemperatureMax,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const Positioned(
-                                        top: 0,
-                                        right: -24,
-                                        child: Text(
-                                          '°',
-                                          style: PromajaTextStyles.weatherTemperatureMax,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
+                                Positioned(
+                                  top: 0,
+                                  right: -24,
+                                  child: Text(
+                                    '°',
+                                    style: PromajaTextStyles.weatherTemperatureMin,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 80),
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
-                                  ///
-                                  /// WEATHER DESCRIPTION
-                                  ///
-                                  TextSpan(
-                                    text: weatherDescription,
+
+                          const SizedBox(width: 24),
+
+                          ///
+                          /// MAX TEMP
+                          ///
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Text(
+                                  showCelsius ? '${forecast.day.maxTempC.round()}' : '${forecast.day.maxTempF.round()}',
+                                  style: PromajaTextStyles.weatherTemperatureMax,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const Positioned(
+                                  top: 0,
+                                  right: -24,
+                                  child: Text(
+                                    '°',
+                                    style: PromajaTextStyles.weatherTemperatureMax,
+                                    textAlign: TextAlign.center,
                                   ),
-
-                                  ///
-                                  /// CHANCE OF RAIN
-                                  ///
-                                  if (showRain && !showSnow) ...[
-                                    const WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: SizedBox(width: 8),
-                                    ),
-                                    WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            PromajaIcons.umbrella,
-                                            color: PromajaColors.white,
-                                            height: 24,
-                                            width: 24,
-                                          ),
-                                          Text(
-                                            '${forecast.day.dailyChanceOfRain}%',
-                                            style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-
-                                  ///
-                                  /// CHANCE OF SNOW
-                                  ///
-                                  if (showSnow) ...[
-                                    const WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: SizedBox(width: 8),
-                                    ),
-                                    WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            PromajaIcons.snow,
-                                            color: PromajaColors.white,
-                                            height: 24,
-                                            width: 24,
-                                          ),
-                                          Text(
-                                            '${forecast.day.dailyChanceOfSnow}%',
-                                            style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                              style: PromajaTextStyles.currentWeather,
-                              textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-
-                      ///
-                      /// HOURS
-                      ///
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 24,
-                        ),
-                        height: 160,
-                        child: PageView.builder(
-                          key: ValueKey(index),
-                          controller: PageController(
-                            initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
-                          ),
-                          itemCount: (forecast.hours.length / 4).round(),
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (_, pageViewIndex) => Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(
-                              4,
-                              (listIndex) {
-                                final properIndex = (pageViewIndex * 4) + listIndex;
-                                final hourWeather = forecast.hours[properIndex];
-
-                                return WeatherCardHourSuccess(
-                                  hourWeather: hourWeather,
-                                  isActive: activeHourWeather == hourWeather,
-                                  borderColor: backgroundColor,
-                                  showCelsius: showCelsius,
-                                  onPressed: () => weatherCardHourPressed(
-                                    hourWeather: hourWeather,
-                                    activeHourWeather: activeHourWeather,
-                                    ref: ref,
-                                    index: index,
-                                    scrollController: scrollController,
-                                  ),
-                                );
-                              },
+                    ),
+                    const SizedBox(height: 4),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            ///
+                            /// WEATHER DESCRIPTION
+                            ///
+                            TextSpan(
+                              text: weatherDescription,
                             ),
-                          ),
+
+                            ///
+                            /// CHANCE OF RAIN
+                            ///
+                            if (showRain && !showSnow) ...[
+                              const WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: SizedBox(width: 8),
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      PromajaIcons.umbrella,
+                                      color: PromajaColors.white,
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                                    Text(
+                                      '${forecast.day.dailyChanceOfRain}%',
+                                      style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+
+                            ///
+                            /// CHANCE OF SNOW
+                            ///
+                            if (showSnow) ...[
+                              const WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: SizedBox(width: 8),
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      PromajaIcons.snow,
+                                      color: PromajaColors.white,
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                                    Text(
+                                      '${forecast.day.dailyChanceOfSnow}%',
+                                      style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
+                        style: PromajaTextStyles.currentWeather,
+                        textAlign: TextAlign.center,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
                 ///
-                /// INDIVIDUAL HOUR
+                /// HOURS
                 ///
-                WeatherCardIndividualHour(
-                  hourWeather: activeHourWeather,
-                  showCelsius: showCelsius,
-                  showKph: showKph,
-                  showMm: showMm,
-                  showhPa: showhPa,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 24,
+                  ),
+                  height: 160,
+                  child: PageView.builder(
+                    key: ValueKey(index),
+                    controller: PageController(
+                      initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
+                    ),
+                    itemCount: (forecast.hours.length / 4).round(),
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (_, pageViewIndex) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(
+                        4,
+                        (listIndex) {
+                          final properIndex = (pageViewIndex * 4) + listIndex;
+                          final hourWeather = forecast.hours[properIndex];
+
+                          return WeatherCardHourSuccess(
+                            hourWeather: hourWeather,
+                            isActive: activeHourWeather == hourWeather,
+                            borderColor: backgroundColor,
+                            showCelsius: showCelsius,
+                            onPressed: () => weatherCardHourPressed(
+                              hourWeather: hourWeather,
+                              activeHourWeather: activeHourWeather,
+                              ref: ref,
+                              index: index,
+                              scrollController: scrollController,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
+
+            // ListView(
+            //   controller: scrollController,
+            //   physics: const NeverScrollableScrollPhysics(),
+            //   padding: EdgeInsets.zero,
+            //   children: [
+            //     ///
+            //     /// MAIN CARD CONTENT
+            //     ///
+            //     SizedBox(
+            //       // TODO
+            //       height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom - 16,
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           const SizedBox.shrink(),
+
+            //           ///
+            //           /// DATE & LOCATION
+            //           ///
+            //           Column(
+            //             children: [
+            //               const SizedBox(height: 24),
+            //               Text(
+            //                 getTodayDateMonth(
+            //                   dateEpoch: forecast.dateEpoch,
+            //                 ),
+            //                 style: PromajaTextStyles.weatherCardLastUpdated,
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //               const SizedBox(height: 2),
+            //               Stack(
+            //                 alignment: Alignment.center,
+            //                 clipBehavior: Clip.none,
+            //                 children: [
+            //                   Text(
+            //                     location.name,
+            //                     style: PromajaTextStyles.currentLocation,
+            //                     textAlign: TextAlign.center,
+            //                   ),
+            //                   if (isPhoneLocation)
+            //                     Positioned(
+            //                       left: -32,
+            //                       top: 4,
+            //                       child: Image.asset(
+            //                         PromajaIcons.location,
+            //                         height: 24,
+            //                         width: 24,
+            //                         color: PromajaColors.white,
+            //                       ),
+            //                     ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+
+            //           ///
+            //           /// WEATHER ICON
+            //           ///
+            //           Animate(
+            //             onPlay: (controller) => controller.loop(reverse: true),
+            //             delay: PromajaDurations.weatherIconScaleDelay,
+            //             effects: [
+            //               ScaleEffect(
+            //                 curve: Curves.easeIn,
+            //                 end: const Offset(1.5, 1.5),
+            //                 duration: PromajaDurations.weatherIconScalAnimation,
+            //               ),
+            //             ],
+            //             child: Transform.scale(
+            //               scale: 1.2,
+            //               child: Image.asset(
+            //                 weatherIcon,
+            //                 height: 176,
+            //                 width: 176,
+            //               ),
+            //             ),
+            //           ),
+
+            //           ///
+            //           /// TEMPERATURE, WEATHER DESCRIPTION & CHANCE OF RAIN
+            //           ///
+            //           Column(
+            //             mainAxisSize: MainAxisSize.min,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               SizedBox(
+            //                 height: 104,
+            //                 child: Row(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   children: [
+            //                     ///
+            //                     /// MIN TEMP
+            //                     ///
+            //                     Align(
+            //                       alignment: Alignment.bottomLeft,
+            //                       child: Stack(
+            //                         alignment: Alignment.center,
+            //                         clipBehavior: Clip.none,
+            //                         children: [
+            //                           Text(
+            //                             showCelsius ? '${forecast.day.minTempC.round()}' : '${forecast.day.minTempF.round()}',
+            //                             style: PromajaTextStyles.weatherTemperatureMin,
+            //                             textAlign: TextAlign.center,
+            //                           ),
+            //                           Positioned(
+            //                             top: 0,
+            //                             right: -24,
+            //                             child: Text(
+            //                               '°',
+            //                               style: PromajaTextStyles.weatherTemperatureMin,
+            //                               textAlign: TextAlign.center,
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+
+            //                     const SizedBox(width: 24),
+
+            //                     ///
+            //                     /// MAX TEMP
+            //                     ///
+            //                     Align(
+            //                       alignment: Alignment.topRight,
+            //                       child: Stack(
+            //                         alignment: Alignment.center,
+            //                         clipBehavior: Clip.none,
+            //                         children: [
+            //                           Text(
+            //                             showCelsius ? '${forecast.day.maxTempC.round()}' : '${forecast.day.maxTempF.round()}',
+            //                             style: PromajaTextStyles.weatherTemperatureMax,
+            //                             textAlign: TextAlign.center,
+            //                           ),
+            //                           const Positioned(
+            //                             top: 0,
+            //                             right: -24,
+            //                             child: Text(
+            //                               '°',
+            //                               style: PromajaTextStyles.weatherTemperatureMax,
+            //                               textAlign: TextAlign.center,
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 4),
+            //               Padding(
+            //                 padding: const EdgeInsets.symmetric(horizontal: 80),
+            //                 child: Text.rich(
+            //                   TextSpan(
+            //                     children: [
+            //                       ///
+            //                       /// WEATHER DESCRIPTION
+            //                       ///
+            //                       TextSpan(
+            //                         text: weatherDescription,
+            //                       ),
+
+            //                       ///
+            //                       /// CHANCE OF RAIN
+            //                       ///
+            //                       if (showRain && !showSnow) ...[
+            //                         const WidgetSpan(
+            //                           alignment: PlaceholderAlignment.middle,
+            //                           child: SizedBox(width: 8),
+            //                         ),
+            //                         WidgetSpan(
+            //                           alignment: PlaceholderAlignment.middle,
+            //                           child: Column(
+            //                             mainAxisSize: MainAxisSize.min,
+            //                             mainAxisAlignment: MainAxisAlignment.center,
+            //                             children: [
+            //                               Image.asset(
+            //                                 PromajaIcons.umbrella,
+            //                                 color: PromajaColors.white,
+            //                                 height: 24,
+            //                                 width: 24,
+            //                               ),
+            //                               Text(
+            //                                 '${forecast.day.dailyChanceOfRain}%',
+            //                                 style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+            //                                 textAlign: TextAlign.center,
+            //                               ),
+            //                             ],
+            //                           ),
+            //                         ),
+            //                       ],
+
+            //                       ///
+            //                       /// CHANCE OF SNOW
+            //                       ///
+            //                       if (showSnow) ...[
+            //                         const WidgetSpan(
+            //                           alignment: PlaceholderAlignment.middle,
+            //                           child: SizedBox(width: 8),
+            //                         ),
+            //                         WidgetSpan(
+            //                           alignment: PlaceholderAlignment.middle,
+            //                           child: Column(
+            //                             mainAxisSize: MainAxisSize.min,
+            //                             mainAxisAlignment: MainAxisAlignment.center,
+            //                             children: [
+            //                               Image.asset(
+            //                                 PromajaIcons.snow,
+            //                                 color: PromajaColors.white,
+            //                                 height: 24,
+            //                                 width: 24,
+            //                               ),
+            //                               Text(
+            //                                 '${forecast.day.dailyChanceOfSnow}%',
+            //                                 style: PromajaTextStyles.weatherCardIndividualHourChanceOfRain,
+            //                                 textAlign: TextAlign.center,
+            //                               ),
+            //                             ],
+            //                           ),
+            //                         ),
+            //                       ],
+            //                     ],
+            //                   ),
+            //                   style: PromajaTextStyles.currentWeather,
+            //                   textAlign: TextAlign.center,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+
+            //           ///
+            //           /// HOURS
+            //           ///
+            //           Container(
+            //             padding: const EdgeInsets.symmetric(
+            //               horizontal: 16,
+            //               vertical: 24,
+            //             ),
+            //             height: 160,
+            //             child: PageView.builder(
+            //               key: ValueKey(index),
+            //               controller: PageController(
+            //                 initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
+            //               ),
+            //               itemCount: (forecast.hours.length / 4).round(),
+            //               physics: const BouncingScrollPhysics(),
+            //               itemBuilder: (_, pageViewIndex) => Row(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: List.generate(
+            //                   4,
+            //                   (listIndex) {
+            //                     final properIndex = (pageViewIndex * 4) + listIndex;
+            //                     final hourWeather = forecast.hours[properIndex];
+
+            //                     return WeatherCardHourSuccess(
+            //                       hourWeather: hourWeather,
+            //                       isActive: activeHourWeather == hourWeather,
+            //                       borderColor: backgroundColor,
+            //                       showCelsius: showCelsius,
+            //                       onPressed: () => weatherCardHourPressed(
+            //                         hourWeather: hourWeather,
+            //                         activeHourWeather: activeHourWeather,
+            //                         ref: ref,
+            //                         index: index,
+            //                         scrollController: scrollController,
+            //                       ),
+            //                     );
+            //                   },
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+
+            //     ///
+            //     /// INDIVIDUAL HOUR
+            //     ///
+            //     WeatherCardIndividualHour(
+            //       hourWeather: activeHourWeather,
+            //       showCelsius: showCelsius,
+            //       showKph: showKph,
+            //       showMm: showMm,
+            //       showhPa: showhPa,
+            //     ),
+            //   ],
+            // ),
           ),
 
           ///
@@ -417,7 +962,7 @@ class WeatherCardForecast extends ConsumerWidget {
                     end: Alignment.bottomLeft,
                   ),
                 ),
-                height: MediaQuery.paddingOf(context).top,
+                // height: MediaQuery.paddingOf(context).top,
                 width: MediaQuery.sizeOf(context).width,
               ),
             ),
