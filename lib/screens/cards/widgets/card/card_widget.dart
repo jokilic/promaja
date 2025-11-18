@@ -54,7 +54,7 @@ class CardWidget extends ConsumerWidget {
             /// ERROR WHILE FETCHING
             ///
             return CardError(
-              location: originalLocation,
+              locationName: originalLocation.name,
               error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
               isPhoneLocation: originalLocation.isPhoneLocation ?? false,
               refreshPressed: () => ref.invalidate(
@@ -67,7 +67,7 @@ class CardWidget extends ConsumerWidget {
           /// ERROR STATE
           ///
           error: (error, _) => CardError(
-            location: originalLocation,
+            locationName: originalLocation.name,
             error: '$error',
             isPhoneLocation: originalLocation.isPhoneLocation ?? false,
             refreshPressed: () => ref.invalidate(

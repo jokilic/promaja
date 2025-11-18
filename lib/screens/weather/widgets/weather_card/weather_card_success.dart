@@ -129,7 +129,7 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
     /// ERROR
     ///
     return WeatherCardError(
-      location: widget.location,
+      locationName: widget.location.name,
       error: 'noForecastsOrSummary'.tr(),
       isPhoneLocation: widget.isPhoneLocation,
     );

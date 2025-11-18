@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -15,6 +16,7 @@ import '../../models/settings/units/temperature_unit.dart';
 import '../../services/hive_service.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'cards_notifiers.dart';
+import 'widgets/card/card_error.dart';
 import 'widgets/card/card_widget.dart';
 
 class CardsScreen extends ConsumerWidget {
@@ -60,8 +62,13 @@ class CardsScreen extends ConsumerWidget {
             Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).top + 64),
               child: cardCount == 0
-                  ? const SizedBox.shrink()
+                  ? CardError(
+                      locationName: null,
+                      error: 'noCards'.tr(),
+                      isPhoneLocation: false,
+                    )
                   : CardSwiper(
+                      padding: EdgeInsets.zero,
                       controller: ref.watch(cardsSwiperControllerProvider),
                       isDisabled: cardCount <= 1,
                       duration: PromajaDurations.cardSwiperAnimation,
