@@ -61,46 +61,49 @@ class CardsScreen extends ConsumerWidget {
             ///
             /// WEATHER
             ///
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: getCardBottomPadding(context),
+            if (cardCount == 0)
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: getCurrentCardBottomPadding(context),
+                ),
+                child: CardError(
+                  locationName: null,
+                  error: 'noCards'.tr(),
+                  isPhoneLocation: false,
+                ),
+              )
+            else
+              CardSwiper(
+                padding: EdgeInsets.only(
+                  bottom: getCurrentCardBottomPadding(context),
+                ),
+                controller: ref.watch(cardsSwiperControllerProvider),
+                isDisabled: cardCount <= 1,
+                duration: PromajaDurations.cardSwiperAnimation,
+                numberOfCardsDisplayed: min(cardCount, 4),
+                cardsCount: cardCount,
+                onSwipeDirectionChange: (horizontal, vertical) {
+                  final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
+
+                  final movingNotifier = ref.read(cardMovingProvider.notifier);
+                  final currentMoving = ref.read(cardMovingProvider);
+
+                  if (currentMoving != isMoving) {
+                    movingNotifier.moving = isMoving;
+                  }
+                },
+                onSwipe: (previousIndex, index, __) {
+                  cardSwiped(index: index ?? previousIndex, ref: ref);
+                  return true;
+                },
+                cardBuilder: (_, cardIndex, __, ___) => CardWidget(
+                  originalLocation: locations[cardIndex],
+                  showCelsius: showCelsius,
+                  showKph: showKph,
+                  showMm: showMm,
+                  showhPa: showhPa,
+                ),
               ),
-              child: cardCount == 0
-                  ? CardError(
-                      locationName: null,
-                      error: 'noCards'.tr(),
-                      isPhoneLocation: false,
-                    )
-                  : CardSwiper(
-                      padding: EdgeInsets.zero,
-                      controller: ref.watch(cardsSwiperControllerProvider),
-                      isDisabled: cardCount <= 1,
-                      duration: PromajaDurations.cardSwiperAnimation,
-                      numberOfCardsDisplayed: min(cardCount, 4),
-                      cardsCount: cardCount,
-                      onSwipeDirectionChange: (horizontal, vertical) {
-                        final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
-
-                        final movingNotifier = ref.read(cardMovingProvider.notifier);
-                        final currentMoving = ref.read(cardMovingProvider);
-
-                        if (currentMoving != isMoving) {
-                          movingNotifier.moving = isMoving;
-                        }
-                      },
-                      onSwipe: (previousIndex, index, __) {
-                        cardSwiped(index: index ?? previousIndex, ref: ref);
-                        return true;
-                      },
-                      cardBuilder: (_, cardIndex, __, ___) => CardWidget(
-                        originalLocation: locations[cardIndex],
-                        showCelsius: showCelsius,
-                        showKph: showKph,
-                        showMm: showMm,
-                        showhPa: showhPa,
-                      ),
-                    ),
-            ),
 
             ///
             /// DOTS

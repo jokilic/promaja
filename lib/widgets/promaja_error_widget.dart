@@ -20,7 +20,7 @@ class PromajaErrorWidget extends StatelessWidget {
     body: Container(
       width: MediaQuery.sizeOf(context).width,
       margin: EdgeInsets.only(
-        bottom: getCardBottomPadding(context),
+        bottom: getCurrentCardBottomPadding(context),
       ),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(

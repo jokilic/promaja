@@ -10,6 +10,7 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
+import '../../../../util/spacing.dart';
 import '../../../settings/settings_notifier.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
@@ -79,14 +80,21 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
         /// WEATHER
         ///
         if (cardCount == 0)
-          WeatherCardError(
-            locationName: widget.location.name,
-            error: 'noCards'.tr(),
-            isPhoneLocation: widget.isPhoneLocation,
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: getWeatherCardBottomPadding(context),
+            ),
+            child: WeatherCardError(
+              locationName: widget.location.name,
+              error: 'noCards'.tr(),
+              isPhoneLocation: widget.isPhoneLocation,
+            ),
           )
         else
           CardSwiper(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.only(
+              bottom: getWeatherCardBottomPadding(context),
+            ),
             controller: ref.watch(weatherSwiperControllerProvider),
             isDisabled: cardCount <= 1,
             duration: PromajaDurations.cardSwiperAnimation,

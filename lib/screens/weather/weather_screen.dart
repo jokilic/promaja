@@ -40,76 +40,71 @@ class WeatherScreen extends ConsumerWidget {
             duration: PromajaDurations.fadeAnimation,
           ),
         ],
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: getCardBottomPadding(context),
-          ),
-          child: originalLocation != null
-              ? ref
-                    .watch(getForecastWeatherProvider((location: originalLocation!, days: 5)))
-                    .when(
-                      data: (data) {
-                        ///
-                        /// DATA SUCCESSFULLY FETCHED
-                        ///
-                        if (data.response != null && data.error == null) {
-                          final location = data.response!.location;
-                          final forecastWeather = data.response!.forecast;
+        child: originalLocation != null
+            ? ref
+                  .watch(getForecastWeatherProvider((location: originalLocation!, days: 5)))
+                  .when(
+                    data: (data) {
+                      ///
+                      /// DATA SUCCESSFULLY FETCHED
+                      ///
+                      if (data.response != null && data.error == null) {
+                        final location = data.response!.location;
+                        final forecastWeather = data.response!.forecast;
 
-                          return WeatherSuccess(
-                            location: location,
-                            forecastWeather: forecastWeather,
-                            isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
-                            showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-                            showKph: settings.unit.distanceSpeed == DistanceSpeedUnit.kilometers,
-                            showMm: settings.unit.precipitation == PrecipitationUnit.millimeters,
-                            showhPa: settings.unit.pressure == PressureUnit.hectopascal,
-                          );
-                        }
-
-                        ///
-                        /// ERROR WHILE FETCHING
-                        ///
-                        return WeatherError(
-                          location: originalLocation!,
-                          error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
+                        return WeatherSuccess(
+                          location: location,
+                          forecastWeather: forecastWeather,
                           isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
-                          refreshPressed: () => ref.invalidate(
-                            getForecastWeatherProvider(
-                              (location: originalLocation!, days: 5),
-                            ),
-                          ),
+                          showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+                          showKph: settings.unit.distanceSpeed == DistanceSpeedUnit.kilometers,
+                          showMm: settings.unit.precipitation == PrecipitationUnit.millimeters,
+                          showhPa: settings.unit.pressure == PressureUnit.hectopascal,
                         );
-                      },
+                      }
 
-                      error: (error, stackTrace) => WeatherError(
+                      ///
+                      /// ERROR WHILE FETCHING
+                      ///
+                      return WeatherError(
                         location: originalLocation!,
-                        error: '$error',
+                        error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
                         isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                         refreshPressed: () => ref.invalidate(
                           getForecastWeatherProvider(
                             (location: originalLocation!, days: 5),
                           ),
                         ),
-                      ),
+                      );
+                    },
 
-                      loading: () => WeatherLoading(
-                        location: originalLocation!,
-                        isWeatherSummary: settings.appearance.weatherSummaryFirst,
+                    error: (error, stackTrace) => WeatherError(
+                      location: originalLocation!,
+                      error: '$error',
+                      isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                      refreshPressed: () => ref.invalidate(
+                        getForecastWeatherProvider(
+                          (location: originalLocation!, days: 5),
+                        ),
                       ),
-                    )
-              : WeatherError(
-                  location: Location(
-                    country: '---',
-                    lat: 0,
-                    lon: 0,
-                    name: '---',
-                    region: '---',
-                  ),
-                  error: 'noMoreLocations'.tr(),
-                  isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                    ),
+
+                    loading: () => WeatherLoading(
+                      location: originalLocation!,
+                      isWeatherSummary: settings.appearance.weatherSummaryFirst,
+                    ),
+                  )
+            : WeatherError(
+                location: Location(
+                  country: '---',
+                  lat: 0,
+                  lon: 0,
+                  name: '---',
+                  region: '---',
                 ),
-        ),
+                error: 'noMoreLocations'.tr(),
+                isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+              ),
       ),
     );
   }

@@ -107,7 +107,7 @@ class PromajaNavigationBar extends ConsumerWidget {
     ),
     child: NavigationBar(
       height: navigationBarHeight,
-      backgroundColor: PromajaColors.fastWindsZaps,
+      backgroundColor: PromajaColors.black,
       elevation: 0,
       indicatorColor: Colors.transparent,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
