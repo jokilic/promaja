@@ -1,7 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -102,7 +102,9 @@ class WeatherCardHourSuccess extends ConsumerWidget {
                 /// TIME
                 ///
                 Text(
-                  DateFormat.Hm().format(hourWeather.timeEpoch),
+                  DateFormat.Hm(
+                    context.locale.languageCode,
+                  ).format(hourWeather.timeEpoch),
                   style: PromajaTextStyles.weatherCardHourHour,
                   textAlign: TextAlign.center,
                 ),
