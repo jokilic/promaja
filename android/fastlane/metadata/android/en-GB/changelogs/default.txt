@@ -1,1 +1,5 @@
-* Fix white flash when changing screen
+* Pass `languageCode` to dates
+* Update some localizations
+* Use 7 days in Forecast
+* Proper widget preview image
+* Update dependencies

@@ -7,13 +7,13 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> PromajaWidgetEntry {
         PromajaWidgetEntry(date: Date(), title: "Promaja", filePath: "No file path", displaySize: context.displaySize)
     }
-    
+
     func getSnapshot(in context: Context, completion: @escaping (PromajaWidgetEntry) -> ()) {
         let data = UserDefaults.init(suiteName:widgetGroupId)
         let entry = PromajaWidgetEntry(date: Date(), title: data?.string(forKey: "title") ?? "Promaja", filePath: data?.string(forKey: "filePath") ?? "No file path", displaySize: context.displaySize)
         completion(entry)
     }
-    
+
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         getSnapshot(in: context) { (entry) in
             let timeline = Timeline(entries: [entry], policy: .atEnd)
@@ -42,8 +42,6 @@ struct PromajaWidgetEntryView : View {
                 Image(uiImage: previewImage)
                     .resizable()
                     .scaledToFit()
-                    .padding(12)
-                    .background(Color(hex: 0x344966))
             } else {
                 Text(entry.title)
                     .bold()
@@ -61,7 +59,7 @@ struct PromajaWidgetEntryView : View {
 @main
 struct PromajaWidget: Widget {
     let kind: String = "PromajaWidget"
-    
+
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             PromajaWidgetEntryView(entry: entry)

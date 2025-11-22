@@ -1,7 +1,5 @@
-* New icon & splash screen
-* Border radius updates
-* Migrate to new card package
-* Upgrade state management syntax
-* Tweaked card layout to be consistent on all screens
-* Using in-app browser for links
-* Dependency updates
+* Pass `languageCode` to dates
+* Update some localizations
+* Use 7 days in Forecast
+* Proper widget preview image
+* Update dependencies

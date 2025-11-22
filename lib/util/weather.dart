@@ -31,161 +31,65 @@ String getTodayDateMonth({
 
 String getWeatherDescription({required int code, required bool isDay}) => '$code${isDay ? 'Day' : 'Night'}'.tr();
 
-Color getWeatherColor({required int code, required bool isDay}) {
-  switch (code) {
-    case 1000:
-      return isDay ? PromajaColors.sun : PromajaColors.moon;
-    case 1003:
-      return isDay ? PromajaColors.sunCloud : PromajaColors.moonCloud;
-    case 1006:
-    case 1009:
-      return PromajaColors.cloud;
-    case 1030:
-    case 1135:
-      return PromajaColors.slowWinds;
-    case 1063:
-    case 1150:
-    case 1153:
-    case 1180:
-    case 1183:
-    case 1240:
-      return isDay ? PromajaColors.sunCloudLittleRain : PromajaColors.moonCloudLittleRain;
-    case 1066:
-    case 1210:
-    case 1255:
-      return isDay ? PromajaColors.sunCloudLittleSnow : PromajaColors.moonCloudLittleSnow;
-    case 1069:
-    case 1204:
-    case 1249:
-    case 1261:
-      return isDay ? PromajaColors.sunCloudHailstone : PromajaColors.moonCloudHailstone;
-    case 1072:
-    case 1198:
-      return isDay ? PromajaColors.sunCloudAngledRain : PromajaColors.moonCloudAngledRain;
-    case 1087:
-    case 1273:
-      return isDay ? PromajaColors.sunCloudZap : PromajaColors.moonCloudZap;
-    case 1114:
-      return PromajaColors.midSnowFastWinds;
-    case 1117:
-    case 1222:
-    case 1225:
-      return PromajaColors.bigSnowLittleSnow;
-    case 1147:
-      return PromajaColors.midSnowSlowWinds;
-    case 1168:
-    case 1201:
-      return PromajaColors.cloudAngledRain;
-    case 1186:
-      return isDay ? PromajaColors.sunCloudMidRain : PromajaColors.moonCloudMidRain;
-    case 1189:
-    case 1243:
-      return PromajaColors.cloudMidRain;
-    case 1192:
-      return isDay ? PromajaColors.sunCloudBigRain : PromajaColors.moonCloudBigRain;
-    case 1195:
-    case 1246:
-      return PromajaColors.bigRainDrops;
-    case 1207:
-    case 1237:
-    case 1252:
-    case 1264:
-      return PromajaColors.cloudHailstone;
-    case 1213:
-      return PromajaColors.cloudLittleSnow;
-    case 1216:
-      return isDay ? PromajaColors.sunCloudMidSnow : PromajaColors.moonCloudMidSnow;
-    case 1219:
-    case 1258:
-      return PromajaColors.cloudMidSnow;
-    case 1276:
-      return PromajaColors.cloudAngledRainZap;
-    case 1279:
-    case 1282:
-      return PromajaColors.fastWindsZaps;
+Color getWeatherColor({
+  required int code,
+  required bool isDay,
+}) => switch (code) {
+  1000 => isDay ? PromajaColors.sun : PromajaColors.moon,
+  1003 => isDay ? PromajaColors.sunCloud : PromajaColors.moonCloud,
+  1006 || 1009 => PromajaColors.cloud,
+  1030 || 1135 => PromajaColors.slowWinds,
+  1063 || 1150 || 1153 || 1180 || 1183 || 1240 => isDay ? PromajaColors.sunCloudLittleRain : PromajaColors.moonCloudLittleRain,
+  1066 || 1210 || 1255 => isDay ? PromajaColors.sunCloudLittleSnow : PromajaColors.moonCloudLittleSnow,
+  1069 || 1204 || 1249 || 1261 => isDay ? PromajaColors.sunCloudHailstone : PromajaColors.moonCloudHailstone,
+  1072 || 1198 => isDay ? PromajaColors.sunCloudAngledRain : PromajaColors.moonCloudAngledRain,
+  1087 || 1273 => isDay ? PromajaColors.sunCloudZap : PromajaColors.moonCloudZap,
+  1114 => PromajaColors.midSnowFastWinds,
+  1117 || 1222 || 1225 => PromajaColors.bigSnowLittleSnow,
+  1147 => PromajaColors.midSnowSlowWinds,
+  1168 || 1201 => PromajaColors.cloudAngledRain,
+  1186 => isDay ? PromajaColors.sunCloudMidRain : PromajaColors.moonCloudMidRain,
+  1189 || 1243 => PromajaColors.cloudMidRain,
+  1192 => isDay ? PromajaColors.sunCloudBigRain : PromajaColors.moonCloudBigRain,
+  1195 || 1246 => PromajaColors.bigRainDrops,
+  1207 || 1237 || 1252 || 1264 => PromajaColors.cloudHailstone,
+  1213 => PromajaColors.cloudLittleSnow,
+  1216 => isDay ? PromajaColors.sunCloudMidSnow : PromajaColors.moonCloudMidSnow,
+  1219 || 1258 => PromajaColors.cloudMidSnow,
+  1276 => PromajaColors.cloudAngledRainZap,
+  1279 || 1282 => PromajaColors.fastWindsZaps,
+  _ => PromajaColors.fastWinds,
+};
 
-    default:
-      return PromajaColors.fastWinds;
-  }
-}
-
-String getWeatherIcon({required int code, required bool isDay}) {
-  switch (code) {
-    case 1000:
-      return isDay ? PromajaIcons.sun : PromajaIcons.moon;
-    case 1003:
-      return isDay ? PromajaIcons.sunCloud : PromajaIcons.moonCloud;
-    case 1006:
-    case 1009:
-      return PromajaIcons.cloud;
-    case 1030:
-    case 1135:
-      return PromajaIcons.slowWinds;
-    case 1063:
-    case 1150:
-    case 1153:
-    case 1180:
-    case 1183:
-    case 1240:
-      return isDay ? PromajaIcons.sunCloudLittleRain : PromajaIcons.moonCloudLittleRain;
-    case 1066:
-    case 1210:
-    case 1255:
-      return isDay ? PromajaIcons.sunCloudLittleSnow : PromajaIcons.moonCloudLittleSnow;
-    case 1069:
-    case 1204:
-    case 1249:
-    case 1261:
-      return isDay ? PromajaIcons.sunCloudHailstone : PromajaIcons.moonCloudHailstone;
-    case 1072:
-    case 1198:
-      return isDay ? PromajaIcons.sunCloudAngledRain : PromajaIcons.moonCloudAngledRain;
-    case 1087:
-    case 1273:
-      return isDay ? PromajaIcons.sunCloudZap : PromajaIcons.moonCloudZap;
-    case 1114:
-      return PromajaIcons.midSnowFastWinds;
-    case 1117:
-    case 1222:
-    case 1225:
-      return PromajaIcons.bigSnowLittleSnow;
-    case 1147:
-      return PromajaIcons.midSnowSlowWinds;
-    case 1168:
-    case 1201:
-      return PromajaIcons.cloudAngledRain;
-    case 1186:
-      return isDay ? PromajaIcons.sunCloudMidRain : PromajaIcons.moonCloudMidRain;
-    case 1189:
-    case 1243:
-      return PromajaIcons.cloudMidRain;
-    case 1192:
-      return isDay ? PromajaIcons.sunCloudBigRain : PromajaIcons.moonCloudBigRain;
-    case 1195:
-    case 1246:
-      return PromajaIcons.bigRainDrops;
-    case 1207:
-    case 1237:
-    case 1252:
-    case 1264:
-      return PromajaIcons.cloudHailstone;
-    case 1213:
-      return PromajaIcons.cloudLittleSnow;
-    case 1216:
-      return isDay ? PromajaIcons.sunCloudMidSnow : PromajaIcons.moonCloudMidSnow;
-    case 1219:
-    case 1258:
-      return PromajaIcons.cloudMidSnow;
-    case 1276:
-      return PromajaIcons.cloudAngledRainZap;
-    case 1279:
-    case 1282:
-      return PromajaIcons.fastWindsZaps;
-
-    default:
-      return PromajaIcons.fastWinds;
-  }
-}
+String getWeatherIcon({
+  required int code,
+  required bool isDay,
+}) => switch (code) {
+  1000 => isDay ? PromajaIcons.sun : PromajaIcons.moon,
+  1003 => isDay ? PromajaIcons.sunCloud : PromajaIcons.moonCloud,
+  1006 || 1009 => PromajaIcons.cloud,
+  1030 || 1135 => PromajaIcons.slowWinds,
+  1063 || 1150 || 1153 || 1180 || 1183 || 1240 => isDay ? PromajaIcons.sunCloudLittleRain : PromajaIcons.moonCloudLittleRain,
+  1066 || 1210 || 1255 => isDay ? PromajaIcons.sunCloudLittleSnow : PromajaIcons.moonCloudLittleSnow,
+  1069 || 1204 || 1249 || 1261 => isDay ? PromajaIcons.sunCloudHailstone : PromajaIcons.moonCloudHailstone,
+  1072 || 1198 => isDay ? PromajaIcons.sunCloudAngledRain : PromajaIcons.moonCloudAngledRain,
+  1087 || 1273 => isDay ? PromajaIcons.sunCloudZap : PromajaIcons.moonCloudZap,
+  1114 => PromajaIcons.midSnowFastWinds,
+  1117 || 1222 || 1225 => PromajaIcons.bigSnowLittleSnow,
+  1147 => PromajaIcons.midSnowSlowWinds,
+  1168 || 1201 => PromajaIcons.cloudAngledRain,
+  1186 => isDay ? PromajaIcons.sunCloudMidRain : PromajaIcons.moonCloudMidRain,
+  1189 || 1243 => PromajaIcons.cloudMidRain,
+  1192 => isDay ? PromajaIcons.sunCloudBigRain : PromajaIcons.moonCloudBigRain,
+  1195 || 1246 => PromajaIcons.bigRainDrops,
+  1207 || 1237 || 1252 || 1264 => PromajaIcons.cloudHailstone,
+  1213 => PromajaIcons.cloudLittleSnow,
+  1216 => isDay ? PromajaIcons.sunCloudMidSnow : PromajaIcons.moonCloudMidSnow,
+  1219 || 1258 => PromajaIcons.cloudMidSnow,
+  1276 => PromajaIcons.cloudAngledRainZap,
+  1279 || 1282 => PromajaIcons.fastWindsZaps,
+  _ => PromajaIcons.fastWinds,
+};
 
 final weatherCodes = [
   1000,
