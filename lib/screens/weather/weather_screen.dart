@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/durations.dart';
@@ -41,13 +42,16 @@ class WeatherScreen extends ConsumerWidget {
         ],
         child: originalLocation != null
             ? ref
-                  .watch(getForecastWeatherProvider((location: originalLocation!, days: 5)))
+                  .watch(getForecastWeatherProvider((location: originalLocation!, days: 7)))
                   .when(
                     data: (data) {
                       ///
                       /// DATA SUCCESSFULLY FETCHED
                       ///
                       if (data.response != null && data.error == null) {
+                        /// Remove splash screen
+                        FlutterNativeSplash.remove();
+
                         final location = data.response!.location;
                         final forecastWeather = data.response!.forecast;
 
@@ -71,7 +75,7 @@ class WeatherScreen extends ConsumerWidget {
                         isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                         refreshPressed: () => ref.invalidate(
                           getForecastWeatherProvider(
-                            (location: originalLocation!, days: 5),
+                            (location: originalLocation!, days: 7),
                           ),
                         ),
                       );
@@ -83,7 +87,7 @@ class WeatherScreen extends ConsumerWidget {
                       isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
                       refreshPressed: () => ref.invalidate(
                         getForecastWeatherProvider(
-                          (location: originalLocation!, days: 5),
+                          (location: originalLocation!, days: 7),
                         ),
                       ),
                     ),

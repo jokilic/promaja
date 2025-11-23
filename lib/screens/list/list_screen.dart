@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/durations.dart';
@@ -9,9 +10,22 @@ import '../../widgets/promaja_navigation_bar.dart';
 import 'widgets/list_cards.dart';
 import 'widgets/list_empty.dart';
 
-class ListScreen extends ConsumerWidget {
+class ListScreen extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ListScreenState();
+}
+
+class _ListScreenState extends ConsumerState<ListScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    /// Remove splash screen
+    FlutterNativeSplash.remove();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final locations = ref.watch(hiveProvider);
 
     return Scaffold(

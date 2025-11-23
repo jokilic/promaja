@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
@@ -17,9 +18,22 @@ import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    /// Remove splash screen
+    FlutterNativeSplash.remove();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
     bottomNavigationBar: PromajaNavigationBar(),
     body: Animate(
       key: ValueKey(ref.read(navigationBarIndexProvider)),
