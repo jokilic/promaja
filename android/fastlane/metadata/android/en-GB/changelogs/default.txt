@@ -4,3 +4,4 @@
 * Proper widget preview image
 * Update dependencies
 * Refactor splash logic
+* More sturdy initialization
