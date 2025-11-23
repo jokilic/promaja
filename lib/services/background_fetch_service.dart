@@ -51,19 +51,19 @@ final backgroundFetchInitProvider = FutureProvider<void>(
         await initializeLocalization();
 
         /// Initialize services
-        final container = await initializeServices();
+        final initialization = await initializeServices();
 
         /// Everything initialized successfully
-        if (container != null) {
+        if (initialization?.container != null) {
           ///
           /// Notifications
           ///
-          await container.read(notificationProvider).handleNotifications();
+          await initialization!.container!.read(notificationProvider).handleNotifications();
 
           ///
           /// Widget
           ///
-          await container.read(homeWidgetProvider).handleWidget();
+          await initialization.container!.read(homeWidgetProvider).handleWidget();
         }
 
         /// Finish task
@@ -112,19 +112,19 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   await initializeLocalization();
 
   /// Initialize services
-  final container = await initializeServices();
+  final initialization = await initializeServices();
 
   /// Everything initialized successfully
-  if (container != null) {
+  if (initialization?.container != null) {
     ///
     /// Notifications
     ///
-    await container.read(notificationProvider).handleNotifications();
+    await initialization!.container!.read(notificationProvider).handleNotifications();
 
     ///
     /// Widget
     ///
-    await container.read(homeWidgetProvider).handleWidget();
+    await initialization.container!.read(homeWidgetProvider).handleWidget();
   }
 
   /// Finish task

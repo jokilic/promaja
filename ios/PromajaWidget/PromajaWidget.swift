@@ -31,24 +31,6 @@ struct PromajaWidgetEntry: TimelineEntry {
 
 struct PromajaWidgetEntryView : View {
     var entry: Provider.Entry
-    let data = UserDefaults.init(suiteName:widgetGroupId)
-    let filePath: String?
-    var PromajaImage: some View {
-           if let uiImage = UIImage(contentsOfFile: entry.filePath) {
-               let image = Image(uiImage: uiImage)
-                   .resizable()
-                   .frame(width: entry.displaySize.height, height: entry.displaySize.height, alignment: .center)
-               return AnyView(image)
-           }
-           print("The image file could not be loaded")
-           return AnyView(EmptyView())
-       }
-
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        filePath = data?.string(forKey: "filePath")
-
-    }
 
     var body: some View {
         Group {
@@ -61,10 +43,16 @@ struct PromajaWidgetEntryView : View {
                     .resizable()
                     .scaledToFill()
             } else {
-                PromajaImage
+                Text(entry.title)
+                    .bold()
+                    .font(.title)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(hex: 0x344966))
+                    .foregroundColor(Color.white)
             }
         }
-        )
+        .frame(width: entry.displaySize.width, height: entry.displaySize.height)
+        .clipped()
     }
 }
 

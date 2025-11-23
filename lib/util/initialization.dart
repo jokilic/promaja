@@ -18,7 +18,7 @@ import '../services/logger_service.dart';
 import '../services/notification_service.dart';
 
 /// Initialize services & pass `container`
-Future<ProviderContainer?> initializeServices() async {
+Future<({ProviderContainer? container, String? error})?> initializeServices() async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   try {
@@ -49,10 +49,10 @@ Future<ProviderContainer?> initializeServices() async {
       await notifications.init();
     }
 
-    return container;
+    return (container: container, error: null);
   } catch (e) {
     LoggerService().e(e);
-    return null;
+    return (container: null, error: 'Error in initializeServices() -> $e');
   }
 }
 

@@ -639,10 +639,10 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
   await initializeLocalization();
 
   /// Initialize services
-  final container = await initializeServices();
+  final initialization = await initializeServices();
 
-  if (container != null) {
-    await container
+  if (initialization?.container != null) {
+    await initialization!.container!
         .read(notificationProvider)
         .handlePressedNotification(
           payload: notificationResponse.payload,
