@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/location/location.dart';
@@ -36,6 +37,9 @@ class CardWidget extends ConsumerWidget {
             /// DATA SUCCESSFULLY FETCHED
             ///
             if (data.response != null && data.error == null) {
+              /// Remove splash screen
+              FlutterNativeSplash.remove();
+
               final location = data.response!.location;
               final currentWeather = data.response!.current;
 
