@@ -76,7 +76,7 @@ class APIService {
   ///
   Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getForecastWeather({
     required String query,
-    required int days,
+    int? days = 1,
   }) async {
     try {
       final response = await dio.get(

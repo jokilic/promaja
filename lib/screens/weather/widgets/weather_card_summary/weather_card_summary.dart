@@ -121,7 +121,7 @@ class WeatherCardSummary extends ConsumerWidget {
           ///
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.zero,
               physics: const BouncingScrollPhysics(),
               itemCount: forecastWeather.forecastDays.length,
               itemBuilder: (_, index) {
@@ -150,6 +150,8 @@ class WeatherCardSummary extends ConsumerWidget {
               },
             ),
           ),
+
+          const SizedBox(height: 40),
         ],
       ),
     ),

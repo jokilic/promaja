@@ -118,11 +118,7 @@ class WidgetScreen extends ConsumerWidget {
               ///
               SettingsListTile(
                 onTap: () async {
-                  await ref
-                      .read(homeWidgetProvider)
-                      .handleWidget(
-                        languageCode: context.locale.languageCode,
-                      );
+                  await ref.read(homeWidgetProvider).handleWidget();
 
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 

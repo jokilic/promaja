@@ -81,7 +81,7 @@ class HomeWidgetService {
   }
 
   /// Handles widget logic, depending on `WidgetSettings`
-  Future<void> handleWidget({required String languageCode}) async {
+  Future<void> handleWidget() async {
     try {
       /// Check if user uses widgets
       final widgets = await HomeWidget.getInstalledWidgets();
@@ -106,7 +106,7 @@ class HomeWidgetService {
 
           /// Current weather is successfully fetched
           if (currentWeather != null) {
-            await triggerCurrentWidget(response: currentWeather, showCelsius: settings.unit.temperature == TemperatureUnit.celsius, location: location, languageCode: languageCode);
+            await triggerCurrentWidget(response: currentWeather, showCelsius: settings.unit.temperature == TemperatureUnit.celsius, location: location);
           }
         }
 
@@ -119,12 +119,7 @@ class HomeWidgetService {
 
           /// Forecast weather is successfully fetched
           if (forecastWeather != null) {
-            await triggerForecastWidget(
-              response: forecastWeather,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
-              languageCode: languageCode,
-            );
+            await triggerForecastWidget(response: forecastWeather, showCelsius: settings.unit.temperature == TemperatureUnit.celsius, location: location);
           }
         }
       }
@@ -139,12 +134,7 @@ class HomeWidgetService {
   }
 
   /// Triggers widget with current weather
-  Future<void> triggerCurrentWidget({
-    required ResponseCurrentWeather response,
-    required bool showCelsius,
-    required Location location,
-    required String languageCode,
-  }) async {
+  Future<void> triggerCurrentWidget({required ResponseCurrentWeather response, required bool showCelsius, required Location location}) async {
     try {
       /// Store relevant values in variables
       final locationName = response.location.name;
@@ -177,7 +167,7 @@ class HomeWidgetService {
       await preloadImage(weatherIconWidget);
       await preloadImage(promajaIconWidget);
 
-      final timestamp = DateFormat.Hm(languageCode).format(DateTime.now());
+      final timestamp = DateFormat.Hm().format(DateTime.now());
 
       /// Create a Flutter widget to show in [HomeWidget]
       final widget = CurrentHomeWidget(
@@ -199,12 +189,7 @@ class HomeWidgetService {
   }
 
   /// Triggers widget with forecast weather
-  Future<void> triggerForecastWidget({
-    required ResponseForecastWeather response,
-    required bool showCelsius,
-    required Location location,
-    required String languageCode,
-  }) async {
+  Future<void> triggerForecastWidget({required ResponseForecastWeather response, required bool showCelsius, required Location location}) async {
     try {
       /// Store relevant values in variables
       final locationName = response.location.name;
@@ -255,7 +240,7 @@ class HomeWidgetService {
         await preloadImage(umbrellaIconWidget);
         await preloadImage(snowIconWidget);
 
-        final timestamp = DateFormat.Hm(languageCode).format(DateTime.now());
+        final timestamp = DateFormat.Hm().format(DateTime.now());
 
         /// Create a Flutter widget to show in [HomeWidget]
         final widget = ForecastHomeWidget(

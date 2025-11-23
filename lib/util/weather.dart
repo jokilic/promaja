@@ -4,27 +4,19 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../constants/icons.dart';
 
-String getTodayDateMonth({
-  required DateTime dateEpoch,
-  required String languageCode,
-}) {
+String getTodayDateMonth({required DateTime dateEpoch}) {
   /// Current date and time
   final now = DateTime.now();
 
   /// Today date
   final today = DateTime(now.year, now.month, now.day);
 
-  /// Tomorrow date
-  final tomorrow = today.add(const Duration(days: 1));
-
   final passedDate = DateTime(dateEpoch.year, dateEpoch.month, dateEpoch.day);
 
   if (passedDate.isAtSameMomentAs(today)) {
     return 'today'.tr();
-  } else if (passedDate.isAtSameMomentAs(tomorrow)) {
-    return 'tomorrow'.tr();
   } else {
-    final day = DateFormat.EEEE(languageCode).format(dateEpoch);
+    final day = DateFormat.EEEE().format(dateEpoch);
     return '${day.substring(0, 1).toUpperCase()}${day.substring(1)}';
   }
 }

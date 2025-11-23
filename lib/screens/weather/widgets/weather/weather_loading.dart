@@ -87,7 +87,7 @@ class WeatherLoading extends StatelessWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
-                itemCount: 7,
+                itemCount: 5,
                 itemBuilder: (_, __) => Animate(
                   onPlay: (controller) => controller.loop(
                     reverse: true,

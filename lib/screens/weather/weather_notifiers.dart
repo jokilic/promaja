@@ -43,7 +43,7 @@ final activeWeatherProvider = NotifierProvider.autoDispose<ActiveWeatherNotifier
   name: 'ActiveWeatherProvider',
 );
 
-final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int days})>(
+final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int? days})>(
   (ref, forecastParameters) async => ref
       .read(apiProvider)
       .getForecastWeather(
