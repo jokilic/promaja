@@ -17,88 +17,101 @@ import 'widgets/promaja_navigation_bar.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  /// Initialize Flutter related tasks
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await runZonedGuarded(
+    () async {
+      try {
+        /// Initialize Flutter related tasks
+        final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-  /// Keep splash until first data is fetched
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+        /// Keep splash until first data is fetched
+        FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  /// Remove splash if data is fetching more than 5 seconds
-  Timer(
-    const Duration(seconds: 5),
-    FlutterNativeSplash.remove,
+        /// Remove splash if data is fetching more than 5 seconds
+        Timer(
+          const Duration(seconds: 5),
+          FlutterNativeSplash.remove,
+        );
+
+        /// Override the default error widget
+        ErrorWidget.builder = (details) => PromajaErrorWidget(
+          error: details.exceptionAsString(),
+        );
+
+        /// Parsing of [StackTrace]
+        FlutterError.demangleStackTrace = (stack) {
+          if (stack is Trace) {
+            return stack.vmTrace;
+          }
+          if (stack is Chain) {
+            return stack.toTrace().vmTrace;
+          }
+          return stack;
+        };
+
+        /// Make sure the orientation is only `portrait`
+        await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp],
+        );
+
+        /// Use `edge-to-edge` display
+        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+        /// Set refresh rate to high
+        await setDisplayMode();
+
+        /// Initialize [EasyLocalization]
+        await initializeLocalization();
+
+        /// Initialize services
+        final initialization = await initializeServices();
+
+        if (initialization?.container != null) {
+          /// Run [Promaja]
+          runApp(
+            UncontrolledProviderScope(
+              container: initialization!.container!,
+              child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: Brightness.light,
+                  statusBarBrightness: Brightness.dark,
+                  systemNavigationBarColor: PromajaColors.black,
+                  systemNavigationBarIconBrightness: Brightness.light,
+                ),
+                child: PromajaApp(),
+              ),
+            ),
+          );
+        } else {
+          runErrorApp(error: 'main() -> initialization -> ${initialization?.error}');
+        }
+      } catch (e) {
+        runErrorApp(error: 'main() -> catch -> $e');
+      }
+    },
+    (error, stack) {
+      runErrorApp(error: 'main() -> runZonedGuarded() -> $error');
+    },
   );
-
-  /// Override the default error widget
-  ErrorWidget.builder = (details) => PromajaErrorWidget(
-    error: details.exceptionAsString(),
-  );
-
-  /// Parsing of [StackTrace]
-  FlutterError.demangleStackTrace = (stack) {
-    if (stack is Trace) {
-      return stack.vmTrace;
-    }
-    if (stack is Chain) {
-      return stack.toTrace().vmTrace;
-    }
-    return stack;
-  };
-
-  /// Make sure the orientation is only `portrait`
-  await SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp],
-  );
-
-  /// Use `edge-to-edge` display
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-  /// Set refresh rate to high
-  await setDisplayMode();
-
-  /// Initialize [EasyLocalization]
-  await initializeLocalization();
-
-  /// Initialize services
-  final container = await initializeServices();
-
-  if (container != null) {
-    /// Run [Promaja]
-    runApp(
-      UncontrolledProviderScope(
-        container: container,
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark,
-            systemNavigationBarColor: PromajaColors.black,
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
-          child: PromajaApp(),
-        ),
-      ),
-    );
-  } else {
-    runApp(
-      MaterialApp(
-        home: const Scaffold(
-          body: PromajaErrorWidget(
-            error: 'Initialization error',
-          ),
-        ),
-        theme: ThemeData(
-          fontFamily: 'Jost',
-          scaffoldBackgroundColor: PromajaColors.black,
-          canvasColor: PromajaColors.black,
-          colorScheme: const ColorScheme.dark(
-            surface: PromajaColors.black,
-          ),
-        ),
-      ),
-    );
-  }
 }
+
+void runErrorApp({required String error}) => runApp(
+  MaterialApp(
+    home: Scaffold(
+      body: PromajaErrorWidget(
+        error: error,
+      ),
+    ),
+    theme: ThemeData(
+      fontFamily: 'Jost',
+      scaffoldBackgroundColor: PromajaColors.black,
+      canvasColor: PromajaColors.black,
+      colorScheme: const ColorScheme.dark(
+        surface: PromajaColors.black,
+      ),
+    ),
+  ),
+);
 
 class PromajaApp extends ConsumerWidget {
   @override
