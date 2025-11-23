@@ -1,7 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -59,12 +59,21 @@ class WeatherCardIndividualHour extends ConsumerWidget {
             children: [
               const SizedBox(height: 24),
               Text(
-                hourWeather != null ? DateFormat.Hm().format(hourWeather!.timeEpoch) : '',
+                hourWeather != null
+                    ? DateFormat.Hm(
+                        context.locale.languageCode,
+                      ).format(hourWeather!.timeEpoch)
+                    : '',
                 style: PromajaTextStyles.currentLocation,
                 textAlign: TextAlign.center,
               ),
               Text(
-                hourWeather != null ? getTodayDateMonth(dateEpoch: hourWeather!.timeEpoch) : '',
+                hourWeather != null
+                    ? getTodayDateMonth(
+                        dateEpoch: hourWeather!.timeEpoch,
+                        languageCode: context.locale.languageCode,
+                      )
+                    : '',
                 style: PromajaTextStyles.currentLastUpdated,
                 textAlign: TextAlign.center,
               ),

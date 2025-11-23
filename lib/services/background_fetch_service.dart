@@ -63,7 +63,11 @@ final backgroundFetchInitProvider = FutureProvider<void>(
           ///
           /// Widget
           ///
-          await container.read(homeWidgetProvider).handleWidget();
+          await container
+              .read(homeWidgetProvider)
+              .handleWidget(
+                languageCode: 'en',
+              );
         }
 
         /// Finish task
@@ -124,7 +128,11 @@ Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
     ///
     /// Widget
     ///
-    await container.read(homeWidgetProvider).handleWidget();
+    await container
+        .read(homeWidgetProvider)
+        .handleWidget(
+          languageCode: 'en',
+        );
   }
 
   /// Finish task
