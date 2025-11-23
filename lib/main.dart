@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +19,15 @@ final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   /// Initialize Flutter related tasks
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  /// Keep splash until first data is fetched
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  /// Remove splash if data is fetching more than 5 seconds
+  Timer(
+    const Duration(seconds: 5),
+    FlutterNativeSplash.remove,
+  );
 
   /// Override the default error widget
   ErrorWidget.builder = (details) => PromajaErrorWidget(
