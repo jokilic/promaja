@@ -3,3 +3,4 @@
 * Use 7 days in Forecast
 * Proper widget preview image
 * Update dependencies
+* Refactor splash logic
