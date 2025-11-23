@@ -74,9 +74,6 @@ class CardsScreen extends ConsumerWidget {
               )
             else
               CardSwiper(
-                allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
-                  horizontal: true,
-                ),
                 backCardOffset: const Offset(0, 48),
                 padding: EdgeInsets.only(
                   bottom: getCurrentCardBottomPadding(context),
