@@ -41,7 +41,7 @@ struct PromajaWidgetEntryView : View {
             } else if let previewImage = UIImage(named: "widget_preview") {
                 Image(uiImage: previewImage)
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
             } else {
                 Text(entry.title)
                     .bold()

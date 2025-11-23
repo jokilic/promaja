@@ -63,7 +63,9 @@ class WeatherError extends StatelessWidget {
             children: [
               const SizedBox(height: 24),
               Text(
-                DateFormat.yMMMMd().format(DateTime.now()),
+                DateFormat.yMMMMd(
+                  context.locale.languageCode,
+                ).format(DateTime.now()),
                 style: PromajaTextStyles.weatherCardLastUpdated,
                 textAlign: TextAlign.center,
               ),
