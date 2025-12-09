@@ -10,7 +10,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/durations.dart';
-import '../constants/icons.dart';
 import '../main.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/location/location.dart';
@@ -90,18 +89,11 @@ class NotificationService {
       /// `iOS`
       const initializationSettingsDarwin = DarwinInitializationSettings();
 
-      /// `Linux`
-      final initializationSettingsLinux = LinuxInitializationSettings(
-        defaultActionName: 'Promaja',
-        defaultIcon: AssetsLinuxIcon(PromajaIcons.icon),
-      );
-
       /// Initialization settings
-      final initializationSettings = InitializationSettings(
+      const initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
         iOS: initializationSettingsDarwin,
         macOS: initializationSettingsDarwin,
-        linux: initializationSettingsLinux,
       );
 
       final initialized = await flutterLocalNotificationsPlugin?.initialize(
@@ -218,13 +210,10 @@ class NotificationService {
         categoryIdentifier: 'promaja_category_id',
       );
 
-      const linuxNotificationDetails = LinuxNotificationDetails();
-
       final notificationDetails = NotificationDetails(
         android: androidNotificationDetails,
         iOS: iosNotificationDetails,
         macOS: macOSNotificationDetails,
-        linux: linuxNotificationDetails,
       );
 
       final payload = NotificationPayload(

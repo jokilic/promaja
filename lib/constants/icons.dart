@@ -1,9 +1,11 @@
 class PromajaIcons {
   static const icon = 'assets/icons/icon.png';
+
   static const globe = 'assets/icons/globe.png';
   static const temperature = 'assets/icons/temperature.png';
   static const list = 'assets/icons/list.png';
   static const settings = 'assets/icons/settings.png';
+
   static const search = 'assets/icons/search.png';
   static const location = 'assets/icons/location.png';
   static const umbrella = 'assets/icons/umbrella.png';

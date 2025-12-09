@@ -128,14 +128,14 @@ class PromajaNavigationBar extends ConsumerWidget {
         NavigationDestination(
           icon: Image.asset(
             PromajaIcons.globe,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white.withValues(alpha: 0.15),
           ),
           selectedIcon: Image.asset(
             PromajaIcons.globe,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white,
           ),
           label: '',
@@ -147,14 +147,14 @@ class PromajaNavigationBar extends ConsumerWidget {
         NavigationDestination(
           icon: Image.asset(
             PromajaIcons.temperature,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white.withValues(alpha: 0.15),
           ),
           selectedIcon: Image.asset(
             PromajaIcons.temperature,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white,
           ),
           label: '',
@@ -166,14 +166,14 @@ class PromajaNavigationBar extends ConsumerWidget {
         NavigationDestination(
           icon: Image.asset(
             PromajaIcons.list,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white.withValues(alpha: 0.15),
           ),
           selectedIcon: Image.asset(
             PromajaIcons.list,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white,
           ),
           label: '',
@@ -185,14 +185,14 @@ class PromajaNavigationBar extends ConsumerWidget {
         NavigationDestination(
           icon: Image.asset(
             PromajaIcons.settings,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white.withValues(alpha: 0.15),
           ),
           selectedIcon: Image.asset(
             PromajaIcons.settings,
-            height: 20,
-            width: 20,
+            height: 22,
+            width: 22,
             color: PromajaColors.white,
           ),
           label: '',
