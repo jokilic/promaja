@@ -10,12 +10,12 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../generated/codegen_loader.g.dart';
 import '../services/api_service.dart';
-import '../services/background_fetch_service.dart';
 import '../services/dio_service.dart';
 import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/logger_service.dart';
 import '../services/notification_service.dart';
+import '../services/work_manager_service.dart';
 
 /// Initialize services & pass `container`
 Future<({ProviderContainer? container, String? error})?> initializeServices() async {
@@ -34,7 +34,7 @@ Future<({ProviderContainer? container, String? error})?> initializeServices() as
           ..read(dioProvider);
 
     if (isMobile) {
-      await container.read(backgroundFetchInitProvider.future);
+      await container.read(workManagerInitProvider.future);
     }
 
     final hive = container.read(hiveProvider.notifier);
