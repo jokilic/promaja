@@ -157,7 +157,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               SettingsListTile(
                 onTap: () => openUrlExternalBrowser(
                   context,
-                  url: 'mailto://neksuses@gmail.com?subject=${'Regarding Promaja...'}',
+                  url: 'mailto:neksuses@gmail.com?subject=${'Regarding Promaja...'}',
                 ),
                 icon: PromajaIcons.arrow,
                 title: 'contactTitle'.tr(),
