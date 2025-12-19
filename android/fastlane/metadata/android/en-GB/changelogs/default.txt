@@ -1,2 +1,4 @@
 * Migrate to workmanager for background tasks
+* Small padding update in WeatherCardSummary
+* Bit bigger navigation icons
 * Upgrade dependencies
