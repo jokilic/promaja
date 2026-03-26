@@ -97,7 +97,7 @@ class NotificationService {
       );
 
       final initialized = await flutterLocalNotificationsPlugin?.initialize(
-        initializationSettings,
+        settings: initializationSettings,
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
         onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
       );
@@ -222,10 +222,10 @@ class NotificationService {
       ).toJson();
 
       await flutterLocalNotificationsPlugin?.show(
-        notificationType.index,
-        title,
-        text,
-        notificationDetails,
+        id: notificationType.index,
+        title: title,
+        body: text,
+        notificationDetails: notificationDetails,
         payload: payload,
       );
     } catch (e) {
