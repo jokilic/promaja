@@ -69,17 +69,17 @@ flutter:
   fonts:
     - family: ProductSans
       fonts:
-        - asset: assets/ProductSans/ProductSans-Thin.ttf
+        - asset: assets/fonts/ProductSans-Thin.ttf
           weight: 100
-        - asset: assets/ProductSans/ProductSans-Light.ttf
+        - asset: assets/fonts/ProductSans-Light.ttf
           weight: 300
-        - asset: assets/ProductSans/ProductSans-Regular.ttf
+        - asset: assets/fonts/ProductSans-Regular.ttf
           weight: 500
-        - asset: assets/ProductSans/ProductSans-Medium.ttf
+        - asset: assets/fonts/ProductSans-Medium.ttf
           weight: 600
-        - asset: assets/ProductSans/ProductSans-Bold.ttf
+        - asset: assets/fonts/ProductSans-Bold.ttf
           weight: 700
-        - asset: assets/ProductSans/ProductSans-Black.ttf
+        - asset: assets/fonts/ProductSans-Black.ttf
           weight: 900
 
 # Run code generation - `dart run build_runner build -d`
