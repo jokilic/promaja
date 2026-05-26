@@ -103,7 +103,7 @@ void runErrorApp({required String error}) => runApp(
       ),
     ),
     theme: ThemeData(
-      fontFamily: 'Jost',
+      fontFamily: 'ProductSans',
       scaffoldBackgroundColor: PromajaColors.black,
       canvasColor: PromajaColors.black,
       colorScheme: const ColorScheme.dark(
@@ -130,7 +130,7 @@ class PromajaApp extends ConsumerWidget {
         home: ref.watch(screenProvider),
         onGenerateTitle: (_) => 'appNameString'.tr(),
         theme: ThemeData(
-          fontFamily: 'Jost',
+          fontFamily: 'ProductSans',
           scaffoldBackgroundColor: PromajaColors.black,
           canvasColor: PromajaColors.black,
           colorScheme: const ColorScheme.dark(

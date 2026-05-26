@@ -67,14 +67,20 @@ flutter:
     - assets/translations/
     - assets/weather/
   fonts:
-    - family: Jost
+    - family: ProductSans
       fonts:
-        - asset: assets/fonts/Jost-500.ttf
+        - asset: assets/ProductSans/ProductSans-Thin.ttf
+          weight: 100
+        - asset: assets/ProductSans/ProductSans-Light.ttf
+          weight: 300
+        - asset: assets/ProductSans/ProductSans-Regular.ttf
           weight: 500
-        - asset: assets/fonts/Jost-600.ttf
+        - asset: assets/ProductSans/ProductSans-Medium.ttf
           weight: 600
-        - asset: assets/fonts/Jost-700.ttf
+        - asset: assets/ProductSans/ProductSans-Bold.ttf
           weight: 700
+        - asset: assets/ProductSans/ProductSans-Black.ttf
+          weight: 900
 
 # Run code generation - `dart run build_runner build -d`
 
