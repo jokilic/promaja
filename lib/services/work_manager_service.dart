@@ -34,7 +34,10 @@ final workManagerInitProvider = FutureProvider<void>(
     await NativeWorkManager.enqueue(
       taskId: promajaBackgroundTaskId,
       trigger: const TaskTrigger.periodic(
-        Duration(hours: 1),
+        // TODO: Remove after testing
+        Duration(minutes: 15),
+        // Duration(hours: 1),
+        // flexInterval: Duration(minutes: 15),
       ),
       worker: DartWorker(
         callbackId: promajaBackgroundWorkerId,
