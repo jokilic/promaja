@@ -7,45 +7,16 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
-import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
-import 'widgets/notification_dialog.dart';
 
-class NotificationScreen extends ConsumerStatefulWidget {
+class NotificationScreen extends ConsumerWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NotificationScreenState();
-}
-
-class _NotificationScreenState extends ConsumerState<NotificationScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    /// Show notification dialog if necessary
-    if (ref.read(settingsProvider.notifier).showNotificationDialog) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => showDialog(
-          context: context,
-          barrierColor: PromajaColors.black.withValues(alpha: 0.6),
-          barrierDismissible: false,
-          builder: (context) => NotificationDialog(
-            onPressed: () {
-              ref.read(hiveProvider.notifier).addNotificationDialogShownToBox();
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(

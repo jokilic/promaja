@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:native_workmanager/native_workmanager.dart';
@@ -22,6 +23,7 @@ final workManagerInitProvider = FutureProvider<void>(
   (_) async {
     /// Initialize [NativeWorkManager]
     await NativeWorkManager.initialize(
+      debugMode: kDebugMode,
       dartWorkers: {
         promajaBackgroundWorkerId: promajaBackgroundCallback,
       },
@@ -63,10 +65,13 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
 
     /// Everything initialized successfully
     if (initialization?.container != null) {
+      // TODO: Remove after testing
+      await initialization!.container!.read(notificationProvider).testNotification();
+
       ///
       /// Notifications
       ///
-      await initialization!.container!.read(notificationProvider).handleNotifications();
+      await initialization.container!.read(notificationProvider).handleNotifications();
 
       ///
       /// Widget
