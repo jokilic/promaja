@@ -86,7 +86,7 @@ class ListCards extends ConsumerWidget {
       ///
       Flexible(
         child: ReorderableListView.builder(
-          onReorder: (oldIndex, newIndex) {
+          onReorderItem: (oldIndex, newIndex) {
             var index = newIndex;
 
             if (index > oldIndex) {
