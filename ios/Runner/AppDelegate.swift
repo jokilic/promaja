@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import flutter_local_notifications
+import native_workmanager
 
 
 @main
@@ -24,5 +25,16 @@ import flutter_local_notifications
 
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  override func application(
+    _ application: UIApplication,
+    handleEventsForBackgroundURLSession identifier: String,
+    completionHandler: @escaping () -> Void
+  ) {
+    NativeWorkmanagerPlugin.handleBackgroundURLSession(
+      identifier: identifier,
+      completionHandler: completionHandler
+    )
   }
 }

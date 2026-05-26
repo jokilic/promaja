@@ -18,7 +18,9 @@ import '../services/notification_service.dart';
 import '../services/work_manager_service.dart';
 
 /// Initialize services & pass `container`
-Future<({ProviderContainer? container, String? error})?> initializeServices() async {
+Future<({ProviderContainer? container, String? error})?> initializeServices({
+  bool initializeBackgroundTasks = true,
+}) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   try {
@@ -33,7 +35,7 @@ Future<({ProviderContainer? container, String? error})?> initializeServices() as
           ..read(loggerProvider)
           ..read(dioProvider);
 
-    if (isMobile) {
+    if (isMobile && initializeBackgroundTasks) {
       await container.read(workManagerInitProvider.future);
     }
 

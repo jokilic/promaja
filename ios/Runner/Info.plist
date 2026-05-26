@@ -4,7 +4,8 @@
 	<dict>
 		<key>BGTaskSchedulerPermittedIdentifiers</key>
 		<array>
-			<string>com.transistorsoft.fetch</string>
+			<string>dev.brewkits.native_workmanager.refresh</string>
+			<string>dev.brewkits.native_workmanager.task</string>
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
