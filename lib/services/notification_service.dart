@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/durations.dart';
 import '../main.dart';
@@ -19,7 +18,7 @@ import '../models/settings/notification/notification_type.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../models/weather/response_forecast_weather.dart';
 import '../screens/cards/cards_notifiers.dart';
-import '../util/initialization.dart';
+import '../util/dependencies.dart';
 import '../util/weather.dart';
 import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
@@ -30,28 +29,15 @@ import 'logger_service.dart';
 /// Service which initializes `Notifications`
 /// Used for showing notifications on the phone
 ///
-
-final notificationProvider = Provider<NotificationService>(
-  (ref) => NotificationService(
-    logger: ref.watch(loggerProvider),
-    hive: ref.watch(hiveProvider.notifier),
-    api: ref.watch(apiProvider),
-    ref: ref,
-  ),
-  name: 'NotificationProvider',
-);
-
 class NotificationService {
   final LoggerService logger;
   final HiveService hive;
   final APIService api;
-  final Ref ref;
 
   NotificationService({
     required this.logger,
     required this.hive,
     required this.api,
-    required this.ref,
   });
 
   ///
@@ -564,7 +550,7 @@ class NotificationService {
               if (ref.read(cardAdditionalControllerProvider).hasClients) {
                 ref.read(cardAdditionalControllerProvider).jumpTo(0);
               }
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.cards.index);
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItem.cards.index);
               await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
               for (var i = 0; i < locationIndex; i++) {
                 ref.read(cardsSwiperControllerProvider).swipe(CardSwiperDirection.right);
@@ -583,7 +569,7 @@ class NotificationService {
 
               /// Go to `ForecastScreen` with proper location
               await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.weather.index);
+              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItem.weather.index);
             }
 
           ///

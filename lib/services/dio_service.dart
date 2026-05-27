@@ -21,23 +21,25 @@ class DioService {
   /// CONSTRUCTOR
   ///
 
-  final LoggerService loggerService;
+  final LoggerService logger;
 
-  DioService(this.loggerService)
-
+  DioService({
+    required this.logger,
+  })
   ///
   /// INIT
   ///
-
   {
-    dio = Dio(
-      BaseOptions(
-        baseUrl: kIsWeb ? Env.cloudflareWorkerUrl : Env.weatherApiBaseUrl,
-        validateStatus: (_) => true,
-      ),
-    )..interceptors.add(
-        DioLoggerInterceptor(loggerService),
-      );
+    dio =
+        Dio(
+            BaseOptions(
+              baseUrl: kIsWeb ? Env.cloudflareWorkerUrl : Env.weatherApiBaseUrl,
+              validateStatus: (_) => true,
+            ),
+          )
+          ..interceptors.add(
+            DioLoggerInterceptor(logger),
+          );
   }
 
   ///

@@ -4,120 +4,85 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stack_trace/stack_trace.dart';
+import 'package:watch_it/watch_it.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
+import 'services/screen_service.dart';
+import 'util/dependencies.dart';
 import 'util/display_mode.dart';
-import 'util/initialization.dart';
 import 'widgets/promaja_error_widget.dart';
-import 'widgets/promaja_navigation_bar.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  await runZonedGuarded(
-    () async {
-      try {
-        /// Initialize Flutter related tasks
-        final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  /// Initialize Flutter related tasks
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-        /// Keep splash until first data is fetched
-        FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  /// Keep splash until first data is fetched
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-        /// Remove splash if data is fetching more than 5 seconds
-        Timer(
-          const Duration(seconds: 5),
-          FlutterNativeSplash.remove,
-        );
+  /// Remove splash if data is fetching more than 5 seconds
+  Timer(
+    const Duration(seconds: 5),
+    FlutterNativeSplash.remove,
+  );
 
-        /// Override the default error widget
-        ErrorWidget.builder = (details) => PromajaErrorWidget(
-          error: details.exceptionAsString(),
-        );
+  /// Initialize everything before starting app
+  await initializeBeforeAppStart();
 
-        /// Parsing of [StackTrace]
-        FlutterError.demangleStackTrace = (stack) {
-          if (stack is Trace) {
-            return stack.vmTrace;
-          }
-          if (stack is Chain) {
-            return stack.toTrace().vmTrace;
-          }
-          return stack;
-        };
-
-        /// Make sure the orientation is only `portrait`
-        await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp],
-        );
-
-        /// Use `edge-to-edge` display
-        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-        /// Set refresh rate to high
-        await setDisplayMode();
-
-        /// Initialize [EasyLocalization]
-        await initializeLocalization();
-
-        /// Initialize services
-        final initialization = await initializeServices();
-
-        if (initialization?.container != null) {
-          /// Run [Promaja]
-          runApp(
-            UncontrolledProviderScope(
-              container: initialization!.container!,
-              child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.light,
-                  statusBarBrightness: Brightness.dark,
-                  systemNavigationBarColor: PromajaColors.black,
-                  systemNavigationBarIconBrightness: Brightness.light,
-                ),
-                child: PromajaApp(),
-              ),
-            ),
-          );
-        } else {
-          runErrorApp(error: 'main() -> initialization -> ${initialization?.error}');
-        }
-      } catch (e) {
-        runErrorApp(error: 'main() -> catch -> $e');
-      }
-    },
-    (error, stack) {
-      runErrorApp(error: 'main() -> runZonedGuarded() -> $error');
-    },
+  /// Run `Promaja`
+  runApp(
+    AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: PromajaColors.black,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+      child: PromajaApp(),
+    ),
   );
 }
 
-void runErrorApp({required String error}) => runApp(
-  MaterialApp(
-    home: Scaffold(
-      body: PromajaErrorWidget(
-        error: error,
-      ),
-    ),
-    theme: ThemeData(
-      fontFamily: 'ProductSans',
-      scaffoldBackgroundColor: PromajaColors.black,
-      canvasColor: PromajaColors.black,
-      colorScheme: const ColorScheme.dark(
-        surface: PromajaColors.black,
-      ),
-    ),
-  ),
-);
+/// Initialize all functionality before starting app
+Future<void> initializeBeforeAppStart() async {
+  /// Override the default error widget
+  ErrorWidget.builder = (details) => PromajaErrorWidget(
+    error: details.exceptionAsString(),
+  );
 
-class PromajaApp extends ConsumerWidget {
+  /// Make sure the orientation is only `portrait`
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
+
+  /// Use `edge-to-edge` display
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+  );
+
+  /// Set refresh rate to high
+  await setDisplayMode();
+
+  /// Initialize services
+  await initializeServices();
+}
+
+class PromajaApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) => EasyLocalization(
+  Widget build(BuildContext context) => PromajaWidget();
+}
+
+class PromajaWidget extends WatchingWidget {
+  @override
+  Widget build(BuildContext context) => EasyLocalization(
     useOnlyLangCode: true,
-    supportedLocales: const [Locale('hr'), Locale('en')],
+    supportedLocales: const [
+      Locale('hr'),
+      Locale('en'),
+    ],
     path: 'assets/translations',
     fallbackLocale: const Locale('hr'),
     assetLoader: const CodegenLoader(),
@@ -127,7 +92,9 @@ class PromajaApp extends ConsumerWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: ref.watch(screenProvider),
+        home: getIt.get<ScreenService>().getProperWidget(
+          watchIt<ScreenService>().value,
+        ),
         onGenerateTitle: (_) => 'appNameString'.tr(),
         theme: ThemeData(
           fontFamily: 'ProductSans',

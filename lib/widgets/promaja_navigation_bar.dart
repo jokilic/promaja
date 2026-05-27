@@ -1,203 +1,111 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../constants/icons.dart';
-import '../models/settings/appearance/initial_section.dart';
-import '../screens/cards/cards_notifiers.dart';
-import '../screens/cards/cards_screen.dart';
-import '../screens/list/list_screen.dart';
-import '../screens/settings/settings_screen.dart';
-import '../screens/weather/weather_notifiers.dart';
-import '../screens/weather/weather_screen.dart';
-import '../services/hive_service.dart';
-import '../services/logger_service.dart';
+import '../services/screen_service.dart';
+import '../util/dependencies.dart';
 import '../util/spacing.dart';
 
-final navigationBarIndexProvider = NotifierProvider<PromajaNavigationBarController, int>(
-  PromajaNavigationBarController.new,
-  name: 'NavigationBarIndexProvider',
-);
+class PromajaNavigationBar extends WatchingWidget {
+  @override
+  Widget build(BuildContext context) {
+    final navigationBarItem = watchIt<ScreenService>().value;
 
-final screenProvider = Provider.autoDispose<Widget>(
-  (ref) {
-    final navigationBarIndex = ref.watch(navigationBarIndexProvider);
-
-    return switch (navigationBarIndex) {
-      0 => CardsScreen(),
-      1 => WeatherScreen(
-        originalLocation: ref.watch(activeWeatherProvider),
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(32),
       ),
-      2 => ListScreen(),
-      3 => SettingsScreen(),
-      _ => ListScreen(),
-    };
-  },
-  name: 'ScreenProvider',
-);
+      child: NavigationBar(
+        height: navigationBarHeight,
+        backgroundColor: PromajaColors.black,
+        elevation: 0,
+        indicatorColor: Colors.transparent,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        animationDuration: PromajaDurations.navigationAnimation,
+        selectedIndex: navigationBarItem.index,
+        onDestinationSelected: (newIndex) => getIt.get<ScreenService>().changeNavigationBarItem(
+          NavigationBarItem.values[newIndex],
+        ),
+        destinations: [
+          ///
+          /// CARDS
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.globe,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white.withValues(alpha: 0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.globe,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
 
-enum NavigationBarItems {
-  cards,
-  weather,
-  list,
-  settings,
-}
+          ///
+          /// WEATHER
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.temperature,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white.withValues(alpha: 0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.temperature,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
 
-class PromajaNavigationBarController extends Notifier<int> {
-  late final logger = ref.read(loggerProvider);
-  late final hiveService = ref.read(hiveProvider.notifier);
+          ///
+          /// LIST
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.list,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white.withValues(alpha: 0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.list,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
 
-  @override
-  int build() => getInitialNavigationBarIndex();
-
-  ///
-  /// METHODS
-  ///
-
-  /// Returns proper initial index, depending on locations and previously opened screen
-  int getInitialNavigationBarIndex() {
-    final indexValue = hiveService.getActiveNavigationValueIndexFromBox();
-
-    /// No locations, go to [ListScreen]
-    if (hiveService.getLocationsFromBox().isEmpty) {
-      return NavigationBarItems.list.index;
-    }
-
-    /// Get initial section
-    final initialSection = hiveService.getPromajaSettingsFromBox().appearance.initialSection;
-
-    /// Initial section is not `last opened`, open the active one
-    if (initialSection != InitialSection.lastOpened) {
-      return switch (initialSection) {
-        InitialSection.current => 0,
-        InitialSection.forecast => 1,
-        InitialSection.list => 2,
-        InitialSection.settings => 3,
-        InitialSection.lastOpened => 4,
-      };
-    }
-
-    /// Initial section is set to `last opened`, open section from [Hive]
-    if (initialSection == InitialSection.lastOpened) {
-      /// Return currently opened screen or `ListScreen` if there's no stored `index`
-      return indexValue ?? 3;
-    }
-
-    /// Return `ListScreen`
-    return 3;
+          ///
+          /// SETTINGS
+          ///
+          NavigationDestination(
+            icon: Image.asset(
+              PromajaIcons.settings,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white.withValues(alpha: 0.15),
+            ),
+            selectedIcon: Image.asset(
+              PromajaIcons.settings,
+              height: 22,
+              width: 22,
+              color: PromajaColors.white,
+            ),
+            label: '',
+          ),
+        ],
+      ),
+    );
   }
-
-  /// Triggered when navigation bar needs changing
-  Future<void> changeNavigationBarIndex(int newIndex) async {
-    final newState = hiveService.getLocationsFromBox().isEmpty ? NavigationBarItems.list.index : NavigationBarItems.values[newIndex].index;
-
-    if (state != newState) {
-      state = newState;
-      await hiveService.addActiveNavigationValueIndexToBox(index: newIndex);
-    }
-  }
-}
-
-class PromajaNavigationBar extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) => ClipRRect(
-    borderRadius: const BorderRadius.vertical(
-      top: Radius.circular(32),
-    ),
-    child: NavigationBar(
-      height: navigationBarHeight,
-      backgroundColor: PromajaColors.black,
-      elevation: 0,
-      indicatorColor: Colors.transparent,
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-      animationDuration: PromajaDurations.navigationAnimation,
-      selectedIndex: ref.watch(navigationBarIndexProvider),
-      onDestinationSelected: (newIndex) {
-        if (ref.read(navigationBarIndexProvider) != newIndex) {
-          ref.read(cardIndexProvider.notifier).reset();
-          ref.read(weatherCardIndexProvider.notifier).reset();
-
-          ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItems.values[newIndex].index);
-        }
-      },
-      destinations: [
-        ///
-        /// CARDS
-        ///
-        NavigationDestination(
-          icon: Image.asset(
-            PromajaIcons.globe,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white.withValues(alpha: 0.15),
-          ),
-          selectedIcon: Image.asset(
-            PromajaIcons.globe,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white,
-          ),
-          label: '',
-        ),
-
-        ///
-        /// WEATHER
-        ///
-        NavigationDestination(
-          icon: Image.asset(
-            PromajaIcons.temperature,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white.withValues(alpha: 0.15),
-          ),
-          selectedIcon: Image.asset(
-            PromajaIcons.temperature,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white,
-          ),
-          label: '',
-        ),
-
-        ///
-        /// LIST
-        ///
-        NavigationDestination(
-          icon: Image.asset(
-            PromajaIcons.list,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white.withValues(alpha: 0.15),
-          ),
-          selectedIcon: Image.asset(
-            PromajaIcons.list,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white,
-          ),
-          label: '',
-        ),
-
-        ///
-        /// SETTINGS
-        ///
-        NavigationDestination(
-          icon: Image.asset(
-            PromajaIcons.settings,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white.withValues(alpha: 0.15),
-          ),
-          selectedIcon: Image.asset(
-            PromajaIcons.settings,
-            height: 22,
-            width: 22,
-            color: PromajaColors.white,
-          ),
-          label: '',
-        ),
-      ],
-    ),
-  );
 }

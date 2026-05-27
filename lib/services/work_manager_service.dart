@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:native_workmanager/native_workmanager.dart';
 
-import '../util/initialization.dart';
+import '../util/dependencies.dart';
 import 'home_widget_service.dart';
 import 'notification_service.dart';
 
