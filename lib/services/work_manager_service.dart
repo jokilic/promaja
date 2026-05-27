@@ -34,17 +34,14 @@ final workManagerInitProvider = FutureProvider<void>(
     await NativeWorkManager.enqueue(
       taskId: promajaBackgroundTaskId,
       trigger: const TaskTrigger.periodic(
-        // TODO: Remove after testing
-        Duration(minutes: 15),
-        // Duration(hours: 1),
-        // flexInterval: Duration(minutes: 15),
+        Duration(hours: 1),
+        flexInterval: Duration(minutes: 15),
       ),
       worker: DartWorker(
         callbackId: promajaBackgroundWorkerId,
         autoDispose: true,
       ),
       constraints: Constraints.networkRequired,
-      existingPolicy: ExistingTaskPolicy.keep,
       tag: promajaBackgroundTaskTag,
     );
   },
@@ -68,13 +65,10 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
 
     /// Everything initialized successfully
     if (initialization?.container != null) {
-      // TODO: Remove after testing
-      await initialization!.container!.read(notificationProvider).testNotification();
-
       ///
       /// Notifications
       ///
-      await initialization.container!.read(notificationProvider).handleNotifications();
+      await initialization!.container!.read(notificationProvider).handleNotifications();
 
       ///
       /// Widget

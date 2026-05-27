@@ -509,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.5"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: "568d62f0e68666fb5d95519743b3c24a34c7f19d834b0658c46e26d778461f66"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.1"
   glob:
     dependency: transitive
     description:
@@ -685,6 +693,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  listen_it:
+    dependency: transitive
+    description:
+      name: listen_it
+      sha256: "4cfc307e943a25c7b500d173523dcebe966b0a323eaa07bd3769f563af19f065"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.5"
   logger:
     dependency: "direct main"
     description:
@@ -1242,6 +1258,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "15.2.0"
+  watch_it:
+    dependency: "direct main"
+    description:
+      name: watch_it
+      sha256: "0449f08187ba70833dbca64fd9d7f098a53d4bd27ab5e9f49ae44b4c3a7577fa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.2"
   watcher:
     dependency: transitive
     description:
