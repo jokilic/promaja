@@ -1,83 +1,71 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:native_workmanager/native_workmanager.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../util/initialization.dart';
 import 'home_widget_service.dart';
 import 'notification_service.dart';
 
 ///
-/// Initializes `NativeWorkManager`
+/// Initializes `WorkManager`
 /// Used for scheduling tasks
 ///
 
-const promajaBackgroundTaskId = 'promaja_background_task';
-const promajaBackgroundWorkerId = 'promaja_background_worker';
-const promajaBackgroundTaskTag = 'promaja_background_tag';
-
-/// Initialization of [NativeWorkManager]
+/// Initialization of [WorkManager]
 final workManagerInitProvider = FutureProvider<void>(
   (_) async {
-    /// Initialize [NativeWorkManager]
-    await NativeWorkManager.initialize(
-      debugMode: kDebugMode,
-      dartWorkers: {
-        promajaBackgroundWorkerId: promajaBackgroundCallback,
-      },
-      registerPlugins: true,
-    );
+    /// Initialize [Workmanager]
+    await Workmanager().initialize(callbackDispatcher);
 
     /// Register periodic task
-    await NativeWorkManager.enqueue(
-      taskId: promajaBackgroundTaskId,
-      trigger: const TaskTrigger.periodic(
-        Duration(hours: 1),
-        flexInterval: Duration(minutes: 15),
+    await Workmanager().registerPeriodicTask(
+      'promaja_background_task',
+      'promaja_background_tag',
+      frequency: const Duration(hours: 1),
+      constraints: Constraints(
+        networkType: NetworkType.connected,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
       ),
-      worker: DartWorker(
-        callbackId: promajaBackgroundWorkerId,
-        autoDispose: true,
-      ),
-      constraints: Constraints.networkRequired,
-      tag: promajaBackgroundTaskTag,
     );
   },
-  name: 'NativeWorkManagerInitProvider',
+  name: 'WorkManagerInitProvider',
 );
 
 @pragma('vm:entry-point')
-Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
-  try {
-    /// Initialize Flutter related tasks
-    WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
+void callbackDispatcher() => Workmanager().executeTask(
+  (_, __) async {
+    try {
+      /// Initialize Flutter related tasks
+      WidgetsFlutterBinding.ensureInitialized();
+      DartPluginRegistrant.ensureInitialized();
 
-    /// Initialize [EasyLocalization]
-    await initializeLocalization();
+      /// Initialize [EasyLocalization]
+      await initializeLocalization();
 
-    /// Initialize services without re-registering the periodic background task.
-    final initialization = await initializeServices(
-      initializeBackgroundTasks: false,
-    );
+      /// Initialize services
+      final initialization = await initializeServices();
 
-    /// Everything initialized successfully
-    if (initialization?.container != null) {
-      ///
-      /// Notifications
-      ///
-      await initialization!.container!.read(notificationProvider).handleNotifications();
+      /// Everything initialized successfully
+      if (initialization?.container != null) {
+        ///
+        /// Notifications
+        ///
+        await initialization!.container!.read(notificationProvider).handleNotifications();
 
-      ///
-      /// Widget
-      ///
-      await initialization.container!.read(homeWidgetProvider).handleWidget(languageCode: 'en');
+        ///
+        /// Widget
+        ///
+        await initialization.container!.read(homeWidgetProvider).handleWidget(languageCode: 'en');
+      }
+
+      return Future.value(true);
+    } catch (_) {
+      return Future.value(false);
     }
-
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
+  },
+);

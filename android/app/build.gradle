@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.josipkilic.promaja"
     compileSdkVersion 36
-    ndkVersion "28.2.13676358"
+    ndkVersion "28.0.12433566"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         applicationId "com.josipkilic.promaja"
-        minSdkVersion 26
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
