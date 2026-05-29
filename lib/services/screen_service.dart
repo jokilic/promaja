@@ -6,7 +6,6 @@ import '../screens/list/list_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_screen.dart';
 import 'hive_service.dart';
-import 'logger_service.dart';
 
 enum NavigationBarItem {
   cards,
@@ -16,11 +15,9 @@ enum NavigationBarItem {
 }
 
 class ScreenService extends ValueNotifier<NavigationBarItem> {
-  final LoggerService logger;
   final HiveService hive;
 
   ScreenService({
-    required this.logger,
     required this.hive,
   }) : super(NavigationBarItem.list) {
     value = getInitialNavigationBarItem();
@@ -30,11 +27,13 @@ class ScreenService extends ValueNotifier<NavigationBarItem> {
   /// METHODS
   ///
 
-  /// Returns proper [Widget] and updates `state`, depending on [NavigationBarItem]
+  /// Returns proper [Widget], depending on [NavigationBarItem]
   Widget getProperWidget(NavigationBarItem item) {
     final newScreen = switch (item) {
       NavigationBarItem.cards => CardsScreen(),
-      NavigationBarItem.weather => WeatherScreen(),
+      NavigationBarItem.weather => WeatherScreen(
+        originalLocation: hive.getActiveLocation(),
+      ),
       NavigationBarItem.list => ListScreen(),
       NavigationBarItem.settings => SettingsScreen(),
     };

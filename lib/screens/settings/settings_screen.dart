@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
@@ -18,12 +17,12 @@ import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
 import 'widgets/settings_list_tile.dart';
 
-class SettingsScreen extends ConsumerStatefulWidget {
+class SettingsScreen extends StatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsScreenState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
@@ -121,35 +120,33 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 subtitle: 'unitsSubtitle'.tr(),
               ),
 
-              if (!kIsWeb) ...[
-                ///
-                /// NOTIFICATION
-                ///
-                SettingsListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => NotificationScreen(),
-                    ),
+              ///
+              /// NOTIFICATION
+              ///
+              SettingsListTile(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
                   ),
-                  icon: PromajaIcons.arrow,
-                  title: 'notificationTitle'.tr(),
-                  subtitle: 'notificationSubtitle'.tr(),
                 ),
+                icon: PromajaIcons.arrow,
+                title: 'notificationTitle'.tr(),
+                subtitle: 'notificationSubtitle'.tr(),
+              ),
 
-                ///
-                /// WIDGET
-                ///
-                SettingsListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => WidgetScreen(),
-                    ),
+              ///
+              /// WIDGET
+              ///
+              SettingsListTile(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => WidgetScreen(),
                   ),
-                  icon: PromajaIcons.arrow,
-                  title: 'widgetTitle'.tr(),
-                  subtitle: 'widgetSubtitle'.tr(),
                 ),
-              ],
+                icon: PromajaIcons.arrow,
+                title: 'widgetTitle'.tr(),
+                subtitle: 'widgetSubtitle'.tr(),
+              ),
 
               ///
               /// CONTACT

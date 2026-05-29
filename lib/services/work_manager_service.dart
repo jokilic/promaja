@@ -6,21 +6,9 @@ import 'package:native_workmanager/native_workmanager.dart';
 
 import '../util/dependencies.dart';
 import 'home_widget_service.dart';
-import 'logger_service.dart';
 import 'notification_service.dart';
 
-///
-/// Initializes `NativeWorkManager`
-/// Used for scheduling tasks
-///
-
 class WorkManagerService {
-  final LoggerService logger;
-
-  WorkManagerService({
-    required this.logger,
-  });
-
   ///
   /// VARIABLES
   ///

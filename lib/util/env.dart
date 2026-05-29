@@ -10,6 +10,5 @@ abstract class Env {
   @EnviedField(varName: 'WEATHER_API_BASE_URL', obfuscate: true)
   static final String weatherApiBaseUrl = _Env.weatherApiBaseUrl;
 
-  @EnviedField(varName: 'CLOUDFLARE_WORKER_URL', obfuscate: true)
-  static final String cloudflareWorkerUrl = _Env.cloudflareWorkerUrl;
+  // TODO: Rerun code generation
 }

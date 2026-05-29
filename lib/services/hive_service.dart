@@ -17,7 +17,6 @@ import '../models/settings/units/unit_settings.dart';
 import '../models/settings/widget/weather_type.dart';
 import '../models/settings/widget/widget_settings.dart';
 import '../util/path.dart';
-import 'logger_service.dart';
 
 class HiveService extends Notifier<List<Location>> {
   late final logger = ref.read(loggerProvider);
@@ -204,6 +203,16 @@ class HiveService extends Notifier<List<Location>> {
   }) async {
     state = [...state, location];
     await locationsBox.put(index, location);
+  }
+
+  /// Gets current active location from [Hive]
+  Location? getActiveLocation() {
+    final locations = getLocationsFromBox();
+    final activeLocationIndex = getActiveLocationIndexFromBox();
+
+    final activeLocation = locations.elementAtOrNull(activeLocationIndex);
+
+    return activeLocation;
   }
 
   /// Called to get all [Location] values from [Hive]

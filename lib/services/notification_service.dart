@@ -23,19 +23,12 @@ import '../util/weather.dart';
 import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
-import 'logger_service.dart';
 
-///
-/// Service which initializes `Notifications`
-/// Used for showing notifications on the phone
-///
 class NotificationService {
-  final LoggerService logger;
   final HiveService hive;
   final APIService api;
 
   NotificationService({
-    required this.logger,
     required this.hive,
     required this.api,
   });
@@ -91,7 +84,7 @@ class NotificationService {
       return initialized ?? false;
     } catch (e) {
       final error = 'InitializeNotifications -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
       return false;
     }
   }
@@ -135,19 +128,19 @@ class NotificationService {
       /// Error while granting permissions
       if (permissionsGranted == null) {
         const error = 'RequestNotificationPermissions -> Notification platform different than Android, iOS or MacOS';
-        logger.e(error);
+        debugPrint(error);
         return false;
       }
 
       if (!permissionsGranted) {
         const error = 'RequestNotificationPermissions -> Notification permissions denied';
-        logger.e(error);
+        debugPrint(error);
       }
 
       return permissionsGranted;
     } catch (e) {
       final error = 'RequestNotificationPermissions -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
 
       return false;
     }
@@ -159,7 +152,7 @@ class NotificationService {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
       final error = 'CancelNotifications -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -216,7 +209,7 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'ShowNotification -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -242,7 +235,7 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TestNotification -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -368,11 +361,11 @@ class NotificationService {
       /// Location doesn't exist
       else {
         const error = 'HandleNotifications -> Location is null';
-        logger.e(error);
+        debugPrint(error);
       }
     } catch (e) {
       final error = 'HandleNotifications -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -417,7 +410,7 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'TriggerHourlyNotification -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -495,7 +488,7 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
@@ -576,29 +569,30 @@ class NotificationService {
           /// Test notification
           ///
           case NotificationType.test:
-            logger.f('Hello testy test');
+            debugPrint('Hello testy test');
         }
       }
       /// Payload or context is null
       else {
         const error = 'HandlePressedNotification -> Payload or context is null';
-        logger.e(error);
+        debugPrint(error);
       }
     } catch (e) {
       final error = 'HandlePressedNotification -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 
   /// Triggered when the user taps the notification
   Future<void> onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
     try {
+      /// Trigger notification logic
       await handlePressedNotification(
         payload: notificationResponse.payload,
       );
     } catch (e) {
       final error = 'onDidReceiveNotificationResponse -> catch -> $e';
-      logger.e(error);
+      debugPrint(error);
     }
   }
 }
@@ -606,21 +600,23 @@ class NotificationService {
 /// Triggered when a notification is received while the app is terminated
 @pragma('vm:entry-point')
 Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse notificationResponse) async {
-  /// Initialize Flutter related tasks
-  WidgetsFlutterBinding.ensureInitialized();
-  DartPluginRegistrant.ensureInitialized();
+  try {
+    /// Initialize Flutter related tasks
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
 
-  /// Initialize [EasyLocalization]
-  await initializeLocalization();
+    /// Initialize [EasyLocalization]
+    await initializeLocalization();
 
-  /// Initialize services
-  final initialization = await initializeServices();
+    /// Initialize services
+    await initializeServices();
 
-  if (initialization?.container != null) {
-    await initialization!.container!
-        .read(notificationProvider)
-        .handlePressedNotification(
-          payload: notificationResponse.payload,
-        );
+    /// Trigger notification logic
+    await getIt.get<NotificationService>().handlePressedNotification(
+      payload: notificationResponse.payload,
+    );
+  } catch (e) {
+    final error = 'onDidReceiveBackgroundNotificationResponse -> catch -> $e';
+    debugPrint(error);
   }
 }

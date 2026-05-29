@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart' as ref;
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
@@ -14,9 +14,9 @@ import '../settings/settings_notifier.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class WidgetScreen extends ConsumerWidget {
+class WidgetScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(

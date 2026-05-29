@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/colors.dart';
@@ -20,8 +19,8 @@ import 'cards_notifiers.dart';
 import 'widgets/card/card_error.dart';
 import 'widgets/card/card_widget.dart';
 
-class CardsScreen extends ConsumerWidget {
-  void cardSwiped({required int index, required WidgetRef ref}) {
+class CardsScreen extends StatelessWidget {
+  void cardSwiped({required int index}) {
     if (ref.read(cardIndexProvider) != index) {
       ref.read(cardMovingProvider.notifier).moving = false;
       ref.read(cardIndexProvider.notifier).currentIndex = index;
@@ -33,7 +32,7 @@ class CardsScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final index = ref.watch(cardIndexProvider);
     final locations = ref.watch(hiveProvider);
     final cardCount = locations.length;

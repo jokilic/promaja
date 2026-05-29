@@ -1,27 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'hive_service.dart';
-import 'logger_service.dart';
-
-final locationProvider = Provider<LocationService>(
-  (ref) => LocationService(
-    logger: ref.watch(loggerProvider),
-    hive: ref.watch(hiveProvider.notifier),
-  ),
-  name: 'LocationProvider',
-);
-
 class LocationService {
-  final LoggerService logger;
-  final HiveService hive;
-
-  LocationService({
-    required this.logger,
-    required this.hive,
-  });
+  ///
+  /// METHODS
+  ///
 
   /// Determine the current position of the device
   Future<({Position? position, String? error})> getPosition() async {
@@ -35,6 +20,7 @@ class LocationService {
       /// Location services are not enabled, return error
       if (!serviceEnabled) {
         const error = 'GetPosition -> Location services not enabled';
+        debugPrint(error);
         return (position: null, error: error);
       }
 
@@ -48,6 +34,7 @@ class LocationService {
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
           const error = 'GetPosition -> Location permissions denied';
+          debugPrint(error);
           return (position: null, error: error);
         }
       }
@@ -55,6 +42,7 @@ class LocationService {
       /// Permission are denied forever, return error
       if (permission == LocationPermission.deniedForever) {
         const error = 'GetPosition -> Location permissions permanently denied';
+        debugPrint(error);
         return (position: null, error: error);
       }
 
@@ -64,6 +52,7 @@ class LocationService {
       return (position: position, error: null);
     } catch (e) {
       final error = 'GetPosition -> catch -> $e';
+      debugPrint(error);
       return (position: null, error: error);
     }
   }

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
@@ -11,28 +11,12 @@ import '../models/location/location.dart';
 import '../models/weather/response_forecast_weather.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
-import 'dio_service.dart';
-import 'hive_service.dart';
-import 'logger_service.dart';
-
-final apiProvider = Provider<APIService>(
-  (ref) => APIService(
-    logger: ref.watch(loggerProvider),
-    dio: ref.watch(dioProvider).dio,
-    hive: ref.watch(hiveProvider.notifier),
-  ),
-  name: 'APIProvider',
-);
 
 class APIService {
-  final LoggerService logger;
   final Dio dio;
-  final HiveService hive;
 
   APIService({
-    required this.logger,
     required this.dio,
-    required this.hive,
   });
 
   ///
@@ -59,14 +43,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Current weather -> catch -> $e';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -97,14 +84,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -143,14 +133,17 @@ class APIService {
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Search -> catch -> $e';
+      debugPrint(error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -159,12 +152,8 @@ class APIService {
   /// NOTIFICATIONS & WIDGETS
   ///
 
-  ///
   /// Fetches current weather data
-  ///
-  Future<ResponseCurrentWeather?> fetchCurrentWeather({
-    required Location location,
-  }) async {
+  Future<ResponseCurrentWeather?> fetchCurrentWeather({required Location location}) async {
     final response = await getCurrentWeather(
       query: '${location.lat},${location.lon}',
     );
@@ -178,14 +167,8 @@ class APIService {
     return null;
   }
 
-  ///
   /// Fetches forecast weather data
-  ///
-
-  Future<ResponseForecastWeather?> fetchForecastWeather({
-    required Location location,
-    required bool isTomorrow,
-  }) async {
+  Future<ResponseForecastWeather?> fetchForecastWeather({required Location location, required bool isTomorrow}) async {
     final response = await getForecastWeather(
       query: '${location.lat},${location.lon}',
       days: isTomorrow ? 2 : 1,

@@ -7,8 +7,8 @@ import '../constants/colors.dart';
 
 void openUrlExternalBrowser(BuildContext context, {required String? url}) {
   if (url != null) {
-    /// Use `url_launcher` if on web and not Android / iOS
-    if (kIsWeb || (defaultTargetPlatform != TargetPlatform.android && defaultTargetPlatform != TargetPlatform.iOS)) {
+    /// Use `url_launcher` if not Android / iOS
+    if (defaultTargetPlatform != TargetPlatform.android && defaultTargetPlatform != TargetPlatform.iOS) {
       final uri = Uri.tryParse(url);
 
       if (uri != null) {

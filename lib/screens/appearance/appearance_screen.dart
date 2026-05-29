@@ -14,9 +14,9 @@ import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class AppearanceScreen extends ConsumerWidget {
+class AppearanceScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/durations.dart';
 import '../../models/settings/units/temperature_unit.dart';
@@ -10,12 +9,12 @@ import '../../widgets/promaja_navigation_bar.dart';
 import 'widgets/list_cards.dart';
 import 'widgets/list_empty.dart';
 
-class ListScreen extends ConsumerStatefulWidget {
+class ListScreen extends StatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ListScreenState();
+  State<ListScreen> createState() => _ListScreenState();
 }
 
-class _ListScreenState extends ConsumerState<ListScreen> {
+class _ListScreenState extends State<ListScreen> {
   @override
   void initState() {
     super.initState();

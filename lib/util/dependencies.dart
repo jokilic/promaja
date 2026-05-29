@@ -57,20 +57,10 @@ void unRegisterIfNotDisposed<T extends Object>({
 Future<void> initializeServices() async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
-  /// Logger
-  if (!getIt.isRegistered<LoggerService>()) {
-    getIt.registerSingletonAsync(
-      () async => LoggerService(),
-    );
-  }
-
   /// Dio
   if (!getIt.isRegistered<DioService>()) {
     getIt.registerSingletonAsync(
-      () async => DioService(
-        logger: getIt.get<LoggerService>(),
-      ),
-      dependsOn: [LoggerService],
+      () async => DioService(),
     );
   }
 
@@ -89,11 +79,9 @@ Future<void> initializeServices() async {
   if (!getIt.isRegistered<APIService>()) {
     getIt.registerSingletonAsync(
       () async => APIService(
-        logger: getIt.get<LoggerService>(),
         dio: getIt.get<DioService>().dio,
-        hive: getIt.get<HiveService>(),
       ),
-      dependsOn: [LoggerService, DioService, HiveService],
+      dependsOn: [DioService],
     );
   }
 
@@ -101,10 +89,7 @@ Future<void> initializeServices() async {
     /// WorkManager
     if (!getIt.isRegistered<WorkManagerService>()) {
       getIt.registerSingletonAsync(
-        () async => WorkManagerService(
-          logger: getIt.get<LoggerService>(),
-        ),
-        dependsOn: [LoggerService],
+        () async => WorkManagerService(),
       );
     }
 
@@ -113,14 +98,13 @@ Future<void> initializeServices() async {
       getIt.registerSingletonAsync(
         () async {
           final notification = NotificationService(
-            logger: getIt.get<LoggerService>(),
             hive: getIt.get<HiveService>(),
             api: getIt.get<APIService>(),
           );
           await notification.init();
           return notification;
         },
-        dependsOn: [LoggerService, HiveService, APIService],
+        dependsOn: [HiveService, APIService],
       );
     }
 
