@@ -14,7 +14,6 @@ import '../services/dio_service.dart';
 import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/location_service.dart';
-import '../services/logger_service.dart';
 import '../services/notification_service.dart';
 import '../services/screen_service.dart';
 import '../services/work_manager_service.dart';
@@ -112,11 +111,10 @@ Future<void> initializeServices() async {
     if (!getIt.isRegistered<HomeWidgetService>()) {
       getIt.registerSingletonAsync(
         () async => HomeWidgetService(
-          logger: getIt.get<LoggerService>(),
           hive: getIt.get<HiveService>(),
           api: getIt.get<APIService>(),
         ),
-        dependsOn: [LoggerService, HiveService, APIService],
+        dependsOn: [HiveService, APIService],
       );
     }
   }
@@ -124,11 +122,7 @@ Future<void> initializeServices() async {
   /// Location
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerSingletonAsync(
-      () async => LocationService(
-        logger: getIt.get<LoggerService>(),
-        hive: getIt.get<HiveService>(),
-      ),
-      dependsOn: [LoggerService, HiveService],
+      () async => LocationService(),
     );
   }
 
@@ -136,10 +130,9 @@ Future<void> initializeServices() async {
   if (!getIt.isRegistered<ScreenService>()) {
     getIt.registerSingletonAsync(
       () async => ScreenService(
-        logger: getIt.get<LoggerService>(),
         hive: getIt.get<HiveService>(),
       ),
-      dependsOn: [LoggerService, HiveService],
+      dependsOn: [HiveService],
     );
   }
 }

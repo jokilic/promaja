@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -19,7 +18,7 @@ import '../../weather_notifiers.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
-class WeatherCardForecast extends ConsumerWidget {
+class WeatherCardForecast extends StatelessWidget {
   final ScrollController scrollController;
   final Location location;
   final ForecastDayWeather forecast;
@@ -30,7 +29,6 @@ class WeatherCardForecast extends ConsumerWidget {
   final bool showMm;
   final bool showhPa;
   final Function({
-    required WidgetRef ref,
     required HourWeather? activeHourWeather,
     required HourWeather hourWeather,
     required int index,
@@ -53,7 +51,7 @@ class WeatherCardForecast extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final activeHourWeather = ref.watch(activeHourWeatherProvider);
 
     final weatherCode = forecast.day.condition.code;
