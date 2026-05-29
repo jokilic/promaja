@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
@@ -19,11 +18,6 @@ import '../models/settings/widget/weather_type.dart';
 import '../models/settings/widget/widget_settings.dart';
 import '../util/path.dart';
 import 'logger_service.dart';
-
-final hiveProvider = NotifierProvider<HiveService, List<Location>>(
-  HiveService.new,
-  name: 'HiveProvider',
-);
 
 class HiveService extends Notifier<List<Location>> {
   late final logger = ref.read(loggerProvider);

@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:native_workmanager/native_workmanager.dart';
 
 import '../util/dependencies.dart';
 import 'home_widget_service.dart';
+import 'logger_service.dart';
 import 'notification_service.dart';
 
 ///
@@ -14,20 +14,33 @@ import 'notification_service.dart';
 /// Used for scheduling tasks
 ///
 
-const promajaBackgroundTaskId = 'promaja_background_task';
-const promajaBackgroundWorkerId = 'promaja_background_worker';
-const promajaBackgroundTaskTag = 'promaja_background_tag';
+class WorkManagerService {
+  final LoggerService logger;
 
-/// Initialization of [NativeWorkManager]
-final workManagerInitProvider = FutureProvider<void>(
-  (_) async {
+  WorkManagerService({
+    required this.logger,
+  });
+
+  ///
+  /// VARIABLES
+  ///
+
+  final promajaBackgroundTaskId = 'promaja_background_task';
+  final promajaBackgroundWorkerId = 'promaja_background_worker';
+  final promajaBackgroundTaskTag = 'promaja_background_tag';
+
+  ///
+  /// INIT
+  ///
+
+  Future<void> init() async {
     /// Initialize [NativeWorkManager]
     await NativeWorkManager.initialize(
       debugMode: kDebugMode,
+      registerPlugins: true,
       dartWorkers: {
         promajaBackgroundWorkerId: promajaBackgroundCallback,
       },
-      registerPlugins: true,
     );
 
     /// Register periodic task
@@ -44,9 +57,8 @@ final workManagerInitProvider = FutureProvider<void>(
       constraints: Constraints.networkRequired,
       tag: promajaBackgroundTaskTag,
     );
-  },
-  name: 'NativeWorkManagerInitProvider',
-);
+  }
+}
 
 @pragma('vm:entry-point')
 Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
@@ -58,23 +70,19 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
     /// Initialize [EasyLocalization]
     await initializeLocalization();
 
-    /// Initialize services without re-registering the periodic background task.
-    final initialization = await initializeServices(
-      initializeBackgroundTasks: false,
-    );
+    /// Initialize services
+    await initializeServices();
 
-    /// Everything initialized successfully
-    if (initialization?.container != null) {
-      ///
-      /// Notifications
-      ///
-      await initialization!.container!.read(notificationProvider).handleNotifications();
+    ///
+    /// Notifications
+    ///
+    await getIt.get<NotificationService>().handleNotifications();
 
-      ///
-      /// Widget
-      ///
-      await initialization.container!.read(homeWidgetProvider).handleWidget(languageCode: 'en');
-    }
+    ///
+    /// Widget
+    ///
+    // TODO: Perhaps pass `languageCode` from `Map<String, dynamic>? input` if possible
+    await getIt.get<HomeWidgetService>().handleWidget(languageCode: 'en');
 
     return true;
   } catch (_) {

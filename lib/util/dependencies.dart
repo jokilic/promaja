@@ -5,7 +5,6 @@ import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -17,6 +16,7 @@ import '../services/home_widget_service.dart';
 import '../services/location_service.dart';
 import '../services/logger_service.dart';
 import '../services/notification_service.dart';
+import '../services/screen_service.dart';
 import '../services/work_manager_service.dart';
 
 final getIt = GetIt.instance;
@@ -101,19 +101,10 @@ Future<void> initializeServices() async {
     /// WorkManager
     if (!getIt.isRegistered<WorkManagerService>()) {
       getIt.registerSingletonAsync(
-        () async => WorkManagerService(),
-      );
-    }
-
-    /// HomeWidget
-    if (!getIt.isRegistered<HomeWidgetService>()) {
-      getIt.registerSingletonAsync(
-        () async => HomeWidgetService(
+        () async => WorkManagerService(
           logger: getIt.get<LoggerService>(),
-          api: getIt.get<APIService>(),
-          hive: getIt.get<HiveService>(),
         ),
-        dependsOn: [LoggerService, APIService, HiveService],
+        dependsOn: [LoggerService],
       );
     }
 
@@ -132,12 +123,35 @@ Future<void> initializeServices() async {
         dependsOn: [LoggerService, HiveService, APIService],
       );
     }
+
+    /// HomeWidget
+    if (!getIt.isRegistered<HomeWidgetService>()) {
+      getIt.registerSingletonAsync(
+        () async => HomeWidgetService(
+          logger: getIt.get<LoggerService>(),
+          hive: getIt.get<HiveService>(),
+          api: getIt.get<APIService>(),
+        ),
+        dependsOn: [LoggerService, HiveService, APIService],
+      );
+    }
   }
 
   /// Location
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerSingletonAsync(
       () async => LocationService(
+        logger: getIt.get<LoggerService>(),
+        hive: getIt.get<HiveService>(),
+      ),
+      dependsOn: [LoggerService, HiveService],
+    );
+  }
+
+  /// Screen
+  if (!getIt.isRegistered<ScreenService>()) {
+    getIt.registerSingletonAsync(
+      () async => ScreenService(
         logger: getIt.get<LoggerService>(),
         hive: getIt.get<HiveService>(),
       ),
