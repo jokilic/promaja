@@ -20,9 +20,9 @@ import '../models/weather/response_forecast_weather.dart';
 import '../screens/current/current_controller.dart';
 import '../util/dependencies.dart';
 import '../util/weather.dart';
-import '../widgets/promaja_navigation_bar.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
+import 'screen_service.dart';
 
 class NotificationService {
   final HiveService hive;
@@ -528,6 +528,9 @@ class NotificationService {
         /// Navigate to base route
         Navigator.of(context).popUntil((route) => route.isFirst);
 
+        /// Get currently stored `locations`
+        final locations = hive.getLocationsFromBox();
+
         switch (notificationPayload.notificationType) {
           ///
           /// Hourly notification
@@ -535,18 +538,28 @@ class NotificationService {
           case NotificationType.hourly:
             if (notificationPayload.location != null) {
               /// Get location index
-              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+              final locationIndex = locations.indexOf(notificationPayload.location!);
 
-              /// Go to `CardsScreen` with proper location
-              ref.read(cardMovingProvider.notifier).moving = false;
-              ref.read(cardIndexProvider.notifier).currentIndex = locationIndex;
-              if (ref.read(cardAdditionalControllerProvider).hasClients) {
-                ref.read(cardAdditionalControllerProvider).jumpTo(0);
+              /// Get reference to `CurrentController`
+              final current = getIt.get<CurrentController>()
+                /// Update `state` in `CurrentController`
+                ..updateState(
+                  newIndex: locationIndex,
+                  newIsMoving: false,
+                );
+
+              if (current.cardAdditionalPageController.hasClients) {
+                current.cardAdditionalPageController.jumpTo(0);
               }
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItem.cards.index);
+
+              await getIt.get<ScreenService>().changeNavigationBarItem(
+                NavigationBarItem.current,
+              );
+
               await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
+
               for (var i = 0; i < locationIndex; i++) {
-                ref.read(cardsSwiperControllerProvider).swipe(CardSwiperDirection.right);
+                current.cardSwiperController.swipe(CardSwiperDirection.right);
                 await Future.delayed(PromajaDurations.cardSwiperAnimation);
               }
             }
@@ -558,11 +571,14 @@ class NotificationService {
           case NotificationType.evening:
             if (notificationPayload.location != null) {
               /// Get location index
-              final locationIndex = ref.read(hiveProvider).indexOf(notificationPayload.location!);
+              final locationIndex = locations.indexOf(notificationPayload.location!);
 
               /// Go to `ForecastScreen` with proper location
-              await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: locationIndex);
-              await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItem.weather.index);
+              await hive.addActiveLocationIndexToBox(index: locationIndex);
+
+              await getIt.get<ScreenService>().changeNavigationBarItem(
+                NavigationBarItem.weather,
+              );
             }
 
           ///

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
 import '../models/custom_color/custom_color.dart';
@@ -19,21 +20,8 @@ import '../models/settings/widget/weather_type.dart';
 import '../models/settings/widget/widget_settings.dart';
 import '../util/path.dart';
 
-class HiveService extends ValueNotifier<List<Location>> {
-  late final Box<Location> locationsBox;
-  late final Box<CustomColor> customColorsBox;
-  late final Box<int> activeLocationIndexBox;
-  late final Box<int> activeNavigationValueIndexToBox;
-  late final Box<PromajaSettings> promajaSettingsBox;
-  late final Box<NotificationLastShown> notificationLastShownBox;
-
-  late final PromajaSettings defaultSettings;
-
-  @override
-  List<Location> build() {
-    ref.onDispose(dispose);
-    return const [];
-  }
+class HiveService extends ValueNotifier<List<Location>> implements Disposable {
+  HiveService() : super([]);
 
   ///
   /// INIT
@@ -111,7 +99,7 @@ class HiveService extends ValueNotifier<List<Location>> {
     promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
     notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
 
-    state = getLocationsFromBox();
+    value = getLocationsFromBox();
 
     defaultSettings = PromajaSettings(
       appearance: AppearanceSettings(
@@ -119,13 +107,13 @@ class HiveService extends ValueNotifier<List<Location>> {
         weatherSummaryFirst: true,
       ),
       notification: NotificationSettings(
-        location: state.firstOrNull,
+        location: value.firstOrNull,
         hourlyNotification: false,
         morningNotification: false,
         eveningNotification: false,
       ),
       widget: WidgetSettings(
-        location: state.firstOrNull,
+        location: value.firstOrNull,
         weatherType: WeatherType.current,
       ),
       unit: UnitSettings(
@@ -141,7 +129,8 @@ class HiveService extends ValueNotifier<List<Location>> {
   /// DISPOSE
   ///
 
-  Future<void> dispose() async {
+  @override
+  Future<void> onDispose() async {
     await locationsBox.close();
     await customColorsBox.close();
     await activeLocationIndexBox.close();
@@ -151,6 +140,19 @@ class HiveService extends ValueNotifier<List<Location>> {
 
     await Hive.close();
   }
+
+  ///
+  /// VARIABLES
+  ///
+
+  late final Box<Location> locationsBox;
+  late final Box<CustomColor> customColorsBox;
+  late final Box<int> activeLocationIndexBox;
+  late final Box<int> activeNavigationValueIndexToBox;
+  late final Box<PromajaSettings> promajaSettingsBox;
+  late final Box<NotificationLastShown> notificationLastShownBox;
+
+  late final PromajaSettings defaultSettings;
 
   ///
   /// METHODS
@@ -194,7 +196,7 @@ class HiveService extends ValueNotifier<List<Location>> {
     required Location location,
     required int index,
   }) async {
-    state = [...state, location];
+    value = [...value, location];
     await locationsBox.put(index, location);
   }
 
@@ -228,13 +230,13 @@ class HiveService extends ValueNotifier<List<Location>> {
 
   /// Called to delete a [Location] value from [Hive]
   Future<void> deleteLocationFromBox({required int index}) => writeAllLocationsToHive(
-    locations: List.from(state..removeAt(index)),
+    locations: List.from(value..removeAt(index)),
   );
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
     /// Update `state`
-    state = locations;
+    value = locations;
 
     /// Clear current [Hive] box
     await locationsBox.clear();
@@ -246,18 +248,18 @@ class HiveService extends ValueNotifier<List<Location>> {
       }
 
       /// Update `state` again (needed because issues with `GlobalKey`)
-      state = locations;
+      value = locations;
     }
   }
 
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
     /// Modify `state`
-    final item = state.removeAt(oldIndex);
-    state.insert(newIndex, item);
+    final item = value.removeAt(oldIndex);
+    value.insert(newIndex, item);
 
     /// Update all locations in [Hive]
-    await writeAllLocationsToHive(locations: state);
+    await writeAllLocationsToHive(locations: value);
   }
 }
 

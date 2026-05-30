@@ -2,7 +2,7 @@
 // Do not modify
 // Check in to version control
 
-import 'package:hive_ce/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:promaja/models/custom_color/custom_color.dart';
 import 'package:promaja/models/location/location.dart';
 import 'package:promaja/models/settings/appearance/appearance_settings.dart';
