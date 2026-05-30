@@ -12,9 +12,10 @@ import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../models/weather/hour_weather.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/spacing.dart';
 import '../../../../util/weather.dart';
-import '../../weather_notifiers.dart';
+import '../../weather_controller.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
@@ -56,8 +57,9 @@ class WeatherCardForecast extends StatelessWidget {
 
     final weatherCode = forecast.day.condition.code;
 
-    final backgroundColor = ref
-        .watch(hiveProvider.notifier)
+    final hive = getIt.get<HiveService>();
+
+    final backgroundColor = hive
         .getCustomColorsFromBox()
         .firstWhere(
           (customColor) => customColor.code == weatherCode && customColor.isDay,
@@ -368,7 +370,6 @@ class WeatherCardForecast extends StatelessWidget {
                                 onPressed: () => weatherCardHourPressed(
                                   hourWeather: hourWeather,
                                   activeHourWeather: activeHourWeather,
-                                  ref: ref,
                                   index: index,
                                   scrollController: scrollController,
                                 ),

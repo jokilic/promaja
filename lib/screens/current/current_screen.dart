@@ -18,8 +18,8 @@ import '../../util/dependencies.dart';
 import '../../util/spacing.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'current_controller.dart';
-import 'widgets/card/current_error.dart';
-import 'widgets/card/current_widget.dart';
+import 'widgets/current_error.dart';
+import 'widgets/current_widget.dart';
 
 class CurrentScreen extends WatchingWidget {
   @override

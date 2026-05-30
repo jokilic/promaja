@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -11,10 +10,10 @@ import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
-import '../../weather_notifiers.dart';
+import '../../weather_controller.dart';
 import 'weather_card_summary_list_tile.dart';
 
-class WeatherCardSummary extends ConsumerWidget {
+class WeatherCardSummary extends StatelessWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
@@ -28,7 +27,7 @@ class WeatherCardSummary extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Container(
+  Widget build(BuildContext context) => Container(
     width: MediaQuery.sizeOf(context).width,
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.vertical(

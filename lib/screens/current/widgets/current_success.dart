@@ -2,22 +2,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../constants/colors.dart';
-import '../../../../constants/durations.dart';
-import '../../../../constants/icons.dart';
-import '../../../../constants/text_styles.dart';
-import '../../../../models/current_weather/current_weather.dart';
-import '../../../../models/custom_color/custom_color.dart';
-import '../../../../models/location/location.dart';
-import '../../../../services/hive_service.dart';
-import '../../../../util/color.dart';
-import '../../../../util/dependencies.dart';
-import '../../../../util/weather.dart';
-import '../../../../widgets/additional/additional_cvh.dart';
-import '../../../../widgets/additional/additional_pug.dart';
-import '../../../../widgets/additional/additional_wpf.dart';
-import '../../../../widgets/keep_alive_widget.dart';
-import '../../current_controller.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/durations.dart';
+import '../../../constants/icons.dart';
+import '../../../constants/text_styles.dart';
+import '../../../models/current_weather/current_weather.dart';
+import '../../../models/custom_color/custom_color.dart';
+import '../../../models/location/location.dart';
+import '../../../services/hive_service.dart';
+import '../../../util/color.dart';
+import '../../../util/dependencies.dart';
+import '../../../util/weather.dart';
+import '../../../widgets/additional/additional_cvh.dart';
+import '../../../widgets/additional/additional_pug.dart';
+import '../../../widgets/additional/additional_wpf.dart';
+import '../../../widgets/keep_alive_widget.dart';
+import '../current_controller.dart';
 
 class CurrentSuccess extends StatelessWidget {
   final Location location;

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../../../../models/current_weather/response_current_weather.dart';
-import '../../../../models/error/response_error.dart';
-import '../../../../models/location/location.dart';
-import '../../../../services/api_service.dart';
-import '../../../../util/error.dart';
+import '../../../models/current_weather/response_current_weather.dart';
+import '../../../models/error/response_error.dart';
+import '../../../models/location/location.dart';
+import '../../../services/api_service.dart';
+import '../../../util/error.dart';
 import 'current_error.dart';
 import 'current_loading.dart';
 import 'current_success.dart';
 
-class CurrentWidget extends StatelessWidget {
+class CurrentWidget extends WatchingWidget {
   final Location originalLocation;
   final bool showCelsius;
   final bool showKph;

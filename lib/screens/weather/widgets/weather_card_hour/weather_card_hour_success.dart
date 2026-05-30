@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -12,7 +11,7 @@ import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
 import '../../../../util/weather.dart';
 
-class WeatherCardHourSuccess extends ConsumerWidget {
+class WeatherCardHourSuccess extends StatelessWidget {
   final HourWeather hourWeather;
   final bool isActive;
   final Color borderColor;
@@ -28,7 +27,7 @@ class WeatherCardHourSuccess extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final weatherCode = hourWeather.condition.code;
     final isDay = hourWeather.isDay == 1;
 

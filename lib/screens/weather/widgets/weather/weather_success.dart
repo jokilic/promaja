@@ -3,20 +3,21 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
+import '../../../../services/hive_service.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/spacing.dart';
-import '../../../settings/settings_controller.dart';
-import '../../weather_notifiers.dart';
+import '../../weather_controller.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
 
-class WeatherSuccess extends ConsumerStatefulWidget {
+class WeatherSuccess extends WatchingStatefulWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
@@ -36,42 +37,35 @@ class WeatherSuccess extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherSuccessState();
+  State<WeatherSuccess> createState() => _WeatherSuccessState();
 }
 
-class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
+class _WeatherSuccessState extends State<WeatherSuccess> {
   @override
   void initState() {
     super.initState();
 
-    final summaryFirst = ref.read(settingsProvider).appearance.weatherSummaryFirst;
+    /// Check if weather summary should be shown as first card
+    final summaryFirst = getIt.get<HiveService>().getPromajaSettingsFromBox().appearance.weatherSummaryFirst;
 
+    /// Summary should not be shown first, swipe to first weather day
     if (!summaryFirst) {
       Future.delayed(
         Duration.zero,
-        () => ref.read(weatherSwiperControllerProvider).swipe(CardSwiperDirection.right),
+        () => getIt.get<WeatherController>().cardSwiperController.swipe(
+          CardSwiperDirection.right,
+        ),
       );
-    }
-  }
-
-  void cardSwiped({
-    required int index,
-    required WidgetRef ref,
-  }) {
-    if (ref.read(weatherCardIndexProvider) != index) {
-      ref.read(weatherCardSummaryShowAnimationProvider.notifier).visible = false;
-      ref.read(weatherCardMovingProvider.notifier).moving = false;
-      ref.read(weatherCardIndexProvider.notifier).activeIndex = index;
-
-      if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
-        ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
-      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final activeIndex = ref.watch(weatherCardIndexProvider);
+    final weather = getIt.get<WeatherController>();
+
+    final currentState = watchIt<WeatherController>().value;
+    final index = currentState.index;
+
     late final cardCount = 1 + widget.forecastWeather.forecastDays.length;
 
     return Stack(
@@ -96,23 +90,18 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
             padding: EdgeInsets.only(
               bottom: getWeatherCardBottomPadding(context),
             ),
-            controller: ref.watch(weatherSwiperControllerProvider),
+            controller: weather.cardSwiperController,
             isDisabled: cardCount <= 1,
             duration: PromajaDurations.cardSwiperAnimation,
             numberOfCardsDisplayed: min(cardCount, 4),
             cardsCount: cardCount,
-            onSwipeDirectionChange: (horizontal, vertical) {
-              final isMoving = horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none;
-
-              final movingNotifier = ref.read(weatherCardMovingProvider.notifier);
-              final currentMoving = ref.read(weatherCardMovingProvider);
-
-              if (currentMoving != isMoving) {
-                movingNotifier.moving = isMoving;
-              }
-            },
+            onSwipeDirectionChange: (horizontal, vertical) => weather.onSwipeDirectionChange(
+              newIsMoving: horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none,
+            ),
             onSwipe: (previousIndex, index, __) {
-              cardSwiped(index: index ?? previousIndex, ref: ref);
+              weather.cardSwiped(
+                newIndex: index ?? previousIndex,
+              );
               return true;
             },
             cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
@@ -137,7 +126,7 @@ class _WeatherSuccessState extends ConsumerState<WeatherSuccess> {
           bottom: 0,
           child: Align(
             child: AnimatedSmoothIndicator(
-              activeIndex: activeIndex,
+              activeIndex: index,
               count: cardCount,
               effect: WormEffect(
                 activeDotColor: PromajaColors.white,

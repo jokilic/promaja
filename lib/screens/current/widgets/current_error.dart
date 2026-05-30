@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../constants/colors.dart';
-import '../../../../constants/durations.dart';
-import '../../../../constants/icons.dart';
-import '../../../../constants/text_styles.dart';
-import '../../../../util/color.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/durations.dart';
+import '../../../constants/icons.dart';
+import '../../../constants/text_styles.dart';
+import '../../../util/color.dart';
 
 class CurrentError extends StatelessWidget {
   final String? locationName;

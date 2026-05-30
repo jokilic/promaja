@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../constants/colors.dart';
-import '../../../../constants/durations.dart';
-import '../../../../models/location/location.dart';
-import '../../../../util/color.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/durations.dart';
+import '../../../models/location/location.dart';
+import '../../../util/color.dart';
 
 class CurrentLoading extends StatelessWidget {
   final Location location;

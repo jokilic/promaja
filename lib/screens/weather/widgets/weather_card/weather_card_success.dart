@@ -1,18 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../models/weather/hour_weather.dart';
-import '../../weather_notifiers.dart';
+import '../../weather_controller.dart';
 import '../weather_card_forecast/weather_card_forecast.dart';
 import '../weather_card_summary/weather_card_summary.dart';
 import 'weather_card_error.dart';
 
-class WeatherCardSuccess extends ConsumerStatefulWidget {
+class WeatherCardSuccess extends StatefulWidget {
   final Location location;
   final ForecastWeather forecastWeather;
   final ForecastDayWeather? forecast;
@@ -36,10 +35,10 @@ class WeatherCardSuccess extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _WeatherCardSuccessState();
+  State<WeatherCardSuccess> createState() => _WeatherCardSuccessState();
 }
 
-class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
+class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
   @override
   void initState() {
     super.initState();
@@ -55,7 +54,6 @@ class _WeatherCardSuccessState extends ConsumerState<WeatherCardSuccess> {
   }
 
   void weatherCardHourPressed({
-    required WidgetRef ref,
     required HourWeather? activeHourWeather,
     required HourWeather hourWeather,
     required int index,

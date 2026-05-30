@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -12,9 +11,9 @@ import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';
 import '../../../../widgets/additional/additional_wpf.dart';
-import '../../weather_notifiers.dart';
+import '../../weather_controller.dart';
 
-class WeatherCardIndividualHour extends ConsumerWidget {
+class WeatherCardIndividualHour extends StatelessWidget {
   final HourWeather? hourWeather;
   final bool showCelsius;
   final bool showKph;
@@ -30,7 +29,7 @@ class WeatherCardIndividualHour extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final weatherIcon = getWeatherIcon(
       code: hourWeather?.condition.code ?? 0,
       isDay: hourWeather?.isDay == 1,
