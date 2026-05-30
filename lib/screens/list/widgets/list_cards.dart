@@ -1,19 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/durations.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
-import '../../../widgets/promaja_navigation_bar.dart';
-import '../notifiers/add_location_notifier.dart';
+import '../../../services/screen_service.dart';
+import '../../../util/dependencies.dart';
+import '../controllers/add_location_controller.dart';
 import 'add_location/add_location_widget.dart';
 import 'list_card/list_card_widget.dart';
 
-class ListCards extends ConsumerWidget {
+class ListCards extends StatelessWidget {
   final List<Location> locations;
   final bool showCelsius;
 
@@ -23,14 +23,13 @@ class ListCards extends ConsumerWidget {
   });
 
   Future<void> deleteLocation({
-    required WidgetRef ref,
     required BuildContext context,
     required Location location,
     required int index,
   }) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    await ref.read(hiveProvider.notifier).deleteLocationFromBox(index: index);
+    await getIt.get<HiveService>().deleteLocationFromBox(index: index);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -54,91 +53,99 @@ class ListCards extends ConsumerWidget {
     );
   }
 
-  Future<void> openWeatherScreen({required WidgetRef ref, required int index}) async {
-    await ref.read(hiveProvider.notifier).addActiveLocationIndexToBox(index: index);
-    await ref.read(navigationBarIndexProvider.notifier).changeNavigationBarIndex(NavigationBarItem.weather.index);
+  Future<void> openWeatherScreen({required int index}) async {
+    await getIt.get<HiveService>().addActiveLocationIndexToBox(index: index);
+
+    await getIt.get<ScreenService>().changeNavigationBarItem(
+      NavigationBarItem.weather,
+    );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Column(
-    children: [
-      ///
-      /// ADD NEW LOCATION
-      ///
-      Animate(
-        key: const ValueKey('add_location'),
-        delay: (PromajaDurations.listInterval.inMilliseconds * locations.length).milliseconds,
-        effects: [
-          FadeEffect(
-            curve: Curves.easeIn,
-            duration: PromajaDurations.fadeAnimation,
+  Widget build(BuildContext context) {
+    final hive = getIt.get<HiveService>();
+    final addLocation = getIt.get<AddLocationController>();
+
+    return Column(
+      children: [
+        ///
+        /// ADD NEW LOCATION
+        ///
+        Animate(
+          key: const ValueKey('add_location'),
+          delay: (PromajaDurations.listInterval.inMilliseconds * locations.length).milliseconds,
+          effects: [
+            FadeEffect(
+              curve: Curves.easeIn,
+              duration: PromajaDurations.fadeAnimation,
+            ),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: AddLocationWidget(),
           ),
-        ],
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: AddLocationWidget(),
         ),
-      ),
-      const SizedBox(height: 8),
+        const SizedBox(height: 8),
 
-      ///
-      /// LIST OF LOCATIONS
-      ///
-      Flexible(
-        child: ReorderableListView.builder(
-          onReorderItem: (oldIndex, newIndex) {
-            var index = newIndex;
+        ///
+        /// LIST OF LOCATIONS
+        ///
+        Flexible(
+          child: ReorderableListView.builder(
+            onReorderItem: (oldIndex, newIndex) {
+              var index = newIndex;
 
-            if (index > oldIndex) {
-              index--;
-            }
+              if (index > oldIndex) {
+                index--;
+              }
 
-            ref.read(hiveProvider.notifier).reorderLocations(oldIndex, index);
-          },
+              hive.reorderLocations(oldIndex, index);
+            },
 
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          physics: const BouncingScrollPhysics(),
-          scrollController: ref.watch(addLocationProvider.notifier).scrollController,
-          itemCount: locations.length + 1, // + 1 for the empty item at the end
-          itemBuilder: (context, index) {
-            if (index == locations.length) {
-              return SizedBox.shrink(key: UniqueKey());
-            }
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            physics: const BouncingScrollPhysics(),
+            scrollController: addLocation.scrollController,
+            itemCount: locations.length + 1, // + 1 for the empty item at the end
+            itemBuilder: (context, index) {
+              if (index == locations.length) {
+                return SizedBox.shrink(
+                  key: UniqueKey(),
+                );
+              }
 
-            final location = locations[index];
-            final locationKey = ValueKey(location);
+              final location = locations[index];
+              final locationKey = ValueKey(location);
 
-            return Animate(
-              key: locationKey,
-              delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-              effects: [
-                FadeEffect(
-                  curve: Curves.easeIn,
-                  duration: PromajaDurations.fadeAnimation,
-                ),
-              ],
-              child: ListCardWidget(
+              return Animate(
                 key: locationKey,
-                location: location,
-                showCelsius: showCelsius,
-                onTap: () => openWeatherScreen(
-                  index: index,
-                  ref: ref,
-                ),
-                onTapDelete: (handler) {
-                  handler(false);
-                  deleteLocation(
-                    ref: ref,
-                    context: context,
-                    location: location,
+                delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                effects: [
+                  FadeEffect(
+                    curve: Curves.easeIn,
+                    duration: PromajaDurations.fadeAnimation,
+                  ),
+                ],
+                child: ListCardWidget(
+                  key: locationKey,
+                  location: location,
+                  showCelsius: showCelsius,
+                  onTap: () => openWeatherScreen(
                     index: index,
-                  );
-                },
-              ),
-            );
-          },
+                  ),
+                  onTapDelete: (handler) {
+                    handler(false);
+                    deleteLocation(
+                      context: context,
+                      location: location,
+                      index: index,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

@@ -1,121 +1,115 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/error/response_error.dart';
-import '../../../../models/location/location.dart';
 import '../../../../services/hive_service.dart';
-import '../../notifiers/add_location_notifier.dart';
-import '../../notifiers/phone_location_notifier.dart';
+import '../../../../util/dependencies.dart';
+import '../../controllers/add_location_controller.dart';
+import '../../controllers/phone_location_controller.dart';
 
-class AddLocationWidget extends ConsumerStatefulWidget {
+class AddLocationWidget extends StatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddLocationWidgetState();
+  State<AddLocationWidget> createState() => _AddLocationWidgetState();
 }
 
-class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
+class _AddLocationWidgetState extends State<AddLocationWidget> {
   @override
   void initState() {
     super.initState();
 
-    ref.read(addLocationProvider.notifier).textEditingController.clear();
+    /// Clear [TextField]
+    getIt.get<AddLocationController>().textEditingController.clear();
 
+    /// Refresh phone location if necessary
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(phoneLocationProvider.notifier).refreshPhoneLocation(),
+      (_) => getIt.get<PhoneLocationController>().refreshPhoneLocation(),
     );
-  }
-
-  String? getErrorText(({ResponseError? error, String? genericError, bool loading, List<Location>? response}) state) {
-    /// Response is empty, there is no locations
-    if (state.response?.isEmpty ?? false) {
-      return 'noLocationsFound'.tr();
-    }
-
-    /// Some error happened
-    if (state.error != null || state.genericError != null) {
-      return state.error?.error.message ?? state.genericError ?? 'weirdErrorHappened'.tr();
-    }
-
-    /// No error happened
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(addLocationProvider).loading;
-    final locations = ref.watch(addLocationProvider).response;
+    final addLocationState = watchIt<AddLocationController>().value;
+    final phoneLocationState = watchIt<PhoneLocationController>().value;
+    final hiveState = watchIt<HiveService>().value;
 
-    final isLoadingPhone = ref.watch(phoneLocationProvider).loading;
-    final hasPhoneLocation = ref.watch(hiveProvider).any(
-          (location) => location.isPhoneLocation ?? false,
-        );
+    final isLoading = addLocationState.loading;
+    final locations = addLocationState.response;
 
+    final isLoadingPhone = phoneLocationState.loading;
+    final hasPhoneLocation = hiveState.any(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    final addLocation = getIt.get<AddLocationController>();
+    final phoneLocation = getIt.get<PhoneLocationController>();
+
+    // TODO: Handle this properly
     ///
     /// ERROR HANDLING
     ///
-    ref
-      ..listen(
-        addLocationProvider,
-        (_, state) {
-          /// Generate potential error
-          final errorText = getErrorText(state);
+    // ref
+    //   ..listen(
+    //     addLocationProvider,
+    //     (_, state) {
+    //       /// Generate potential error
+    //       final errorText = getErrorText(state);
 
-          /// Show snackbar if error exists
-          if (errorText != null) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    //       /// Show snackbar if error exists
+    //       if (errorText != null) {
+    //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  errorText,
-                  style: PromajaTextStyles.snackbar,
-                ),
-                backgroundColor: PromajaColors.black,
-                behavior: SnackBarBehavior.floating,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: const BorderSide(
-                    color: PromajaColors.white,
-                    width: 2,
-                  ),
-                ),
-              ),
-            );
-          }
-        },
-      )
-      ..listen(
-        phoneLocationProvider,
-        (_, state) {
-          if (state.error != null) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(
+    //             content: Text(
+    //               errorText,
+    //               style: PromajaTextStyles.snackbar,
+    //             ),
+    //             backgroundColor: PromajaColors.black,
+    //             behavior: SnackBarBehavior.floating,
+    //             elevation: 0,
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(8),
+    //               side: const BorderSide(
+    //                 color: PromajaColors.white,
+    //                 width: 2,
+    //               ),
+    //             ),
+    //           ),
+    //         );
+    //       }
+    //     },
+    //   )
+    //   ..listen(
+    //     phoneLocationProvider,
+    //     (_, state) {
+    //       if (state.error != null) {
+    //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-            /// Show snackbar
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  '${state.error}',
-                  style: PromajaTextStyles.snackbar,
-                ),
-                backgroundColor: PromajaColors.black,
-                behavior: SnackBarBehavior.floating,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: const BorderSide(
-                    color: PromajaColors.white,
-                    width: 2,
-                  ),
-                ),
-              ),
-            );
-          }
-        },
-      );
+    //         /// Show snackbar
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(
+    //             content: Text(
+    //               '${state.error}',
+    //               style: PromajaTextStyles.snackbar,
+    //             ),
+    //             backgroundColor: PromajaColors.black,
+    //             behavior: SnackBarBehavior.floating,
+    //             elevation: 0,
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(8),
+    //               side: const BorderSide(
+    //                 color: PromajaColors.white,
+    //                 width: 2,
+    //               ),
+    //             ),
+    //           ),
+    //         );
+    //       }
+    //     },
+    //   );
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -127,8 +121,8 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
         child: Column(
           children: [
             SearchBar(
-              onSubmitted: ref.read(addLocationProvider.notifier).searchPlace,
-              controller: ref.watch(addLocationProvider.notifier).textEditingController,
+              onSubmitted: addLocation.searchPlace,
+              controller: addLocation.textEditingController,
               backgroundColor: WidgetStateProperty.all(
                 PromajaColors.white,
               ),
@@ -152,7 +146,7 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
               trailing: [
                 if (!hasPhoneLocation)
                   IconButton(
-                    onPressed: !isLoadingPhone ? ref.read(phoneLocationProvider.notifier).enablePhoneLocation : null,
+                    onPressed: !isLoadingPhone ? phoneLocation.enablePhoneLocation : null,
                     icon: isLoadingPhone
                         ? const Icon(
                             Icons.hourglass_top_rounded,
@@ -206,7 +200,9 @@ class _AddLocationWidgetState extends ConsumerState<AddLocationWidget> {
                   final location = locations[index];
 
                   return ListTile(
-                    onTap: () => ref.read(addLocationProvider.notifier).addPlace(location: location),
+                    onTap: () => addLocation.addPlace(
+                      location: location,
+                    ),
                     tileColor: PromajaColors.white,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     shape: RoundedRectangleBorder(

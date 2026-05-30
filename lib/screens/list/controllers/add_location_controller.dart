@@ -2,52 +2,46 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../constants/durations.dart';
 import '../../../models/error/response_error.dart';
 import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
-import '../../../services/logger_service.dart';
 
-final addLocationProvider = NotifierProvider<AddLocationNotifier, ({List<Location>? response, ResponseError? error, String? genericError, bool loading})>(
-  AddLocationNotifier.new,
-  name: 'AddLocationProvider',
-);
+class AddLocationController
+    extends
+        ValueNotifier<
+          ({
+            List<Location>? response,
+            ResponseError? error,
+            String? genericError,
+            bool loading,
+          })
+        >
+    implements Disposable {
+  final HiveService hive;
+  final APIService api;
 
-final getSearchProvider = FutureProvider.family<({List<Location>? response, ResponseError? error, String? genericError}), String>(
-  (ref, query) async => ref.read(apiProvider).getSearch(query: query),
-  name: 'GetSearchProvider',
-);
-
-class AddLocationNotifier extends Notifier<({List<Location>? response, ResponseError? error, String? genericError, bool loading})> {
-  late final logger = ref.read(loggerProvider);
-  late final hiveService = ref.read(hiveProvider.notifier);
+  AddLocationController({
+    required this.hive,
+    required this.api,
+  }) : super((
+         response: null,
+         error: null,
+         genericError: null,
+         loading: false,
+       ));
 
   ///
-  /// INIT
+  /// DISPOSE
   ///
 
   @override
-  ({
-    List<Location>? response,
-    ResponseError? error,
-    String? genericError,
-    bool loading,
-  })
-  build() {
-    ref.onDispose(() {
-      scrollController.dispose();
-      textEditingController.dispose();
-    });
-
-    return (
-      response: null,
-      error: null,
-      genericError: null,
-      loading: false,
-    );
+  void onDispose() {
+    scrollController.dispose();
+    textEditingController.dispose();
   }
 
   ///
@@ -62,18 +56,20 @@ class AddLocationNotifier extends Notifier<({List<Location>? response, ResponseE
   ///
 
   /// Searches for a place and returns `List<Location>`
-  Future<void> searchPlace(String value) async {
-    if (value.isNotEmpty) {
-      state = (
+  Future<void> searchPlace(String passedValue) async {
+    if (passedValue.isNotEmpty) {
+      value = (
         response: null,
         error: null,
         genericError: null,
         loading: true,
       );
 
-      final response = await ref.read(getSearchProvider(value).future);
+      final response = await api.getSearch(
+        query: passedValue.trim(),
+      );
 
-      state = (
+      value = (
         response: response.response,
         error: response.error,
         genericError: response.genericError,
@@ -82,17 +78,21 @@ class AddLocationNotifier extends Notifier<({List<Location>? response, ResponseE
     }
   }
 
-  /// Checks location limit is met or if place exists
+  /// Checks if place exists
   /// Adds place in `Hive`
   Future<void> addPlace({required Location location}) async {
+    /// Clear [TextField]
     textEditingController.clear();
 
+    /// Get currently stored `locations`
+    final locations = hive.getLocationsFromBox();
+
     /// Check if location already exists
-    final locationExists = ref.read(hiveProvider).contains(location);
+    final locationExists = locations.contains(location);
 
     /// Location already exists, throw error
     if (locationExists) {
-      state = (
+      value = (
         response: null,
         error: null,
         genericError: 'locationAlreadyExists'.tr(
@@ -108,12 +108,12 @@ class AddLocationNotifier extends Notifier<({List<Location>? response, ResponseE
     /// Add location
     ///
     if (!locationExists) {
-      await hiveService.addLocationToBox(
+      await hive.addLocationToBox(
         location: location,
-        index: ref.read(hiveProvider).length,
+        index: locations.length,
       );
 
-      state = (
+      value = (
         response: null,
         error: null,
         genericError: null,

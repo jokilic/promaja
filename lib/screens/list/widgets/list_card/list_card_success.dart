@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -11,9 +11,10 @@ import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/location/location.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/weather.dart';
 
-class ListCardSuccess extends ConsumerWidget {
+class ListCardSuccess extends WatchingWidget {
   final Location location;
   final bool isPhoneLocation;
   final CurrentWeather currentWeather;
@@ -29,12 +30,13 @@ class ListCardSuccess extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final weatherCode = currentWeather.condition.code;
     final isDay = currentWeather.isDay == 1;
 
-    final backgroundColor = ref
-        .watch(hiveProvider.notifier)
+    final hive = getIt.get<HiveService>();
+
+    final backgroundColor = hive
         .getCustomColorsFromBox()
         .firstWhere(
           (customColor) => customColor.code == weatherCode && customColor.isDay == isDay,

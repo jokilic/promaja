@@ -48,7 +48,6 @@ class CardsScreen extends StatelessWidget {
       extendBody: true,
       bottomNavigationBar: PromajaNavigationBar(),
       body: Animate(
-        key: ValueKey(ref.read(navigationBarIndexProvider)),
         effects: [
           FadeEffect(
             curve: Curves.easeIn,

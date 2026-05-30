@@ -1,36 +1,33 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../models/location/location.dart';
+import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/location_service.dart';
-import '../../../services/logger_service.dart';
-import '../../cards/cards_notifiers.dart';
 
-final phoneLocationProvider = NotifierProvider<PhoneLocationNotifier, ({Position? position, String? error, bool loading})>(
-  PhoneLocationNotifier.new,
-  name: 'PhoneLocationProvider',
-);
+class PhoneLocationController
+    extends
+        ValueNotifier<
+          ({
+            Position? position,
+            String? error,
+            bool loading,
+          })
+        > {
+  final HiveService hive;
+  final APIService api;
+  final LocationService location;
 
-final getPhonePositionProvider = FutureProvider<({Position? position, String? error})>(
-  (ref) async => ref.read(locationProvider).getPosition(),
-  name: 'GetPhonePositionProvider',
-);
-
-class PhoneLocationNotifier extends Notifier<({Position? position, String? error, bool loading})> {
-  late final logger = ref.read(loggerProvider);
-  late final hiveService = ref.read(hiveProvider.notifier);
-
-  ///
-  /// INIT
-  ///
-
-  @override
-  ({Position? position, String? error, bool loading}) build() => (
-    position: null,
-    error: null,
-    loading: false,
-  );
+  PhoneLocationController({
+    required this.hive,
+    required this.api,
+    required this.location,
+  }) : super((
+         position: null,
+         error: null,
+         loading: false,
+       ));
 
   ///
   /// METHODS
@@ -38,8 +35,11 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
 
   /// Refreshes phone location if it's active
   Future<void> refreshPhoneLocation() async {
+    /// Get currently stored `locations`
+    final locations = hive.getLocationsFromBox();
+
     /// Check if phone location is active
-    final hasPhoneLocation = hiveService.state.any(
+    final hasPhoneLocation = locations.any(
       (location) => location.isPhoneLocation ?? false,
     );
 
@@ -52,14 +52,14 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
   /// Gets phone position
   Future<void> enablePhoneLocation() async {
     /// Loading state
-    state = (
+    value = (
       position: null,
       error: null,
       loading: true,
     );
 
     /// Get position
-    final position = await ref.read(getPhonePositionProvider.future);
+    final position = await location.getPosition();
 
     /// Position is properly calculated
     if (position.position != null) {
@@ -74,22 +74,27 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
       );
 
       /// Fetch weather data
-      final response = await ref.read(getCurrentWeatherProvider(location).future);
+      final response = await api.getCurrentWeather(
+        query: '${location.lat},${location.lon}',
+      );
 
       /// Response successfully fetched
       if (response.response != null && response.error == null) {
         /// Remove phone location if it's active
         await removeActivePhoneLocation();
 
+        /// Get currently stored `locations`
+        final locations = hive.getLocationsFromBox();
+
         /// Add location to [Hive]
-        await hiveService.writeAllLocationsToHive(
+        await hive.writeAllLocationsToHive(
           locations: [
             response.response?.location.copyWith(isPhoneLocation: true) ?? location,
-            ...hiveService.state,
+            ...locations,
           ],
         );
 
-        state = (
+        value = (
           position: position.position,
           error: null,
           loading: false,
@@ -97,7 +102,7 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
       }
       /// Response returned an error
       else {
-        state = (
+        value = (
           position: position.position,
           error: response.error?.error.message,
           loading: false,
@@ -106,7 +111,7 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
     }
     /// Error getting position
     else {
-      state = (
+      value = (
         position: null,
         error: position.error,
         loading: false,
@@ -116,16 +121,21 @@ class PhoneLocationNotifier extends Notifier<({Position? position, String? error
 
   /// Checks if phone location is active and removes it
   Future<void> removeActivePhoneLocation() async {
-    final hasPhoneLocation = hiveService.state.any(
+    /// Get currently stored `locations`
+    final locations = hive.getLocationsFromBox();
+
+    /// Check if phone location is active
+    final hasPhoneLocation = locations.any(
       (location) => location.isPhoneLocation ?? false,
     );
 
+    /// Remove phone location
     if (hasPhoneLocation) {
-      final phoneLocationIndex = hiveService.state.indexWhere(
+      final phoneLocationIndex = locations.indexWhere(
         (location) => location.isPhoneLocation ?? false,
       );
 
-      await hiveService.deleteLocationFromBox(
+      await hive.deleteLocationFromBox(
         index: phoneLocationIndex,
       );
     }

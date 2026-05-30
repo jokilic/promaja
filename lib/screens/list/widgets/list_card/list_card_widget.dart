@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../models/current_weather/response_current_weather.dart';
+import '../../../../models/error/response_error.dart';
 import '../../../../models/location/location.dart';
+import '../../../../services/api_service.dart';
 import '../../../../util/error.dart';
-import '../../../cards/cards_notifiers.dart';
 import 'list_card_error.dart';
 import 'list_card_loading.dart';
 import 'list_card_success.dart';
 
-class ListCardWidget extends ConsumerWidget {
+class ListCardWidget extends WatchingWidget {
   final Location location;
   final Function() onTap;
   final Function(CompletionHandler handler) onTapDelete;
@@ -25,81 +27,104 @@ class ListCardWidget extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => SwipeActionCell(
-        key: key!,
-        openAnimationCurve: Curves.easeIn,
-        closeAnimationCurve: Curves.easeIn,
-        trailingActions: [
-          SwipeAction(
-            onTap: onTapDelete,
-            color: Colors.transparent,
-            backgroundRadius: 100,
-            content: Container(
-              height: 80,
-              width: double.infinity,
-              margin: const EdgeInsets.only(
-                left: 8,
-                right: 16,
-              ),
-              child: const Icon(
-                Icons.delete_rounded,
-                color: PromajaColors.white,
-                size: 40,
-              ),
+  Widget build(BuildContext context) {
+    final futureSnapshot = watchFuture<APIService, ({ResponseCurrentWeather? response, ResponseError? error, String? genericError})>(
+      (api) => api.getCurrentWeather(
+        query: '${location.lat},${location.lon}',
+      ),
+      initialValue: (
+        response: null,
+        error: null,
+        genericError: null,
+      ),
+    );
+
+    return SwipeActionCell(
+      key: key!,
+      openAnimationCurve: Curves.easeIn,
+      closeAnimationCurve: Curves.easeIn,
+      trailingActions: [
+        SwipeAction(
+          onTap: onTapDelete,
+          color: Colors.transparent,
+          backgroundRadius: 100,
+          content: Container(
+            height: 80,
+            width: double.infinity,
+            margin: const EdgeInsets.only(
+              left: 8,
+              right: 16,
+            ),
+            child: const Icon(
+              Icons.delete_rounded,
+              color: PromajaColors.white,
+              size: 40,
             ),
           ),
-        ],
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ref.watch(getCurrentWeatherProvider(location)).when(
-                data: (data) {
-                  ///
-                  /// DATA SUCCESSFULLY FETCHED
-                  ///
-                  if (data.response != null && data.error == null) {
-                    final currentWeather = data.response!.current;
-                    final fetchedLocation = data.response!.location;
-
-                    return ListCardSuccess(
-                      location: fetchedLocation,
-                      isPhoneLocation: location.isPhoneLocation ?? false,
-                      currentWeather: currentWeather,
-                      onTap: onTap,
-                      showCelsius: showCelsius,
-                    );
-                  }
-
-                  ///
-                  /// ERROR WHILE FETCHING
-                  ///
-                  return ListCardError(
-                    location: location,
-                    isPhoneLocation: location.isPhoneLocation ?? false,
-                    error: getErrorDescription(errorCode: data.error?.error.code ?? 0),
-                    onTap: onTap,
-                  );
-                },
-
-                ///
-                /// ERROR STATE
-                ///
-                error: (error, _) => ListCardError(
-                  location: location,
-                  isPhoneLocation: location.isPhoneLocation ?? false,
-                  error: '$error',
-                  onTap: () {},
-                ),
-
-                ///
-                /// LOADING STATE
-                ///
-                loading: () => ListCardLoading(
-                  locationName: location.name,
-                  isPhoneLocation: location.isPhoneLocation ?? false,
-                  onTap: onTap,
-                ),
-              ),
         ),
-      );
+      ],
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Builder(
+          builder: (context) {
+            ///
+            /// LOADING
+            ///
+            if (futureSnapshot.connectionState == ConnectionState.waiting) {
+              return ListCardLoading(
+                locationName: location.name,
+                isPhoneLocation: location.isPhoneLocation ?? false,
+                onTap: onTap,
+              );
+            }
+
+            ///
+            /// ERROR
+            ///
+            if (futureSnapshot.hasError) {
+              final error = futureSnapshot.error;
+
+              return ListCardError(
+                location: location,
+                isPhoneLocation: location.isPhoneLocation ?? false,
+                error: '$error',
+                onTap: () {},
+              );
+            }
+
+            ///
+            /// SUCCESS
+            ///
+            final data = futureSnapshot.data;
+
+            if (data?.response != null && data?.error == null) {
+              final currentWeather = data!.response!.current;
+              final fetchedLocation = data.response!.location;
+
+              return ListCardSuccess(
+                location: fetchedLocation,
+                isPhoneLocation: location.isPhoneLocation ?? false,
+                currentWeather: currentWeather,
+                onTap: onTap,
+                showCelsius: showCelsius,
+              );
+            }
+
+            ///
+            /// ERROR WHILE FETCHING
+            ///
+            return ListCardError(
+              location: location,
+              isPhoneLocation: location.isPhoneLocation ?? false,
+              error: getErrorDescription(
+                errorCode: data?.error?.error.code ?? 0,
+              ),
+              onTap: onTap,
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
