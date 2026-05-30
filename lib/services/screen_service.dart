@@ -8,7 +8,7 @@ import '../screens/weather/weather_screen.dart';
 import 'hive_service.dart';
 
 enum NavigationBarItem {
-  cards,
+  current,
   weather,
   list,
   settings,
@@ -30,7 +30,7 @@ class ScreenService extends ValueNotifier<NavigationBarItem> {
   /// Returns proper [Widget], depending on [NavigationBarItem]
   Widget getProperWidget(NavigationBarItem item) {
     final newScreen = switch (item) {
-      NavigationBarItem.cards => CardsScreen(),
+      NavigationBarItem.current => CurrentScreen(),
       NavigationBarItem.weather => WeatherScreen(
         originalLocation: hive.getActiveLocation(),
       ),
@@ -56,7 +56,7 @@ class ScreenService extends ValueNotifier<NavigationBarItem> {
     /// Initial section is not `last opened`, open the active one
     if (initialSection != InitialSection.lastOpened) {
       return switch (initialSection) {
-        InitialSection.current => NavigationBarItem.cards,
+        InitialSection.current => NavigationBarItem.current,
         InitialSection.forecast => NavigationBarItem.weather,
         InitialSection.list => NavigationBarItem.list,
         InitialSection.settings => NavigationBarItem.settings,

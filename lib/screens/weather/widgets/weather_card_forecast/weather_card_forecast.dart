@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -19,7 +20,7 @@ import '../../weather_controller.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
 
-class WeatherCardForecast extends StatelessWidget {
+class WeatherCardForecast extends WatchingWidget {
   final ScrollController scrollController;
   final Location location;
   final ForecastDayWeather forecast;
@@ -53,7 +54,9 @@ class WeatherCardForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeHourWeather = ref.watch(activeHourWeatherProvider);
+    final weatherState = watchIt<WeatherController>().value;
+    final activeHourWeather = weatherState.activeHour;
+    final isVisible = weatherState.isVisible;
 
     final weatherCode = forecast.day.condition.code;
 
@@ -403,7 +406,7 @@ class WeatherCardForecast extends StatelessWidget {
         Positioned(
           top: 0,
           child: AnimatedOpacity(
-            opacity: ref.watch(showWeatherTopContainerProvider) ? 1 : 0,
+            opacity: isVisible ? 1 : 0,
             duration: PromajaDurations.opacityAnimation,
             curve: Curves.easeIn,
             child: Container(

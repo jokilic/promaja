@@ -10,7 +10,6 @@ import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
-import '../../weather_controller.dart';
 import 'weather_card_summary_list_tile.dart';
 
 class WeatherCardSummary extends StatelessWidget {
@@ -48,11 +47,10 @@ class WeatherCardSummary extends StatelessWidget {
         delay: PromajaDurations.weatherDataAnimationDelay,
         interval: PromajaDurations.weatherDataAnimationDelay,
         effects: [
-          if (ref.watch(weatherCardSummaryShowAnimationProvider))
-            FadeEffect(
-              curve: Curves.easeIn,
-              duration: PromajaDurations.fadeAnimation,
-            ),
+          FadeEffect(
+            curve: Curves.easeIn,
+            duration: PromajaDurations.fadeAnimation,
+          ),
         ],
         children: [
           SizedBox(
@@ -131,11 +129,10 @@ class WeatherCardSummary extends StatelessWidget {
                     key: ValueKey(forecast),
                     delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
                     effects: [
-                      if (ref.watch(weatherCardSummaryShowAnimationProvider))
-                        FadeEffect(
-                          curve: Curves.easeIn,
-                          duration: PromajaDurations.fadeAnimation,
-                        ),
+                      FadeEffect(
+                        curve: Curves.easeIn,
+                        duration: PromajaDurations.fadeAnimation,
+                      ),
                     ],
                     child: WeatherCardSummaryListTile(
                       forecast: forecast,

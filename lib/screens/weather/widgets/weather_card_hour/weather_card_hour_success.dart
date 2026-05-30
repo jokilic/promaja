@@ -9,6 +9,7 @@ import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/weather/hour_weather.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/weather.dart';
 
 class WeatherCardHourSuccess extends StatelessWidget {
@@ -31,8 +32,9 @@ class WeatherCardHourSuccess extends StatelessWidget {
     final weatherCode = hourWeather.condition.code;
     final isDay = hourWeather.isDay == 1;
 
-    final backgroundColor = ref
-        .watch(hiveProvider.notifier)
+    final hive = getIt.get<HiveService>();
+
+    final backgroundColor = hive
         .getCustomColorsFromBox()
         .firstWhere(
           (customColor) => customColor.code == weatherCode && customColor.isDay == isDay,

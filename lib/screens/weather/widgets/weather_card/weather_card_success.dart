@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../models/weather/forecast_weather.dart';
-import '../../../../models/weather/hour_weather.dart';
+import '../../../../util/dependencies.dart';
 import '../../weather_controller.dart';
 import '../weather_card_forecast/weather_card_forecast.dart';
 import '../weather_card_summary/weather_card_summary.dart';
@@ -43,100 +42,73 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
   void initState() {
     super.initState();
 
-    /// Initialize [WeatherCardForecast]
+    /// Update `activeHour` to current hour if date is today
     if (widget.forecast != null) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(activeHourWeatherProvider.notifier).activeHour = widget.forecast?.hours.firstWhere(
-          (hour) => hour.timeEpoch.hour == DateTime.now().hour,
-        ),
+        (_) {
+          final currentHour = widget.forecast?.hours.firstWhere(
+            (hour) => hour.timeEpoch.hour == DateTime.now().hour,
+          );
+
+          getIt.get<WeatherController>().updateState(
+            newActiveHour: currentHour,
+          );
+        },
       );
     }
-  }
-
-  void weatherCardHourPressed({
-    required HourWeather? activeHourWeather,
-    required HourWeather hourWeather,
-    required int index,
-    required ScrollController scrollController,
-  }) {
-    /// User pressed already active hour
-    /// Disable active hour and scroll up
-    if (activeHourWeather == hourWeather) {
-      ref.read(activeHourWeatherProvider.notifier).activeHour = null;
-      ref.read(showWeatherTopContainerProvider.notifier).visible = false;
-
-      scrollController.animateTo(
-        0,
-        duration: PromajaDurations.scrollAnimation,
-        curve: Curves.easeIn,
-      );
-    }
-    /// User pressed inactive hour
-    /// Enable active hour and scroll down
-    else {
-      ref.read(activeHourWeatherProvider.notifier).activeHour = hourWeather;
-      ref.read(showWeatherTopContainerProvider.notifier).visible = true;
-      if (ref.read(weatherCardHourAdditionalControllerProvider).hasClients) {
-        ref.read(weatherCardHourAdditionalControllerProvider).jumpTo(0);
-      }
-
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: PromajaDurations.scrollAnimation,
-          curve: Curves.easeIn,
-        ),
-      );
-    }
-  }
-
-  Widget getWeatherCardSuccessWidget() {
-    ///
-    /// WEATHER CARD SUMMARY
-    ///
-    if (widget.forecast == null) {
-      return WeatherCardSummary(
-        location: widget.location,
-        forecastWeather: widget.forecastWeather,
-        isPhoneLocation: widget.isPhoneLocation,
-        showCelsius: widget.showCelsius,
-      );
-    }
-
-    ///
-    /// WEATHER CARD FORECAST
-    ///
-    if (widget.forecast != null) {
-      return WeatherCardForecast(
-        location: widget.location,
-        forecast: widget.forecast!,
-        index: widget.index,
-        isPhoneLocation: widget.isPhoneLocation,
-        showCelsius: widget.showCelsius,
-        showKph: widget.showKph,
-        showMm: widget.showMm,
-        showhPa: widget.showhPa,
-        scrollController: ScrollController(),
-        weatherCardHourPressed: weatherCardHourPressed,
-        key: ValueKey(widget.index),
-      );
-    }
-
-    ///
-    /// ERROR
-    ///
-    return WeatherCardError(
-      locationName: widget.location.name,
-      error: 'noForecastsOrSummary'.tr(),
-      isPhoneLocation: widget.isPhoneLocation,
-    );
   }
 
   @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: const BorderRadius.vertical(
-      bottom: Radius.circular(40),
-    ),
-    child: getWeatherCardSuccessWidget(),
-  );
+  Widget build(BuildContext context) {
+    final weather = getIt.get<WeatherController>();
+
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
+      ),
+      child: Builder(
+        builder: (context) {
+          ///
+          /// WEATHER CARD SUMMARY
+          ///
+          if (widget.forecast == null) {
+            return WeatherCardSummary(
+              location: widget.location,
+              forecastWeather: widget.forecastWeather,
+              isPhoneLocation: widget.isPhoneLocation,
+              showCelsius: widget.showCelsius,
+            );
+          }
+
+          ///
+          /// WEATHER CARD FORECAST
+          ///
+          if (widget.forecast != null) {
+            return WeatherCardForecast(
+              location: widget.location,
+              forecast: widget.forecast!,
+              index: widget.index,
+              isPhoneLocation: widget.isPhoneLocation,
+              showCelsius: widget.showCelsius,
+              showKph: widget.showKph,
+              showMm: widget.showMm,
+              showhPa: widget.showhPa,
+              scrollController: ScrollController(),
+              weatherCardHourPressed: weather.weatherCardHourPressed,
+              key: ValueKey(widget.index),
+            );
+          }
+
+          ///
+          /// ERROR
+          ///
+          return WeatherCardError(
+            locationName: widget.location.name,
+            error: 'noForecastsOrSummary'.tr(),
+            isPhoneLocation: widget.isPhoneLocation,
+          );
+        },
+      ),
+    );
+  }
 }

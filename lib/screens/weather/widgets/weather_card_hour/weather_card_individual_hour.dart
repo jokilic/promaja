@@ -7,6 +7,7 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/weather/hour_weather.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';
@@ -42,6 +43,8 @@ class WeatherCardIndividualHour extends StatelessWidget {
 
     final showRain = hourWeather?.willItRain == 1;
     final showSnow = hourWeather?.willItSnow == 1;
+
+    final weather = getIt.get<WeatherController>();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -219,7 +222,7 @@ class WeatherCardIndividualHour extends StatelessWidget {
           SizedBox(
             height: 144,
             child: PageView(
-              controller: ref.watch(weatherCardHourAdditionalControllerProvider),
+              controller: weather.cardHourAdditionalPageController,
               physics: const BouncingScrollPhysics(),
               children: hourWeather != null
                   ? [

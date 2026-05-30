@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../constants/durations.dart';
 import '../../models/weather/hour_weather.dart';
 
 // final getForecastWeatherProvider = FutureProvider.family<({ResponseForecastWeather? response, ResponseError? error, String? genericError}), ({Location location, int days})>(
@@ -71,6 +72,50 @@ class WeatherController
   ///
   /// METHODS
   ///
+
+  /// Triggered when the user presses an hour
+  void weatherCardHourPressed({
+    required HourWeather? activeHourWeather,
+    required HourWeather hourWeather,
+    required int index,
+    required ScrollController scrollController,
+  }) {
+    /// User pressed already active hour
+    /// Disable active hour and scroll up
+    if (activeHourWeather == hourWeather) {
+      updateState(
+        // TODO: Possibility to pass null
+        newActiveHour: null,
+        newIsVisible: false,
+      );
+
+      scrollController.animateTo(
+        0,
+        duration: PromajaDurations.scrollAnimation,
+        curve: Curves.easeIn,
+      );
+    }
+    /// User pressed inactive hour
+    /// Enable active hour and scroll down
+    else {
+      updateState(
+        newActiveHour: hourWeather,
+        newIsVisible: true,
+      );
+
+      if (cardHourAdditionalPageController.hasClients) {
+        cardHourAdditionalPageController.jumpTo(0);
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: PromajaDurations.scrollAnimation,
+          curve: Curves.easeIn,
+        ),
+      );
+    }
+  }
 
   /// Triggered when the card is being moved
   void onSwipeDirectionChange({required bool newIsMoving}) {
