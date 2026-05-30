@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/settings/appearance/initial_section.dart';
-import '../screens/cards/cards_screen.dart';
+import '../screens/current/current_screen.dart';
 import '../screens/list/list_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/weather/weather_screen.dart';

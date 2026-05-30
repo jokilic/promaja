@@ -17,7 +17,7 @@ import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
 import '../models/settings/units/temperature_unit.dart';
 import '../models/weather/response_forecast_weather.dart';
-import '../screens/cards/cards_notifiers.dart';
+import '../screens/current/current_controller.dart';
 import '../util/dependencies.dart';
 import '../util/weather.dart';
 import '../widgets/promaja_navigation_bar.dart';

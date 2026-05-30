@@ -8,13 +8,13 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
-class CardError extends StatelessWidget {
+class CurrentError extends StatelessWidget {
   final String? locationName;
   final String error;
   final bool isPhoneLocation;
   final Function()? refreshPressed;
 
-  const CardError({
+  const CurrentError({
     required this.locationName,
     required this.error,
     required this.isPhoneLocation,

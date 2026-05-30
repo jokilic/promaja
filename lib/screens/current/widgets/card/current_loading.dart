@@ -6,10 +6,10 @@ import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 
-class CardLoading extends StatelessWidget {
+class CurrentLoading extends StatelessWidget {
   final Location location;
 
-  const CardLoading({
+  const CurrentLoading({
     required this.location,
   });
 

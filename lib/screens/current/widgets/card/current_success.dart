@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
@@ -12,14 +11,15 @@ import '../../../../models/custom_color/custom_color.dart';
 import '../../../../models/location/location.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/color.dart';
+import '../../../../util/dependencies.dart';
 import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';
 import '../../../../widgets/additional/additional_wpf.dart';
 import '../../../../widgets/keep_alive_widget.dart';
-import '../../cards_notifiers.dart';
+import '../../current_controller.dart';
 
-class CardSuccess extends ConsumerWidget {
+class CurrentSuccess extends StatelessWidget {
   final Location location;
   final CurrentWeather currentWeather;
   final bool isPhoneLocation;
@@ -28,7 +28,7 @@ class CardSuccess extends ConsumerWidget {
   final bool showMm;
   final bool showhPa;
 
-  const CardSuccess({
+  const CurrentSuccess({
     required this.location,
     required this.currentWeather,
     required this.isPhoneLocation,
@@ -39,12 +39,15 @@ class CardSuccess extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final weatherCode = currentWeather.condition.code;
     final isDay = currentWeather.isDay == 1;
 
-    final backgroundColor = ref
-        .watch(hiveProvider.notifier)
+    final hive = getIt.get<HiveService>();
+
+    final current = getIt.get<CurrentController>();
+
+    final backgroundColor = hive
         .getCustomColorsFromBox()
         .firstWhere(
           (customColor) => customColor.code == weatherCode && customColor.isDay == isDay,
@@ -210,7 +213,7 @@ class CardSuccess extends ConsumerWidget {
               margin: const EdgeInsets.only(bottom: 8),
               height: 144,
               child: PageView(
-                controller: ref.watch(cardAdditionalControllerProvider),
+                controller: current.cardAdditionalPageController,
                 physics: const BouncingScrollPhysics(),
                 children: [
                   ///
