@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
@@ -10,14 +10,16 @@ import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
+import '../../util/dependencies.dart';
 import '../../widgets/promaja_back_button.dart';
-import '../settings/settings_notifier.dart';
+import '../settings/settings_controller.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class UnitScreen extends ConsumerWidget {
+class UnitScreen extends WatchingWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+  Widget build(BuildContext context) {
+    final settings = getIt.get<SettingsController>();
+    final settingsState = watchIt<SettingsController>().value;
 
     return Scaffold(
       body: SafeArea(
@@ -85,15 +87,15 @@ class UnitScreen extends ConsumerWidget {
               /// TEMPERATURE
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newTemperature = await ref.read(settingsProvider.notifier).showTemperatureUnitPopupMenu(context);
+                  final newTemperature = await settings.showTemperatureUnitPopupMenu(context);
 
                   if (newTemperature != null) {
-                    await ref.read(settingsProvider.notifier).updateTemperatureUnit(newTemperature);
+                    await settings.updateTemperatureUnit(newTemperature);
                   }
                 },
-                activeValue: localizeTemperature(settings.unit.temperature),
+                activeValue: localizeTemperature(settingsState.unit.temperature),
                 subtitle: 'unitsTemperatureSubtitle'.tr(),
               ),
 
@@ -101,15 +103,15 @@ class UnitScreen extends ConsumerWidget {
               /// DISTANCE / SPEED
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newDistanceSpeed = await ref.read(settingsProvider.notifier).showDistanceSpeedUnitPopupMenu(context);
+                  final newDistanceSpeed = await settings.showDistanceSpeedUnitPopupMenu(context);
 
                   if (newDistanceSpeed != null) {
-                    await ref.read(settingsProvider.notifier).updateDistanceSpeedUnit(newDistanceSpeed);
+                    await settings.updateDistanceSpeedUnit(newDistanceSpeed);
                   }
                 },
-                activeValue: localizeDistanceSpeed(settings.unit.distanceSpeed),
+                activeValue: localizeDistanceSpeed(settingsState.unit.distanceSpeed),
                 subtitle: 'unitsDistanceSpeedSubtitle'.tr(),
               ),
 
@@ -117,15 +119,15 @@ class UnitScreen extends ConsumerWidget {
               /// PRECIPITATION
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newPrecipitation = await ref.read(settingsProvider.notifier).showPrecipitationUnitPopupMenu(context);
+                  final newPrecipitation = await settings.showPrecipitationUnitPopupMenu(context);
 
                   if (newPrecipitation != null) {
-                    await ref.read(settingsProvider.notifier).updatePrecipitationUnit(newPrecipitation);
+                    await settings.updatePrecipitationUnit(newPrecipitation);
                   }
                 },
-                activeValue: localizePrecipitation(settings.unit.precipitation),
+                activeValue: localizePrecipitation(settingsState.unit.precipitation),
                 subtitle: 'unitsPrecipitationSubtitle'.tr(),
               ),
 
@@ -133,15 +135,15 @@ class UnitScreen extends ConsumerWidget {
               /// PRESSURE
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newPressure = await ref.read(settingsProvider.notifier).showPressureUnitPopupMenu(context);
+                  final newPressure = await settings.showPressureUnitPopupMenu(context);
 
                   if (newPressure != null) {
-                    await ref.read(settingsProvider.notifier).updatePressureUnit(newPressure);
+                    await settings.updatePressureUnit(newPressure);
                   }
                 },
-                activeValue: localizePressure(settings.unit.pressure),
+                activeValue: localizePressure(settingsState.unit.pressure),
                 subtitle: 'unitsPressureSubtitle'.tr(),
               ),
             ],

@@ -9,12 +9,16 @@ import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
+import '../../services/hive_service.dart';
+import '../../services/notification_service.dart';
+import '../../util/dependencies.dart';
 import '../../util/url_launch.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import '../appearance/appearance_screen.dart';
 import '../notification/notification_screen.dart';
 import '../unit/unit_screen.dart';
 import '../widget/widget_screen.dart';
+import 'settings_controller.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -27,15 +31,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
 
+    registerIfNotInitialized<SettingsController>(
+      () => SettingsController(
+        hive: getIt.get<HiveService>(),
+        notification: getIt.get<NotificationService>(),
+      ),
+    );
+
     /// Remove splash screen
     FlutterNativeSplash.remove();
+  }
+
+  @override
+  void dispose() {
+    unRegisterIfNotDisposed<SettingsController>();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     bottomNavigationBar: PromajaNavigationBar(),
     body: Animate(
-      key: ValueKey(ref.read(navigationBarIndexProvider)),
       effects: [
         FadeEffect(
           curve: Curves.easeIn,

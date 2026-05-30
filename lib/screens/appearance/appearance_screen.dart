@@ -1,23 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/settings/appearance/initial_section.dart';
+import '../../util/dependencies.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../card_colors/card_colors_screen.dart';
-import '../settings/settings_notifier.dart';
+import '../settings/settings_controller.dart';
 import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class AppearanceScreen extends StatelessWidget {
+class AppearanceScreen extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final settings = getIt.get<SettingsController>();
+    final settingsState = watchIt<SettingsController>().value;
 
     return Scaffold(
       body: SafeArea(
@@ -99,15 +102,17 @@ class AppearanceScreen extends StatelessWidget {
               /// INITIAL SECTION
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newSection = await ref.read(settingsProvider.notifier).showInitialSectionPopupMenu(context);
+                  final newSection = await settings.showInitialSectionPopupMenu(context);
 
                   if (newSection != null) {
-                    await ref.read(settingsProvider.notifier).updateInitialSection(newSection);
+                    await settings.updateInitialSection(newSection);
                   }
                 },
-                activeValue: localizeInitialSection(settings.appearance.initialSection),
+                activeValue: localizeInitialSection(
+                  settingsState.appearance.initialSection,
+                ),
                 subtitle: 'appearanceInitialSectionSubtitle'.tr(),
               ),
 
@@ -115,8 +120,8 @@ class AppearanceScreen extends StatelessWidget {
               /// WEATHER SUMMARY FIRST
               ///
               SettingsCheckboxListTile(
-                value: settings.appearance.weatherSummaryFirst,
-                onTap: ref.read(settingsProvider.notifier).toggleWeatherSummaryFirst,
+                value: settingsState.appearance.weatherSummaryFirst,
+                onTap: settings.toggleWeatherSummaryFirst,
                 title: 'appearanceWeatherSummaryFirstTitle'.tr(),
                 subtitle: 'appearanceWeatherSummaryFirstSubtitle'.tr(),
               ),
@@ -125,9 +130,9 @@ class AppearanceScreen extends StatelessWidget {
               /// LANGUAGE
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newLanguage = await ref.read(settingsProvider.notifier).showLanguagePopupMenu(context);
+                  final newLanguage = await settings.showLanguagePopupMenu(context);
 
                   if (newLanguage != null) {
                     await context.setLocale(newLanguage);

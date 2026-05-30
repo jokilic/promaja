@@ -11,7 +11,7 @@ import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/spacing.dart';
-import '../../../settings/settings_notifier.dart';
+import '../../../settings/settings_controller.dart';
 import '../../weather_notifiers.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';

@@ -1,22 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../services/notification_service.dart';
+import '../../util/dependencies.dart';
 import '../../widgets/promaja_back_button.dart';
-import '../settings/settings_notifier.dart';
+import '../settings/settings_controller.dart';
 import '../settings/widgets/settings_checkbox_list_tile.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class NotificationScreen extends StatelessWidget {
+class NotificationScreen extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final notification = getIt.get<NotificationService>();
+
+    final settings = getIt.get<SettingsController>();
+    final settingsState = watchIt<SettingsController>().value;
 
     return Scaffold(
       body: SafeArea(
@@ -84,16 +89,16 @@ class NotificationScreen extends StatelessWidget {
               /// LOCATION
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newLocation = await ref.read(settingsProvider.notifier).showNotificationLocationPopupMenu(context);
+                  final newLocation = await settings.showNotificationLocationPopupMenu(context);
 
                   if (newLocation != null) {
-                    await ref.read(settingsProvider.notifier).updateNotificationLocation(newLocation);
+                    await settings.updateNotificationLocation(newLocation);
                   }
                 },
-                activeValue: settings.notification.location != null
-                    ? '${settings.notification.location?.name}, ${settings.notification.location?.country}'
+                activeValue: settingsState.notification.location != null
+                    ? '${settingsState.notification.location?.name}, ${settingsState.notification.location?.country}'
                     : 'notificationNoLocationChosen'.tr(),
                 subtitle: 'notificationLocationDescription'.tr(),
               ),
@@ -102,8 +107,8 @@ class NotificationScreen extends StatelessWidget {
               /// HOURLY NOTIFICATION
               ///
               SettingsCheckboxListTile(
-                value: settings.notification.hourlyNotification,
-                onTap: ref.read(settingsProvider.notifier).toggleHourlyNotification,
+                value: settingsState.notification.hourlyNotification,
+                onTap: settings.toggleHourlyNotification,
                 title: 'hourlyNotificationTitle'.tr(),
                 subtitle: 'hourlyNotificationSubtitle'.tr(),
               ),
@@ -112,8 +117,8 @@ class NotificationScreen extends StatelessWidget {
               /// MORNING NOTIFICATION
               ///
               SettingsCheckboxListTile(
-                value: settings.notification.morningNotification,
-                onTap: ref.read(settingsProvider.notifier).toggleMorningNotification,
+                value: settingsState.notification.morningNotification,
+                onTap: settings.toggleMorningNotification,
                 title: 'morningNotificationTitle'.tr(),
                 subtitle: 'morningNotificationSubtitle'.tr(),
               ),
@@ -122,8 +127,8 @@ class NotificationScreen extends StatelessWidget {
               /// EVENING NOTIFICATION
               ///
               SettingsCheckboxListTile(
-                value: settings.notification.eveningNotification,
-                onTap: ref.read(settingsProvider.notifier).toggleEveningNotification,
+                value: settingsState.notification.eveningNotification,
+                onTap: settings.toggleEveningNotification,
                 title: 'eveningNotificationTitle'.tr(),
                 subtitle: 'eveningNotificationSubtitle'.tr(),
               ),
@@ -132,7 +137,7 @@ class NotificationScreen extends StatelessWidget {
               /// TEST NOTIFICATION
               ///
               SettingsListTile(
-                onTap: ref.read(notificationProvider).testNotification,
+                onTap: notification.testNotification,
                 icon: PromajaIcons.dot,
                 title: 'testNotificationTitle'.tr(),
                 subtitle: 'testNotificationSubtitle'.tr(),

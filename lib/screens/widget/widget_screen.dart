@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:watch_it/watch_it.dart' as ref;
+import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
@@ -9,15 +9,19 @@ import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/settings/widget/weather_type.dart';
 import '../../services/home_widget_service.dart';
+import '../../util/dependencies.dart';
 import '../../widgets/promaja_back_button.dart';
-import '../settings/settings_notifier.dart';
+import '../settings/settings_controller.dart';
 import '../settings/widgets/settings_list_tile.dart';
 import '../settings/widgets/settings_popup_menu_list_tile.dart';
 
-class WidgetScreen extends StatelessWidget {
+class WidgetScreen extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final homeWidget = getIt.get<HomeWidgetService>();
+
+    final settings = getIt.get<SettingsController>();
+    final settingsState = watchIt<SettingsController>().value;
 
     return Scaffold(
       body: SafeArea(
@@ -85,15 +89,17 @@ class WidgetScreen extends StatelessWidget {
               /// LOCATION
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newLocation = await ref.read(settingsProvider.notifier).showWidgetLocationPopupMenu(context);
+                  final newLocation = await settings.showWidgetLocationPopupMenu(context);
 
                   if (newLocation != null) {
-                    await ref.read(settingsProvider.notifier).updateWidgetLocation(newLocation);
+                    await settings.updateWidgetLocation(newLocation);
                   }
                 },
-                activeValue: settings.widget.location != null ? '${settings.widget.location?.name}, ${settings.widget.location?.country}' : 'notificationNoLocationChosen'.tr(),
+                activeValue: settingsState.widget.location != null
+                    ? '${settingsState.widget.location?.name}, ${settingsState.widget.location?.country}'
+                    : 'notificationNoLocationChosen'.tr(),
                 subtitle: 'widgetLocationDescription'.tr(),
               ),
 
@@ -101,15 +107,15 @@ class WidgetScreen extends StatelessWidget {
               /// WEATHER TYPE
               ///
               SettingsPopupMenuListTile(
-                onTapDown: (details) => ref.read(settingsProvider.notifier).tapDownDetails = details,
+                onTapDown: (details) => settings.tapDownDetails = details,
                 onTapUp: (_) async {
-                  final newWeatherType = await ref.read(settingsProvider.notifier).showWidgetWeatherTypePopupMenu(context);
+                  final newWeatherType = await settings.showWidgetWeatherTypePopupMenu(context);
 
                   if (newWeatherType != null) {
-                    await ref.read(settingsProvider.notifier).updateWidgetWeatherType(newWeatherType);
+                    await settings.updateWidgetWeatherType(newWeatherType);
                   }
                 },
-                activeValue: localizeWeatherType(settings.widget.weatherType),
+                activeValue: localizeWeatherType(settingsState.widget.weatherType),
                 subtitle: 'widgetWeatherTypeDescription'.tr(),
               ),
 
@@ -118,11 +124,9 @@ class WidgetScreen extends StatelessWidget {
               ///
               SettingsListTile(
                 onTap: () async {
-                  await ref
-                      .read(homeWidgetProvider)
-                      .handleWidget(
-                        languageCode: context.locale.languageCode,
-                      );
+                  await homeWidget.handleWidget(
+                    languageCode: context.locale.languageCode,
+                  );
 
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
@@ -18,34 +16,22 @@ import '../../models/settings/widget/weather_type.dart';
 import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
 
-final settingsProvider = NotifierProvider.autoDispose<SettingsNotifier, PromajaSettings>(
-  SettingsNotifier.new,
-  name: 'SettingsProvider',
-);
+class SettingsController extends ValueNotifier<PromajaSettings> {
+  final HiveService hive;
+  final NotificationService notification;
 
-class SettingsNotifier extends Notifier<PromajaSettings> {
-  late final hive = ref.read(hiveProvider.notifier);
-  late final notification = ref.read(notificationProvider);
-
-  ///
-  /// INIT
-  ///
-
-  @override
-  PromajaSettings build() {
-    final initialSettings = hive.getPromajaSettingsFromBox();
-
-    showNotificationDialog = shouldShowNotificationDialog();
-
-    return initialSettings;
-  }
+  SettingsController({
+    required this.hive,
+    required this.notification,
+  }) : super(
+         hive.getPromajaSettingsFromBox(),
+       );
 
   ///
   /// VARIABLES
   ///
 
   TapDownDetails? tapDownDetails;
-  late bool showNotificationDialog;
 
   ///
   /// METHODS
@@ -53,8 +39,10 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates settings with new [PromajaSettings]
   Future<void> updateSettings(PromajaSettings newSettings) async {
-    state = newSettings;
-    await hive.addPromajaSettingsToBox(promajaSettings: newSettings);
+    value = newSettings;
+    await hive.addPromajaSettingsToBox(
+      promajaSettings: newSettings,
+    );
   }
 
   ///
@@ -97,8 +85,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates initial section to be used
   Future<void> updateInitialSection(InitialSection newSection) async => updateSettings(
-    state.copyWith(
-      appearance: state.appearance.copyWith(
+    value.copyWith(
+      appearance: value.appearance.copyWith(
         initialSection: newSection,
       ),
     ),
@@ -145,11 +133,11 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
   /// Triggered when the user taps the `Weather summary first` checkbox
   Future<void> toggleWeatherSummaryFirst() async {
     /// Update `state` and [Hive] with proper value
-    final newState = !state.appearance.weatherSummaryFirst;
+    final newState = !value.appearance.weatherSummaryFirst;
 
     await updateSettings(
-      state.copyWith(
-        appearance: state.appearance.copyWith(
+      value.copyWith(
+        appearance: value.appearance.copyWith(
           weatherSummaryFirst: newState,
         ),
       ),
@@ -159,9 +147,6 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
   ///
   /// NOTIFICATIONS
   ///
-
-  /// Returns if notification dialog should be shown when opening `Notifications`
-  bool shouldShowNotificationDialog() => defaultTargetPlatform == TargetPlatform.iOS && !hive.getNotificationDialogShownFromBox();
 
   /// Opens popup menu which chooses location to be used in notifications
   Future<Location?> showNotificationLocationPopupMenu(BuildContext context) async {
@@ -199,8 +184,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates location to be used in notifications
   Future<void> updateNotificationLocation(Location newLocation) async => updateSettings(
-    state.copyWith(
-      notification: state.notification.copyWith(
+    value.copyWith(
+      notification: value.notification.copyWith(
         location: newLocation,
       ),
     ),
@@ -209,11 +194,11 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
   /// Triggered when the user taps the `Hourly notification` checkbox
   Future<void> toggleHourlyNotification() async {
     /// Update `state` and [Hive] with proper value
-    final newState = !state.notification.hourlyNotification;
+    final newState = !value.notification.hourlyNotification;
 
     await updateSettings(
-      state.copyWith(
-        notification: state.notification.copyWith(
+      value.copyWith(
+        notification: value.notification.copyWith(
           hourlyNotification: newState,
         ),
       ),
@@ -227,11 +212,11 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
   Future<void> toggleMorningNotification() async {
     /// Update `state` and [Hive] with proper value
 
-    final newState = !state.notification.morningNotification;
+    final newState = !value.notification.morningNotification;
 
     await updateSettings(
-      state.copyWith(
-        notification: state.notification.copyWith(
+      value.copyWith(
+        notification: value.notification.copyWith(
           morningNotification: newState,
         ),
       ),
@@ -245,11 +230,11 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
   Future<void> toggleEveningNotification() async {
     /// Update `state` and [Hive] with proper value
 
-    final newState = !state.notification.eveningNotification;
+    final newState = !value.notification.eveningNotification;
 
     await updateSettings(
-      state.copyWith(
-        notification: state.notification.copyWith(
+      value.copyWith(
+        notification: value.notification.copyWith(
           eveningNotification: newState,
         ),
       ),
@@ -299,8 +284,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates temperature unit to be used
   Future<void> updateTemperatureUnit(TemperatureUnit newTemperature) async => updateSettings(
-    state.copyWith(
-      unit: state.unit.copyWith(
+    value.copyWith(
+      unit: value.unit.copyWith(
         temperature: newTemperature,
       ),
     ),
@@ -342,8 +327,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates distance & speed unit to be used
   Future<void> updateDistanceSpeedUnit(DistanceSpeedUnit newDistanceSpeed) async => updateSettings(
-    state.copyWith(
-      unit: state.unit.copyWith(
+    value.copyWith(
+      unit: value.unit.copyWith(
         distanceSpeed: newDistanceSpeed,
       ),
     ),
@@ -385,8 +370,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates precipitation unit to be used
   Future<void> updatePrecipitationUnit(PrecipitationUnit newPrecipitation) async => updateSettings(
-    state.copyWith(
-      unit: state.unit.copyWith(
+    value.copyWith(
+      unit: value.unit.copyWith(
         precipitation: newPrecipitation,
       ),
     ),
@@ -428,8 +413,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates pressure unit to be used
   Future<void> updatePressureUnit(PressureUnit newPressureUnit) async => updateSettings(
-    state.copyWith(
-      unit: state.unit.copyWith(
+    value.copyWith(
+      unit: value.unit.copyWith(
         pressure: newPressureUnit,
       ),
     ),
@@ -475,8 +460,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates location to be used in widget
   Future<void> updateWidgetLocation(Location newLocation) async => updateSettings(
-    state.copyWith(
-      widget: state.widget.copyWith(
+    value.copyWith(
+      widget: value.widget.copyWith(
         location: newLocation,
       ),
     ),
@@ -518,8 +503,8 @@ class SettingsNotifier extends Notifier<PromajaSettings> {
 
   /// Updates weather type to be used in widget
   Future<void> updateWidgetWeatherType(WeatherType newWeatherType) async => updateSettings(
-    state.copyWith(
-      widget: state.widget.copyWith(
+    value.copyWith(
+      widget: value.widget.copyWith(
         weatherType: newWeatherType,
       ),
     ),

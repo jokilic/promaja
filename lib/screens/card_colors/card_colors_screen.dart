@@ -2,28 +2,31 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
 import '../../constants/text_styles.dart';
 import '../../models/custom_color/custom_color.dart';
 import '../../services/hive_service.dart';
+import '../../util/dependencies.dart';
 import '../../util/weather.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../settings/widgets/settings_card_widget.dart';
 
-class CardColorsScreen extends ConsumerStatefulWidget {
+class CardColorsScreen extends WatchingStatefulWidget {
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CardColorsScreenState();
+  State<CardColorsScreen> createState() => _CardColorsScreenState();
 }
 
-class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
+class _CardColorsScreenState extends State<CardColorsScreen> {
   Future<void> openColorPicker({
     required CustomColor customColor,
     required String weatherDescription,
     required BuildContext context,
   }) async {
+    final hive = getIt.get<HiveService>();
+
     var color = customColor.color;
 
     await showModalBottomSheet(
@@ -59,9 +62,9 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
               ///
               ElevatedButton.icon(
                 onPressed: () async {
-                  await ref.read(hiveProvider.notifier).deleteCustomColorFromBox(
-                        customColor: customColor,
-                      );
+                  await hive.deleteCustomColorFromBox(
+                    customColor: customColor,
+                  );
 
                   Navigator.of(context).pop();
 
@@ -81,13 +84,13 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
               ///
               ElevatedButton.icon(
                 onPressed: () async {
-                  await ref.read(hiveProvider.notifier).addCustomColorToBox(
-                        customColor: CustomColor(
-                          code: customColor.code,
-                          isDay: customColor.isDay,
-                          color: color,
-                        ),
-                      );
+                  await hive.addCustomColorToBox(
+                    customColor: CustomColor(
+                      code: customColor.code,
+                      isDay: customColor.isDay,
+                      color: color,
+                    ),
+                  );
 
                   Navigator.of(context).pop();
 
@@ -110,7 +113,7 @@ class _CardColorsScreenState extends ConsumerState<CardColorsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final customColors = ref.watch(hiveProvider.notifier).getCustomColorsFromBox();
+    final customColors = watchIt<HiveService>().getCustomColorsFromBox();
 
     return Scaffold(
       body: SafeArea(
