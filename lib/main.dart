@@ -66,16 +66,14 @@ Future<void> initializeBeforeAppStart() async {
   /// Set refresh rate to high
   await setDisplayMode();
 
+  /// Initialize localization
+  await initializeLocalization();
+
   /// Initialize services
   await initializeServices();
 }
 
 class PromajaApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => PromajaWidget();
-}
-
-class PromajaWidget extends WatchingWidget {
   @override
   Widget build(BuildContext context) => EasyLocalization(
     useOnlyLangCode: true,
@@ -92,9 +90,7 @@ class PromajaWidget extends WatchingWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: getIt.get<ScreenService>().getProperWidget(
-          watchIt<ScreenService>().value,
-        ),
+        home: PromajaWidget(),
         onGenerateTitle: (_) => 'appNameString'.tr(),
         theme: ThemeData(
           fontFamily: 'ProductSans',
@@ -106,5 +102,12 @@ class PromajaWidget extends WatchingWidget {
         ),
       ),
     ),
+  );
+}
+
+class PromajaWidget extends WatchingWidget {
+  @override
+  Widget build(BuildContext context) => getIt.get<ScreenService>().getProperWidget(
+    watchIt<ScreenService>().value,
   );
 }

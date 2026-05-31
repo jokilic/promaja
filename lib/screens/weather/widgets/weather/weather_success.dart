@@ -95,9 +95,6 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
             duration: PromajaDurations.cardSwiperAnimation,
             numberOfCardsDisplayed: min(cardCount, 4),
             cardsCount: cardCount,
-            onSwipeDirectionChange: (horizontal, vertical) => weather.onSwipeDirectionChange(
-              newIsMoving: horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none,
-            ),
             onSwipe: (previousIndex, index, __) {
               weather.cardSwiped(
                 newIndex: index ?? previousIndex,

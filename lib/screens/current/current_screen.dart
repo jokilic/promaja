@@ -21,7 +21,27 @@ import 'current_controller.dart';
 import 'widgets/current_error.dart';
 import 'widgets/current_widget.dart';
 
-class CurrentScreen extends WatchingWidget {
+class CurrentScreen extends WatchingStatefulWidget {
+  @override
+  State<CurrentScreen> createState() => _CurrentScreenState();
+}
+
+class _CurrentScreenState extends State<CurrentScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    registerIfNotInitialized<CurrentController>(
+      CurrentController.new,
+    );
+  }
+
+  @override
+  void dispose() {
+    unRegisterIfNotDisposed<CurrentController>();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final hive = getIt.get<HiveService>();
@@ -37,8 +57,7 @@ class CurrentScreen extends WatchingWidget {
     final showMm = settings.unit.precipitation == PrecipitationUnit.millimeters;
     final showhPa = settings.unit.pressure == PressureUnit.hectopascal;
 
-    final currentState = watchIt<CurrentController>().value;
-    final index = currentState.index;
+    final index = watchIt<CurrentController>().value;
 
     return Scaffold(
       extendBody: true,
@@ -77,10 +96,7 @@ class CurrentScreen extends WatchingWidget {
                 duration: PromajaDurations.cardSwiperAnimation,
                 numberOfCardsDisplayed: min(cardCount, 4),
                 cardsCount: cardCount,
-                onSwipeDirectionChange: (horizontal, vertical) => current.onSwipeDirectionChange(
-                  newIsMoving: horizontal != CardSwiperDirection.none || vertical != CardSwiperDirection.none,
-                ),
-                onSwipe: (previousIndex, index, __) {
+                onSwipe: (previousIndex, index, _) {
                   current.cardSwiped(
                     newIndex: index ?? previousIndex,
                   );

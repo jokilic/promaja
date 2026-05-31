@@ -545,7 +545,6 @@ class NotificationService {
                 /// Update `state` in `CurrentController`
                 ..updateState(
                   newIndex: locationIndex,
-                  newIsMoving: false,
                 );
 
               if (current.cardAdditionalPageController.hasClients) {

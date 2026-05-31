@@ -135,6 +135,9 @@ Future<void> initializeServices() async {
       dependsOn: [HiveService],
     );
   }
+
+  /// Wait for initialization to finish
+  await getIt.allReady();
 }
 
 /// Initialize [EasyLocalization]

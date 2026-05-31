@@ -10,7 +10,7 @@ import '../../../../util/dependencies.dart';
 import '../../controllers/add_location_controller.dart';
 import '../../controllers/phone_location_controller.dart';
 
-class AddLocationWidget extends StatefulWidget {
+class AddLocationWidget extends WatchingStatefulWidget {
   @override
   State<AddLocationWidget> createState() => _AddLocationWidgetState();
 }

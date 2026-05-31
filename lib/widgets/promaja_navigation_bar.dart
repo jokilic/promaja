@@ -11,6 +11,8 @@ import '../util/spacing.dart';
 class PromajaNavigationBar extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
+    final screen = getIt.get<ScreenService>();
+
     final navigationBarItem = watchIt<ScreenService>().value;
 
     return ClipRRect(
@@ -25,7 +27,7 @@ class PromajaNavigationBar extends WatchingWidget {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         animationDuration: PromajaDurations.navigationAnimation,
         selectedIndex: navigationBarItem.index,
-        onDestinationSelected: (newIndex) => getIt.get<ScreenService>().changeNavigationBarItem(
+        onDestinationSelected: (newIndex) => screen.changeNavigationBarItem(
           NavigationBarItem.values[newIndex],
         ),
         destinations: [

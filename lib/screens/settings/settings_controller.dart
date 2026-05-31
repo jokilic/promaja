@@ -153,6 +153,7 @@ class SettingsController extends ValueNotifier<PromajaSettings> {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
     final top = tapDownDetails?.globalPosition.dy ?? 0;
 
+    /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
     return showMenu(
@@ -429,6 +430,7 @@ class SettingsController extends ValueNotifier<PromajaSettings> {
     final left = tapDownDetails?.globalPosition.dx ?? 0;
     final top = tapDownDetails?.globalPosition.dy ?? 0;
 
+    /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
     return showMenu(

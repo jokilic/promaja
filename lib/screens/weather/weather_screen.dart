@@ -17,11 +17,12 @@ import '../../services/hive_service.dart';
 import '../../util/dependencies.dart';
 import '../../util/error.dart';
 import '../../widgets/promaja_navigation_bar.dart';
+import 'weather_controller.dart';
 import 'widgets/weather/weather_error.dart';
 import 'widgets/weather/weather_loading.dart';
 import 'widgets/weather/weather_success.dart';
 
-class WeatherScreen extends WatchingWidget {
+class WeatherScreen extends WatchingStatefulWidget {
   final Location? originalLocation;
 
   const WeatherScreen({
@@ -29,10 +30,30 @@ class WeatherScreen extends WatchingWidget {
   });
 
   @override
+  State<WeatherScreen> createState() => _WeatherScreenState();
+}
+
+class _WeatherScreenState extends State<WeatherScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    registerIfNotInitialized<WeatherController>(
+      WeatherController.new,
+    );
+  }
+
+  @override
+  void dispose() {
+    unRegisterIfNotDisposed<WeatherController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final futureSnapshot = watchFuture<APIService, ({ResponseForecastWeather? response, ResponseError? error, String? genericError})>(
       (api) => api.getForecastWeather(
-        query: '${originalLocation?.lat},${originalLocation?.lon}',
+        query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
         days: 7,
       ),
       initialValue: (
@@ -60,13 +81,13 @@ class WeatherScreen extends WatchingWidget {
             ///
             /// LOCATION EXISTS
             ///
-            if (originalLocation != null) {
+            if (widget.originalLocation != null) {
               ///
               /// LOADING
               ///
               if (futureSnapshot.connectionState == ConnectionState.waiting) {
                 return WeatherLoading(
-                  location: originalLocation!,
+                  location: widget.originalLocation!,
                   isWeatherSummary: settings.appearance.weatherSummaryFirst,
                 );
               }
@@ -78,9 +99,9 @@ class WeatherScreen extends WatchingWidget {
                 final error = futureSnapshot.error;
 
                 return WeatherError(
-                  location: originalLocation!,
+                  location: widget.originalLocation!,
                   error: '$error',
-                  isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                  isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   // TODO: Refresh logic
                   // refreshPressed: () => ref.invalidate(
                   //   getForecastWeatherProvider(
@@ -108,7 +129,7 @@ class WeatherScreen extends WatchingWidget {
                 return WeatherSuccess(
                   location: location,
                   forecastWeather: forecastWeather,
-                  isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                  isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                   showKph: settings.unit.distanceSpeed == DistanceSpeedUnit.kilometers,
                   showMm: settings.unit.precipitation == PrecipitationUnit.millimeters,
@@ -120,11 +141,11 @@ class WeatherScreen extends WatchingWidget {
               /// ERROR WHILE FETCHING
               ///
               return WeatherError(
-                location: originalLocation!,
+                location: widget.originalLocation!,
                 error: getErrorDescription(
                   errorCode: data?.error?.error.code ?? 0,
                 ),
-                isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+                isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                 // TODO: Refresh logic
                 // refreshPressed: () => ref.invalidate(
                 //   getForecastWeatherProvider(
@@ -146,7 +167,7 @@ class WeatherScreen extends WatchingWidget {
                 region: '---',
               ),
               error: 'noMoreLocations'.tr(),
-              isPhoneLocation: originalLocation?.isPhoneLocation ?? false,
+              isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
             );
           },
         ),

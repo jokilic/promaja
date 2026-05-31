@@ -9,6 +9,4 @@ abstract class Env {
 
   @EnviedField(varName: 'WEATHER_API_BASE_URL', obfuscate: true)
   static final String weatherApiBaseUrl = _Env.weatherApiBaseUrl;
-
-  // TODO: Rerun code generation
 }

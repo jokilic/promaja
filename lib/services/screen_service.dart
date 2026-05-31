@@ -45,8 +45,11 @@ class ScreenService extends ValueNotifier<NavigationBarItem> {
   NavigationBarItem getInitialNavigationBarItem() {
     final indexValue = hive.getActiveNavigationValueIndexFromBox();
 
+    /// Get currently stored `locations`
+    final locations = hive.getLocationsFromBox();
+
     /// No locations, go to [ListScreen]
-    if (hive.getLocationsFromBox().isEmpty) {
+    if (locations.isEmpty) {
       return NavigationBarItem.list;
     }
 
@@ -76,13 +79,16 @@ class ScreenService extends ValueNotifier<NavigationBarItem> {
 
   /// Triggered when navigation bar needs changing
   Future<void> changeNavigationBarItem(NavigationBarItem passedItem) async {
+    /// Generate `newItem`
     final newItem = hive.getLocationsFromBox().isEmpty ? NavigationBarItem.list : passedItem;
-    final oldItem = getInitialNavigationBarItem();
 
-    if (oldItem != newItem) {
+    /// User pressed a different item
+    if (value != newItem) {
       await hive.addActiveNavigationValueIndexToBox(
         index: newItem.index,
       );
+
+      value = newItem;
 
       getProperWidget(newItem);
     }
