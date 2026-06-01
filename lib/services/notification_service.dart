@@ -22,15 +22,18 @@ import '../util/dependencies.dart';
 import '../util/weather.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
+import 'location_service.dart';
 import 'screen_service.dart';
 
 class NotificationService {
   final HiveService hive;
   final APIService api;
+  final LocationService location;
 
   NotificationService({
     required this.hive,
     required this.api,
+    required this.location,
   });
 
   ///
@@ -251,10 +254,17 @@ class NotificationService {
     try {
       final settings = hive.getPromajaSettingsFromBox();
 
-      final location = settings.notification.location;
+      var location = settings.notification.location;
 
       /// Location exists
       if (location != null) {
+        /// Refresh coordinates before fetching weather for the phone location
+        if (location.isPhoneLocation ?? false) {
+          location = await refreshPhoneLocation(
+            passedLocation: location,
+          );
+        }
+
         ///
         /// Hourly notification is active, fetch current weather and show it
         ///
@@ -367,6 +377,62 @@ class NotificationService {
       final error = 'HandleNotifications -> catch -> $e';
       debugPrint(error);
     }
+  }
+
+  /// Refreshes the stored phone location and returns the location to use for notifications
+  Future<Location> refreshPhoneLocation({required Location passedLocation}) async {
+    final position = await this.location.getPosition();
+
+    /// Keep using the last stored position when GPS refresh fails
+    if (position.position == null) {
+      return passedLocation;
+    }
+
+    final refreshedLocation = passedLocation.copyWith(
+      lat: position.position!.latitude,
+      lon: position.position!.longitude,
+    );
+
+    final locations = hive.getLocationsFromBox();
+    final phoneLocationIndex = locations.indexWhere(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    if (phoneLocationIndex != -1) {
+      await hive.replaceLocationInBox(
+        index: phoneLocationIndex,
+        location: refreshedLocation,
+      );
+    }
+
+    return refreshedLocation;
+  }
+
+  /// Finds a stored location for a notification payload
+  int? getNotificationLocationIndex({
+    required List<Location> locations,
+    required Location payloadLocation,
+  }) {
+    if (payloadLocation.isPhoneLocation ?? false) {
+      final phoneLocationIndex = locations.indexWhere(
+        (location) => location.isPhoneLocation ?? false,
+      );
+
+      return phoneLocationIndex == -1 ? null : phoneLocationIndex;
+    }
+
+    final locationIndex = locations.indexOf(payloadLocation);
+
+    if (locationIndex != -1) {
+      return locationIndex;
+    }
+
+    /// Supports notifications created before `isPhoneLocation` was added to the payload
+    final coordinateLocationIndex = locations.indexWhere(
+      (location) => location.lat == payloadLocation.lat && location.lon == payloadLocation.lon,
+    );
+
+    return coordinateLocationIndex == -1 ? null : coordinateLocationIndex;
   }
 
   /// Triggers hourly notification with proper data
@@ -538,7 +604,15 @@ class NotificationService {
           case NotificationType.hourly:
             if (notificationPayload.location != null) {
               /// Get location index
-              final locationIndex = locations.indexOf(notificationPayload.location!);
+              final locationIndex = getNotificationLocationIndex(
+                locations: locations,
+                payloadLocation: notificationPayload.location!,
+              );
+
+              if (locationIndex == null) {
+                debugPrint('HandlePressedNotification -> Hourly notification location not found');
+                return;
+              }
 
               /// Get reference to `CurrentController`
               final current = getIt.get<CurrentController>()
@@ -570,7 +644,15 @@ class NotificationService {
           case NotificationType.evening:
             if (notificationPayload.location != null) {
               /// Get location index
-              final locationIndex = locations.indexOf(notificationPayload.location!);
+              final locationIndex = getNotificationLocationIndex(
+                locations: locations,
+                payloadLocation: notificationPayload.location!,
+              );
+
+              if (locationIndex == null) {
+                debugPrint('HandlePressedNotification -> Forecast notification location not found');
+                return;
+              }
 
               /// Go to `ForecastScreen` with proper location
               await hive.addActiveLocationIndexToBox(index: locationIndex);

@@ -84,6 +84,13 @@ Future<void> initializeServices() async {
     );
   }
 
+  /// Location
+  if (!getIt.isRegistered<LocationService>()) {
+    getIt.registerSingletonAsync(
+      () async => LocationService(),
+    );
+  }
+
   if (isMobile) {
     /// WorkManager
     if (!getIt.isRegistered<WorkManagerService>()) {
@@ -99,11 +106,12 @@ Future<void> initializeServices() async {
           final notification = NotificationService(
             hive: getIt.get<HiveService>(),
             api: getIt.get<APIService>(),
+            location: getIt.get<LocationService>(),
           );
           await notification.init();
           return notification;
         },
-        dependsOn: [HiveService, APIService],
+        dependsOn: [HiveService, APIService, LocationService],
       );
     }
 
@@ -117,13 +125,6 @@ Future<void> initializeServices() async {
         dependsOn: [HiveService, APIService],
       );
     }
-  }
-
-  /// Location
-  if (!getIt.isRegistered<LocationService>()) {
-    getIt.registerSingletonAsync(
-      () async => LocationService(),
-    );
   }
 
   /// Screen

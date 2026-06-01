@@ -33,31 +33,32 @@ class Location extends HiveObject {
     double? lat,
     double? lon,
     bool? isPhoneLocation,
-  }) =>
-      Location(
-        name: name ?? this.name,
-        region: region ?? this.region,
-        country: country ?? this.country,
-        lat: lat ?? this.lat,
-        lon: lon ?? this.lon,
-        isPhoneLocation: isPhoneLocation ?? this.isPhoneLocation,
-      );
+  }) => Location(
+    name: name ?? this.name,
+    region: region ?? this.region,
+    country: country ?? this.country,
+    lat: lat ?? this.lat,
+    lon: lon ?? this.lon,
+    isPhoneLocation: isPhoneLocation ?? this.isPhoneLocation,
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'name': name,
-        'region': region,
-        'country': country,
-        'lat': lat,
-        'lon': lon,
-      };
+    'name': name,
+    'region': region,
+    'country': country,
+    'lat': lat,
+    'lon': lon,
+    'isPhoneLocation': isPhoneLocation,
+  };
 
   factory Location.fromMap(Map<String, dynamic> map) => Location(
-        name: map['name'] as String,
-        region: map['region'] as String,
-        country: map['country'] as String,
-        lat: map['lat'] as double,
-        lon: map['lon'] as double,
-      );
+    name: map['name'] as String,
+    region: map['region'] as String,
+    country: map['country'] as String,
+    lat: map['lat'] as double,
+    lon: map['lon'] as double,
+    isPhoneLocation: map['isPhoneLocation'] as bool? ?? false,
+  );
 
   @override
   String toString() => 'Location(name: $name, region: $region, country: $country, lat: $lat, lon: $lon, isPhoneLocation: $isPhoneLocation)';
