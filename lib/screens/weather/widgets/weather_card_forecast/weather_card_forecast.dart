@@ -22,7 +22,7 @@ import '../weather_card_hour/weather_card_individual_hour.dart';
 
 class WeatherCardForecast extends WatchingWidget {
   final ScrollController scrollController;
-  final Location location;
+  final Location originalLocation;
   final ForecastDayWeather forecast;
   final int index;
   final bool isPhoneLocation;
@@ -40,7 +40,7 @@ class WeatherCardForecast extends WatchingWidget {
 
   const WeatherCardForecast({
     required this.scrollController,
-    required this.location,
+    required this.originalLocation,
     required this.forecast,
     required this.index,
     required this.isPhoneLocation,
@@ -147,7 +147,7 @@ class WeatherCardForecast extends WatchingWidget {
                           clipBehavior: Clip.none,
                           children: [
                             Text(
-                              location.name,
+                              originalLocation.name,
                               style: PromajaTextStyles.currentLocation,
                               textAlign: TextAlign.center,
                             ),

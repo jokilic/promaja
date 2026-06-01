@@ -20,7 +20,7 @@ import '../../../widgets/keep_alive_widget.dart';
 import '../current_controller.dart';
 
 class CurrentSuccess extends StatelessWidget {
-  final Location location;
+  final Location originalLocation;
   final CurrentWeather currentWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
@@ -29,7 +29,7 @@ class CurrentSuccess extends StatelessWidget {
   final bool showhPa;
 
   const CurrentSuccess({
-    required this.location,
+    required this.originalLocation,
     required this.currentWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -118,7 +118,7 @@ class CurrentSuccess extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Text(
-                      location.name,
+                      originalLocation.name,
                       style: PromajaTextStyles.currentLocation,
                       textAlign: TextAlign.center,
                     ),

@@ -86,7 +86,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ///
               if (futureSnapshot.connectionState == ConnectionState.waiting) {
                 return WeatherLoading(
-                  location: widget.originalLocation!,
+                  originalLocation: widget.originalLocation!,
                   isWeatherSummary: settings.appearance.weatherSummaryFirst,
                 );
               }
@@ -98,7 +98,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 final error = futureSnapshot.error;
 
                 return WeatherError(
-                  location: widget.originalLocation!,
+                  originalLocation: widget.originalLocation!,
                   error: '$error',
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   // TODO: Refresh logic
@@ -126,7 +126,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 final location = data.response!.location;
 
                 return WeatherSuccess(
-                  location: location,
+                  originalLocation: widget.originalLocation ?? location,
                   forecastWeather: forecastWeather,
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
@@ -140,7 +140,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               /// ERROR WHILE FETCHING
               ///
               return WeatherError(
-                location: widget.originalLocation!,
+                originalLocation: widget.originalLocation!,
                 error: getErrorDescription(
                   errorCode: data?.error?.error.code ?? 0,
                 ),
@@ -158,7 +158,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             /// LOCATION DOESN'T EXIST
             ///
             return WeatherError(
-              location: Location(
+              originalLocation: Location(
                 country: '---',
                 lat: 0,
                 lon: 0,

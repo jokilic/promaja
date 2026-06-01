@@ -14,14 +14,14 @@ import 'list_card_loading.dart';
 import 'list_card_success.dart';
 
 class ListCardWidget extends WatchingWidget {
-  final Location location;
+  final Location originalLocation;
   final Function() onTap;
   final Function(CompletionHandler handler) onTapDelete;
   final bool showCelsius;
   final int index;
 
   const ListCardWidget({
-    required this.location,
+    required this.originalLocation,
     required this.onTap,
     required this.onTapDelete,
     required this.showCelsius,
@@ -33,7 +33,7 @@ class ListCardWidget extends WatchingWidget {
   Widget build(BuildContext context) {
     final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
       (api) => api.getCachedCurrentWeather(
-        query: '${location.lat},${location.lon}',
+        query: '${originalLocation.lat},${originalLocation.lon}',
       ),
       initialValue: (
         response: null,
@@ -85,8 +85,8 @@ class ListCardWidget extends WatchingWidget {
               ///
               if (futureSnapshot.connectionState == ConnectionState.waiting) {
                 return ListCardLoading(
-                  locationName: location.name,
-                  isPhoneLocation: location.isPhoneLocation ?? false,
+                  originalLocationName: originalLocation.name,
+                  isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                   onTap: onTap,
                 );
               }
@@ -98,8 +98,8 @@ class ListCardWidget extends WatchingWidget {
                 final error = futureSnapshot.error;
 
                 return ListCardError(
-                  location: location,
-                  isPhoneLocation: location.isPhoneLocation ?? false,
+                  originalLocation: originalLocation,
+                  isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                   error: '$error',
                   onTap: () {},
                 );
@@ -115,11 +115,10 @@ class ListCardWidget extends WatchingWidget {
               ///
               if (data?.response != null && data?.error == null) {
                 final currentWeather = data!.response!.current;
-                final fetchedLocation = data.response!.location;
 
                 return ListCardSuccess(
-                  location: fetchedLocation,
-                  isPhoneLocation: location.isPhoneLocation ?? false,
+                  location: originalLocation,
+                  isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                   currentWeather: currentWeather,
                   onTap: onTap,
                   showCelsius: showCelsius,
@@ -130,8 +129,8 @@ class ListCardWidget extends WatchingWidget {
               /// ERROR WHILE FETCHING
               ///
               return ListCardError(
-                location: location,
-                isPhoneLocation: location.isPhoneLocation ?? false,
+                originalLocation: originalLocation,
+                isPhoneLocation: originalLocation.isPhoneLocation ?? false,
                 error: getErrorDescription(
                   errorCode: data?.error?.error.code ?? 0,
                 ),

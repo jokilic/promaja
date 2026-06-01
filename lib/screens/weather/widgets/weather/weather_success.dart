@@ -18,7 +18,7 @@ import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
 
 class WeatherSuccess extends WatchingStatefulWidget {
-  final Location location;
+  final Location originalLocation;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
@@ -27,7 +27,7 @@ class WeatherSuccess extends WatchingStatefulWidget {
   final bool showhPa;
 
   const WeatherSuccess({
-    required this.location,
+    required this.originalLocation,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -79,7 +79,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               bottom: getWeatherCardBottomPadding(context),
             ),
             child: WeatherCardError(
-              locationName: widget.location.name,
+              originalLocationName: widget.originalLocation.name,
               error: 'noCards'.tr(),
               isPhoneLocation: widget.isPhoneLocation,
             ),
@@ -103,7 +103,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
             },
             cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
               key: GlobalObjectKey(cardIndex),
-              location: widget.location,
+              originalLocation: widget.originalLocation,
               forecastWeather: widget.forecastWeather,
               forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
               index: cardIndex,

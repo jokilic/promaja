@@ -9,12 +9,12 @@ import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
 class WeatherCardError extends StatelessWidget {
-  final String? locationName;
+  final String? originalLocationName;
   final String error;
   final bool isPhoneLocation;
 
   const WeatherCardError({
-    required this.locationName,
+    required this.originalLocationName,
     required this.error,
     required this.isPhoneLocation,
   });
@@ -69,9 +69,9 @@ class WeatherCardError extends StatelessWidget {
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
                 children: [
-                  if (locationName != null)
+                  if (originalLocationName != null)
                     Text(
-                      locationName!,
+                      originalLocationName!,
                       style: PromajaTextStyles.currentLocation,
                       textAlign: TextAlign.center,
                     ),

@@ -10,11 +10,11 @@ import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
 
 class WeatherLoading extends StatelessWidget {
-  final Location location;
+  final Location originalLocation;
   final bool isWeatherSummary;
 
   const WeatherLoading({
-    required this.location,
+    required this.originalLocation,
     required this.isWeatherSummary,
   });
 
@@ -60,7 +60,7 @@ class WeatherLoading extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '${location.name}, ${location.country}',
+                        text: '${originalLocation.name}, ${originalLocation.country}',
                       ),
                     ],
                   ),

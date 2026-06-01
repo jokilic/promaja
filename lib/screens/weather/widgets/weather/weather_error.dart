@@ -11,13 +11,13 @@ import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
 
 class WeatherError extends StatelessWidget {
-  final Location location;
+  final Location originalLocation;
   final String error;
   final bool isPhoneLocation;
   final Function()? refreshPressed;
 
   const WeatherError({
-    required this.location,
+    required this.originalLocation,
     required this.error,
     required this.isPhoneLocation,
     this.refreshPressed,
@@ -75,7 +75,7 @@ class WeatherError extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Text(
-                    location.name,
+                    originalLocation.name,
                     style: PromajaTextStyles.currentLocation,
                     textAlign: TextAlign.center,
                   ),

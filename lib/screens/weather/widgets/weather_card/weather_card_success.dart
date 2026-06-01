@@ -11,7 +11,7 @@ import '../weather_card_summary/weather_card_summary.dart';
 import 'weather_card_error.dart';
 
 class WeatherCardSuccess extends StatefulWidget {
-  final Location location;
+  final Location originalLocation;
   final ForecastWeather forecastWeather;
   final ForecastDayWeather? forecast;
   final int index;
@@ -22,7 +22,7 @@ class WeatherCardSuccess extends StatefulWidget {
   final bool showhPa;
 
   const WeatherCardSuccess({
-    required this.location,
+    required this.originalLocation,
     required this.forecastWeather,
     required this.forecast,
     required this.index,
@@ -84,7 +84,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           ///
           if (widget.forecast == null) {
             return WeatherCardSummary(
-              location: widget.location,
+              originalLocation: widget.originalLocation,
               forecastWeather: widget.forecastWeather,
               isPhoneLocation: widget.isPhoneLocation,
               showCelsius: widget.showCelsius,
@@ -96,7 +96,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           ///
           if (widget.forecast != null) {
             return WeatherCardForecast(
-              location: widget.location,
+              originalLocation: widget.originalLocation,
               forecast: widget.forecast!,
               index: widget.index,
               isPhoneLocation: widget.isPhoneLocation,
@@ -114,7 +114,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           /// ERROR
           ///
           return WeatherCardError(
-            locationName: widget.location.name,
+            originalLocationName: widget.originalLocation.name,
             error: 'noForecastsOrSummary'.tr(),
             isPhoneLocation: widget.isPhoneLocation,
           );

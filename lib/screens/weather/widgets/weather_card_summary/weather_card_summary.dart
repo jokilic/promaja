@@ -13,13 +13,13 @@ import '../../../../util/spacing.dart';
 import 'weather_card_summary_list_tile.dart';
 
 class WeatherCardSummary extends StatelessWidget {
-  final Location location;
+  final Location originalLocation;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
 
   const WeatherCardSummary({
-    required this.location,
+    required this.originalLocation,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -76,7 +76,7 @@ class WeatherCardSummary extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '${location.name}, ${location.country}',
+                        text: '${originalLocation.name}, ${originalLocation.country}',
                       ),
                       if (isPhoneLocation) ...[
                         const WidgetSpan(

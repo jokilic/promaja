@@ -50,7 +50,7 @@ class CurrentWidget extends WatchingWidget {
           ///
           if (futureSnapshot.connectionState == ConnectionState.waiting) {
             return CurrentLoading(
-              location: originalLocation,
+              originalLocation: originalLocation,
             );
           }
 
@@ -61,7 +61,7 @@ class CurrentWidget extends WatchingWidget {
             final error = futureSnapshot.error;
 
             return CurrentError(
-              locationName: originalLocation.name,
+              originalLocationName: originalLocation.name,
               error: '$error',
               isPhoneLocation: originalLocation.isPhoneLocation ?? false,
               // TODO: Refresh logic
@@ -84,10 +84,9 @@ class CurrentWidget extends WatchingWidget {
             FlutterNativeSplash.remove();
 
             final currentWeather = data!.response!.current;
-            final location = data.response!.location;
 
             return CurrentSuccess(
-              location: location,
+              originalLocation: originalLocation,
               currentWeather: currentWeather,
               isPhoneLocation: originalLocation.isPhoneLocation ?? false,
               showCelsius: showCelsius,
@@ -101,7 +100,7 @@ class CurrentWidget extends WatchingWidget {
           /// ERROR WHILE FETCHING
           ///
           return CurrentError(
-            locationName: originalLocation.name,
+            originalLocationName: originalLocation.name,
             error: getErrorDescription(
               errorCode: data?.error?.error.code ?? 0,
             ),

@@ -98,7 +98,7 @@ class ListCards extends StatelessWidget {
               return ListCardWidget(
                 index: index,
                 key: ValueKey(location),
-                location: location,
+                originalLocation: location,
                 showCelsius: showCelsius,
                 onTap: () => openWeatherScreen(
                   index: index,

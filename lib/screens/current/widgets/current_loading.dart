@@ -7,10 +7,10 @@ import '../../../models/location/location.dart';
 import '../../../util/color.dart';
 
 class CurrentLoading extends StatelessWidget {
-  final Location location;
+  final Location originalLocation;
 
   const CurrentLoading({
-    required this.location,
+    required this.originalLocation,
   });
 
   @override

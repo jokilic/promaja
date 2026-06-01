@@ -9,13 +9,13 @@ import '../../../constants/text_styles.dart';
 import '../../../util/color.dart';
 
 class CurrentError extends StatelessWidget {
-  final String? locationName;
+  final String? originalLocationName;
   final String error;
   final bool isPhoneLocation;
   final Function()? refreshPressed;
 
   const CurrentError({
-    required this.locationName,
+    required this.originalLocationName,
     required this.error,
     required this.isPhoneLocation,
     this.refreshPressed,
@@ -71,9 +71,9 @@ class CurrentError extends StatelessWidget {
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
                 children: [
-                  if (locationName != null)
+                  if (originalLocationName != null)
                     Text(
-                      locationName!,
+                      originalLocationName!,
                       style: PromajaTextStyles.currentLocation,
                       textAlign: TextAlign.center,
                     ),
