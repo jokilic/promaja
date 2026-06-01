@@ -80,19 +80,30 @@ class PhoneLocationController
 
       /// Response successfully fetched
       if (response.response != null && response.error == null) {
-        /// Remove phone location if it's active
-        await removeActivePhoneLocation();
+        final phoneLocation =
+            response.response?.location.copyWith(
+              isPhoneLocation: true,
+            ) ??
+            location;
 
-        /// Get currently stored `locations`
-        final locations = hive.getLocationsFromBox();
-
-        /// Add location to [Hive]
-        await hive.writeAllLocationsToHive(
-          locations: [
-            response.response?.location.copyWith(isPhoneLocation: true) ?? location,
-            ...locations,
-          ],
+        /// Replace phone location if it's active
+        final hasReplacedPhoneLocation = await replaceActivePhoneLocation(
+          location: phoneLocation,
         );
+
+        /// Add phone location if it's not active
+        if (!hasReplacedPhoneLocation) {
+          /// Get currently stored `locations`
+          final locations = hive.getLocationsFromBox();
+
+          /// Add location to [Hive]
+          await hive.writeAllLocationsToHive(
+            locations: [
+              phoneLocation,
+              ...locations,
+            ],
+          );
+        }
 
         value = (
           position: position.position,
@@ -119,25 +130,30 @@ class PhoneLocationController
     }
   }
 
-  /// Checks if phone location is active and removes it
-  Future<void> removeActivePhoneLocation() async {
+  /// Checks if phone location is active and replaces it
+  Future<bool> replaceActivePhoneLocation({
+    required Location location,
+  }) async {
     /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
-    /// Check if phone location is active
-    final hasPhoneLocation = locations.any(
+    /// Get phone location index
+    final phoneLocationIndex = locations.indexWhere(
       (location) => location.isPhoneLocation ?? false,
     );
 
-    /// Remove phone location
-    if (hasPhoneLocation) {
-      final phoneLocationIndex = locations.indexWhere(
-        (location) => location.isPhoneLocation ?? false,
-      );
-
-      await hive.deleteLocationFromBox(
-        index: phoneLocationIndex,
-      );
+    /// Return if phone location is not active
+    if (phoneLocationIndex == -1) {
+      return false;
     }
+
+    /// Replace phone location while retaining its `index`
+    locations[phoneLocationIndex] = location;
+
+    await hive.writeAllLocationsToHive(
+      locations: locations,
+    );
+
+    return true;
   }
 }
