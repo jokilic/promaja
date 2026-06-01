@@ -31,6 +31,7 @@ class WeatherCardSuccess extends StatefulWidget {
     required this.showKph,
     required this.showMm,
     required this.showhPa,
+    required super.key,
   });
 
   @override

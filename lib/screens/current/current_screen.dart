@@ -103,6 +103,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   return true;
                 },
                 cardBuilder: (_, cardIndex, __, ___) => CurrentWidget(
+                  key: GlobalObjectKey(cardIndex),
                   originalLocation: locations[cardIndex],
                   showCelsius: showCelsius,
                   showKph: showKph,

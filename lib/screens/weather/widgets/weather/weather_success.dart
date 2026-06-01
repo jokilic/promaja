@@ -102,6 +102,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               return true;
             },
             cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
+              key: GlobalObjectKey(cardIndex),
               location: widget.location,
               forecastWeather: widget.forecastWeather,
               forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
