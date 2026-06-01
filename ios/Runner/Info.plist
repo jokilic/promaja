@@ -4,8 +4,10 @@
 	<dict>
 		<key>BGTaskSchedulerPermittedIdentifiers</key>
 		<array>
-  			<!-- Used for standard background tasks -->
-  			<string>dev.brewkits.native_workmanager.refresh</string>
+			<!-- Used for standard background tasks -->
+			<string>dev.brewkits.native_workmanager.refresh</string>
+			<!-- Used for periodic background tasks -->
+			<string>dev.brewkits.native_workmanager.periodic</string>
 			<!-- Used for heavy background tasks (Processing tasks) -->
 			<string>dev.brewkits.native_workmanager.task</string>
 		</array>

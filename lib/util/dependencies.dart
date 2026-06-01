@@ -53,7 +53,9 @@ void unRegisterIfNotDisposed<T extends Object>({
 }
 
 /// Initialize services
-Future<void> initializeServices() async {
+Future<void> initializeServices({
+  bool initializeWorkManager = true,
+}) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   /// Dio
@@ -93,9 +95,13 @@ Future<void> initializeServices() async {
 
   if (isMobile) {
     /// WorkManager
-    if (!getIt.isRegistered<WorkManagerService>()) {
+    if (initializeWorkManager && !getIt.isRegistered<WorkManagerService>()) {
       getIt.registerSingletonAsync(
-        () async => WorkManagerService(),
+        () async {
+          final workManager = WorkManagerService();
+          await workManager.init();
+          return workManager;
+        },
       );
     }
 

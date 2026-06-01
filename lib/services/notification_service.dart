@@ -706,7 +706,11 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     await initializeLocalization();
 
     /// Initialize services
-    await initializeServices();
+    // The notification callback runs in a background isolate. Avoid enqueueing
+    // WorkManager tasks while restoring the services needed to handle the tap.
+    await initializeServices(
+      initializeWorkManager: false,
+    );
 
     /// Trigger notification logic
     await getIt.get<NotificationService>().handlePressedNotification(

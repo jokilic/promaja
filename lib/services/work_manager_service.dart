@@ -59,7 +59,9 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
     await initializeLocalization();
 
     /// Initialize services
-    await initializeServices();
+    await initializeServices(
+      initializeWorkManager: false,
+    );
 
     ///
     /// Notifications
