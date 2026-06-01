@@ -48,7 +48,7 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
-        debugPrint('Success $query');
+        debugPrint('Success');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
@@ -140,7 +140,7 @@ class APIService {
         /// Locations found
         ///
         final parsedResponse = await computeSearch(responseList);
-        debugPrint('Success $query');
+        debugPrint('Success');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
@@ -174,6 +174,7 @@ class APIService {
 
     /// Fetched weather already exists and is within cache timeframe
     if (cachedCurrentWeather != null && DateTime.now().difference(cachedCurrentWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
+      print('Cached');
       return Future.value(
         (
           response: cachedCurrentWeather.response,
@@ -200,7 +201,11 @@ class APIService {
           );
         }
 
-        await currentWeatherRequests.remove(query);
+        unawaited(
+          currentWeatherRequests.remove(query),
+        );
+
+        print('Fetched');
         return result;
       },
     );
@@ -216,6 +221,7 @@ class APIService {
 
     /// Fetched weather already exists and is within cache timeframe
     if (cachedForecastWeather != null && DateTime.now().difference(cachedForecastWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
+      print('Cached');
       return Future.value(
         (
           response: cachedForecastWeather.response,
@@ -243,7 +249,11 @@ class APIService {
           );
         }
 
-        await forecastWeatherRequests.remove(cacheKey);
+        unawaited(
+          forecastWeatherRequests.remove(cacheKey),
+        );
+
+        print('Fetched');
         return result;
       },
     );
