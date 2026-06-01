@@ -36,7 +36,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
     final hiveState = watchIt<HiveService>().value;
 
     final isLoading = addLocationState.loading;
-    final locations = addLocationState.response;
+    final locations = addLocationState.searchResult.response;
 
     final isLoadingPhone = phoneLocationState.loading;
     final hasPhoneLocation = hiveState.any(

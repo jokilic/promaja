@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import '../constants/durations.dart';
 import '../constants/typedefs.dart';
 import '../models/current_weather/response_current_weather.dart';
-import '../models/error/response_error.dart';
 import '../models/location/location.dart';
 import '../models/weather/response_forecast_weather.dart';
 import '../util/env.dart';
@@ -30,6 +29,138 @@ class APIService {
 
   final forecastWeatherCache = <String, ForecastWeatherCacheEntry>{};
   final forecastWeatherRequests = <String, Future<ForecastWeatherResult>>{};
+
+  ///
+  /// `current.json`
+  ///
+  Future<CurrentWeatherResult> getCurrentWeather({
+    required String query,
+  }) async {
+    try {
+      final response = await dio.get(
+        '/current.json',
+        queryParameters: {
+          'key': Env.weatherApiKey,
+          'q': query,
+        },
+      );
+
+      /// Status code is `200`, response is successful
+      if (response.statusCode == 200) {
+        final parsedResponse = await computeCurrentWeather(response.data);
+        debugPrint('Success $query');
+        return (response: parsedResponse, error: null, genericError: null);
+      }
+
+      /// Status code starts with a `4`, some API error happened
+      if ((response.statusCode ?? 0) ~/ 100 == 4) {
+        final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
+        return (response: null, error: parsedError, genericError: null);
+      }
+
+      /// Some weird error happened
+      final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    } catch (e) {
+      final error = 'Current weather -> catch -> $e';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    }
+  }
+
+  ///
+  /// `forecast.json`
+  ///
+  Future<ForecastWeatherResult> getForecastWeather({
+    required String query,
+    required int days,
+  }) async {
+    try {
+      final response = await dio.get(
+        '/forecast.json',
+        queryParameters: {
+          'key': Env.weatherApiKey,
+          'q': query,
+          'days': days,
+        },
+      );
+
+      /// Status code is `200`, response is successful
+      if (response.statusCode == 200) {
+        final parsedResponse = await computeForecastWeather(response.data);
+        debugPrint('Success');
+        return (response: parsedResponse, error: null, genericError: null);
+      }
+
+      /// Status code starts with a `4`, some API error happened
+      if ((response.statusCode ?? 0) ~/ 100 == 4) {
+        final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
+        return (response: null, error: parsedError, genericError: null);
+      }
+
+      /// Some weird error happened
+      final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    } catch (e) {
+      final error = 'Forecast weather -> catch -> $e';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    }
+  }
+
+  ///
+  /// `search.json`
+  ///
+  Future<SearchResult> getSearch({
+    required String query,
+  }) async {
+    try {
+      final response = await dio.get(
+        '/search.json',
+        queryParameters: {
+          'key': Env.weatherApiKey,
+          'q': query,
+        },
+      );
+
+      /// Status code is `200`, response is successful
+      if (response.statusCode == 200) {
+        final responseList = jsonDecode(jsonEncode(response.data)) as List;
+
+        /// No locations found
+        if (responseList.isEmpty) {
+          return (response: null, error: null, genericError: 'noLocationsFound'.tr());
+        }
+
+        ///
+        /// Locations found
+        ///
+        final parsedResponse = await computeSearch(responseList);
+        debugPrint('Success $query');
+        return (response: parsedResponse, error: null, genericError: null);
+      }
+
+      /// Status code starts with a `4`, some API error happened
+      if ((response.statusCode ?? 0) ~/ 100 == 4) {
+        final parsedError = await computeError(response.data);
+        debugPrint('$parsedError');
+        return (response: null, error: parsedError, genericError: null);
+      }
+
+      /// Some weird error happened
+      final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    } catch (e) {
+      final error = 'Search -> catch -> $e';
+      debugPrint(error);
+      return (response: null, error: null, genericError: error);
+    }
+  }
 
   ///
   /// METHODS
@@ -116,135 +247,6 @@ class APIService {
         return result;
       },
     );
-  }
-
-  ///
-  /// `current.json`
-  ///
-  Future<CurrentWeatherResult> getCurrentWeather({
-    required String query,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/current.json',
-        queryParameters: {
-          'key': Env.weatherApiKey,
-          'q': query,
-        },
-      );
-
-      /// Status code is `200`, response is successful
-      if (response.statusCode == 200) {
-        final parsedResponse = await computeCurrentWeather(response.data);
-        return (response: parsedResponse, error: null, genericError: null);
-      }
-
-      /// Status code starts with a `4`, some API error happened
-      if ((response.statusCode ?? 0) ~/ 100 == 4) {
-        final parsedError = await computeError(response.data);
-        debugPrint('$parsedError');
-        return (response: null, error: parsedError, genericError: null);
-      }
-
-      /// Some weird error happened
-      final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    } catch (e) {
-      final error = 'Current weather -> catch -> $e';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    }
-  }
-
-  ///
-  /// `forecast.json`
-  ///
-  Future<ForecastWeatherResult> getForecastWeather({
-    required String query,
-    required int days,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/forecast.json',
-        queryParameters: {
-          'key': Env.weatherApiKey,
-          'q': query,
-          'days': days,
-        },
-      );
-
-      /// Status code is `200`, response is successful
-      if (response.statusCode == 200) {
-        final parsedResponse = await computeForecastWeather(response.data);
-        return (response: parsedResponse, error: null, genericError: null);
-      }
-
-      /// Status code starts with a `4`, some API error happened
-      if ((response.statusCode ?? 0) ~/ 100 == 4) {
-        final parsedError = await computeError(response.data);
-        debugPrint('$parsedError');
-        return (response: null, error: parsedError, genericError: null);
-      }
-
-      /// Some weird error happened
-      final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    } catch (e) {
-      final error = 'Forecast weather -> catch -> $e';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    }
-  }
-
-  ///
-  /// `search.json`
-  ///
-  Future<({List<Location>? response, ResponseError? error, String? genericError})> getSearch({
-    required String query,
-  }) async {
-    try {
-      final response = await dio.get(
-        '/search.json',
-        queryParameters: {
-          'key': Env.weatherApiKey,
-          'q': query,
-        },
-      );
-
-      /// Status code is `200`, response is successful
-      if (response.statusCode == 200) {
-        final responseList = jsonDecode(jsonEncode(response.data)) as List;
-
-        /// No locations found
-        if (responseList.isEmpty) {
-          return (response: null, error: null, genericError: 'noLocationsFound'.tr());
-        }
-
-        ///
-        /// Locations found
-        ///
-        final parsedResponse = await computeSearch(responseList);
-        return (response: parsedResponse, error: null, genericError: null);
-      }
-
-      /// Status code starts with a `4`, some API error happened
-      if ((response.statusCode ?? 0) ~/ 100 == 4) {
-        final parsedError = await computeError(response.data);
-        debugPrint('$parsedError');
-        return (response: null, error: parsedError, genericError: null);
-      }
-
-      /// Some weird error happened
-      final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    } catch (e) {
-      final error = 'Search -> catch -> $e';
-      debugPrint(error);
-      return (response: null, error: null, genericError: error);
-    }
   }
 
   ///

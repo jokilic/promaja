@@ -5,22 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../constants/durations.dart';
-import '../../../models/error/response_error.dart';
+import '../../../constants/typedefs.dart';
 import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 
-class AddLocationController
-    extends
-        ValueNotifier<
-          ({
-            List<Location>? response,
-            ResponseError? error,
-            String? genericError,
-            bool loading,
-          })
-        >
-    implements Disposable {
+class AddLocationController extends ValueNotifier<({SearchResult searchResult, bool loading})> implements Disposable {
   final HiveService hive;
   final APIService api;
 
@@ -28,9 +18,11 @@ class AddLocationController
     required this.hive,
     required this.api,
   }) : super((
-         response: null,
-         error: null,
-         genericError: null,
+         searchResult: (
+           response: null,
+           error: null,
+           genericError: null,
+         ),
          loading: false,
        ));
 
@@ -59,9 +51,11 @@ class AddLocationController
   Future<void> searchPlace(String passedValue) async {
     if (passedValue.isNotEmpty) {
       value = (
-        response: null,
-        error: null,
-        genericError: null,
+        searchResult: (
+          response: null,
+          error: null,
+          genericError: null,
+        ),
         loading: true,
       );
 
@@ -70,9 +64,11 @@ class AddLocationController
       );
 
       value = (
-        response: response.response,
-        error: response.error,
-        genericError: response.genericError,
+        searchResult: (
+          response: response.response,
+          error: response.error,
+          genericError: response.genericError,
+        ),
         loading: false,
       );
     }
@@ -93,10 +89,12 @@ class AddLocationController
     /// Location already exists, throw error
     if (locationExists) {
       value = (
-        response: null,
-        error: null,
-        genericError: 'locationAlreadyExists'.tr(
-          args: [location.name, location.country],
+        searchResult: (
+          response: null,
+          error: null,
+          genericError: 'locationAlreadyExists'.tr(
+            args: [location.name, location.country],
+          ),
         ),
         loading: false,
       );
@@ -114,9 +112,11 @@ class AddLocationController
       );
 
       value = (
-        response: null,
-        error: null,
-        genericError: null,
+        searchResult: (
+          response: null,
+          error: null,
+          genericError: null,
+        ),
         loading: false,
       );
 
