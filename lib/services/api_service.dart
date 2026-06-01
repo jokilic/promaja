@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/durations.dart';
+import '../constants/typedefs.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/error/response_error.dart';
 import '../models/location/location.dart';
@@ -18,6 +20,61 @@ class APIService {
   APIService({
     required this.dio,
   });
+
+  ///
+  /// VARIABLES
+  ///
+
+  final forecastWeatherCache = <String, ForecastWeatherCacheEntry>{};
+  final forecastWeatherRequests = <String, Future<ForecastWeatherResult>>{};
+
+  ///
+  /// METHODS
+  ///
+
+  /// Returns fresh forecast data from memory when the same location was recently fetched
+  Future<ForecastWeatherResult> getCachedForecastWeather({
+    required String query,
+    required int days,
+  }) {
+    final now = DateTime.now();
+    final cacheKey = '$query:$days';
+    final cachedForecastWeather = forecastWeatherCache[cacheKey];
+
+    /// Fetched weather already exists and is within cache timeframe
+    if (cachedForecastWeather != null && now.difference(cachedForecastWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
+      return Future.value(
+        (
+          response: cachedForecastWeather.response,
+          error: null,
+          genericError: null,
+        ),
+      );
+    }
+
+    forecastWeatherCache.remove(cacheKey);
+
+    /// Reuse an active request when the same location is requested before its fetch completes
+    return forecastWeatherRequests.putIfAbsent(
+      cacheKey,
+      () async {
+        final result = await getForecastWeather(
+          query: query,
+          days: days,
+        );
+
+        if (result.response != null && result.error == null && result.genericError == null) {
+          forecastWeatherCache[cacheKey] = (
+            response: result.response!,
+            fetchedAt: now,
+          );
+        }
+
+        await forecastWeatherRequests.remove(cacheKey);
+        return result;
+      },
+    );
+  }
 
   ///
   /// `current.json`
@@ -61,7 +118,7 @@ class APIService {
   ///
   /// `forecast.json`
   ///
-  Future<({ResponseForecastWeather? response, ResponseError? error, String? genericError})> getForecastWeather({
+  Future<ForecastWeatherResult> getForecastWeather({
     required String query,
     required int days,
   }) async {

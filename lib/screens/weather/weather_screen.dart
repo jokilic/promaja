@@ -5,13 +5,12 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../constants/durations.dart';
-import '../../models/error/response_error.dart';
+import '../../constants/typedefs.dart';
 import '../../models/location/location.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
-import '../../models/weather/response_forecast_weather.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
 import '../../util/dependencies.dart';
@@ -51,8 +50,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final futureSnapshot = watchFuture<APIService, ({ResponseForecastWeather? response, ResponseError? error, String? genericError})>(
-      (api) => api.getForecastWeather(
+    final futureSnapshot = watchFuture<APIService, ForecastWeatherResult>(
+      (api) => api.getCachedForecastWeather(
         query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
         days: 7,
       ),
