@@ -121,7 +121,7 @@ class WeatherCardHourSuccess extends StatelessWidget {
                     ScaleEffect(
                       curve: Curves.easeIn,
                       end: const Offset(1.15, 1.15),
-                      duration: PromajaDurations.weatherIconScalAnimation,
+                      duration: PromajaDurations.weatherIconScaleAnimation,
                     ),
                   ],
                   child: Transform.scale(
