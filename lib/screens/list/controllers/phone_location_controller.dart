@@ -74,7 +74,7 @@ class PhoneLocationController
       );
 
       /// Fetch weather data
-      final response = await api.getCurrentWeather(
+      final response = await api.getCachedCurrentWeather(
         query: '${location.lat},${location.lon}',
       );
 

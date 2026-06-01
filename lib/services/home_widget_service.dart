@@ -93,12 +93,14 @@ class HomeWidgetService {
         ///
         if (settings.widget.weatherType == WeatherType.current) {
           /// Fetch current weather
-          final currentWeather = await api.fetchCurrentWeather(location: location);
+          final currentWeather = await api.getCachedCurrentWeather(
+            query: '${location.lat},${location.lon}',
+          );
 
           /// Current weather is successfully fetched
-          if (currentWeather != null) {
+          if (currentWeather.response != null) {
             await triggerCurrentWidget(
-              response: currentWeather,
+              response: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
               languageCode: languageCode,
@@ -111,12 +113,15 @@ class HomeWidgetService {
         ///
         if (settings.widget.weatherType == WeatherType.forecast) {
           /// Fetch today's forecast
-          final forecastWeather = await api.fetchForecastWeather(location: location, isTomorrow: false);
+          final forecastWeather = await api.getCachedForecastWeather(
+            query: '${location.lat},${location.lon}',
+            days: 1,
+          );
 
           /// Forecast weather is successfully fetched
-          if (forecastWeather != null) {
+          if (forecastWeather.response != null) {
             await triggerForecastWidget(
-              response: forecastWeather,
+              response: forecastWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
               languageCode: languageCode,

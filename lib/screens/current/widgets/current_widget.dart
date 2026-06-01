@@ -64,10 +64,6 @@ class CurrentWidget extends WatchingWidget {
               originalLocationName: originalLocation.name,
               error: '$error',
               isPhoneLocation: originalLocation.isPhoneLocation ?? false,
-              // TODO: Refresh logic
-              // refreshPressed: () => ref.invalidate(
-              //   getCurrentWeatherProvider(originalLocation),
-              // ),
             );
           }
 
@@ -105,10 +101,6 @@ class CurrentWidget extends WatchingWidget {
               errorCode: data?.error?.error.code ?? 0,
             ),
             isPhoneLocation: originalLocation.isPhoneLocation ?? false,
-            // TODO: Refresh logic
-            // refreshPressed: () => ref.invalidate(
-            //   getCurrentWeatherProvider(originalLocation),
-            // ),
           );
         },
       ),

@@ -101,12 +101,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   originalLocation: widget.originalLocation!,
                   error: '$error',
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
-                  // TODO: Refresh logic
-                  // refreshPressed: () => ref.invalidate(
-                  //   getForecastWeatherProvider(
-                  //     (location: originalLocation!, days: 7),
-                  //   ),
-                  // ),
                 );
               }
 
@@ -145,12 +139,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   errorCode: data?.error?.error.code ?? 0,
                 ),
                 isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
-                // TODO: Refresh logic
-                // refreshPressed: () => ref.invalidate(
-                //   getForecastWeatherProvider(
-                //     (location: originalLocation!, days: 7),
-                //   ),
-                // ),
               );
             }
 

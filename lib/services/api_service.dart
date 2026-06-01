@@ -7,9 +7,6 @@ import 'package:flutter/material.dart';
 
 import '../constants/durations.dart';
 import '../constants/typedefs.dart';
-import '../models/current_weather/response_current_weather.dart';
-import '../models/location/location.dart';
-import '../models/weather/response_forecast_weather.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
 
@@ -256,40 +253,5 @@ class APIService {
         return result;
       },
     );
-  }
-
-  ///
-  /// NOTIFICATIONS & WIDGETS
-  ///
-
-  /// Fetches current weather data
-  Future<ResponseCurrentWeather?> fetchCurrentWeather({required Location location}) async {
-    final response = await getCurrentWeather(
-      query: '${location.lat},${location.lon}',
-    );
-
-    /// Data fetch was successful
-    if (response.response != null && response.error == null) {
-      return response.response;
-    }
-
-    /// Data fetch wasn't successful
-    return null;
-  }
-
-  /// Fetches forecast weather data
-  Future<ResponseForecastWeather?> fetchForecastWeather({required Location location, required bool isTomorrow}) async {
-    final response = await getForecastWeather(
-      query: '${location.lat},${location.lon}',
-      days: isTomorrow ? 2 : 1,
-    );
-
-    /// Data fetch was successful
-    if (response.response != null && response.error == null) {
-      return response.response;
-    }
-
-    /// Data fetch wasn't successful
-    return null;
   }
 }

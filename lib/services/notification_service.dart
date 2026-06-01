@@ -270,14 +270,14 @@ class NotificationService {
         ///
         if (settings.notification.hourlyNotification) {
           /// Fetch current weather
-          final currentWeather = await api.fetchCurrentWeather(
-            location: location,
+          final currentWeather = await api.getCachedCurrentWeather(
+            query: '${location.lat},${location.lon}',
           );
 
           /// Current weather is successfully fetched
-          if (currentWeather != null) {
+          if (currentWeather.response != null) {
             await triggerHourlyNotification(
-              currentWeather: currentWeather,
+              currentWeather: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
             );
@@ -296,16 +296,16 @@ class NotificationService {
           /// Notification should be shown
           if (shouldShowNotification) {
             /// Fetch today's forecast
-            final forecastWeather = await api.fetchForecastWeather(
-              location: location,
-              isTomorrow: false,
+            final forecastWeather = await api.getCachedForecastWeather(
+              query: '${location.lat},${location.lon}',
+              days: 1,
             );
 
             /// Forecast weather is successfully fetched
-            if (forecastWeather != null) {
+            if (forecastWeather.response != null) {
               /// Show notification
               await triggerForecastNotification(
-                forecastWeather: forecastWeather,
+                forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
                 location: location,
@@ -338,16 +338,16 @@ class NotificationService {
           /// Notification should be shown
           if (shouldShowNotification) {
             /// Fetch tomorrow's forecast
-            final forecastWeather = await api.fetchForecastWeather(
-              location: location,
-              isTomorrow: true,
+            final forecastWeather = await api.getCachedForecastWeather(
+              query: '${location.lat},${location.lon}',
+              days: 2,
             );
 
             /// Forecast weather is successfully fetched
-            if (forecastWeather != null) {
+            if (forecastWeather.response != null) {
               /// Show notification
               await triggerForecastNotification(
-                forecastWeather: forecastWeather,
+                forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
                 location: location,
