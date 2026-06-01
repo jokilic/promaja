@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../constants/durations.dart';
 import '../../models/weather/hour_weather.dart';
+import '../../util/null_state.dart';
 
 class WeatherController
     extends
@@ -56,7 +57,6 @@ class WeatherController
     /// Disable active hour and scroll up
     if (activeHourWeather == hourWeather) {
       updateState(
-        // TODO: Possibility to pass null
         newActiveHour: null,
         newIsVisible: false,
       );
@@ -114,10 +114,10 @@ class WeatherController
   void updateState({
     int? newIndex,
     bool? newIsVisible,
-    HourWeather? newActiveHour,
+    Object? newActiveHour = nullStateNoChange,
   }) => value = (
     index: newIndex ?? value.index,
     isVisible: newIsVisible ?? value.isVisible,
-    activeHour: newActiveHour ?? value.activeHour,
+    activeHour: identical(newActiveHour, nullStateNoChange) ? value.activeHour : newActiveHour as HourWeather?,
   );
 }
