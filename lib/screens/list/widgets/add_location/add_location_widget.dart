@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
+import '../../../../constants/typedefs.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/dependencies.dart';
+import '../../../../util/error.dart';
+import '../../../../util/snackbars.dart';
 import '../../controllers/add_location_controller.dart';
 import '../../controllers/phone_location_controller.dart';
 
@@ -26,6 +30,32 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    registerHandler<AddLocationController, ({SearchResult searchResult, bool loading})>(
+      select: (controller) => controller,
+      handler: (context, state, _) {
+        final errorText = getErrorText(state);
+
+        if (errorText != null) {
+          showErrorSnackbar(
+            context: context,
+            errorText: errorText,
+          );
+        }
+      },
+    );
+
+    registerHandler<PhoneLocationController, ({Position? position, String? error, bool loading})>(
+      select: (controller) => controller,
+      handler: (context, state, _) {
+        if (state.error != null) {
+          showErrorSnackbar(
+            context: context,
+            errorText: state.error!,
+          );
+        }
+      },
+    );
+
     final addLocationState = watchIt<AddLocationController>().value;
     final phoneLocationState = watchIt<PhoneLocationController>().value;
     final hiveState = watchIt<HiveService>().value;
@@ -40,71 +70,6 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
 
     final addLocation = getIt.get<AddLocationController>();
     final phoneLocation = getIt.get<PhoneLocationController>();
-
-    // TODO: Handle this properly
-    ///
-    /// ERROR HANDLING
-    ///
-    // ref
-    //   ..listen(
-    //     addLocationProvider,
-    //     (_, state) {
-    //       /// Generate potential error
-    //       final errorText = getErrorText(state);
-
-    //       /// Show snackbar if error exists
-    //       if (errorText != null) {
-    //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           SnackBar(
-    //             content: Text(
-    //               errorText,
-    //               style: PromajaTextStyles.snackbar,
-    //             ),
-    //             backgroundColor: PromajaColors.black,
-    //             behavior: SnackBarBehavior.floating,
-    //             elevation: 0,
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(8),
-    //               side: const BorderSide(
-    //                 color: PromajaColors.white,
-    //                 width: 2,
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    //       }
-    //     },
-    //   )
-    //   ..listen(
-    //     phoneLocationProvider,
-    //     (_, state) {
-    //       if (state.error != null) {
-    //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    //         /// Show snackbar
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           SnackBar(
-    //             content: Text(
-    //               '${state.error}',
-    //               style: PromajaTextStyles.snackbar,
-    //             ),
-    //             backgroundColor: PromajaColors.black,
-    //             behavior: SnackBarBehavior.floating,
-    //             elevation: 0,
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(8),
-    //               side: const BorderSide(
-    //                 color: PromajaColors.white,
-    //                 width: 2,
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    //       }
-    //     },
-    //   );
 
     return Padding(
       padding: const EdgeInsets.symmetric(

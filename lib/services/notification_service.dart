@@ -381,7 +381,7 @@ class NotificationService {
 
   /// Refreshes the stored phone location and returns the location to use for notifications
   Future<Location> refreshPhoneLocation({required Location passedLocation}) async {
-    final position = await this.location.getPosition();
+    final position = await location.getPosition();
 
     /// Keep using the last stored position when GPS refresh fails
     if (position.position == null) {
