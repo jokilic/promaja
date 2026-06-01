@@ -61,11 +61,13 @@ class WeatherController
         newIsVisible: false,
       );
 
-      scrollController.animateTo(
-        0,
-        duration: PromajaDurations.scrollAnimation,
-        curve: Curves.easeIn,
-      );
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          0,
+          duration: PromajaDurations.scrollAnimation,
+          curve: Curves.easeIn,
+        );
+      }
     }
     /// User pressed inactive hour
     /// Enable active hour and scroll down
@@ -80,11 +82,15 @@ class WeatherController
       }
 
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: PromajaDurations.scrollAnimation,
-          curve: Curves.easeIn,
-        ),
+        (_) {
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: PromajaDurations.scrollAnimation,
+              curve: Curves.easeIn,
+            );
+          }
+        },
       );
     }
   }

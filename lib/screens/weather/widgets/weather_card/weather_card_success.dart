@@ -38,9 +38,13 @@ class WeatherCardSuccess extends StatefulWidget {
 }
 
 class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
+  late final ScrollController scrollController;
+
   @override
   void initState() {
     super.initState();
+
+    scrollController = ScrollController();
 
     /// Update `activeHour` to current hour if date is today
     if (widget.forecast != null) {
@@ -56,6 +60,12 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
         },
       );
     }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -93,7 +103,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
               showKph: widget.showKph,
               showMm: widget.showMm,
               showhPa: widget.showhPa,
-              scrollController: ScrollController(),
+              scrollController: scrollController,
               weatherCardHourPressed: weather.weatherCardHourPressed,
               key: ValueKey(widget.index),
             );
