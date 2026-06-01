@@ -81,16 +81,7 @@ class ListCards extends StatelessWidget {
         ///
         Flexible(
           child: ReorderableListView.builder(
-            onReorderItem: (oldIndex, newIndex) {
-              var index = newIndex;
-
-              if (index > oldIndex) {
-                index--;
-              }
-
-              hive.reorderLocations(oldIndex, index);
-            },
-
+            onReorderItem: hive.reorderLocations,
             padding: const EdgeInsets.symmetric(vertical: 8),
             physics: const BouncingScrollPhysics(),
             scrollController: addLocation.scrollController,
