@@ -229,134 +229,36 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
   NotificationLastShown? getNotificationLastShownFromBox() => notificationLastShownBox.get(0);
 
   /// Called to delete a [Location] value from [Hive]
-  Future<void> deleteLocationFromBox({required int index}) => writeAllLocationsToHive(
-    locations: List.from(value..removeAt(index)),
-  );
+  Future<void> deleteLocationFromBox({required int index}) {
+    final locations = List<Location>.from(value)..removeAt(index);
+
+    return writeAllLocationsToHive(
+      locations: locations,
+    );
+  }
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
     /// Update `state`
-    value = locations;
+    value = List<Location>.from(locations);
 
     /// Clear current [Hive] box
     await locationsBox.clear();
 
-    if (locations.isNotEmpty) {
-      /// Add passed `List<Location` to [Hive]
-      for (var i = 0; i < locations.length; i++) {
-        await addLocationToBox(location: locations[i], index: i);
-      }
-
-      /// Update `state` again (needed because issues with `GlobalKey`)
-      value = locations;
+    /// Add passed `List<Location>` to [Hive] without appending to `state`
+    for (var i = 0; i < locations.length; i++) {
+      await locationsBox.put(i, locations[i]);
     }
   }
 
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
     /// Modify `state`
-    final item = value.removeAt(oldIndex);
-    value.insert(newIndex, item);
+    final locations = List<Location>.from(value);
+    final item = locations.removeAt(oldIndex);
+    locations.insert(newIndex, item);
 
     /// Update all locations in [Hive]
-    await writeAllLocationsToHive(locations: value);
-  }
-}
-
-// TODO: Check this and remove if not necessary
-class HiveInitializationResult {
-  final Box<Location> locationsBox;
-  final Box<CustomColor> customColorsBox;
-  final Box<int> activeLocationIndexBox;
-  final Box<int> activeNavigationValueIndexToBox;
-  final Box<PromajaSettings> promajaSettingsBox;
-  final Box<NotificationLastShown> notificationLastShownBox;
-  final Box<bool> notificationDialogShownBox;
-
-  HiveInitializationResult({
-    required this.locationsBox,
-    required this.customColorsBox,
-    required this.activeLocationIndexBox,
-    required this.activeNavigationValueIndexToBox,
-    required this.promajaSettingsBox,
-    required this.notificationLastShownBox,
-    required this.notificationDialogShownBox,
-  });
-
-  Future<void> close() async {
-    if (locationsBox.isOpen) {
-      await locationsBox.close();
-    }
-    if (customColorsBox.isOpen) {
-      await customColorsBox.close();
-    }
-    if (activeLocationIndexBox.isOpen) {
-      await activeLocationIndexBox.close();
-    }
-    if (activeNavigationValueIndexToBox.isOpen) {
-      await activeNavigationValueIndexToBox.close();
-    }
-    if (promajaSettingsBox.isOpen) {
-      await promajaSettingsBox.close();
-    }
-    if (notificationLastShownBox.isOpen) {
-      await notificationLastShownBox.close();
-    }
-    if (notificationDialogShownBox.isOpen) {
-      await notificationDialogShownBox.close();
-    }
-
-    await Hive.close();
-  }
-}
-
-Future<HiveInitializationResult> initializeHive() async {
-  try {
-    final directory = await getHiveDirectory();
-
-    Hive.init(directory?.path);
-
-    void registerAdapter(TypeAdapter<dynamic> adapter) {
-      if (!Hive.isAdapterRegistered(adapter.typeId)) {
-        Hive.registerAdapter(adapter);
-      }
-    }
-
-    registerAdapter(LocationAdapter());
-    registerAdapter(CustomColorAdapter());
-    registerAdapter(ColorAdapter());
-    registerAdapter(AppearanceSettingsAdapter());
-    registerAdapter(NotificationSettingsAdapter());
-    registerAdapter(WidgetSettingsAdapter());
-    registerAdapter(WeatherTypeAdapter());
-    registerAdapter(UnitSettingsAdapter());
-    registerAdapter(InitialSectionAdapter());
-    registerAdapter(TemperatureUnitAdapter());
-    registerAdapter(DistanceSpeedUnitAdapter());
-    registerAdapter(PrecipitationUnitAdapter());
-    registerAdapter(PressureUnitAdapter());
-    registerAdapter(PromajaSettingsAdapter());
-    registerAdapter(NotificationLastShownAdapter());
-
-    final locationsBox = await Hive.openBox<Location>('locationsBox');
-    final customColorsBox = await Hive.openBox<CustomColor>('customColorsBox');
-    final activeLocationIndexBox = await Hive.openBox<int>('activeLocationIndexBox');
-    final activeNavigationValueIndexToBox = await Hive.openBox<int>('activeNavigationValueIndexToBox');
-    final promajaSettingsBox = await Hive.openBox<PromajaSettings>('promajaSettingsBox');
-    final notificationLastShownBox = await Hive.openBox<NotificationLastShown>('notificationLastShownBox');
-    final notificationDialogShownBox = await Hive.openBox<bool>('notificationDialogShownBox');
-
-    return HiveInitializationResult(
-      locationsBox: locationsBox,
-      customColorsBox: customColorsBox,
-      activeLocationIndexBox: activeLocationIndexBox,
-      activeNavigationValueIndexToBox: activeNavigationValueIndexToBox,
-      promajaSettingsBox: promajaSettingsBox,
-      notificationLastShownBox: notificationLastShownBox,
-      notificationDialogShownBox: notificationDialogShownBox,
-    );
-  } catch (e) {
-    debugPrint('InitializeHive -> catch -> $e');
-    rethrow;
+    await writeAllLocationsToHive(locations: locations);
   }
 }

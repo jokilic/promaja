@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../constants/colors.dart';
-import '../../../constants/durations.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
@@ -71,19 +69,10 @@ class ListCards extends StatelessWidget {
         ///
         /// ADD NEW LOCATION
         ///
-        Animate(
+        Padding(
           key: const ValueKey('add_location'),
-          delay: (PromajaDurations.listInterval.inMilliseconds * locations.length).milliseconds,
-          effects: [
-            FadeEffect(
-              curve: Curves.easeIn,
-              duration: PromajaDurations.fadeAnimation,
-            ),
-          ],
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: AddLocationWidget(),
-          ),
+          padding: const EdgeInsets.only(top: 16),
+          child: AddLocationWidget(),
         ),
         const SizedBox(height: 8),
 
@@ -114,33 +103,22 @@ class ListCards extends StatelessWidget {
               }
 
               final location = locations[index];
-              final locationKey = ValueKey(location);
 
-              return Animate(
-                key: locationKey,
-                delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                effects: [
-                  FadeEffect(
-                    curve: Curves.easeIn,
-                    duration: PromajaDurations.fadeAnimation,
-                  ),
-                ],
-                child: ListCardWidget(
-                  key: locationKey,
-                  location: location,
-                  showCelsius: showCelsius,
-                  onTap: () => openWeatherScreen(
-                    index: index,
-                  ),
-                  onTapDelete: (handler) {
-                    handler(false);
-                    deleteLocation(
-                      context: context,
-                      location: location,
-                      index: index,
-                    );
-                  },
+              return ListCardWidget(
+                key: ValueKey(location),
+                location: location,
+                showCelsius: showCelsius,
+                onTap: () => openWeatherScreen(
+                  index: index,
                 ),
+                onTapDelete: (handler) {
+                  handler(false);
+                  deleteLocation(
+                    context: context,
+                    location: location,
+                    index: index,
+                  );
+                },
               );
             },
           ),
