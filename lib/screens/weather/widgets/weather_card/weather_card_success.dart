@@ -47,8 +47,14 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
 
     scrollController = ScrollController();
 
+    /// Checks if date is today
+    final isToday = DateUtils.isSameDay(
+      widget.forecast?.dateEpoch,
+      DateTime.now(),
+    );
+
     /// Update `activeHour` to current hour if date is today
-    if (widget.forecast != null) {
+    if (isToday) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           final currentHour = widget.forecast?.hours.firstWhere(
