@@ -26,12 +26,13 @@ class PromajaApplication : FlutterApplication(), Configuration.Provider {
     // WorkManager calls this when the process is restarted after being killed,
     // before any Flutter engine or plugin is loaded.
     // It is NOT called during a normal app launch (plugin already initialized WorkManager first).
-    override fun getWorkManagerConfiguration(): Configuration {
-        val factory = DelegatingWorkerFactory().apply {
-            addFactory(KmpWorkerFactory(SimpleAndroidWorkerFactory(this@MyApplication)))
+    override val workManagerConfiguration: Configuration
+        get() {
+            val factory = DelegatingWorkerFactory().apply {
+                addFactory(KmpWorkerFactory(SimpleAndroidWorkerFactory(this@PromajaApplication)))
+            }
+            return Configuration.Builder()
+                .setWorkerFactory(factory)
+                .build()
         }
-        return Configuration.Builder()
-            .setWorkerFactory(factory)
-            .build()
     }
-}
