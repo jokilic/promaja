@@ -9,27 +9,29 @@ import dev.brewkits.native_workmanager.engine.FlutterEngineManager
 import io.flutter.app.FlutterApplication
 
 class PromajaApplication : FlutterApplication(), Configuration.Provider {
-    override fun onCreate() {
+     override fun onCreate() {
         super.onCreate()
 
-        val callbackHandle = getSharedPreferences(
-            "dev.brewkits.native_workmanager",
-            Context.MODE_PRIVATE,
+        // Restore callbackHandle that the plugin persisted during Dart-side initialize().
+        // SharedPreferences name and key mirror the plugin's internal constants.
+        val handle = getSharedPreferences(
+            "dev.brewkits.native_workmanager", Context.MODE_PRIVATE
         ).getLong("callback_handle", -1L)
 
-        if (callbackHandle != -1L) {
-            FlutterEngineManager.setCallbackHandle(callbackHandle)
+        if (handle != -1L) {
+            FlutterEngineManager.setCallbackHandle(handle)
         }
     }
 
-    override val workManagerConfiguration: Configuration
-        get() {
-            val workerFactory = DelegatingWorkerFactory().apply {
-                addFactory(KmpWorkerFactory(SimpleAndroidWorkerFactory(this@PromajaApplication)))
-            }
-
-            return Configuration.Builder()
-                .setWorkerFactory(workerFactory)
-                .build()
+    // WorkManager calls this when the process is restarted after being killed,
+    // before any Flutter engine or plugin is loaded.
+    // It is NOT called during a normal app launch (plugin already initialized WorkManager first).
+    override fun getWorkManagerConfiguration(): Configuration {
+        val factory = DelegatingWorkerFactory().apply {
+            addFactory(KmpWorkerFactory(SimpleAndroidWorkerFactory(this@MyApplication)))
         }
+        return Configuration.Builder()
+            .setWorkerFactory(factory)
+            .build()
+    }
 }

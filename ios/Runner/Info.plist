@@ -4,7 +4,9 @@
 	<dict>
 		<key>BGTaskSchedulerPermittedIdentifiers</key>
 		<array>
-			<string>dev.brewkits.native_workmanager.refresh</string>
+  			<!-- Used for standard background tasks -->
+  			<string>dev.brewkits.native_workmanager.refresh</string>
+			<!-- Used for heavy background tasks (Processing tasks) -->
 			<string>dev.brewkits.native_workmanager.task</string>
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>

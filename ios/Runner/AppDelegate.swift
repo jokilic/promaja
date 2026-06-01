@@ -32,6 +32,11 @@ import native_workmanager
     handleEventsForBackgroundURLSession identifier: String,
     completionHandler: @escaping () -> Void
   ) {
+     NativeWorkmanagerPlugin.handleBackgroundURLSession(
+      identifier: identifier,
+      completionHandler: completionHandler
+    )
+
     if #available(iOS 13.0, *) {
       BackgroundSessionManager.shared.setBackgroundCompletionHandler(
         completionHandler,

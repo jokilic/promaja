@@ -263,6 +263,7 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
   }
 }
 
+// TODO: Check this and remove if not necessary
 class HiveInitializationResult {
   final Box<Location> locationsBox;
   final Box<CustomColor> customColorsBox;
