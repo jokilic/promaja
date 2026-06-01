@@ -38,6 +38,7 @@ class _ListScreenState extends State<ListScreen> {
         api: getIt.get<APIService>(),
         location: getIt.get<LocationService>(),
       ),
+      afterRegister: (controller) => controller.refreshPhoneLocation(),
     );
 
     /// Remove splash screen

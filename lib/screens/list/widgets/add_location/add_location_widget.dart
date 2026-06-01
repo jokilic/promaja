@@ -22,11 +22,6 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
 
     /// Clear [TextField]
     getIt.get<AddLocationController>().textEditingController.clear();
-
-    /// Refresh phone location if necessary
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => getIt.get<PhoneLocationController>().refreshPhoneLocation(),
-    );
   }
 
   @override
