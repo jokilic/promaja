@@ -1,1 +1,6 @@
 * Migrate to native_workmanager for background tasks
+* Different font & width
+* Under-the-hood refactor
+* Fixes when using phone location
+* Fixes reordering locations
+* Other small fixes
