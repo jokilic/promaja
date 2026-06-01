@@ -3,8 +3,7 @@ import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../models/current_weather/response_current_weather.dart';
-import '../../../../models/error/response_error.dart';
+import '../../../../constants/typedefs.dart';
 import '../../../../models/location/location.dart';
 import '../../../../services/api_service.dart';
 import '../../../../util/error.dart';
@@ -28,8 +27,8 @@ class ListCardWidget extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final futureSnapshot = watchFuture<APIService, ({ResponseCurrentWeather? response, ResponseError? error, String? genericError})>(
-      (api) => api.getCurrentWeather(
+    final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
+      (api) => api.getCachedCurrentWeather(
         query: '${location.lat},${location.lon}',
       ),
       initialValue: (

@@ -25,6 +25,9 @@ class APIService {
   /// VARIABLES
   ///
 
+  final currentWeatherCache = <String, CurrentWeatherCacheEntry>{};
+  final currentWeatherRequests = <String, Future<CurrentWeatherResult>>{};
+
   final forecastWeatherCache = <String, ForecastWeatherCacheEntry>{};
   final forecastWeatherRequests = <String, Future<ForecastWeatherResult>>{};
 
@@ -32,17 +35,56 @@ class APIService {
   /// METHODS
   ///
 
+  /// Returns fresh current weather data from memory when the same location was recently fetched
+  Future<CurrentWeatherResult> getCachedCurrentWeather({
+    required String query,
+  }) {
+    final cachedCurrentWeather = currentWeatherCache[query];
+
+    /// Fetched weather already exists and is within cache timeframe
+    if (cachedCurrentWeather != null && DateTime.now().difference(cachedCurrentWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
+      return Future.value(
+        (
+          response: cachedCurrentWeather.response,
+          error: null,
+          genericError: null,
+        ),
+      );
+    }
+
+    currentWeatherCache.remove(query);
+
+    /// Reuse an active request when the same location is requested before its fetch completes
+    return currentWeatherRequests.putIfAbsent(
+      query,
+      () async {
+        final result = await getCurrentWeather(
+          query: query,
+        );
+
+        if (result.response != null && result.error == null && result.genericError == null) {
+          currentWeatherCache[query] = (
+            response: result.response!,
+            fetchedAt: DateTime.now(),
+          );
+        }
+
+        await currentWeatherRequests.remove(query);
+        return result;
+      },
+    );
+  }
+
   /// Returns fresh forecast data from memory when the same location was recently fetched
   Future<ForecastWeatherResult> getCachedForecastWeather({
     required String query,
     required int days,
   }) {
-    final now = DateTime.now();
     final cacheKey = '$query:$days';
     final cachedForecastWeather = forecastWeatherCache[cacheKey];
 
     /// Fetched weather already exists and is within cache timeframe
-    if (cachedForecastWeather != null && now.difference(cachedForecastWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
+    if (cachedForecastWeather != null && DateTime.now().difference(cachedForecastWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
       return Future.value(
         (
           response: cachedForecastWeather.response,
@@ -66,7 +108,7 @@ class APIService {
         if (result.response != null && result.error == null && result.genericError == null) {
           forecastWeatherCache[cacheKey] = (
             response: result.response!,
-            fetchedAt: now,
+            fetchedAt: DateTime.now(),
           );
         }
 
@@ -79,7 +121,7 @@ class APIService {
   ///
   /// `current.json`
   ///
-  Future<({ResponseCurrentWeather? response, ResponseError? error, String? genericError})> getCurrentWeather({
+  Future<CurrentWeatherResult> getCurrentWeather({
     required String query,
   }) async {
     try {
