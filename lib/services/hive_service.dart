@@ -196,8 +196,62 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
     required Location location,
     required int index,
   }) async {
+    final isFirstLocation = value.isEmpty;
+
     value = [...value, location];
     await locationsBox.put(index, location);
+
+    if (isFirstLocation) {
+      await updateSettingsForFirstLocation(
+        location: location,
+      );
+    }
+  }
+
+  /// Uses the first added [Location] for settings that require a location
+  Future<void> updateSettingsForFirstLocation({required Location location}) async {
+    final settings = getPromajaSettingsFromBox();
+
+    await addPromajaSettingsToBox(
+      promajaSettings: settings.copyWith(
+        notification: settings.notification.copyWith(
+          location: location,
+        ),
+        widget: settings.widget.copyWith(
+          location: location,
+        ),
+      ),
+    );
+  }
+
+  /// Updates settings when a saved [Location] is replaced or removed
+  Future<void> updateSettingsForChangedLocation({
+    required Location oldLocation,
+    required Location? newLocation,
+  }) async {
+    final settings = getPromajaSettingsFromBox();
+    final oldLocationIsPhoneLocation = oldLocation.isPhoneLocation ?? false;
+    final notificationUsesOldLocation = settings.notification.location == oldLocation || (oldLocationIsPhoneLocation && (settings.notification.location?.isPhoneLocation ?? false));
+    final widgetUsesOldLocation = settings.widget.location == oldLocation || (oldLocationIsPhoneLocation && (settings.widget.location?.isPhoneLocation ?? false));
+
+    if (!notificationUsesOldLocation && !widgetUsesOldLocation) {
+      return;
+    }
+
+    await addPromajaSettingsToBox(
+      promajaSettings: settings.copyWith(
+        notification: NotificationSettings(
+          location: notificationUsesOldLocation ? newLocation : settings.notification.location,
+          hourlyNotification: settings.notification.hourlyNotification,
+          morningNotification: settings.notification.morningNotification,
+          eveningNotification: settings.notification.eveningNotification,
+        ),
+        widget: WidgetSettings(
+          location: widgetUsesOldLocation ? newLocation : settings.widget.location,
+          weatherType: settings.widget.weatherType,
+        ),
+      ),
+    );
   }
 
   /// Gets current active location from [Hive]
@@ -229,16 +283,43 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
   NotificationLastShown? getNotificationLastShownFromBox() => notificationLastShownBox.get(0);
 
   /// Called to delete a [Location] value from [Hive]
-  Future<void> deleteLocationFromBox({required int index}) {
+  Future<void> deleteLocationFromBox({required int index}) async {
+    final oldLocation = value[index];
     final locations = List<Location>.from(value)..removeAt(index);
 
-    return writeAllLocationsToHive(
+    await writeAllLocationsToHive(
       locations: locations,
+    );
+
+    await updateSettingsForChangedLocation(
+      oldLocation: oldLocation,
+      newLocation: locations.firstOrNull,
+    );
+  }
+
+  /// Called to replace a [Location] value in [Hive]
+  Future<void> replaceLocationInBox({
+    required int index,
+    required Location location,
+  }) async {
+    final oldLocation = value[index];
+    final locations = List<Location>.from(value);
+    locations[index] = location;
+
+    await writeAllLocationsToHive(
+      locations: locations,
+    );
+
+    await updateSettingsForChangedLocation(
+      oldLocation: oldLocation,
+      newLocation: location,
     );
   }
 
   /// Replace [Hive] box with passed `List<Location>`
   Future<void> writeAllLocationsToHive({required List<Location> locations}) async {
+    final isAddingFirstLocation = value.isEmpty && locations.isNotEmpty;
+
     /// Update `state`
     value = List<Location>.from(locations);
 
@@ -248,6 +329,12 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
     /// Add passed `List<Location>` to [Hive] without appending to `state`
     for (var i = 0; i < locations.length; i++) {
       await locationsBox.put(i, locations[i]);
+    }
+
+    if (isAddingFirstLocation) {
+      await updateSettingsForFirstLocation(
+        location: locations.first,
+      );
     }
   }
 

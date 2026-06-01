@@ -148,10 +148,9 @@ class PhoneLocationController
     }
 
     /// Replace phone location while retaining its `index`
-    locations[phoneLocationIndex] = location;
-
-    await hive.writeAllLocationsToHive(
-      locations: locations,
+    await hive.replaceLocationInBox(
+      index: phoneLocationIndex,
+      location: location,
     );
 
     return true;
