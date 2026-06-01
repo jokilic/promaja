@@ -96,6 +96,7 @@ class ListCards extends StatelessWidget {
               final location = locations[index];
 
               return ListCardWidget(
+                index: index,
                 key: ValueKey(location),
                 location: location,
                 showCelsius: showCelsius,
