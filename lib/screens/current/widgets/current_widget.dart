@@ -40,7 +40,9 @@ class CurrentWidget extends WatchingWidget {
     );
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
+      ),
       child: Builder(
         builder: (context) {
           ///

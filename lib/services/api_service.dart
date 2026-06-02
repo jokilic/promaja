@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -70,8 +69,6 @@ class APIService {
     required String query,
     required int days,
   }) async {
-    log('Query -> $query');
-
     try {
       final response = await dio.get(
         '/forecast.json',

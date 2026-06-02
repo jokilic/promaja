@@ -16,7 +16,9 @@ class PromajaNavigationBar extends WatchingWidget {
     final navigationBarItem = watchIt<ScreenService>().value;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(32),
+      ),
       child: NavigationBar(
         height: navigationBarHeight,
         backgroundColor: PromajaColors.black,

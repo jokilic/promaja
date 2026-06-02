@@ -26,7 +26,9 @@ class WeatherError extends StatelessWidget {
     height: getWeatherCardContentHeight(context),
     width: MediaQuery.sizeOf(context).width,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(40),
+      ),
       gradient: LinearGradient(
         colors: [
           lightenColor(PromajaColors.red),
