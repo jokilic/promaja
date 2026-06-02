@@ -10,13 +10,13 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../generated/codegen_loader.g.dart';
 import '../services/api_service.dart';
+import '../services/background_fetch_service.dart';
 import '../services/dio_service.dart';
 import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
 import '../services/screen_service.dart';
-import '../services/work_manager_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -54,7 +54,7 @@ void unRegisterIfNotDisposed<T extends Object>({
 
 /// Initialize services
 Future<void> initializeServices({
-  bool initializeWorkManager = true,
+  bool initializeBackgroundFetch = true,
 }) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
@@ -94,13 +94,13 @@ Future<void> initializeServices({
   }
 
   if (isMobile) {
-    /// WorkManager
-    if (initializeWorkManager && !getIt.isRegistered<WorkManagerService>()) {
+    /// BackgroundFetch
+    if (initializeBackgroundFetch && !getIt.isRegistered<BackgroundFetchService>()) {
       getIt.registerSingletonAsync(
         () async {
-          final workManager = WorkManagerService();
-          await workManager.init();
-          return workManager;
+          final backgroundFetch = BackgroundFetchService();
+          await backgroundFetch.init();
+          return backgroundFetch;
         },
       );
     }

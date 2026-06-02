@@ -707,9 +707,9 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
 
     /// Initialize services
     // The notification callback runs in a background isolate. Avoid enqueueing
-    // WorkManager tasks while restoring the services needed to handle the tap.
+    // BackgroundFetch while restoring the services needed to handle the tap.
     await initializeServices(
-      initializeWorkManager: false,
+      initializeBackgroundFetch: false,
     );
 
     /// Trigger notification logic

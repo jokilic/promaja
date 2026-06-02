@@ -1,4 +1,4 @@
-* Migrate to native_workmanager for background tasks
+* Migrate to background_fetch for background tasks
 * Different font & width
 * Under-the-hood refactor
 * Fixes when using phone location

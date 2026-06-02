@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,7 @@ import 'package:watch_it/watch_it.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
+import 'services/background_fetch_service.dart';
 import 'services/screen_service.dart';
 import 'util/dependencies.dart';
 import 'util/display_mode.dart';
@@ -18,6 +20,9 @@ final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   /// Initialize Flutter related tasks
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  /// Register Android background events after the app is terminated
+  await BackgroundFetch.registerHeadlessTask(promajaBackgroundHeadlessTask);
 
   /// Keep splash until first data is fetched
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
