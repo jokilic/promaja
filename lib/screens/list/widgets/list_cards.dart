@@ -7,7 +7,7 @@ import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/screen_service.dart';
 import '../../../util/dependencies.dart';
-import '../controllers/list_add_location_controller.dart';
+import '../controllers/add_location_controller.dart';
 import 'add_location/add_location_widget.dart';
 import 'list_card/list_card_widget.dart';
 
@@ -62,7 +62,7 @@ class ListCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hive = getIt.get<HiveService>();
-    final addLocation = getIt.get<ListAddLocationController>();
+    final addLocation = getIt.get<AddLocationController>();
 
     return Column(
       children: [

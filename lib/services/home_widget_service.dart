@@ -17,17 +17,14 @@ import '../widgets/home_widget/current_home_widget.dart';
 import '../widgets/home_widget/forecast_home_widget.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
-import 'phone_location_service.dart';
 
 class HomeWidgetService {
   final HiveService hive;
   final APIService api;
-  final PhoneLocationService phoneLocation;
 
   HomeWidgetService({
     required this.hive,
     required this.api,
-    required this.phoneLocation,
   })
   ///
   /// INIT
@@ -81,21 +78,10 @@ class HomeWidgetService {
 
       final settings = hive.getPromajaSettingsFromBox();
 
-      var location = settings.widget.location;
+      final location = settings.widget.location;
 
       /// Location exists
       if (location != null) {
-        /// Refresh coordinates before fetching weather for the phone location
-        if (location.isPhoneLocation ?? false) {
-          location = await phoneLocation.refreshPhoneLocation(
-            passedLocation: location,
-          );
-        }
-
-        if (location == null) {
-          return;
-        }
-
         ///
         /// Current weather
         ///

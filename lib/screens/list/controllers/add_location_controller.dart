@@ -10,11 +10,11 @@ import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 
-class ListAddLocationController extends ValueNotifier<({SearchResult searchResult, bool loading})> implements Disposable {
+class AddLocationController extends ValueNotifier<({SearchResult searchResult, bool loading})> implements Disposable {
   final HiveService hive;
   final APIService api;
 
-  ListAddLocationController({
+  AddLocationController({
     required this.hive,
     required this.api,
   }) : super((

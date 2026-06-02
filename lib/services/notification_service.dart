@@ -23,18 +23,18 @@ import '../util/dependencies.dart';
 import '../util/weather.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
-import 'phone_location_service.dart';
+import 'location_service.dart';
 import 'screen_service.dart';
 
 class NotificationService {
   final HiveService hive;
   final APIService api;
-  final PhoneLocationService phoneLocation;
+  final LocationService location;
 
   NotificationService({
     required this.hive,
     required this.api,
-    required this.phoneLocation,
+    required this.location,
   });
 
   ///
@@ -242,11 +242,9 @@ class NotificationService {
       if (location != null) {
         /// Refresh coordinates before fetching weather for the phone location
         if (location.isPhoneLocation ?? false) {
-          location =
-              await phoneLocation.refreshPhoneLocation(
-                passedLocation: location,
-              ) ??
-              location;
+          location = await refreshPhoneLocation(
+            passedLocation: location,
+          );
         }
 
         ///
@@ -353,6 +351,35 @@ class NotificationService {
         }
       }
     } catch (_) {}
+  }
+
+  /// Refreshes the stored phone location and returns the location to use for notifications
+  Future<Location> refreshPhoneLocation({required Location passedLocation}) async {
+    final position = await location.getPosition();
+
+    /// Keep using the last stored position when GPS refresh fails
+    if (position.position == null) {
+      return passedLocation;
+    }
+
+    final refreshedLocation = passedLocation.copyWith(
+      lat: position.position!.latitude,
+      lon: position.position!.longitude,
+    );
+
+    final locations = hive.getLocationsFromBox();
+    final phoneLocationIndex = locations.indexWhere(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    if (phoneLocationIndex != -1) {
+      await hive.replaceLocationInBox(
+        index: phoneLocationIndex,
+        location: refreshedLocation,
+      );
+    }
+
+    return refreshedLocation;
   }
 
   /// Finds a stored location for a notification payload

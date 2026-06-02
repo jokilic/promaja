@@ -6,7 +6,7 @@ import '../../../services/api_service.dart';
 import '../../../services/hive_service.dart';
 import '../../../services/location_service.dart';
 
-class ListPhoneLocationController
+class PhoneLocationController
     extends
         ValueNotifier<
           ({
@@ -19,7 +19,7 @@ class ListPhoneLocationController
   final APIService api;
   final LocationService location;
 
-  ListPhoneLocationController({
+  PhoneLocationController({
     required this.hive,
     required this.api,
     required this.location,
