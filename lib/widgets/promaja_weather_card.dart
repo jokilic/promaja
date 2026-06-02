@@ -49,6 +49,7 @@ class PromajaWeatherCard extends StatelessWidget {
     WeatherCardLayout.carousel => Padding(
       padding: padding,
       child: PageView.builder(
+        scrollDirection: Axis.vertical,
         controller: pageController,
         onPageChanged: onIndexChanged,
         itemCount: cardCount,

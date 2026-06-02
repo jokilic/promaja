@@ -115,6 +115,7 @@ class ListCardWidget extends WatchingWidget {
               ///
               if (data?.response != null && data?.error == null) {
                 final currentWeather = data!.response!.current;
+                final fetchedLocation = data.response!.location;
 
                 return ListCardSuccess(
                   location: originalLocation,

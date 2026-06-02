@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../models/location/location.dart';
 import 'hive_service.dart';
 import 'location_service.dart';
@@ -9,7 +11,9 @@ class PhoneLocationService {
   PhoneLocationService({
     required this.hive,
     required this.location,
-  });
+  }) {
+    refreshPhoneLocation();
+  }
 
   ///
   /// METHODS
@@ -39,6 +43,8 @@ class PhoneLocationService {
         lon: position.position!.longitude,
         isPhoneLocation: true,
       );
+
+      log('Location -> ${position.position!.latitude} -> ${position.position!.longitude}');
 
       await replaceStoredPhoneLocation(
         location: locationWithFreshCoordinates,
