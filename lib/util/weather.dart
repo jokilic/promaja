@@ -29,7 +29,13 @@ String getTodayDateMonth({
   }
 }
 
-String getWeatherDescription({required int code, required bool isDay}) => '$code${isDay ? 'Day' : 'Night'}'.tr();
+String? getWeatherDescription({required int code, required bool isDay}) {
+  if (!weatherCodes.contains(code)) {
+    return null;
+  }
+
+  return '$code${isDay ? 'Day' : 'Night'}'.tr();
+}
 
 Color getWeatherColor({required int code, required bool isDay}) => switch (code) {
   1000 => isDay ? PromajaColors.sun : PromajaColors.moon,

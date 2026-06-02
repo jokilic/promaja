@@ -42,9 +42,10 @@ class WeatherCardSummaryListTile extends StatelessWidget {
       ),
       subtitle: Text(
         getWeatherDescription(
-          code: forecast.day.condition.code,
-          isDay: true,
-        ),
+              code: forecast.day.condition.code,
+              isDay: true,
+            ) ??
+            '',
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: PromajaTextStyles.settingsText,

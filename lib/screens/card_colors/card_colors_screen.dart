@@ -215,10 +215,12 @@ class _CardColorsScreenState extends State<CardColorsScreen> {
                     isDay: true,
                   );
 
-                  final description = getWeatherDescription(
-                    code: weatherCode,
-                    isDay: true,
-                  );
+                  final description =
+                      getWeatherDescription(
+                        code: weatherCode,
+                        isDay: true,
+                      ) ??
+                      '';
 
                   return SettingsCardWidget(
                     onTap: () => openColorPicker(
@@ -274,10 +276,12 @@ class _CardColorsScreenState extends State<CardColorsScreen> {
                     isDay: false,
                   );
 
-                  final description = getWeatherDescription(
-                    code: weatherCode,
-                    isDay: false,
-                  );
+                  final description =
+                      getWeatherDescription(
+                        code: weatherCode,
+                        isDay: false,
+                      ) ??
+                      '';
 
                   return SettingsCardWidget(
                     onTap: () => openColorPicker(

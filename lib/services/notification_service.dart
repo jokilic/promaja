@@ -447,10 +447,12 @@ class NotificationService {
 
       final temp = showCelsius ? '${currentWeather.current.tempC.round()}°C' : '${currentWeather.current.tempF.round()}°F';
 
-      final weatherDescription = getWeatherDescription(
-        code: currentWeather.current.condition.code,
-        isDay: currentWeather.current.isDay == 1,
-      );
+      final weatherDescription =
+          getWeatherDescription(
+            code: currentWeather.current.condition.code,
+            isDay: currentWeather.current.isDay == 1,
+          ) ??
+          '';
 
       final title = 'hourlyNotificationTitle'.tr();
 
@@ -506,10 +508,12 @@ class NotificationService {
         final minTemp = showCelsius ? '${forecast.day.minTempC.round()}°C' : '${forecast.day.minTempF.round()}°F';
         final maxTemp = showCelsius ? '${forecast.day.maxTempC.round()}°C' : '${forecast.day.maxTempF.round()}°F';
 
-        final weatherDescription = getWeatherDescription(
-          code: forecast.day.condition.code,
-          isDay: true,
-        );
+        final weatherDescription =
+            getWeatherDescription(
+              code: forecast.day.condition.code,
+              isDay: true,
+            ) ??
+            '';
 
         final title = isEvening ? 'eveningNotificationTitle'.tr() : 'morningNotificationTitle'.tr();
 

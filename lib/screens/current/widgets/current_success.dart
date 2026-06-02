@@ -198,7 +198,7 @@ class CurrentSuccess extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 80),
                   child: Text(
-                    weatherDescription,
+                    weatherDescription ?? '',
                     style: PromajaTextStyles.currentWeather,
                     textAlign: TextAlign.center,
                   ),

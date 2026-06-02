@@ -176,10 +176,12 @@ class HomeWidgetService {
         isDay: isDay,
       );
 
-      final weatherDescription = getWeatherDescription(
-        code: conditionCode,
-        isDay: isDay,
-      );
+      final weatherDescription =
+          getWeatherDescription(
+            code: conditionCode,
+            isDay: isDay,
+          ) ??
+          '';
 
       final weatherIconWidget = AssetImage(weatherIcon);
       const promajaIconWidget = AssetImage(PromajaIcons.icon);
@@ -255,10 +257,12 @@ class HomeWidgetService {
           isDay: isDay,
         );
 
-        final weatherDescription = getWeatherDescription(
-          code: conditionCode,
-          isDay: isDay,
-        );
+        final weatherDescription =
+            getWeatherDescription(
+              code: conditionCode,
+              isDay: isDay,
+            ) ??
+            '';
 
         final showRain = forecast.day.dailyWillItRain == 1;
         final showSnow = forecast.day.dailyWillItSnow == 1;
