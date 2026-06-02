@@ -32,7 +32,7 @@ class WorkManagerService {
     );
 
     /// Register periodic task
-    await NativeWorkManager.enqueue(
+    final handler = await NativeWorkManager.enqueue(
       taskId: promajaBackgroundTaskId,
       trigger: const TaskTrigger.periodic(
         Duration(hours: 1),
@@ -45,12 +45,16 @@ class WorkManagerService {
       constraints: Constraints.networkRequired,
       tag: promajaBackgroundTaskTag,
     );
+
+    debugPrint('WorkManager -> $promajaBackgroundTaskId -> ${handler.scheduleResult}');
   }
 }
 
 @pragma('vm:entry-point')
 Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
   try {
+    debugPrint('WorkManager -> Starting background callback');
+
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();
@@ -75,7 +79,8 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
     await getIt.get<HomeWidgetService>().handleWidget(languageCode: 'en');
 
     return true;
-  } catch (_) {
+  } catch (e) {
+    debugPrint('PromajaBackgroundCallback -> catch -> $e');
     return false;
   }
 }

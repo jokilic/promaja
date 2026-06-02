@@ -21,6 +21,12 @@ class PromajaApplication : FlutterApplication(), Configuration.Provider {
         if (handle != -1L) {
             FlutterEngineManager.setCallbackHandle(handle)
         }
+
+        // Dart workers use plugins such as Hive and home_widget. Restore this
+        // before WorkManager creates the headless Flutter engine after app kill.
+        FlutterEngineManager.registerPlugins = getSharedPreferences(
+            "dev.brewkits.native_workmanager", Context.MODE_PRIVATE
+        ).getBoolean("register_plugins", false)
     }
 
     // WorkManager calls this when the process is restarted after being killed,
