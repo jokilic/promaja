@@ -87,11 +87,12 @@ class _CurrentScreenState extends State<CurrentScreen> {
               PromajaWeatherCard(
                 weatherCardLayout: settings.appearance.weatherCardLayout,
                 cardCount: cardCount,
+                activeIndex: index,
                 padding: EdgeInsets.only(
                   bottom: getCurrentCardBottomPadding(context),
                 ),
                 cardSwiperController: current.cardSwiperController,
-                carouselController: current.carouselController,
+                pageController: current.pageController,
                 onIndexChanged: (index) {
                   current.cardSwiped(
                     newIndex: index,

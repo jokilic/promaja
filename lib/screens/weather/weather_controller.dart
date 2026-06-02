@@ -30,7 +30,7 @@ class WeatherController
   @override
   void onDispose() {
     cardSwiperController.dispose();
-    carouselController.dispose();
+    pageController.dispose();
     cardScrollController.dispose();
     cardHourAdditionalPageController.dispose();
   }
@@ -40,7 +40,7 @@ class WeatherController
   ///
 
   late final cardSwiperController = CardSwiperController();
-  late final carouselController = CarouselController();
+  late final pageController = PageController();
   late final cardScrollController = ScrollController();
   late final cardHourAdditionalPageController = PageController();
 

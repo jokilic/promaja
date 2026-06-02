@@ -14,7 +14,7 @@ class CurrentController extends ValueNotifier<int> implements Disposable {
   @override
   void onDispose() {
     cardSwiperController.dispose();
-    carouselController.dispose();
+    pageController.dispose();
     cardAdditionalPageController.dispose();
   }
 
@@ -23,7 +23,7 @@ class CurrentController extends ValueNotifier<int> implements Disposable {
   ///
 
   late final cardSwiperController = CardSwiperController();
-  late final carouselController = CarouselController();
+  late final pageController = PageController();
   late final cardAdditionalPageController = PageController();
 
   ///

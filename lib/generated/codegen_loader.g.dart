@@ -182,7 +182,7 @@ class CodegenLoader extends AssetLoader{
   "appearanceInitialSectionSubtitle": "Section which will be opened on app start",
   "appearanceWeatherCardLayoutStacked": "Stacked cards",
   "appearanceWeatherCardLayoutCarousel": "Scrollable cards",
-  "appearanceWeatherCardLayoutSubtitle": "How weather cards are displayed",
+  "appearanceWeatherCardLayoutSubtitle": "Display mode of weather cards",
   "appearanceWeatherSummaryFirstTitle": "Weather summary first",
   "appearanceWeatherSummaryFirstSubtitle": "When opening weather section, show weather summary for all available days",
   "appearanceLanguageSubtitle": "Language used throughout Promaja",

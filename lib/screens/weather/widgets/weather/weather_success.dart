@@ -5,6 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
 import '../../../../models/settings/appearance/weather_card_layout.dart';
 import '../../../../models/weather/forecast_weather.dart';
@@ -59,7 +60,11 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
                 CardSwiperDirection.right,
               );
             case WeatherCardLayout.carousel:
-              weather.carouselController.animateToItem(1);
+              weather.pageController.animateToPage(
+                1,
+                duration: PromajaDurations.cardSwiperAnimation,
+                curve: Curves.easeIn,
+              );
           }
         },
       );
@@ -96,11 +101,12 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
           PromajaWeatherCard(
             weatherCardLayout: appearance.weatherCardLayout,
             cardCount: cardCount,
+            activeIndex: index,
             padding: EdgeInsets.only(
               bottom: getWeatherCardBottomPadding(context),
             ),
             cardSwiperController: weather.cardSwiperController,
-            carouselController: weather.carouselController,
+            pageController: weather.pageController,
             onIndexChanged: (index) {
               weather.cardSwiped(
                 newIndex: index,

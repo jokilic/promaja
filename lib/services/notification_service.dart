@@ -611,9 +611,10 @@ class NotificationService {
                     await Future.delayed(PromajaDurations.cardSwiperAnimation);
                   }
                 case WeatherCardLayout.carousel:
-                  await current.carouselController.animateToItem(
+                  await current.pageController.animateToPage(
                     locationIndex,
                     duration: PromajaDurations.cardSwiperAnimation,
+                    curve: Curves.easeIn,
                   );
               }
             }

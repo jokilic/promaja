@@ -9,18 +9,20 @@ import '../models/settings/appearance/weather_card_layout.dart';
 class PromajaWeatherCard extends StatelessWidget {
   final WeatherCardLayout weatherCardLayout;
   final int cardCount;
+  final int activeIndex;
   final EdgeInsets padding;
   final CardSwiperController cardSwiperController;
-  final CarouselController carouselController;
+  final PageController pageController;
   final Function(int newIndex) onIndexChanged;
   final IndexedWidgetBuilder cardBuilder;
 
   const PromajaWeatherCard({
     required this.weatherCardLayout,
     required this.cardCount,
+    required this.activeIndex,
     required this.padding,
     required this.cardSwiperController,
-    required this.carouselController,
+    required this.pageController,
     required this.onIndexChanged,
     required this.cardBuilder,
   });
@@ -46,20 +48,11 @@ class PromajaWeatherCard extends StatelessWidget {
     ),
     WeatherCardLayout.carousel => Padding(
       padding: padding,
-      child: CarouselView.weighted(
-        controller: carouselController,
-        scrollDirection: Axis.vertical,
-        flexWeights: const [12, 1],
-        itemSnapping: true,
-        enableSplash: false,
-        onIndexChanged: onIndexChanged,
-        children: List.generate(
-          cardCount,
-          (cardIndex) => cardBuilder(
-            context,
-            cardIndex,
-          ),
-        ),
+      child: PageView.builder(
+        controller: pageController,
+        onPageChanged: onIndexChanged,
+        itemCount: cardCount,
+        itemBuilder: cardBuilder,
       ),
     ),
   };
