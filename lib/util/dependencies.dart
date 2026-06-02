@@ -16,6 +16,7 @@ import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
+import '../services/phone_location_service.dart';
 import '../services/screen_service.dart';
 
 final getIt = GetIt.instance;
@@ -93,6 +94,17 @@ Future<void> initializeServices({
     );
   }
 
+  /// PhoneLocation
+  if (!getIt.isRegistered<PhoneLocationService>()) {
+    getIt.registerSingletonAsync(
+      () async => PhoneLocationService(
+        hive: getIt.get<HiveService>(),
+        location: getIt.get<LocationService>(),
+      ),
+      dependsOn: [HiveService, LocationService],
+    );
+  }
+
   if (isMobile) {
     /// BackgroundFetch
     if (initializeBackgroundFetch && !getIt.isRegistered<BackgroundFetchService>()) {
@@ -112,12 +124,12 @@ Future<void> initializeServices({
           final notification = NotificationService(
             hive: getIt.get<HiveService>(),
             api: getIt.get<APIService>(),
-            location: getIt.get<LocationService>(),
+            phoneLocation: getIt.get<PhoneLocationService>(),
           );
           await notification.init();
           return notification;
         },
-        dependsOn: [HiveService, APIService, LocationService],
+        dependsOn: [HiveService, APIService, PhoneLocationService],
       );
     }
 
@@ -127,8 +139,9 @@ Future<void> initializeServices({
         () async => HomeWidgetService(
           hive: getIt.get<HiveService>(),
           api: getIt.get<APIService>(),
+          phoneLocation: getIt.get<PhoneLocationService>(),
         ),
-        dependsOn: [HiveService, APIService],
+        dependsOn: [HiveService, APIService, PhoneLocationService],
       );
     }
   }

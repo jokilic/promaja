@@ -10,8 +10,8 @@ import '../../services/hive_service.dart';
 import '../../services/location_service.dart';
 import '../../util/dependencies.dart';
 import '../../widgets/promaja_navigation_bar.dart';
-import 'controllers/add_location_controller.dart';
-import 'controllers/phone_location_controller.dart';
+import 'controllers/list_add_location_controller.dart';
+import 'controllers/list_phone_location_controller.dart';
 import 'widgets/list_cards.dart';
 import 'widgets/list_empty.dart';
 
@@ -25,20 +25,19 @@ class _ListScreenState extends State<ListScreen> {
   void initState() {
     super.initState();
 
-    registerIfNotInitialized<AddLocationController>(
-      () => AddLocationController(
+    registerIfNotInitialized<ListAddLocationController>(
+      () => ListAddLocationController(
         hive: getIt.get<HiveService>(),
         api: getIt.get<APIService>(),
       ),
     );
 
-    registerIfNotInitialized<PhoneLocationController>(
-      () => PhoneLocationController(
+    registerIfNotInitialized<ListPhoneLocationController>(
+      () => ListPhoneLocationController(
         hive: getIt.get<HiveService>(),
         api: getIt.get<APIService>(),
         location: getIt.get<LocationService>(),
       ),
-      afterRegister: (controller) => controller.refreshPhoneLocation(),
     );
 
     /// Remove splash screen
@@ -47,8 +46,8 @@ class _ListScreenState extends State<ListScreen> {
 
   @override
   void dispose() {
-    unRegisterIfNotDisposed<AddLocationController>();
-    unRegisterIfNotDisposed<PhoneLocationController>();
+    unRegisterIfNotDisposed<ListAddLocationController>();
+    unRegisterIfNotDisposed<ListPhoneLocationController>();
 
     super.dispose();
   }

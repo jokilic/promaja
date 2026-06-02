@@ -11,8 +11,8 @@ import '../../../../services/hive_service.dart';
 import '../../../../util/dependencies.dart';
 import '../../../../util/error.dart';
 import '../../../../util/snackbars.dart';
-import '../../controllers/add_location_controller.dart';
-import '../../controllers/phone_location_controller.dart';
+import '../../controllers/list_add_location_controller.dart';
+import '../../controllers/list_phone_location_controller.dart';
 
 class AddLocationWidget extends WatchingStatefulWidget {
   @override
@@ -25,12 +25,12 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
     super.initState();
 
     /// Clear [TextField]
-    getIt.get<AddLocationController>().textEditingController.clear();
+    getIt.get<ListAddLocationController>().textEditingController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    registerHandler<AddLocationController, ({SearchResult searchResult, bool loading})>(
+    registerHandler<ListAddLocationController, ({SearchResult searchResult, bool loading})>(
       select: (controller) => controller,
       handler: (context, state, _) {
         final errorText = getErrorText(state);
@@ -44,7 +44,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
       },
     );
 
-    registerHandler<PhoneLocationController, ({Position? position, String? error, bool loading})>(
+    registerHandler<ListPhoneLocationController, ({Position? position, String? error, bool loading})>(
       select: (controller) => controller,
       handler: (context, state, _) {
         if (state.error != null) {
@@ -56,20 +56,20 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
       },
     );
 
-    final addLocationState = watchIt<AddLocationController>().value;
-    final phoneLocationState = watchIt<PhoneLocationController>().value;
+    final listAddLocationState = watchIt<ListAddLocationController>().value;
+    final listPhoneLocationState = watchIt<ListPhoneLocationController>().value;
     final hiveState = watchIt<HiveService>().value;
 
-    final isLoading = addLocationState.loading;
-    final locations = addLocationState.searchResult.response;
+    final isLoading = listAddLocationState.loading;
+    final locations = listAddLocationState.searchResult.response;
 
-    final isLoadingPhone = phoneLocationState.loading;
+    final isLoadingPhone = listPhoneLocationState.loading;
     final hasPhoneLocation = hiveState.any(
       (location) => location.isPhoneLocation ?? false,
     );
 
-    final addLocation = getIt.get<AddLocationController>();
-    final phoneLocation = getIt.get<PhoneLocationController>();
+    final listAddLocation = getIt.get<ListAddLocationController>();
+    final listPhoneLocation = getIt.get<ListPhoneLocationController>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -81,8 +81,8 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
         child: Column(
           children: [
             SearchBar(
-              onSubmitted: addLocation.searchPlace,
-              controller: addLocation.textEditingController,
+              onSubmitted: listAddLocation.searchPlace,
+              controller: listAddLocation.textEditingController,
               backgroundColor: WidgetStateProperty.all(
                 PromajaColors.white,
               ),
@@ -106,7 +106,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
               trailing: [
                 if (!hasPhoneLocation)
                   IconButton(
-                    onPressed: !isLoadingPhone ? phoneLocation.enablePhoneLocation : null,
+                    onPressed: !isLoadingPhone ? listPhoneLocation.enablePhoneLocation : null,
                     icon: isLoadingPhone
                         ? const Icon(
                             Icons.hourglass_top_rounded,
@@ -160,7 +160,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
                   final location = locations[index];
 
                   return ListTile(
-                    onTap: () => addLocation.addPlace(
+                    onTap: () => listAddLocation.addPlace(
                       location: location,
                     ),
                     tileColor: PromajaColors.white,

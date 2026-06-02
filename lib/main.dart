@@ -8,6 +8,7 @@ import 'package:watch_it/watch_it.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
+import 'services/phone_location_service.dart';
 import 'services/screen_service.dart';
 import 'util/dependencies.dart';
 import 'util/display_mode.dart';
@@ -71,6 +72,9 @@ Future<void> initializeBeforeAppStart() async {
 
   /// Initialize services
   await initializeServices();
+
+  /// Refresh phone location once when the app starts
+  unawaited(getIt.get<PhoneLocationService>().refreshPhoneLocation());
 }
 
 class PromajaApp extends StatelessWidget {
