@@ -147,8 +147,8 @@ Future<void> initializeServices({
   await getIt.allReady();
 }
 
-/// Initialize [EasyLocalization]
-Future<void> initializeLocalization() async {
+/// Initialize [EasyLocalization] and return the active locale
+Future<Locale> initializeLocalization() async {
   await EasyLocalization.ensureInitialized();
 
   final controller = EasyLocalizationController(
@@ -175,4 +175,6 @@ Future<void> initializeLocalization() async {
 
   await initializeDateFormatting('en');
   await initializeDateFormatting('hr');
+
+  return controller.locale;
 }

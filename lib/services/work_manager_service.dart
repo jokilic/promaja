@@ -60,7 +60,7 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
     DartPluginRegistrant.ensureInitialized();
 
     /// Initialize [EasyLocalization]
-    await initializeLocalization();
+    final locale = await initializeLocalization();
 
     /// Initialize services
     await initializeServices(
@@ -75,8 +75,9 @@ Future<bool> promajaBackgroundCallback(Map<String, dynamic>? input) async {
     ///
     /// Widget
     ///
-    // TODO: Perhaps pass `languageCode` from `Map<String, dynamic>? input` if possible
-    await getIt.get<HomeWidgetService>().handleWidget(languageCode: 'en');
+    await getIt.get<HomeWidgetService>().handleWidget(
+      languageCode: locale.languageCode,
+    );
 
     return true;
   } catch (e) {
