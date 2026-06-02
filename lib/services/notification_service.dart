@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -87,7 +88,7 @@ class NotificationService {
       return initialized ?? false;
     } catch (e) {
       final error = 'InitializeNotifications -> catch -> $e';
-      debugPrint(error);
+      log(error);
       return false;
     }
   }
@@ -131,19 +132,19 @@ class NotificationService {
       /// Error while granting permissions
       if (permissionsGranted == null) {
         const error = 'RequestNotificationPermissions -> Notification platform different than Android, iOS or MacOS';
-        debugPrint(error);
+        log(error);
         return false;
       }
 
       if (!permissionsGranted) {
         const error = 'RequestNotificationPermissions -> Notification permissions denied';
-        debugPrint(error);
+        log(error);
       }
 
       return permissionsGranted;
     } catch (e) {
       final error = 'RequestNotificationPermissions -> catch -> $e';
-      debugPrint(error);
+      log(error);
 
       return false;
     }
@@ -155,7 +156,7 @@ class NotificationService {
       await flutterLocalNotificationsPlugin?.cancelAll();
     } catch (e) {
       final error = 'CancelNotifications -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -212,7 +213,7 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'ShowNotification -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -238,13 +239,13 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TestNotification -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
   /// Returns a random weather joke
   String getRandomWeatherJoke() {
-    final random = Random();
+    final random = math.Random();
     final index = random.nextInt(50);
     return 'weatherJoke${index + 1}'.tr();
   }
@@ -371,11 +372,11 @@ class NotificationService {
       /// Location doesn't exist
       else {
         const error = 'HandleNotifications -> Location is null';
-        debugPrint(error);
+        log(error);
       }
     } catch (e) {
       final error = 'HandleNotifications -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -478,7 +479,7 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'TriggerHourlyNotification -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -558,7 +559,7 @@ class NotificationService {
       }
     } catch (e) {
       final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -614,7 +615,7 @@ class NotificationService {
               );
 
               if (locationIndex == null) {
-                debugPrint('HandlePressedNotification -> Hourly notification location not found');
+                log('HandlePressedNotification -> Hourly notification location not found');
                 return;
               }
 
@@ -654,7 +655,7 @@ class NotificationService {
               );
 
               if (locationIndex == null) {
-                debugPrint('HandlePressedNotification -> Forecast notification location not found');
+                log('HandlePressedNotification -> Forecast notification location not found');
                 return;
               }
 
@@ -670,17 +671,17 @@ class NotificationService {
           /// Test notification
           ///
           case NotificationType.test:
-            debugPrint('Hello testy test');
+            log('Hello testy test');
         }
       }
       /// Payload or context is null
       else {
         const error = 'HandlePressedNotification -> Payload or context is null';
-        debugPrint(error);
+        log(error);
       }
     } catch (e) {
       final error = 'HandlePressedNotification -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -693,7 +694,7 @@ class NotificationService {
       );
     } catch (e) {
       final error = 'onDidReceiveNotificationResponse -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 }
@@ -722,6 +723,6 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     );
   } catch (e) {
     final error = 'onDidReceiveBackgroundNotificationResponse -> catch -> $e';
-    debugPrint(error);
+    log(error);
   }
 }

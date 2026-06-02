@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 
@@ -6,7 +8,7 @@ Future<void> setDisplayMode() async {
     try {
       await FlutterDisplayMode.setHighRefreshRate();
     } catch (e) {
-      debugPrint('SetDisplayMode -> catch -> $e');
+      log('SetDisplayMode -> catch -> $e');
     }
   }
 }

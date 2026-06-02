@@ -20,7 +20,6 @@ Future<void> preloadImage(ImageProvider provider) {
 
   listener = ImageStreamListener(
     (image, sync) {
-      debugPrint('Image ${image.debugLabel} finished loading');
       completer.complete();
       stream.removeListener(listener);
     },

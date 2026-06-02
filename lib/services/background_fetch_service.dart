@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:background_fetch/background_fetch.dart';
@@ -23,8 +24,7 @@ class BackgroundFetchService {
     /// Register Android background events after the app is terminated
     if (defaultTargetPlatform == TargetPlatform.android) {
       final isRegistered = await BackgroundFetch.registerHeadlessTask(promajaBackgroundHeadlessTask);
-
-      debugPrint('BackgroundFetch -> Headless task registered -> $isRegistered');
+      log('BackgroundFetch -> Headless task registered -> $isRegistered');
     }
 
     /// Initialize [BackgroundFetch]
@@ -40,25 +40,25 @@ class BackgroundFetchService {
         try {
           await promajaBackgroundCallback();
         } catch (e) {
-          debugPrint('OnFetch -> catch -> $e');
+          log('OnFetch -> catch -> $e');
         } finally {
           await BackgroundFetch.finish(taskId);
         }
       },
       (taskId) async {
-        debugPrint('OnTimeout -> $taskId');
+        log('OnTimeout -> $taskId');
         await BackgroundFetch.finish(taskId);
       },
     );
 
-    debugPrint('BackgroundFetch -> Configure status -> $status');
+    log('BackgroundFetch -> Configure status -> $status');
   }
 }
 
 @pragma('vm:entry-point')
 Future<void> promajaBackgroundHeadlessTask(HeadlessEvent task) async {
   if (task.timeout) {
-    debugPrint('BackgroundFetch -> Headless timeout -> ${task.taskId}');
+    log('BackgroundFetch -> Headless timeout -> ${task.taskId}');
     await BackgroundFetch.finish(task.taskId);
     return;
   }
@@ -66,7 +66,7 @@ Future<void> promajaBackgroundHeadlessTask(HeadlessEvent task) async {
   try {
     await promajaBackgroundCallback();
   } catch (e) {
-    debugPrint('PromajaBackgroundHeadlessTask -> catch -> $e');
+    log('PromajaBackgroundHeadlessTask -> catch -> $e');
   } finally {
     await BackgroundFetch.finish(task.taskId);
   }
@@ -75,7 +75,7 @@ Future<void> promajaBackgroundHeadlessTask(HeadlessEvent task) async {
 @pragma('vm:entry-point')
 Future<void> promajaBackgroundCallback() async {
   try {
-    debugPrint('BackgroundFetch -> Starting background callback');
+    log('BackgroundFetch -> Starting background callback');
 
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +101,6 @@ Future<void> promajaBackgroundCallback() async {
       languageCode: locale.languageCode,
     );
   } catch (e) {
-    debugPrint('PromajaBackgroundCallback -> catch -> $e');
+    log('PromajaBackgroundCallback -> catch -> $e');
   }
 }

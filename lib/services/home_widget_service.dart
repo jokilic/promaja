@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
@@ -52,7 +53,7 @@ class HomeWidgetService {
       );
     } catch (e) {
       final error = 'RenderHomeWidget -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -67,7 +68,7 @@ class HomeWidgetService {
       );
     } catch (e) {
       final error = 'UpdateHomeWidget -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -131,11 +132,11 @@ class HomeWidgetService {
       }
       /// Location doesn't exist
       else {
-        debugPrint('Handle widget -> Location null');
+        log('Handle widget -> Location null');
       }
     } catch (e) {
       final error = 'HandleWidget -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -206,7 +207,7 @@ class HomeWidgetService {
       await createHomeWidget(widget);
     } catch (e) {
       final error = 'TriggerCurrentWidget -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 
@@ -305,7 +306,7 @@ class HomeWidgetService {
       }
     } catch (e) {
       final error = 'TriggerForecastWidget -> catch -> $e';
-      debugPrint(error);
+      log(error);
     }
   }
 }

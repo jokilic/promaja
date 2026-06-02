@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,7 +21,7 @@ class LocationService {
       /// Location services are not enabled, return error
       if (!serviceEnabled) {
         const error = 'GetPosition -> Location services not enabled';
-        debugPrint(error);
+        log(error);
         return (position: null, error: error);
       }
 
@@ -34,7 +35,7 @@ class LocationService {
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
           const error = 'GetPosition -> Location permissions denied';
-          debugPrint(error);
+          log(error);
           return (position: null, error: error);
         }
       }
@@ -42,7 +43,7 @@ class LocationService {
       /// Permission are denied forever, return error
       if (permission == LocationPermission.deniedForever) {
         const error = 'GetPosition -> Location permissions permanently denied';
-        debugPrint(error);
+        log(error);
         return (position: null, error: error);
       }
 
@@ -52,7 +53,7 @@ class LocationService {
       return (position: position, error: null);
     } catch (e) {
       final error = 'GetPosition -> catch -> $e';
-      debugPrint(error);
+      log(error);
       return (position: null, error: error);
     }
   }
