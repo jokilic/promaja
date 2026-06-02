@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:background_fetch/background_fetch.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../util/dependencies.dart';
@@ -19,6 +20,13 @@ class BackgroundFetchService {
   ///
 
   Future<void> init() async {
+    /// Register Android background events after the app is terminated
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final isRegistered = await BackgroundFetch.registerHeadlessTask(promajaBackgroundHeadlessTask);
+
+      debugPrint('BackgroundFetch -> Headless task registered -> $isRegistered');
+    }
+
     /// Initialize [BackgroundFetch]
     final status = await BackgroundFetch.configure(
       BackgroundFetchConfig(
