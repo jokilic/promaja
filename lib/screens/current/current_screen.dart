@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -17,6 +14,7 @@ import '../../services/hive_service.dart';
 import '../../util/dependencies.dart';
 import '../../util/spacing.dart';
 import '../../widgets/promaja_navigation_bar.dart';
+import '../../widgets/promaja_weather_card.dart';
 import 'current_controller.dart';
 import 'widgets/current_error.dart';
 import 'widgets/current_widget.dart';
@@ -86,23 +84,20 @@ class _CurrentScreenState extends State<CurrentScreen> {
                 ),
               )
             else
-              CardSwiper(
-                backCardOffset: const Offset(0, 48),
+              PromajaWeatherCard(
+                weatherCardLayout: settings.appearance.weatherCardLayout,
+                cardCount: cardCount,
                 padding: EdgeInsets.only(
                   bottom: getCurrentCardBottomPadding(context),
                 ),
-                controller: current.cardSwiperController,
-                isDisabled: cardCount <= 1,
-                duration: PromajaDurations.cardSwiperAnimation,
-                numberOfCardsDisplayed: min(cardCount, 4),
-                cardsCount: cardCount,
-                onSwipe: (previousIndex, index, _) {
+                cardSwiperController: current.cardSwiperController,
+                carouselController: current.carouselController,
+                onIndexChanged: (index) {
                   current.cardSwiped(
-                    newIndex: index ?? previousIndex,
+                    newIndex: index,
                   );
-                  return true;
                 },
-                cardBuilder: (_, cardIndex, __, ___) => CurrentWidget(
+                cardBuilder: (_, cardIndex) => CurrentWidget(
                   key: GlobalObjectKey(cardIndex),
                   originalLocation: locations[cardIndex],
                   showCelsius: showCelsius,

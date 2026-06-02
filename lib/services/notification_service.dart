@@ -13,6 +13,7 @@ import '../main.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/location/location.dart';
 import '../models/notification_payload/notification_payload.dart';
+import '../models/settings/appearance/weather_card_layout.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_type.dart';
 import '../models/settings/units/temperature_unit.dart';
@@ -601,9 +602,19 @@ class NotificationService {
 
               await Future.delayed(PromajaDurations.cardsSwiperNotificationDelay);
 
-              for (var i = 0; i < locationIndex; i++) {
-                current.cardSwiperController.swipe(CardSwiperDirection.right);
-                await Future.delayed(PromajaDurations.cardSwiperAnimation);
+              final weatherCardLayout = hive.getPromajaSettingsFromBox().appearance.weatherCardLayout;
+
+              switch (weatherCardLayout) {
+                case WeatherCardLayout.stacked:
+                  for (var i = 0; i < locationIndex; i++) {
+                    current.cardSwiperController.swipe(CardSwiperDirection.right);
+                    await Future.delayed(PromajaDurations.cardSwiperAnimation);
+                  }
+                case WeatherCardLayout.carousel:
+                  await current.carouselController.animateToItem(
+                    locationIndex,
+                    duration: PromajaDurations.cardSwiperAnimation,
+                  );
               }
             }
 

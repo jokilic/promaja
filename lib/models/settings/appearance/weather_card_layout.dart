@@ -1,0 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:hive_ce/hive.dart';
+
+part 'weather_card_layout.g.dart';
+
+@HiveType(typeId: 19)
+enum WeatherCardLayout {
+  @HiveField(0)
+  stacked,
+  @HiveField(1)
+  carousel,
+}
+
+String localizeWeatherCardLayout(WeatherCardLayout weatherCardLayout) => switch (weatherCardLayout) {
+  WeatherCardLayout.stacked => 'appearanceWeatherCardLayoutStacked'.tr(),
+  WeatherCardLayout.carousel => 'appearanceWeatherCardLayoutCarousel'.tr(),
+};

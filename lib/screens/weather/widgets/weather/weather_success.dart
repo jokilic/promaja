@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -7,12 +5,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../constants/durations.dart';
 import '../../../../models/location/location.dart';
+import '../../../../models/settings/appearance/weather_card_layout.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/dependencies.dart';
 import '../../../../util/spacing.dart';
+import '../../../../widgets/promaja_weather_card.dart';
 import '../../weather_controller.dart';
 import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
@@ -46,15 +45,23 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
     super.initState();
 
     /// Check if weather summary should be shown as first card
-    final summaryFirst = getIt.get<HiveService>().getPromajaSettingsFromBox().appearance.weatherSummaryFirst;
+    final appearance = getIt.get<HiveService>().getPromajaSettingsFromBox().appearance;
 
     /// Summary should not be shown first, swipe to first weather day
-    if (!summaryFirst) {
-      Future.delayed(
-        Duration.zero,
-        () => getIt.get<WeatherController>().cardSwiperController.swipe(
-          CardSwiperDirection.right,
-        ),
+    if (!appearance.weatherSummaryFirst) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          final weather = getIt.get<WeatherController>();
+
+          switch (appearance.weatherCardLayout) {
+            case WeatherCardLayout.stacked:
+              weather.cardSwiperController.swipe(
+                CardSwiperDirection.right,
+              );
+            case WeatherCardLayout.carousel:
+              weather.carouselController.animateToItem(1);
+          }
+        },
       );
     }
   }
@@ -65,6 +72,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
 
     final currentState = watchIt<WeatherController>().value;
     final index = currentState.index;
+    final appearance = getIt.get<HiveService>().getPromajaSettingsFromBox().appearance;
 
     late final cardCount = 1 + widget.forecastWeather.forecastDays.length;
 
@@ -85,23 +93,20 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
             ),
           )
         else
-          CardSwiper(
-            backCardOffset: const Offset(0, 48),
+          PromajaWeatherCard(
+            weatherCardLayout: appearance.weatherCardLayout,
+            cardCount: cardCount,
             padding: EdgeInsets.only(
               bottom: getWeatherCardBottomPadding(context),
             ),
-            controller: weather.cardSwiperController,
-            isDisabled: cardCount <= 1,
-            duration: PromajaDurations.cardSwiperAnimation,
-            numberOfCardsDisplayed: min(cardCount, 4),
-            cardsCount: cardCount,
-            onSwipe: (previousIndex, index, __) {
+            cardSwiperController: weather.cardSwiperController,
+            carouselController: weather.carouselController,
+            onIndexChanged: (index) {
               weather.cardSwiped(
-                newIndex: index ?? previousIndex,
+                newIndex: index,
               );
-              return true;
             },
-            cardBuilder: (_, cardIndex, __, ___) => WeatherCardSuccess(
+            cardBuilder: (_, cardIndex) => WeatherCardSuccess(
               key: GlobalObjectKey(cardIndex),
               originalLocation: widget.originalLocation,
               forecastWeather: widget.forecastWeather,

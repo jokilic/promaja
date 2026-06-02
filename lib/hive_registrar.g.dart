@@ -7,6 +7,7 @@ import 'package:promaja/models/custom_color/custom_color.dart';
 import 'package:promaja/models/location/location.dart';
 import 'package:promaja/models/settings/appearance/appearance_settings.dart';
 import 'package:promaja/models/settings/appearance/initial_section.dart';
+import 'package:promaja/models/settings/appearance/weather_card_layout.dart';
 import 'package:promaja/models/settings/notification/notification_last_shown.dart';
 import 'package:promaja/models/settings/notification/notification_settings.dart';
 import 'package:promaja/models/settings/promaja_settings.dart';
@@ -32,6 +33,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(PromajaSettingsAdapter());
     registerAdapter(TemperatureUnitAdapter());
     registerAdapter(UnitSettingsAdapter());
+    registerAdapter(WeatherCardLayoutAdapter());
     registerAdapter(WeatherTypeAdapter());
     registerAdapter(WidgetSettingsAdapter());
   }
@@ -51,6 +53,7 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(PromajaSettingsAdapter());
     registerAdapter(TemperatureUnitAdapter());
     registerAdapter(UnitSettingsAdapter());
+    registerAdapter(WeatherCardLayoutAdapter());
     registerAdapter(WeatherTypeAdapter());
     registerAdapter(WidgetSettingsAdapter());
   }

@@ -7,6 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/text_styles.dart';
 import '../../models/location/location.dart';
 import '../../models/settings/appearance/initial_section.dart';
+import '../../models/settings/appearance/weather_card_layout.dart';
 import '../../models/settings/promaja_settings.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
@@ -88,6 +89,49 @@ class SettingsController extends ValueNotifier<PromajaSettings> {
     value.copyWith(
       appearance: value.appearance.copyWith(
         initialSection: newSection,
+      ),
+    ),
+  );
+
+  /// Opens popup menu which chooses how weather cards should be displayed
+  Future<WeatherCardLayout?> showWeatherCardLayoutPopupMenu(BuildContext context) async {
+    final left = tapDownDetails?.globalPosition.dx ?? 0;
+    final top = tapDownDetails?.globalPosition.dy ?? 0;
+
+    const weatherCardLayouts = WeatherCardLayout.values;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, left + 1, top + 1),
+      color: PromajaColors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: PromajaColors.white,
+          width: 2,
+        ),
+      ),
+      items: weatherCardLayouts
+          .map(
+            (weatherCardLayout) => PopupMenuItem(
+              value: weatherCardLayout,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                localizeWeatherCardLayout(weatherCardLayout),
+                style: PromajaTextStyles.settingsPopupMenuItem,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Updates how weather cards should be displayed
+  Future<void> updateWeatherCardLayout(WeatherCardLayout newWeatherCardLayout) async => updateSettings(
+    value.copyWith(
+      appearance: value.appearance.copyWith(
+        weatherCardLayout: newWeatherCardLayout,
       ),
     ),
   );

@@ -8,6 +8,7 @@ import '../../constants/durations.dart';
 import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../models/settings/appearance/initial_section.dart';
+import '../../models/settings/appearance/weather_card_layout.dart';
 import '../../util/dependencies.dart';
 import '../../widgets/promaja_back_button.dart';
 import '../card_colors/card_colors_screen.dart';
@@ -114,6 +115,24 @@ class AppearanceScreen extends WatchingWidget {
                   settingsState.appearance.initialSection,
                 ),
                 subtitle: 'appearanceInitialSectionSubtitle'.tr(),
+              ),
+
+              ///
+              /// WEATHER CARD LAYOUT
+              ///
+              SettingsPopupMenuListTile(
+                onTapDown: (details) => settings.tapDownDetails = details,
+                onTapUp: (_) async {
+                  final newWeatherCardLayout = await settings.showWeatherCardLayoutPopupMenu(context);
+
+                  if (newWeatherCardLayout != null) {
+                    await settings.updateWeatherCardLayout(newWeatherCardLayout);
+                  }
+                },
+                activeValue: localizeWeatherCardLayout(
+                  settingsState.appearance.weatherCardLayout,
+                ),
+                subtitle: 'appearanceWeatherCardLayoutSubtitle'.tr(),
               ),
 
               ///

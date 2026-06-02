@@ -19,17 +19,22 @@ class AppearanceSettingsAdapter extends TypeAdapter<AppearanceSettings> {
     return AppearanceSettings(
       initialSection: fields[0] as InitialSection,
       weatherSummaryFirst: fields[1] as bool,
+      weatherCardLayout: fields[2] == null
+          ? WeatherCardLayout.stacked
+          : fields[2] as WeatherCardLayout,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppearanceSettings obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.initialSection)
       ..writeByte(1)
-      ..write(obj.weatherSummaryFirst);
+      ..write(obj.weatherSummaryFirst)
+      ..writeByte(2)
+      ..write(obj.weatherCardLayout);
   }
 
   @override

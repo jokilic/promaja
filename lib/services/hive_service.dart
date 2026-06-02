@@ -8,6 +8,7 @@ import '../models/custom_color/custom_color.dart';
 import '../models/location/location.dart';
 import '../models/settings/appearance/appearance_settings.dart';
 import '../models/settings/appearance/initial_section.dart';
+import '../models/settings/appearance/weather_card_layout.dart';
 import '../models/settings/notification/notification_last_shown.dart';
 import '../models/settings/notification/notification_settings.dart';
 import '../models/settings/promaja_settings.dart';
@@ -68,6 +69,10 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
       Hive.registerAdapter(InitialSectionAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(WeatherCardLayoutAdapter().typeId)) {
+      Hive.registerAdapter(WeatherCardLayoutAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(TemperatureUnitAdapter().typeId)) {
       Hive.registerAdapter(TemperatureUnitAdapter());
     }
@@ -105,6 +110,7 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
       appearance: AppearanceSettings(
         initialSection: InitialSection.lastOpened,
         weatherSummaryFirst: true,
+        weatherCardLayout: WeatherCardLayout.stacked,
       ),
       notification: NotificationSettings(
         location: value.firstOrNull,
