@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
@@ -51,10 +50,7 @@ class HomeWidgetService {
         widget,
         key: 'filePath',
       );
-    } catch (e) {
-      final error = 'RenderHomeWidget -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Updates `HomeWidget`
@@ -66,10 +62,7 @@ class HomeWidgetService {
         iOSName: 'PromajaWidget',
         qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
       );
-    } catch (e) {
-      final error = 'UpdateHomeWidget -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Handles widget logic, depending on `WidgetSettings`
@@ -130,14 +123,7 @@ class HomeWidgetService {
           }
         }
       }
-      /// Location doesn't exist
-      else {
-        log('Handle widget -> Location null');
-      }
-    } catch (e) {
-      final error = 'HandleWidget -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Triggers widget with current weather
@@ -205,10 +191,7 @@ class HomeWidgetService {
 
       /// Update [HomeWidget]
       await createHomeWidget(widget);
-    } catch (e) {
-      final error = 'TriggerCurrentWidget -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Triggers widget with forecast weather
@@ -304,9 +287,6 @@ class HomeWidgetService {
         /// Update [HomeWidget]
         await createHomeWidget(widget);
       }
-    } catch (e) {
-      final error = 'TriggerForecastWidget -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 }

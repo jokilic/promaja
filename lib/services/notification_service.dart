@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -87,8 +86,6 @@ class NotificationService {
 
       return initialized ?? false;
     } catch (e) {
-      final error = 'InitializeNotifications -> catch -> $e';
-      log(error);
       return false;
     }
   }
@@ -131,21 +128,13 @@ class NotificationService {
 
       /// Error while granting permissions
       if (permissionsGranted == null) {
-        const error = 'RequestNotificationPermissions -> Notification platform different than Android, iOS or MacOS';
-        log(error);
         return false;
       }
 
-      if (!permissionsGranted) {
-        const error = 'RequestNotificationPermissions -> Notification permissions denied';
-        log(error);
-      }
+      if (!permissionsGranted) {}
 
       return permissionsGranted;
     } catch (e) {
-      final error = 'RequestNotificationPermissions -> catch -> $e';
-      log(error);
-
       return false;
     }
   }
@@ -154,10 +143,7 @@ class NotificationService {
   Future<void> cancelNotifications() async {
     try {
       await flutterLocalNotificationsPlugin?.cancelAll();
-    } catch (e) {
-      final error = 'CancelNotifications -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Shows a notification
@@ -211,10 +197,7 @@ class NotificationService {
         notificationDetails: notificationDetails,
         payload: payload,
       );
-    } catch (e) {
-      final error = 'ShowNotification -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Shows a test notification
@@ -237,10 +220,7 @@ class NotificationService {
           notificationType: NotificationType.test,
         );
       }
-    } catch (e) {
-      final error = 'TestNotification -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Returns a random weather joke
@@ -369,15 +349,7 @@ class NotificationService {
           }
         }
       }
-      /// Location doesn't exist
-      else {
-        const error = 'HandleNotifications -> Location is null';
-        log(error);
-      }
-    } catch (e) {
-      final error = 'HandleNotifications -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Refreshes the stored phone location and returns the location to use for notifications
@@ -477,10 +449,7 @@ class NotificationService {
         notificationType: NotificationType.hourly,
         location: location,
       );
-    } catch (e) {
-      final error = 'TriggerHourlyNotification -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Triggers forecast notification with proper data
@@ -557,10 +526,7 @@ class NotificationService {
           location: location,
         );
       }
-    } catch (e) {
-      final error = 'TriggerForecastNotification -> ${isEvening ? 'Evening' : 'Morning'} notification -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Checks when last notification was triggered and returns `true` if it's more than 20 hours
@@ -615,7 +581,6 @@ class NotificationService {
               );
 
               if (locationIndex == null) {
-                log('HandlePressedNotification -> Hourly notification location not found');
                 return;
               }
 
@@ -655,7 +620,6 @@ class NotificationService {
               );
 
               if (locationIndex == null) {
-                log('HandlePressedNotification -> Forecast notification location not found');
                 return;
               }
 
@@ -671,18 +635,9 @@ class NotificationService {
           /// Test notification
           ///
           case NotificationType.test:
-            log('Hello testy test');
         }
       }
-      /// Payload or context is null
-      else {
-        const error = 'HandlePressedNotification -> Payload or context is null';
-        log(error);
-      }
-    } catch (e) {
-      final error = 'HandlePressedNotification -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 
   /// Triggered when the user taps the notification
@@ -692,10 +647,7 @@ class NotificationService {
       await handlePressedNotification(
         payload: notificationResponse.payload,
       );
-    } catch (e) {
-      final error = 'onDidReceiveNotificationResponse -> catch -> $e';
-      log(error);
-    }
+    } catch (_) {}
   }
 }
 
@@ -721,8 +673,5 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     await getIt.get<NotificationService>().handlePressedNotification(
       payload: notificationResponse.payload,
     );
-  } catch (e) {
-    final error = 'onDidReceiveBackgroundNotificationResponse -> catch -> $e';
-    log(error);
-  }
+  } catch (_) {}
 }

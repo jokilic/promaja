@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:background_fetch/background_fetch.dart';
@@ -23,12 +22,11 @@ class BackgroundFetchService {
   Future<void> init() async {
     /// Register Android background events after the app is terminated
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final isRegistered = await BackgroundFetch.registerHeadlessTask(promajaBackgroundHeadlessTask);
-      log('BackgroundFetch -> Headless task registered -> $isRegistered');
+      await BackgroundFetch.registerHeadlessTask(promajaBackgroundHeadlessTask);
     }
 
     /// Initialize [BackgroundFetch]
-    final status = await BackgroundFetch.configure(
+    await BackgroundFetch.configure(
       BackgroundFetchConfig(
         minimumFetchInterval: minimumFetchInterval,
         stopOnTerminate: false,
@@ -39,34 +37,28 @@ class BackgroundFetchService {
       (taskId) async {
         try {
           await promajaBackgroundCallback();
-        } catch (e) {
-          log('OnFetch -> catch -> $e');
+        } catch (_) {
         } finally {
           await BackgroundFetch.finish(taskId);
         }
       },
       (taskId) async {
-        log('OnTimeout -> $taskId');
         await BackgroundFetch.finish(taskId);
       },
     );
-
-    log('BackgroundFetch -> Configure status -> $status');
   }
 }
 
 @pragma('vm:entry-point')
 Future<void> promajaBackgroundHeadlessTask(HeadlessEvent task) async {
   if (task.timeout) {
-    log('BackgroundFetch -> Headless timeout -> ${task.taskId}');
     await BackgroundFetch.finish(task.taskId);
     return;
   }
 
   try {
     await promajaBackgroundCallback();
-  } catch (e) {
-    log('PromajaBackgroundHeadlessTask -> catch -> $e');
+  } catch (_) {
   } finally {
     await BackgroundFetch.finish(task.taskId);
   }
@@ -75,8 +67,6 @@ Future<void> promajaBackgroundHeadlessTask(HeadlessEvent task) async {
 @pragma('vm:entry-point')
 Future<void> promajaBackgroundCallback() async {
   try {
-    log('BackgroundFetch -> Starting background callback');
-
     /// Initialize Flutter related tasks
     WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();
@@ -100,7 +90,5 @@ Future<void> promajaBackgroundCallback() async {
     await getIt.get<HomeWidgetService>().handleWidget(
       languageCode: locale.languageCode,
     );
-  } catch (e) {
-    log('PromajaBackgroundCallback -> catch -> $e');
-  }
+  } catch (_) {}
 }

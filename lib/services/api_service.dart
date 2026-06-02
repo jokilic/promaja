@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -45,25 +44,20 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
-        log('Success');
-        log('$parsedResponse');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        log('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Current weather -> StatusCode ${response.statusCode} -> Generic error';
-      log(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Current weather -> catch -> $e';
-      log(error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -88,25 +82,20 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeForecastWeather(response.data);
-        log('Success');
-        log('$parsedResponse');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        log('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Forecast weather -> StatusCode ${response.statusCode} -> Generic error';
-      log(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Forecast weather -> catch -> $e';
-      log(error);
       return (response: null, error: null, genericError: error);
     }
   }
@@ -139,25 +128,20 @@ class APIService {
         /// Locations found
         ///
         final parsedResponse = await computeSearch(responseList);
-        log('Success');
-        log('$parsedResponse');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
       /// Status code starts with a `4`, some API error happened
       if ((response.statusCode ?? 0) ~/ 100 == 4) {
         final parsedError = await computeError(response.data);
-        log('$parsedError');
         return (response: null, error: parsedError, genericError: null);
       }
 
       /// Some weird error happened
       final error = 'Search -> StatusCode ${response.statusCode} -> Generic error';
-      log(error);
       return (response: null, error: null, genericError: error);
     } catch (e) {
       final error = 'Search -> catch -> $e';
-      log(error);
       return (response: null, error: null, genericError: error);
     }
   }
