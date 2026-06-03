@@ -67,7 +67,6 @@ class ListCardWidget extends WatchingWidget {
         ),
       ],
       child: Animate(
-        key: ValueKey(index),
         delay: (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
         effects: [
           FadeEffect(

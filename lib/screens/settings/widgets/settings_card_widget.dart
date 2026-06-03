@@ -84,8 +84,9 @@ class SettingsCardWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Animate(
-                  key: ValueKey(weatherIcon),
-                  onPlay: (controller) => controller.loop(reverse: true),
+                  onPlay: (controller) => controller.loop(
+                    reverse: true,
+                  ),
                   delay: PromajaDurations.weatherIconScaleDelay,
                   effects: [
                     ScaleEffect(

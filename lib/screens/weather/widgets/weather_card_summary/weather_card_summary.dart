@@ -124,7 +124,6 @@ class WeatherCardSummary extends StatelessWidget {
 
                 if (forecast != null) {
                   return Animate(
-                    key: ValueKey(forecast),
                     delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
                     effects: [
                       FadeEffect(

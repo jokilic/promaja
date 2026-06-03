@@ -87,8 +87,9 @@ class WeatherCardIndividualHour extends StatelessWidget {
           /// WEATHER ICON
           ///
           Animate(
-            key: ValueKey(hourWeather),
-            onPlay: (controller) => controller.loop(reverse: true),
+            onPlay: (controller) => controller.loop(
+              reverse: true,
+            ),
             delay: PromajaDurations.weatherIconScaleDelay,
             effects: [
               ScaleEffect(

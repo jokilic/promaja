@@ -140,7 +140,9 @@ class CurrentSuccess extends StatelessWidget {
             /// WEATHER ICON
             ///
             Animate(
-              onPlay: (controller) => controller.loop(reverse: true),
+              onPlay: (controller) => controller.loop(
+                reverse: true,
+              ),
               delay: PromajaDurations.weatherIconScaleDelay,
               effects: [
                 ScaleEffect(

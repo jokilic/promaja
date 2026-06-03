@@ -55,8 +55,9 @@ class WeatherCardHourError extends StatelessWidget {
               /// WEATHER ICON
               ///
               Animate(
-                key: const ValueKey(-1),
-                onPlay: (controller) => controller.loop(reverse: true),
+                onPlay: (controller) => controller.loop(
+                  reverse: true,
+                ),
                 delay: PromajaDurations.weatherIconScaleDelay,
                 effects: [
                   ScaleEffect(
