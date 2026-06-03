@@ -346,10 +346,23 @@ class HiveService extends ValueNotifier<List<Location>> implements Disposable {
 
   /// Triggered when reordering locations in [ListScreen]
   Future<void> reorderLocations(int oldIndex, int newIndex) async {
-    /// Modify `state`
+    if (oldIndex < 0 || oldIndex >= value.length) {
+      return;
+    }
+
     final locations = List<Location>.from(value);
+    final adjustedNewIndex = oldIndex < newIndex ? newIndex - 1 : newIndex;
+
+    /// Clamp the drop index because [ListScreen] includes a trailing empty item.
+    final insertIndex = adjustedNewIndex.clamp(0, locations.length - 1).toInt();
+
+    if (oldIndex == insertIndex) {
+      return;
+    }
+
+    /// Modify `state`
     final item = locations.removeAt(oldIndex);
-    locations.insert(newIndex, item);
+    locations.insert(insertIndex, item);
 
     /// Update all locations in [Hive]
     await writeAllLocationsToHive(locations: locations);
