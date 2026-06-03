@@ -30,6 +30,8 @@ class PromajaWeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Rebuild');
+
     /// [flutter_card_swiper] calls `cardBuilder` while a card is dragged, so keep the
     /// card widget instances stable for the duration of this build
     final cards = List.generate(
@@ -67,7 +69,10 @@ class PromajaWeatherCard extends StatelessWidget {
           onIndexChanged(index ?? previousIndex);
           return true;
         },
-        cardBuilder: (_, cardIndex, _, __) => cards[cardIndex],
+        cardBuilder: (_, cardIndex, _, __) {
+          print('Stacked');
+          return cards[cardIndex];
+        },
       ),
       WeatherCardLayout.horizontal || WeatherCardLayout.vertical => Padding(
         padding: padding,
@@ -81,7 +86,10 @@ class PromajaWeatherCard extends StatelessWidget {
           scrollCacheExtent: ScrollCacheExtent.viewport(
             (numberOfCardsDisplayed - 1).toDouble(),
           ),
-          itemBuilder: (_, pageIndex) => cards[(pageIndex - pageController.initialPage) % cardCount],
+          itemBuilder: (_, pageIndex) {
+            print('Horizontal or vertical');
+            return cards[(pageIndex - pageController.initialPage) % cardCount];
+          },
         ),
       ),
     };

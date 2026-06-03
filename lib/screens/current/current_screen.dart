@@ -93,11 +93,9 @@ class _CurrentScreenState extends State<CurrentScreen> {
                 ),
                 cardSwiperController: current.cardSwiperController,
                 pageController: current.pageController,
-                onIndexChanged: (index) {
-                  current.cardSwiped(
-                    newIndex: index,
-                  );
-                },
+                onIndexChanged: (index) => current.cardSwiped(
+                  newIndex: index,
+                ),
                 cardBuilder: (_, cardIndex) => CurrentWidget(
                   originalLocation: locations[cardIndex],
                   showCelsius: showCelsius,
