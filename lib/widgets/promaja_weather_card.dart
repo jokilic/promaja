@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 import '../constants/durations.dart';
@@ -40,6 +41,8 @@ class PromajaWeatherCard extends StatelessWidget {
       growable: false,
     );
 
+    final numberOfCardsDisplayed = min(cardCount, 4);
+
     return switch (weatherCardLayout) {
       WeatherCardLayout.stacked => CardSwiper(
         backCardOffset: const Offset(0, 48),
@@ -47,7 +50,7 @@ class PromajaWeatherCard extends StatelessWidget {
         controller: cardSwiperController,
         isDisabled: cardCount <= 1,
         duration: PromajaDurations.cardSwiperAnimation,
-        numberOfCardsDisplayed: min(cardCount, 4),
+        numberOfCardsDisplayed: numberOfCardsDisplayed,
         cardsCount: cardCount,
         onSwipe: (previousIndex, index, _) {
           onIndexChanged(index ?? previousIndex);
@@ -62,6 +65,10 @@ class PromajaWeatherCard extends StatelessWidget {
           controller: pageController,
           onPageChanged: onIndexChanged,
           itemCount: cardCount,
+          allowImplicitScrolling: true,
+          scrollCacheExtent: ScrollCacheExtent.viewport(
+            (numberOfCardsDisplayed - 1).toDouble(),
+          ),
           itemBuilder: (_, index) => cards[index],
         ),
       ),
