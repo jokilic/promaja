@@ -97,7 +97,8 @@ class WeatherError extends StatelessWidget {
           Transform.scale(
             scale: 1.2,
             child: Image.asset(
-              PromajaIcons.tornado,
+              PromajaIcons.error,
+              color: PromajaColors.white,
               height: 176,
               width: 176,
             ),

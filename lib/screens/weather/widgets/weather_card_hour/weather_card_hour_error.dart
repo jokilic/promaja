@@ -69,7 +69,8 @@ class WeatherCardHourError extends StatelessWidget {
                 child: Transform.scale(
                   scale: 1.35,
                   child: Image.asset(
-                    PromajaIcons.tornado,
+                    PromajaIcons.error,
+                    color: PromajaColors.white,
                     height: 32,
                     width: 32,
                   ),

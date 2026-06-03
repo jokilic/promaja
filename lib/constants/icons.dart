@@ -23,6 +23,7 @@ class PromajaIcons {
   static const dot = 'assets/icons/dot.png';
   static const check = 'assets/icons/check.png';
   static const pin = 'assets/icons/pin.png';
+  static const error = 'assets/icons/error.png';
   static const weatherAPI = 'assets/icons/weatherapi.webp';
 
   /// Weather

@@ -111,7 +111,8 @@ class ListCardError extends StatelessWidget {
                   child: Transform.scale(
                     scale: 1.2,
                     child: Image.asset(
-                      PromajaIcons.tornado,
+                      PromajaIcons.error,
+                      color: PromajaColors.white,
                       height: 88,
                       width: 88,
                     ),
