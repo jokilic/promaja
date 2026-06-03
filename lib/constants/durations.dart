@@ -7,6 +7,7 @@ class PromajaDurations {
   static final scrollAnimation = 225.milliseconds;
   static final navigationAnimation = 225.milliseconds;
   static final cardSwiperAnimation = 225.milliseconds;
+  static final weatherCardScaleAnimation = 150.milliseconds;
   static final listInterval = 112.5.milliseconds;
   static final settingsInterval = 37.5.milliseconds;
   static final checkAnimation = 75.milliseconds;
