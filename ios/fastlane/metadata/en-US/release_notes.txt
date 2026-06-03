@@ -1,4 +1,4 @@
-* Alternative display mode of weather cards
+* Alternative display modes for weather cards
 * Migrate to background_fetch for background tasks
 * Different font & width
 * Fixes when using phone location

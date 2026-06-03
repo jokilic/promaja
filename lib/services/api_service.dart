@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -159,8 +158,6 @@ class APIService {
 
     /// Fetched weather already exists and is within cache timeframe
     if (cachedCurrentWeather != null && DateTime.now().difference(cachedCurrentWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
-      log('JOSIP -> cached');
-
       return Future.value(
         (
           response: cachedCurrentWeather.response,
@@ -191,7 +188,6 @@ class APIService {
           currentWeatherRequests.remove(query),
         );
 
-        log('JOSIP -> fetched');
         return result;
       },
     );
@@ -207,8 +203,6 @@ class APIService {
 
     /// Fetched weather already exists and is within cache timeframe
     if (cachedForecastWeather != null && DateTime.now().difference(cachedForecastWeather.fetchedAt) < PromajaDurations.apiCacheDuration) {
-      log('JOSIP -> cached');
-
       return Future.value(
         (
           response: cachedForecastWeather.response,
@@ -240,7 +234,6 @@ class APIService {
           forecastWeatherRequests.remove(cacheKey),
         );
 
-        log('JOSIP -> fetched');
         return result;
       },
     );
