@@ -294,4 +294,16 @@ class PromajaTextStyles {
     fontWeight: FontWeight.w600,
     height: 1,
   );
+  static const settingsPromajaTitle = TextStyle(
+    fontFamily: 'ProductSans',
+    color: PromajaColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+  );
+  static const settingsPromajaVersion = TextStyle(
+    fontFamily: 'ProductSans',
+    color: PromajaColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
 }

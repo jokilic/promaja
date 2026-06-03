@@ -7,16 +7,20 @@ import '../constants/colors.dart';
 
 void openUrlExternalBrowser(BuildContext context, {required String? url}) {
   if (url != null) {
+    /// Parse `URL`
+    final uri = Uri.tryParse(url);
+
+    /// `URL` has errors parsing
+    if (uri == null) {
+      return;
+    }
+
     /// Use `url_launcher` if not Android / iOS
     if (defaultTargetPlatform != TargetPlatform.android && defaultTargetPlatform != TargetPlatform.iOS) {
-      final uri = Uri.tryParse(url);
-
-      if (uri != null) {
-        launchUrl(
-          uri,
-          mode: LaunchMode.externalApplication,
-        );
-      }
+      launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
 
       return;
     }

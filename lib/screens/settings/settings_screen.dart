@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -10,6 +9,7 @@ import '../../constants/icons.dart';
 import '../../constants/text_styles.dart';
 import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
+import '../../util/app_version.dart';
 import '../../util/dependencies.dart';
 import '../../util/url_launch.dart';
 import '../../widgets/promaja_navigation_bar.dart';
@@ -188,47 +188,55 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 24),
 
               ///
-              /// WEATHER API
+              /// PROMAJA INFO
               ///
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'weatherAPIInfo'.tr(),
-                        style: PromajaTextStyles.settingsText,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: PromajaColors.white,
+                        width: 2,
                       ),
-                      TextSpan(
-                        text: 'WeatherAPI.com',
-                        style: PromajaTextStyles.settingsText.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: PromajaColors.blue,
+                    ),
+                    child: ClipOval(
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Image.asset(
+                          PromajaIcons.icon,
+                          height: 32,
+                          width: 32,
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => openUrlExternalBrowser(
-                            context,
-                            url: 'https://www.weatherapi.com',
-                          ),
                       ),
-                      const TextSpan(
-                        text: '.',
-                        style: PromajaTextStyles.settingsText,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Promaja',
+                        style: PromajaTextStyles.settingsPromajaTitle,
+                      ),
+                      FutureBuilder(
+                        future: getAppVersion(),
+                        builder: (_, snapshot) {
+                          final version = snapshot.data;
+
+                          if (version != null) {
+                            return Text(
+                              'v$version',
+                              style: PromajaTextStyles.settingsPromajaVersion,
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: () => openUrlExternalBrowser(
-                  context,
-                  url: 'https://www.weatherapi.com',
-                ),
-                child: Image.asset(
-                  PromajaIcons.weatherAPI,
-                  height: 80,
-                ),
+                ],
               ),
               const SizedBox(height: 24),
             ],
