@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
 
+import '../constants/durations.dart';
+
 class LocationService {
   ///
   /// METHODS
@@ -27,7 +29,9 @@ class LocationService {
 
       /// Permission is denied, request it
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
+        permission = await Geolocator.requestPermission().timeout(
+          PromajaDurations.permissionTimeout,
+        );
 
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
@@ -43,7 +47,11 @@ class LocationService {
       }
 
       /// Permissions are granted, access position
-      final position = await Geolocator.getCurrentPosition();
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(
+          timeLimit: PromajaDurations.permissionTimeout,
+        ),
+      );
 
       return (position: position, error: null);
     } catch (e) {

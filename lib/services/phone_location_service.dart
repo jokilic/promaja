@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -33,8 +35,16 @@ class PhoneLocationService
   /// INIT
   ///
 
-  /// Refreshes phone location if it's active
   Future<void> init() async {
+    unawaited(refreshPhoneLocation());
+  }
+
+  ///
+  /// METHODS
+  ///
+
+  /// Refreshes phone location if it's active
+  Future<void> refreshPhoneLocation() async {
     /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
@@ -48,10 +58,6 @@ class PhoneLocationService
       await enablePhoneLocation();
     }
   }
-
-  ///
-  /// METHODS
-  ///
 
   /// Gets phone position
   Future<void> enablePhoneLocation() async {
