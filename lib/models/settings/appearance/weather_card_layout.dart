@@ -8,10 +8,13 @@ enum WeatherCardLayout {
   @HiveField(0)
   stacked,
   @HiveField(1)
-  carousel,
+  horizontal,
+  @HiveField(2)
+  vertical,
 }
 
 String localizeWeatherCardLayout(WeatherCardLayout weatherCardLayout) => switch (weatherCardLayout) {
   WeatherCardLayout.stacked => 'appearanceWeatherCardLayoutStacked'.tr(),
-  WeatherCardLayout.carousel => 'appearanceWeatherCardLayoutCarousel'.tr(),
+  WeatherCardLayout.horizontal => 'appearanceWeatherCardLayoutHorizontal'.tr(),
+  WeatherCardLayout.vertical => 'appearanceWeatherCardLayoutVertical'.tr(),
 };

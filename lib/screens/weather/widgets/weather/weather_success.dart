@@ -59,7 +59,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               weather.cardSwiperController.swipe(
                 CardSwiperDirection.right,
               );
-            case WeatherCardLayout.carousel:
+            case WeatherCardLayout.horizontal || WeatherCardLayout.vertical:
               weather.pageController.animateToPage(
                 1,
                 duration: PromajaDurations.cardSwiperAnimation,

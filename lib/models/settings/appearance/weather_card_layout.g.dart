@@ -16,7 +16,9 @@ class WeatherCardLayoutAdapter extends TypeAdapter<WeatherCardLayout> {
       case 0:
         return WeatherCardLayout.stacked;
       case 1:
-        return WeatherCardLayout.carousel;
+        return WeatherCardLayout.horizontal;
+      case 2:
+        return WeatherCardLayout.vertical;
       default:
         return WeatherCardLayout.stacked;
     }
@@ -27,8 +29,10 @@ class WeatherCardLayoutAdapter extends TypeAdapter<WeatherCardLayout> {
     switch (obj) {
       case WeatherCardLayout.stacked:
         writer.writeByte(0);
-      case WeatherCardLayout.carousel:
+      case WeatherCardLayout.horizontal:
         writer.writeByte(1);
+      case WeatherCardLayout.vertical:
+        writer.writeByte(2);
     }
   }
 
