@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../../models/location/location.dart';
-import '../../../services/api_service.dart';
-import '../../../services/hive_service.dart';
-import '../../../services/location_service.dart';
+import '../models/location/location.dart';
+import 'api_service.dart';
+import 'hive_service.dart';
+import 'location_service.dart';
 
-class PhoneLocationController
+class PhoneLocationService
     extends
         ValueNotifier<
           ({
@@ -19,7 +19,7 @@ class PhoneLocationController
   final APIService api;
   final LocationService location;
 
-  PhoneLocationController({
+  PhoneLocationService({
     required this.hive,
     required this.api,
     required this.location,
@@ -30,11 +30,11 @@ class PhoneLocationController
        ));
 
   ///
-  /// METHODS
+  /// INIT
   ///
 
   /// Refreshes phone location if it's active
-  Future<void> refreshPhoneLocation() async {
+  Future<void> init() async {
     /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
@@ -48,6 +48,10 @@ class PhoneLocationController
       await enablePhoneLocation();
     }
   }
+
+  ///
+  /// METHODS
+  ///
 
   /// Gets phone position
   Future<void> enablePhoneLocation() async {

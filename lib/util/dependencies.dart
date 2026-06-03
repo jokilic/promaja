@@ -16,6 +16,7 @@ import '../services/hive_service.dart';
 import '../services/home_widget_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
+import '../services/phone_location_service.dart';
 import '../services/screen_service.dart';
 
 final getIt = GetIt.instance;
@@ -90,6 +91,22 @@ Future<void> initializeServices({
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerSingletonAsync(
       () async => LocationService(),
+    );
+  }
+
+  /// PhoneLocation
+  if (!getIt.isRegistered<PhoneLocationService>()) {
+    getIt.registerSingletonAsync(
+      () async {
+        final phoneLocation = PhoneLocationService(
+          hive: getIt.get<HiveService>(),
+          api: getIt.get<APIService>(),
+          location: getIt.get<LocationService>(),
+        );
+        await phoneLocation.init();
+        return phoneLocation;
+      },
+      dependsOn: [HiveService, APIService, LocationService],
     );
   }
 
