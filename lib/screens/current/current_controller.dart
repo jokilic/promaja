@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../util/promaja_weather_card_helpers.dart';
+
 class CurrentController extends ValueNotifier<int> implements Disposable {
   CurrentController() : super(0);
 
@@ -23,7 +25,9 @@ class CurrentController extends ValueNotifier<int> implements Disposable {
   ///
 
   late final cardSwiperController = CardSwiperController();
-  late final pageController = PageController();
+  late final pageController = PageController(
+    initialPage: weatherCardPageLoopBase,
+  );
   late final cardAdditionalPageController = PageController();
 
   ///

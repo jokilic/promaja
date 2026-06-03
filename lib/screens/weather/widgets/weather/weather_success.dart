@@ -11,6 +11,7 @@ import '../../../../models/settings/appearance/weather_card_layout.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../services/hive_service.dart';
 import '../../../../util/dependencies.dart';
+import '../../../../util/promaja_weather_card_helpers.dart';
 import '../../../../util/spacing.dart';
 import '../../../../widgets/promaja_weather_card.dart';
 import '../../weather_controller.dart';
@@ -41,6 +42,8 @@ class WeatherSuccess extends WatchingStatefulWidget {
 }
 
 class _WeatherSuccessState extends State<WeatherSuccess> {
+  late final cardCount = 1 + widget.forecastWeather.forecastDays.length;
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +64,11 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               );
             case WeatherCardLayout.horizontal || WeatherCardLayout.vertical:
               weather.pageController.animateToPage(
-                1,
+                getWeatherCardLoopedPage(
+                  pageController: weather.pageController,
+                  cardCount: cardCount,
+                  cardIndex: 1,
+                ),
                 duration: PromajaDurations.cardSwiperAnimation,
                 curve: Curves.easeIn,
               );
@@ -77,9 +84,9 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
 
     final currentState = watchIt<WeatherController>().value;
     final index = currentState.index;
-    final appearance = getIt.get<HiveService>().getPromajaSettingsFromBox().appearance;
 
-    late final cardCount = 1 + widget.forecastWeather.forecastDays.length;
+    final hive = getIt.get<HiveService>();
+    final appearance = hive.getPromajaSettingsFromBox().appearance;
 
     return Stack(
       children: [

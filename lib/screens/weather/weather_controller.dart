@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../constants/durations.dart';
 import '../../models/weather/hour_weather.dart';
 import '../../util/null_state.dart';
+import '../../util/promaja_weather_card_helpers.dart';
 
 class WeatherController
     extends
@@ -40,7 +41,9 @@ class WeatherController
   ///
 
   late final cardSwiperController = CardSwiperController();
-  late final pageController = PageController();
+  late final pageController = PageController(
+    initialPage: weatherCardPageLoopBase,
+  );
   late final cardScrollController = ScrollController();
   late final cardHourAdditionalPageController = PageController();
 

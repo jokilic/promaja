@@ -43,6 +43,17 @@ class PromajaWeatherCard extends StatelessWidget {
 
     final numberOfCardsDisplayed = min(cardCount, 4);
 
+    if (cardCount == 0) {
+      return const SizedBox.shrink();
+    }
+
+    if (cardCount == 1 && weatherCardLayout != WeatherCardLayout.stacked) {
+      return Padding(
+        padding: padding,
+        child: cards.first,
+      );
+    }
+
     return switch (weatherCardLayout) {
       WeatherCardLayout.stacked => CardSwiper(
         backCardOffset: const Offset(0, 48),
@@ -63,13 +74,14 @@ class PromajaWeatherCard extends StatelessWidget {
         child: PageView.builder(
           scrollDirection: weatherCardLayout == WeatherCardLayout.horizontal ? Axis.horizontal : Axis.vertical,
           controller: pageController,
-          onPageChanged: onIndexChanged,
-          itemCount: cardCount,
+          onPageChanged: (pageIndex) => onIndexChanged(
+            (pageIndex - pageController.initialPage) % cardCount,
+          ),
           allowImplicitScrolling: true,
           scrollCacheExtent: ScrollCacheExtent.viewport(
             (numberOfCardsDisplayed - 1).toDouble(),
           ),
-          itemBuilder: (_, index) => cards[index],
+          itemBuilder: (_, pageIndex) => cards[(pageIndex - pageController.initialPage) % cardCount],
         ),
       ),
     };

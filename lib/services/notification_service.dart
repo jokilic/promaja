@@ -20,6 +20,7 @@ import '../models/settings/units/temperature_unit.dart';
 import '../models/weather/response_forecast_weather.dart';
 import '../screens/current/current_controller.dart';
 import '../util/dependencies.dart';
+import '../util/promaja_weather_card_helpers.dart';
 import '../util/weather.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
@@ -612,7 +613,11 @@ class NotificationService {
                   }
                 case WeatherCardLayout.horizontal || WeatherCardLayout.vertical:
                   await current.pageController.animateToPage(
-                    locationIndex,
+                    getWeatherCardLoopedPage(
+                      pageController: current.pageController,
+                      cardCount: locations.length,
+                      cardIndex: locationIndex,
+                    ),
                     duration: PromajaDurations.cardSwiperAnimation,
                     curve: Curves.easeIn,
                   );
