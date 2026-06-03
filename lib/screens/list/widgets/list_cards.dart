@@ -25,11 +25,11 @@ class ListCards extends StatelessWidget {
     required Location location,
     required int index,
   }) async {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    final scaffoldMessenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
 
     await getIt.get<HiveService>().deleteLocationFromBox(index: index);
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(
           'locationDeleted'.tr(
