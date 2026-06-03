@@ -23,7 +23,6 @@ class CurrentWidget extends WatchingWidget {
     required this.showKph,
     required this.showMm,
     required this.showhPa,
-    required super.key,
   });
 
   @override
