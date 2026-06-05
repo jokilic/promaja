@@ -679,12 +679,8 @@ Future<void> onDidReceiveBackgroundNotificationResponse(NotificationResponse not
     /// Initialize [EasyLocalization]
     await initializeLocalization();
 
-    /// Initialize services
-    // The notification callback runs in a background isolate. Avoid enqueueing
-    // BackgroundFetch while restoring the services needed to handle the tap.
-    await initializeServices(
-      initializeBackgroundFetch: false,
-    );
+    /// Initialize services used when tapping notification
+    await initializeServicesNotificationTap();
 
     /// Trigger notification logic
     await getIt.get<NotificationService>().handlePressedNotification(

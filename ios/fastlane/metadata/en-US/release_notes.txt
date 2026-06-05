@@ -1,8 +1,1 @@
-* Alternative display modes for weather cards
-* Scale animation when interacting with cards
-* Migrate to background_fetch for background tasks
-* Different font & width
-* Fixes when using phone location
-* Fixes reordering locations
-* Under-the-hood refactors
-* Other small fixes
+* Refactor initialization logic
