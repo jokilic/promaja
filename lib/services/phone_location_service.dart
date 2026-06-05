@@ -1,12 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../../models/location/location.dart';
-import '../../../services/api_service.dart';
-import '../../../services/hive_service.dart';
-import '../../../services/location_service.dart';
+import '../models/location/location.dart';
+import 'api_service.dart';
+import 'hive_service.dart';
+import 'location_service.dart';
 
-class PhoneLocationController
+class PhoneLocationService
     extends
         ValueNotifier<
           ({
@@ -19,7 +21,7 @@ class PhoneLocationController
   final APIService api;
   final LocationService location;
 
-  PhoneLocationController({
+  PhoneLocationService({
     required this.hive,
     required this.api,
     required this.location,
@@ -30,8 +32,32 @@ class PhoneLocationController
        ));
 
   ///
+  /// INIT
+  ///
+
+  Future<void> init() async {
+    unawaited(refreshPhoneLocation());
+  }
+
+  ///
   /// METHODS
   ///
+
+  /// Refreshes phone location if it's active
+  Future<void> refreshPhoneLocation() async {
+    /// Get currently stored `locations`
+    final locations = hive.getLocationsFromBox();
+
+    /// Check if phone location is active
+    final hasPhoneLocation = locations.any(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    /// Enable phone location with new position
+    if (hasPhoneLocation) {
+      await enablePhoneLocation();
+    }
+  }
 
   /// Gets phone position
   Future<void> enablePhoneLocation() async {
@@ -41,8 +67,6 @@ class PhoneLocationController
       error: null,
       loading: true,
     );
-
-    // TODO: Here we get new position and then also use `getCachedCurrentWeatherWithProperLocation()` which does similar. This looks like a bug / redundancy, how should we mitigate this?
 
     /// Get position
     final position = await location.getPosition();
@@ -60,8 +84,8 @@ class PhoneLocationController
       );
 
       /// Fetch weather data
-      final response = await api.getCachedCurrentWeatherWithProperLocation(
-        passedLocation: location,
+      final response = await api.getCachedCurrentWeather(
+        query: '${location.lat},${location.lon}',
       );
 
       /// Response successfully fetched

@@ -3,16 +3,8 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
 import '../constants/durations.dart';
-import '../models/location/location.dart';
-import 'hive_service.dart';
 
 class LocationService {
-  final HiveService hive;
-
-  LocationService({
-    required this.hive,
-  });
-
   ///
   /// METHODS
   ///
@@ -66,40 +58,5 @@ class LocationService {
       final error = 'GetPosition -> catch -> $e';
       return (position: null, error: error);
     }
-  }
-
-  /// Returns new or saved location for the API calls
-  Future<Location> getLocationForWeatherFetch({
-    required Location location,
-  }) async {
-    if (!(location.isPhoneLocation ?? false)) {
-      return location;
-    }
-
-    final position = await getPosition();
-
-    /// Keep using the last stored coordinates when GPS refresh fails
-    if (position.position == null) {
-      return location;
-    }
-
-    final refreshedLocation = location.copyWith(
-      lat: position.position!.latitude,
-      lon: position.position!.longitude,
-    );
-
-    final locations = hive.getLocationsFromBox();
-    final phoneLocationIndex = locations.indexWhere(
-      (location) => location.isPhoneLocation ?? false,
-    );
-
-    if (phoneLocationIndex != -1) {
-      await hive.replaceLocationInBox(
-        index: phoneLocationIndex,
-        location: refreshedLocation,
-      );
-    }
-
-    return refreshedLocation;
   }
 }

@@ -8,11 +8,11 @@ import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../constants/typedefs.dart';
 import '../../../../services/hive_service.dart';
+import '../../../../services/phone_location_service.dart';
 import '../../../../util/dependencies.dart';
 import '../../../../util/error.dart';
 import '../../../../util/snackbars.dart';
 import '../../controllers/add_location_controller.dart';
-import '../../controllers/phone_location_controller.dart';
 
 class AddLocationWidget extends WatchingStatefulWidget {
   @override
@@ -44,7 +44,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
       },
     );
 
-    registerHandler<PhoneLocationController, ({Position? position, String? error, bool loading})>(
+    registerHandler<PhoneLocationService, ({Position? position, String? error, bool loading})>(
       select: (controller) => controller,
       handler: (context, state, _) {
         if (state.error != null) {
@@ -57,7 +57,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
     );
 
     final addLocationState = watchIt<AddLocationController>().value;
-    final phoneLocationState = watchIt<PhoneLocationController>().value;
+    final phoneLocationState = watchIt<PhoneLocationService>().value;
     final hiveState = watchIt<HiveService>().value;
 
     final isLoading = addLocationState.loading;
@@ -69,7 +69,7 @@ class _AddLocationWidgetState extends State<AddLocationWidget> {
     );
 
     final addLocation = getIt.get<AddLocationController>();
-    final phoneLocation = getIt.get<PhoneLocationController>();
+    final phoneLocation = getIt.get<PhoneLocationService>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(

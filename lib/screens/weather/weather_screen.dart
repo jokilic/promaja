@@ -51,22 +51,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     final futureSnapshot = watchFuture<APIService, ForecastWeatherResult>(
-      (api) async {
-        final originalLocation = widget.originalLocation;
-
-        if (originalLocation == null) {
-          return (
-            response: null,
-            error: null,
-            genericError: null,
-          );
-        }
-
-        return api.getCachedForecastWeather(
-          passedLocation: originalLocation,
-          days: 7,
-        );
-      },
+      (api) => api.getCachedForecastWeather(
+        query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
+        days: 7,
+      ),
       initialValue: (
         response: null,
         error: null,
