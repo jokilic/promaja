@@ -42,6 +42,8 @@ class PhoneLocationController
       loading: true,
     );
 
+    // TODO: Here we get new position and then also use `getCachedCurrentWeatherWithProperLocation()` which does similar. This looks like a bug / redundancy, how should we mitigate this?
+
     /// Get position
     final position = await location.getPosition();
 
@@ -58,8 +60,8 @@ class PhoneLocationController
       );
 
       /// Fetch weather data
-      final response = await api.getCurrentWeather(
-        query: '${location.lat},${location.lon}',
+      final response = await api.getCachedCurrentWeatherWithProperLocation(
+        passedLocation: location,
       );
 
       /// Response successfully fetched

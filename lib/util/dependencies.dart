@@ -117,11 +117,12 @@ void registerNotificationService() {
         final notification = NotificationService(
           hive: getIt.get<HiveService>(),
           api: getIt.get<APIService>(),
+          location: getIt.get<LocationService>(),
         );
         await notification.init();
         return notification;
       },
-      dependsOn: [HiveService, APIService],
+      dependsOn: [HiveService, APIService, LocationService],
     );
   }
 }
@@ -134,8 +135,9 @@ void registerHomeWidgetService() {
       () async => HomeWidgetService(
         hive: getIt.get<HiveService>(),
         api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
       ),
-      dependsOn: [HiveService, APIService],
+      dependsOn: [HiveService, APIService, LocationService],
     );
   }
 }

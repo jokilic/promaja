@@ -6,8 +6,6 @@ import '../constants/durations.dart';
 import '../models/location/location.dart';
 import 'hive_service.dart';
 
-const phoneLocationRefreshCoordinateThreshold = 0.001;
-
 class LocationService {
   final HiveService hive;
 
@@ -90,22 +88,16 @@ class LocationService {
       lon: position.position!.longitude,
     );
 
-    final shouldStoreRefreshedLocation =
-        (refreshedLocation.lat - location.lat).abs() > phoneLocationRefreshCoordinateThreshold ||
-        (refreshedLocation.lon - location.lon).abs() > phoneLocationRefreshCoordinateThreshold;
+    final locations = hive.getLocationsFromBox();
+    final phoneLocationIndex = locations.indexWhere(
+      (location) => location.isPhoneLocation ?? false,
+    );
 
-    if (shouldStoreRefreshedLocation) {
-      final locations = hive.getLocationsFromBox();
-      final phoneLocationIndex = locations.indexWhere(
-        (location) => location.isPhoneLocation ?? false,
+    if (phoneLocationIndex != -1) {
+      await hive.replaceLocationInBox(
+        index: phoneLocationIndex,
+        location: refreshedLocation,
       );
-
-      if (phoneLocationIndex != -1) {
-        await hive.replaceLocationInBox(
-          index: phoneLocationIndex,
-          location: refreshedLocation,
-        );
-      }
     }
 
     return refreshedLocation;
