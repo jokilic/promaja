@@ -28,8 +28,8 @@ class CurrentWidget extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
-      (api) => api.getCachedCurrentWeather(
-        query: '${originalLocation.lat},${originalLocation.lon}',
+      (api) async => api.getCachedCurrentWeatherWithProperLocation(
+        passedLocation: originalLocation,
       ),
       initialValue: (
         response: null,

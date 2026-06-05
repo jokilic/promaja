@@ -47,8 +47,8 @@ class ListCardWidgetState extends State<ListCardWidget> {
   @override
   Widget build(BuildContext context) {
     final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
-      (api) => api.getCachedCurrentWeather(
-        query: '${widget.originalLocation.lat},${widget.originalLocation.lon}',
+      (api) async => api.getCachedCurrentWeatherWithProperLocation(
+        passedLocation: widget.originalLocation,
       ),
       initialValue: (
         response: null,

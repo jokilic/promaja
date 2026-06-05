@@ -7,9 +7,11 @@ import '../../constants/durations.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
+import '../../services/location_service.dart';
 import '../../util/dependencies.dart';
 import '../../widgets/promaja_navigation_bar.dart';
 import 'controllers/add_location_controller.dart';
+import 'controllers/phone_location_controller.dart';
 import 'widgets/list_cards.dart';
 import 'widgets/list_empty.dart';
 
@@ -30,6 +32,14 @@ class _ListScreenState extends State<ListScreen> {
       ),
     );
 
+    registerIfNotInitialized<PhoneLocationController>(
+      () => PhoneLocationController(
+        hive: getIt.get<HiveService>(),
+        api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
+      ),
+    );
+
     /// Remove splash screen
     FlutterNativeSplash.remove();
   }
@@ -37,6 +47,7 @@ class _ListScreenState extends State<ListScreen> {
   @override
   void dispose() {
     unRegisterIfNotDisposed<AddLocationController>();
+    unRegisterIfNotDisposed<PhoneLocationController>();
 
     super.dispose();
   }

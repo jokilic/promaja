@@ -17,14 +17,17 @@ import '../widgets/home_widget/current_home_widget.dart';
 import '../widgets/home_widget/forecast_home_widget.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
+import 'location_service.dart';
 
 class HomeWidgetService {
   final HiveService hive;
   final APIService api;
+  final LocationService location;
 
   HomeWidgetService({
     required this.hive,
     required this.api,
+    required this.location,
   })
   ///
   /// INIT
@@ -78,17 +81,21 @@ class HomeWidgetService {
 
       final settings = hive.getPromajaSettingsFromBox();
 
-      final location = settings.widget.location;
+      final savedLocation = settings.widget.location;
 
       /// Location exists
-      if (location != null) {
+      if (savedLocation != null) {
+        final newLocation = await location.getLocationForWeatherFetch(
+          location: savedLocation,
+        );
+
         ///
         /// Current weather
         ///
         if (settings.widget.weatherType == WeatherType.current) {
           /// Fetch current weather
-          final currentWeather = await api.getCachedCurrentWeather(
-            query: '${location.lat},${location.lon}',
+          final currentWeather = await api.getCachedCurrentWeatherWithProperLocation(
+            passedLocation: newLocation,
           );
 
           /// Current weather is successfully fetched
@@ -96,7 +103,7 @@ class HomeWidgetService {
             await triggerCurrentWidget(
               response: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
+              location: newLocation,
               languageCode: languageCode,
             );
           }
@@ -108,7 +115,7 @@ class HomeWidgetService {
         if (settings.widget.weatherType == WeatherType.forecast) {
           /// Fetch today's forecast
           final forecastWeather = await api.getCachedForecastWeather(
-            query: '${location.lat},${location.lon}',
+            passedLocation: newLocation,
             days: 1,
           );
 
@@ -117,7 +124,7 @@ class HomeWidgetService {
             await triggerForecastWidget(
               response: forecastWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
+              location: newLocation,
               languageCode: languageCode,
             );
           }

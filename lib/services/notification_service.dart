@@ -240,26 +240,24 @@ class NotificationService {
 
       final notificationsEnabled = notificationSettings.hourlyNotification || notificationSettings.morningNotification || notificationSettings.eveningNotification;
 
-      var location = notificationSettings.location;
+      final notificationLocation = notificationSettings.location;
 
       /// Notifications are enabled & location exists
-      if (notificationsEnabled && location != null) {
-        final isPhoneLocation = location.isPhoneLocation ?? false;
-
+      if (notificationsEnabled && notificationLocation != null) {
         /// Refresh coordinates before fetching weather for the phone location
-        if (isPhoneLocation) {
-          location = await refreshPhoneLocation(
-            passedLocation: location,
-          );
-        }
+        final newLocation = await location.getLocationForWeatherFetch(
+          location: notificationLocation,
+        );
+
+        final isPhoneLocation = newLocation.isPhoneLocation ?? false;
 
         ///
         /// Hourly notification is active, fetch current weather and show it
         ///
         if (notificationSettings.hourlyNotification) {
           /// Fetch current weather
-          final currentWeather = await api.getCachedCurrentWeather(
-            query: '${location.lat},${location.lon}',
+          final currentWeather = await api.getCachedCurrentWeatherWithProperLocation(
+            passedLocation: newLocation,
           );
 
           /// Current weather is successfully fetched
@@ -267,7 +265,7 @@ class NotificationService {
             await triggerHourlyNotification(
               currentWeather: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
+              location: newLocation,
               isPhoneLocation: isPhoneLocation,
             );
           }
@@ -286,7 +284,7 @@ class NotificationService {
           if (shouldShowNotification) {
             /// Fetch today's forecast
             final forecastWeather = await api.getCachedForecastWeather(
-              query: '${location.lat},${location.lon}',
+              passedLocation: newLocation,
               days: 1,
             );
 
@@ -297,7 +295,7 @@ class NotificationService {
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
-                location: location,
+                location: newLocation,
                 isPhoneLocation: isPhoneLocation,
               );
 
@@ -329,7 +327,7 @@ class NotificationService {
           if (shouldShowNotification) {
             /// Fetch tomorrow's forecast
             final forecastWeather = await api.getCachedForecastWeather(
-              query: '${location.lat},${location.lon}',
+              passedLocation: newLocation,
               days: 2,
             );
 
@@ -340,7 +338,7 @@ class NotificationService {
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
-                location: location,
+                location: newLocation,
                 isPhoneLocation: isPhoneLocation,
               );
 
@@ -360,37 +358,6 @@ class NotificationService {
         }
       }
     } catch (_) {}
-  }
-
-  /// Refreshes the stored phone location and returns the location to use for notifications
-  Future<Location> refreshPhoneLocation({
-    required Location passedLocation,
-  }) async {
-    final position = await location.getPosition();
-
-    /// Keep using the last stored position when GPS refresh fails
-    if (position.position == null) {
-      return passedLocation;
-    }
-
-    final refreshedLocation = passedLocation.copyWith(
-      lat: position.position!.latitude,
-      lon: position.position!.longitude,
-    );
-
-    final locations = hive.getLocationsFromBox();
-    final phoneLocationIndex = locations.indexWhere(
-      (location) => location.isPhoneLocation ?? false,
-    );
-
-    if (phoneLocationIndex != -1) {
-      await hive.replaceLocationInBox(
-        index: phoneLocationIndex,
-        location: refreshedLocation,
-      );
-    }
-
-    return refreshedLocation;
   }
 
   /// Finds a stored location for a notification payload

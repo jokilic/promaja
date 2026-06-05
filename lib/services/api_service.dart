@@ -6,14 +6,18 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../constants/durations.dart';
 import '../constants/typedefs.dart';
+import '../models/location/location.dart';
 import '../util/env.dart';
 import '../util/isolates.dart';
+import 'location_service.dart';
 
 class APIService {
   final Dio dio;
+  final LocationService location;
 
   APIService({
     required this.dio,
+    required this.location,
   });
 
   ///
@@ -151,9 +155,17 @@ class APIService {
   ///
 
   /// Returns fresh current weather data from memory when the same location was recently fetched
-  Future<CurrentWeatherResult> getCachedCurrentWeather({
-    required String query,
-  }) {
+  Future<CurrentWeatherResult> getCachedCurrentWeatherWithProperLocation({
+    required Location passedLocation,
+  }) async {
+    /// Get proper location
+    final newLocation = await location.getLocationForWeatherFetch(
+      location: passedLocation,
+    );
+
+    /// Generate `query`
+    final query = '${newLocation.lat},${newLocation.lon}';
+
     final cachedCurrentWeather = currentWeatherCache[query];
 
     /// Fetched weather already exists and is within cache timeframe
@@ -195,9 +207,17 @@ class APIService {
 
   /// Returns fresh forecast data from memory when the same location was recently fetched
   Future<ForecastWeatherResult> getCachedForecastWeather({
-    required String query,
+    required Location passedLocation,
     required int days,
-  }) {
+  }) async {
+    /// Get proper location
+    final newLocation = await location.getLocationForWeatherFetch(
+      location: passedLocation,
+    );
+
+    /// Generate `query`
+    final query = '${newLocation.lat},${newLocation.lon}';
+
     final cacheKey = '$query:$days';
     final cachedForecastWeather = forecastWeatherCache[cacheKey];
 
