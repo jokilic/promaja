@@ -24,18 +24,15 @@ import '../util/promaja_weather_card_helpers.dart';
 import '../util/weather.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
-import 'location_service.dart';
 import 'screen_service.dart';
 
 class NotificationService {
   final HiveService hive;
   final APIService api;
-  final LocationService location;
 
   NotificationService({
     required this.hive,
     required this.api,
-    required this.location,
   });
 
   ///
@@ -240,16 +237,11 @@ class NotificationService {
 
       final notificationsEnabled = notificationSettings.hourlyNotification || notificationSettings.morningNotification || notificationSettings.eveningNotification;
 
-      final notificationLocation = notificationSettings.location;
+      final location = notificationSettings.location;
 
       /// Notifications are enabled & location exists
-      if (notificationsEnabled && notificationLocation != null) {
-        /// Refresh coordinates before fetching weather for the phone location
-        final newLocation = await location.getLocationForWeatherFetch(
-          location: notificationLocation,
-        );
-
-        final isPhoneLocation = newLocation.isPhoneLocation ?? false;
+      if (notificationsEnabled && location != null) {
+        final isPhoneLocation = location.isPhoneLocation ?? false;
 
         ///
         /// Hourly notification is active, fetch current weather and show it
@@ -257,7 +249,7 @@ class NotificationService {
         if (notificationSettings.hourlyNotification) {
           /// Fetch current weather
           final currentWeather = await api.getCachedCurrentWeatherWithProperLocation(
-            passedLocation: newLocation,
+            passedLocation: location,
           );
 
           /// Current weather is successfully fetched
@@ -265,7 +257,7 @@ class NotificationService {
             await triggerHourlyNotification(
               currentWeather: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: newLocation,
+              location: location,
               isPhoneLocation: isPhoneLocation,
             );
           }
@@ -284,7 +276,7 @@ class NotificationService {
           if (shouldShowNotification) {
             /// Fetch today's forecast
             final forecastWeather = await api.getCachedForecastWeather(
-              passedLocation: newLocation,
+              passedLocation: location,
               days: 1,
             );
 
@@ -295,7 +287,7 @@ class NotificationService {
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
-                location: newLocation,
+                location: location,
                 isPhoneLocation: isPhoneLocation,
               );
 
@@ -327,7 +319,7 @@ class NotificationService {
           if (shouldShowNotification) {
             /// Fetch tomorrow's forecast
             final forecastWeather = await api.getCachedForecastWeather(
-              passedLocation: newLocation,
+              passedLocation: location,
               days: 2,
             );
 
@@ -338,7 +330,7 @@ class NotificationService {
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
-                location: newLocation,
+                location: location,
                 isPhoneLocation: isPhoneLocation,
               );
 
