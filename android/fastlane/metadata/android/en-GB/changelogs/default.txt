@@ -1,1 +1,2 @@
 * Refactor initialization logic
+* Updates in notification logic

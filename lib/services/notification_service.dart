@@ -49,11 +49,11 @@ class NotificationService {
   ///
 
   Future<void> init() async {
-    final settings = hive.getPromajaSettingsFromBox();
+    final notificationSettings = hive.getPromajaSettingsFromBox().notification;
 
     /// Notifications are not initialized & they are enabled in settings
     if (flutterLocalNotificationsPlugin == null &&
-        (settings.notification.hourlyNotification || settings.notification.morningNotification || settings.notification.eveningNotification)) {
+        (notificationSettings.hourlyNotification || notificationSettings.morningNotification || notificationSettings.eveningNotification)) {
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
       await initializeNotifications();
       await requestNotificationPermissions();
@@ -236,13 +236,18 @@ class NotificationService {
   Future<void> handleNotifications() async {
     try {
       final settings = hive.getPromajaSettingsFromBox();
+      final notificationSettings = settings.notification;
 
-      var location = settings.notification.location;
+      final notificationsEnabled = notificationSettings.hourlyNotification || notificationSettings.morningNotification || notificationSettings.eveningNotification;
 
-      /// Location exists
-      if (location != null) {
+      var location = notificationSettings.location;
+
+      /// Notifications are enabled & location exists
+      if (notificationsEnabled && location != null) {
+        final isPhoneLocation = location.isPhoneLocation ?? false;
+
         /// Refresh coordinates before fetching weather for the phone location
-        if (location.isPhoneLocation ?? false) {
+        if (isPhoneLocation) {
           location = await refreshPhoneLocation(
             passedLocation: location,
           );
@@ -251,7 +256,7 @@ class NotificationService {
         ///
         /// Hourly notification is active, fetch current weather and show it
         ///
-        if (settings.notification.hourlyNotification) {
+        if (notificationSettings.hourlyNotification) {
           /// Fetch current weather
           final currentWeather = await api.getCachedCurrentWeather(
             query: '${location.lat},${location.lon}',
@@ -263,6 +268,7 @@ class NotificationService {
               currentWeather: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: location,
+              isPhoneLocation: isPhoneLocation,
             );
           }
         }
@@ -270,7 +276,7 @@ class NotificationService {
         ///
         /// Morning notification is active
         ///
-        if (settings.notification.morningNotification) {
+        if (notificationSettings.morningNotification) {
           /// Check if notification should be triggered
           final shouldShowNotification = shouldTriggerNotification(
             isEveningNotification: false,
@@ -292,6 +298,7 @@ class NotificationService {
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
                 location: location,
+                isPhoneLocation: isPhoneLocation,
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
@@ -312,7 +319,7 @@ class NotificationService {
         ///
         /// Evening notification is active
         ///
-        if (settings.notification.eveningNotification) {
+        if (notificationSettings.eveningNotification) {
           /// Check if notification should be triggered
           final shouldShowNotification = shouldTriggerNotification(
             isEveningNotification: true,
@@ -334,6 +341,7 @@ class NotificationService {
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
                 location: location,
+                isPhoneLocation: isPhoneLocation,
               );
 
               /// Store new value of `NotificationLastShown` in [Hive]
@@ -355,7 +363,9 @@ class NotificationService {
   }
 
   /// Refreshes the stored phone location and returns the location to use for notifications
-  Future<Location> refreshPhoneLocation({required Location passedLocation}) async {
+  Future<Location> refreshPhoneLocation({
+    required Location passedLocation,
+  }) async {
     final position = await location.getPosition();
 
     /// Keep using the last stored position when GPS refresh fails
@@ -415,10 +425,11 @@ class NotificationService {
     required ResponseCurrentWeather currentWeather,
     required bool showCelsius,
     required Location location,
+    required bool isPhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = currentWeather.location.name;
+      final locationName = isPhoneLocation ? currentWeather.location.name : location.name;
 
       final temp = showCelsius ? '${currentWeather.current.tempC.round()}°C' : '${currentWeather.current.tempF.round()}°F';
 
@@ -460,10 +471,11 @@ class NotificationService {
     required bool showCelsius,
     required bool isEvening,
     required Location location,
+    required bool isPhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = forecastWeather.location.name;
+      final locationName = isPhoneLocation ? forecastWeather.location.name : location.name;
 
       final time = DateTime.now().add(
         isEvening ? const Duration(days: 1) : Duration.zero,
