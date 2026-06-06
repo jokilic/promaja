@@ -8,7 +8,6 @@ import 'package:watch_it/watch_it.dart';
 
 import 'constants/colors.dart';
 import 'generated/codegen_loader.g.dart';
-import 'services/background_fetch_service.dart';
 import 'services/screen_service.dart';
 import 'util/dependencies.dart';
 import 'util/display_mode.dart';
@@ -17,9 +16,6 @@ import 'widgets/promaja_error_widget.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  // await promajaBackgroundCallback();
-  // return;
-
   /// Initialize Flutter related tasks
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 

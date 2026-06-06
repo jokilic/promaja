@@ -88,6 +88,8 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
     final hive = getIt.get<HiveService>();
     final appearance = hive.getPromajaSettingsFromBox().appearance;
 
+    final weatherCardLayout = appearance.weatherCardLayout;
+
     return Stack(
       children: [
         ///
@@ -106,7 +108,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
           )
         else
           PromajaWeatherCard(
-            weatherCardLayout: appearance.weatherCardLayout,
+            weatherCardLayout: weatherCardLayout,
             cardCount: cardCount,
             activeIndex: index,
             padding: EdgeInsets.only(
@@ -120,6 +122,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               );
             },
             cardBuilder: (_, cardIndex) => WeatherCardSuccess(
+              key: weatherCardLayout == WeatherCardLayout.stacked ? GlobalObjectKey(cardIndex) : null,
               originalLocation: widget.originalLocation,
               forecastWeather: widget.forecastWeather,
               forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),

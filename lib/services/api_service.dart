@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -44,6 +45,7 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeCurrentWeather(response.data);
+        log('Current API -> ${parsedResponse.location.name}');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
@@ -82,6 +84,7 @@ class APIService {
       /// Status code is `200`, response is successful
       if (response.statusCode == 200) {
         final parsedResponse = await computeForecastWeather(response.data);
+        log('Forecast API -> ${parsedResponse.location.name}');
         return (response: parsedResponse, error: null, genericError: null);
       }
 
@@ -128,6 +131,7 @@ class APIService {
         /// Locations found
         ///
         final parsedResponse = await computeSearch(responseList);
+        log('Search API -> $parsedResponse');
         return (response: parsedResponse, error: null, genericError: null);
       }
 

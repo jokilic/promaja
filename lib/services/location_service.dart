@@ -3,8 +3,16 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
 import '../constants/durations.dart';
+import '../models/location/location.dart';
+import 'hive_service.dart';
 
 class LocationService {
+  final HiveService hive;
+
+  LocationService({
+    required this.hive,
+  });
+
   ///
   /// METHODS
   ///
@@ -58,5 +66,36 @@ class LocationService {
       final error = 'GetPosition -> catch -> $e';
       return (position: null, error: error);
     }
+  }
+
+  /// Refreshes the stored phone location and returns the location to use for notifications & widgets
+  Future<Location> refreshPhoneLocation({
+    required Location passedLocation,
+  }) async {
+    final position = await getPosition();
+
+    /// Keep using the last stored position when GPS refresh fails
+    if (position.position == null) {
+      return passedLocation;
+    }
+
+    final refreshedLocation = passedLocation.copyWith(
+      lat: position.position!.latitude,
+      lon: position.position!.longitude,
+    );
+
+    final locations = hive.getLocationsFromBox();
+    final phoneLocationIndex = locations.indexWhere(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    if (phoneLocationIndex != -1) {
+      await hive.replaceLocationInBox(
+        index: phoneLocationIndex,
+        location: refreshedLocation,
+      );
+    }
+
+    return refreshedLocation;
   }
 }

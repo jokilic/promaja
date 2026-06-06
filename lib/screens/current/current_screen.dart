@@ -6,6 +6,7 @@ import 'package:watch_it/watch_it.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/durations.dart';
+import '../../models/settings/appearance/weather_card_layout.dart';
 import '../../models/settings/units/distance_speed_unit.dart';
 import '../../models/settings/units/precipitation_unit.dart';
 import '../../models/settings/units/pressure_unit.dart';
@@ -57,6 +58,8 @@ class _CurrentScreenState extends State<CurrentScreen> {
 
     final index = watchIt<CurrentController>().value;
 
+    final weatherCardLayout = settings.appearance.weatherCardLayout;
+
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: PromajaNavigationBar(),
@@ -85,7 +88,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
               )
             else
               PromajaWeatherCard(
-                weatherCardLayout: settings.appearance.weatherCardLayout,
+                weatherCardLayout: weatherCardLayout,
                 cardCount: cardCount,
                 activeIndex: index,
                 padding: EdgeInsets.only(
@@ -97,6 +100,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   newIndex: index,
                 ),
                 cardBuilder: (_, cardIndex) => CurrentWidget(
+                  key: weatherCardLayout == WeatherCardLayout.stacked ? GlobalObjectKey(cardIndex) : null,
                   originalLocation: locations[cardIndex],
                   showCelsius: showCelsius,
                   showKph: showKph,

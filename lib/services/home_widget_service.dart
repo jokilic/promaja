@@ -17,14 +17,17 @@ import '../widgets/home_widget/current_home_widget.dart';
 import '../widgets/home_widget/forecast_home_widget.dart';
 import 'api_service.dart';
 import 'hive_service.dart';
+import 'location_service.dart';
 
 class HomeWidgetService {
   final HiveService hive;
   final APIService api;
+  final LocationService location;
 
   HomeWidgetService({
     required this.hive,
     required this.api,
+    required this.location,
   })
   ///
   /// INIT
@@ -71,24 +74,28 @@ class HomeWidgetService {
       /// Check if user uses widgets
       final widgets = await HomeWidget.getInstalledWidgets();
 
-      /// There are no widgets active, return
-      if (widgets.isEmpty) {
-        return;
-      }
-
       final settings = hive.getPromajaSettingsFromBox();
 
-      final location = settings.widget.location;
+      var calculatedLocation = settings.widget.location;
 
-      /// Location exists
-      if (location != null) {
+      /// Widgets are enabled & location exists
+      if (widgets.isNotEmpty && calculatedLocation != null) {
+        final isPhoneLocation = calculatedLocation.isPhoneLocation ?? false;
+
+        /// Refresh coordinates before fetching weather for the phone location
+        if (isPhoneLocation) {
+          calculatedLocation = await location.refreshPhoneLocation(
+            passedLocation: calculatedLocation,
+          );
+        }
+
         ///
         /// Current weather
         ///
         if (settings.widget.weatherType == WeatherType.current) {
           /// Fetch current weather
           final currentWeather = await api.getCachedCurrentWeather(
-            query: '${location.lat},${location.lon}',
+            query: '${calculatedLocation.lat},${calculatedLocation.lon}',
           );
 
           /// Current weather is successfully fetched
@@ -96,8 +103,9 @@ class HomeWidgetService {
             await triggerCurrentWidget(
               response: currentWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
+              location: calculatedLocation,
               languageCode: languageCode,
+              isPhoneLocation: isPhoneLocation,
             );
           }
         }
@@ -108,7 +116,7 @@ class HomeWidgetService {
         if (settings.widget.weatherType == WeatherType.forecast) {
           /// Fetch today's forecast
           final forecastWeather = await api.getCachedForecastWeather(
-            query: '${location.lat},${location.lon}',
+            query: '${calculatedLocation.lat},${calculatedLocation.lon}',
             days: 1,
           );
 
@@ -117,8 +125,9 @@ class HomeWidgetService {
             await triggerForecastWidget(
               response: forecastWeather.response!,
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: location,
+              location: calculatedLocation,
               languageCode: languageCode,
+              isPhoneLocation: isPhoneLocation,
             );
           }
         }
@@ -132,10 +141,11 @@ class HomeWidgetService {
     required bool showCelsius,
     required Location location,
     required String languageCode,
+    required bool isPhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = response.location.name;
+      final locationName = isPhoneLocation ? response.location.name : location.name;
 
       final currentWeather = response.current;
 
@@ -200,10 +210,11 @@ class HomeWidgetService {
     required bool showCelsius,
     required Location location,
     required String languageCode,
+    required bool isPhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = response.location.name;
+      final locationName = isPhoneLocation ? response.location.name : location.name;
 
       final time = DateTime.now();
 

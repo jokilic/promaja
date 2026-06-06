@@ -86,7 +86,10 @@ void registerCoreServices() {
   /// Location
   if (!getIt.isRegistered<LocationService>()) {
     getIt.registerSingletonAsync(
-      () async => LocationService(),
+      () async => LocationService(
+        hive: getIt.get<HiveService>(),
+      ),
+      dependsOn: [HiveService],
     );
   }
 }
@@ -151,8 +154,9 @@ void registerHomeWidgetService() {
       () async => HomeWidgetService(
         hive: getIt.get<HiveService>(),
         api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
       ),
-      dependsOn: [HiveService, APIService],
+      dependsOn: [HiveService, APIService, LocationService],
     );
   }
 }
