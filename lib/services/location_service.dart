@@ -72,11 +72,26 @@ class LocationService {
   Future<Location> refreshPhoneLocation({
     required Location passedLocation,
   }) async {
+    final refreshedPhoneLocation = await refreshPhoneLocationWithPosition(
+      passedLocation: passedLocation,
+    );
+
+    return refreshedPhoneLocation.location;
+  }
+
+  /// Refreshes the stored phone location and also returns the GPS result
+  Future<({Location location, Position? position, String? error})> refreshPhoneLocationWithPosition({
+    required Location passedLocation,
+  }) async {
     final position = await getPosition();
 
     /// Keep using the last stored position when GPS refresh fails
     if (position.position == null) {
-      return passedLocation;
+      return (
+        location: passedLocation,
+        position: null,
+        error: position.error,
+      );
     }
 
     final refreshedLocation = passedLocation.copyWith(
@@ -96,6 +111,10 @@ class LocationService {
       );
     }
 
-    return refreshedLocation;
+    return (
+      location: refreshedLocation,
+      position: position.position,
+      error: null,
+    );
   }
 }

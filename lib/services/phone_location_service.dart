@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -36,7 +34,7 @@ class PhoneLocationService
   ///
 
   Future<void> init() async {
-    unawaited(refreshPhoneLocation());
+    await refreshPhoneLocation();
   }
 
   ///
@@ -48,14 +46,66 @@ class PhoneLocationService
     /// Get currently stored `locations`
     final locations = hive.getLocationsFromBox();
 
-    /// Check if phone location is active
-    final hasPhoneLocation = locations.any(
+    /// Get active phone location index
+    final phoneLocationIndex = locations.indexWhere(
       (location) => location.isPhoneLocation ?? false,
     );
 
-    /// Enable phone location with new position
-    if (hasPhoneLocation) {
-      await enablePhoneLocation();
+    /// Phone location is not active
+    if (phoneLocationIndex == -1) {
+      return;
+    }
+
+    value = (
+      position: null,
+      error: null,
+      loading: true,
+    );
+
+    /// Update [Hive] with new coordinates before fetching weather
+    final refreshedPhoneLocation = await location.refreshPhoneLocationWithPosition(
+      passedLocation: locations[phoneLocationIndex],
+    );
+
+    /// Keep using the last stored phone location when GPS refresh fails
+    if (refreshedPhoneLocation.position == null) {
+      value = (
+        position: null,
+        error: refreshedPhoneLocation.error,
+        loading: false,
+      );
+      return;
+    }
+
+    /// Fetch weather data for new phone coordinates
+    final response = await api.getCachedCurrentWeather(
+      query: '${refreshedPhoneLocation.location.lat},${refreshedPhoneLocation.location.lon}',
+    );
+
+    /// Response successfully fetched
+    if (response.response != null && response.error == null) {
+      final phoneLocation = response.response!.location.copyWith(
+        isPhoneLocation: true,
+      );
+
+      /// Store API-normalized phone location in [Hive]
+      await replaceActivePhoneLocation(
+        location: phoneLocation,
+      );
+
+      value = (
+        position: refreshedPhoneLocation.position,
+        error: null,
+        loading: false,
+      );
+    }
+    /// Response returned an error
+    else {
+      value = (
+        position: refreshedPhoneLocation.position,
+        error: response.error?.error.message ?? response.genericError,
+        loading: false,
+      );
     }
   }
 
