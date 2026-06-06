@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -33,8 +35,16 @@ class PhoneLocationService
   /// INIT
   ///
 
-  Future<void> init() async {
-    await refreshPhoneLocation();
+  Future<void> init() {
+    /// Run phone location refresh after service registration so app startup is not blocked by GPS or API call
+    unawaited(
+      Future<void>.delayed(
+        Duration.zero,
+        refreshPhoneLocation,
+      ),
+    );
+
+    return Future.value();
   }
 
   ///
@@ -43,45 +53,66 @@ class PhoneLocationService
 
   /// Refreshes phone location if it's active
   Future<void> refreshPhoneLocation() async {
-    /// Get currently stored `locations`
-    final locations = hive.getLocationsFromBox();
+    try {
+      /// Get currently stored `locations`
+      final locations = hive.getLocationsFromBox();
 
-    /// Get active phone location index
-    final phoneLocationIndex = locations.indexWhere(
-      (location) => location.isPhoneLocation ?? false,
-    );
+      /// Get active phone location index
+      final phoneLocationIndex = locations.indexWhere(
+        (location) => location.isPhoneLocation ?? false,
+      );
 
-    /// Phone location is not active
-    if (phoneLocationIndex == -1) {
-      return;
-    }
+      /// Phone location is not active
+      if (phoneLocationIndex == -1) {
+        return;
+      }
 
-    value = (
-      position: null,
-      error: null,
-      loading: true,
-    );
-
-    /// Update [Hive] with new coordinates before fetching weather
-    final refreshedPhoneLocation = await location.refreshPhoneLocationWithPosition(
-      passedLocation: locations[phoneLocationIndex],
-    );
-
-    /// Keep using the last stored phone location when GPS refresh fails
-    if (refreshedPhoneLocation.position == null) {
       value = (
         position: null,
-        error: refreshedPhoneLocation.error,
+        error: null,
+        loading: true,
+      );
+
+      /// Update [Hive] with new coordinates before fetching weather
+      final refreshedPhoneLocation = await location.refreshPhoneLocationWithPosition(
+        passedLocation: locations[phoneLocationIndex],
+      );
+
+      /// Keep using the last stored phone location when GPS refresh fails
+      if (refreshedPhoneLocation.position == null) {
+        value = (
+          position: null,
+          error: refreshedPhoneLocation.error,
+          loading: false,
+        );
+        return;
+      }
+
+      final response = await api.getCachedCurrentWeather(
+        query: '${refreshedPhoneLocation.location.lat},${refreshedPhoneLocation.location.lon}',
+      );
+
+      /// WeatherAPI returns the best display name for the refreshed coordinates.
+      if (response.response != null && response.error == null && response.genericError == null) {
+        await replaceActivePhoneLocation(
+          location: response.response!.location.copyWith(
+            isPhoneLocation: true,
+          ),
+        );
+      }
+
+      value = (
+        position: refreshedPhoneLocation.position,
+        error: response.error?.error.message ?? response.genericError,
         loading: false,
       );
-      return;
+    } catch (e) {
+      value = (
+        position: null,
+        error: 'RefreshPhoneLocation -> catch -> $e',
+        loading: false,
+      );
     }
-
-    value = (
-      position: refreshedPhoneLocation.position,
-      error: null,
-      loading: false,
-    );
   }
 
   /// Gets phone position
