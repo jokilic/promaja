@@ -218,7 +218,7 @@ class SettingsController extends ValueNotifier<PromajaSettings> {
               value: location,
               padding: const EdgeInsets.all(20),
               child: Text(
-                '${location.name}, ${location.country}',
+                (location.isPhoneLocation ?? false) ? 'notificatioPhoneLocationChosen'.tr() : '${location.name}, ${location.country}',
                 style: PromajaTextStyles.settingsPopupMenuItem,
               ),
             ),
@@ -495,7 +495,7 @@ class SettingsController extends ValueNotifier<PromajaSettings> {
               value: location,
               padding: const EdgeInsets.all(20),
               child: Text(
-                '${location.name}, ${location.country}',
+                (location.isPhoneLocation ?? false) ? 'notificatioPhoneLocationChosen'.tr() : '${location.name}, ${location.country}',
                 style: PromajaTextStyles.settingsPopupMenuItem,
               ),
             ),

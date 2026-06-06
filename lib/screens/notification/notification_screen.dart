@@ -23,6 +23,8 @@ class NotificationScreen extends WatchingWidget {
     final settings = getIt.get<SettingsController>();
     final settingsState = watchIt<SettingsController>().value;
 
+    final notificationLocation = settingsState.notification.location;
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -97,8 +99,10 @@ class NotificationScreen extends WatchingWidget {
                     await settings.updateNotificationLocation(newLocation);
                   }
                 },
-                activeValue: settingsState.notification.location != null
-                    ? '${settingsState.notification.location?.name}, ${settingsState.notification.location?.country}'
+                activeValue: notificationLocation != null
+                    ? (notificationLocation.isPhoneLocation ?? false)
+                          ? 'notificatioPhoneLocationChosen'.tr()
+                          : '${notificationLocation.name}, ${notificationLocation.country}'
                     : 'notificationNoLocationChosen'.tr(),
                 subtitle: 'notificationLocationDescription'.tr(),
               ),
