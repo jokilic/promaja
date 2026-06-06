@@ -86,7 +86,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ///
               if (futureSnapshot.connectionState == ConnectionState.waiting) {
                 return WeatherLoading(
-                  originalLocation: widget.originalLocation!,
                   isWeatherSummary: settings.appearance.weatherSummaryFirst,
                 );
               }
@@ -98,7 +97,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 final error = futureSnapshot.error;
 
                 return WeatherError(
-                  originalLocation: widget.originalLocation!,
+                  locationName: widget.originalLocation!.name,
                   error: '$error',
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                 );
@@ -117,9 +116,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 FlutterNativeSplash.remove();
 
                 final forecastWeather = data!.response!.forecast;
+                final forecastLocation = data.response!.location;
+
+                final isPhoneLocation = widget.originalLocation?.isPhoneLocation ?? false;
 
                 return WeatherSuccess(
-                  originalLocation: widget.originalLocation!,
+                  locationName: isPhoneLocation ? forecastLocation.name : widget.originalLocation!.name,
                   forecastWeather: forecastWeather,
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
@@ -133,7 +135,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               /// ERROR WHILE FETCHING
               ///
               return WeatherError(
-                originalLocation: widget.originalLocation!,
+                locationName: widget.originalLocation!.name,
                 error: getErrorDescription(
                   errorCode: data?.error?.error.code ?? 0,
                 ),
@@ -145,13 +147,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             /// LOCATION DOESN'T EXIST
             ///
             return WeatherError(
-              originalLocation: Location(
-                country: '---',
-                lat: 0,
-                lon: 0,
-                name: '---',
-                region: '---',
-              ),
+              locationName: '---',
               error: 'noMoreLocations'.tr(),
               isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
             );

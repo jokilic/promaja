@@ -8,12 +8,12 @@ import '../../../../constants/text_styles.dart';
 import '../../../../util/color.dart';
 
 class ListCardLoading extends StatelessWidget {
-  final String originalLocationName;
+  final String? locationName;
   final bool isPhoneLocation;
   final Function() onTap;
 
   const ListCardLoading({
-    required this.originalLocationName,
+    required this.locationName,
     required this.isPhoneLocation,
     required this.onTap,
   });
@@ -59,12 +59,34 @@ class ListCardLoading extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Flexible(
-                          child: Text(
-                            originalLocationName,
-                            style: PromajaTextStyles.listLocation,
+                        if (locationName != null)
+                          Flexible(
+                            child: Text(
+                              locationName!,
+                              style: PromajaTextStyles.listLocation,
+                            ),
+                          )
+                        else
+                          Animate(
+                            onPlay: (controller) => controller.loop(
+                              reverse: true,
+                              min: 0.6,
+                            ),
+                            effects: [
+                              FadeEffect(
+                                curve: Curves.easeIn,
+                                duration: PromajaDurations.shimmerAnimation,
+                              ),
+                            ],
+                            child: Container(
+                              height: 24,
+                              width: 104,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: PromajaColors.white.withValues(alpha: 0.5),
+                              ),
+                            ),
                           ),
-                        ),
                         if (isPhoneLocation) ...[
                           const SizedBox(width: 8),
                           Image.asset(

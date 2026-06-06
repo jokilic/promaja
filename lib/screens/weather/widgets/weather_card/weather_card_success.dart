@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/dependencies.dart';
@@ -11,7 +10,7 @@ import '../weather_card_summary/weather_card_summary.dart';
 import 'weather_card_error.dart';
 
 class WeatherCardSuccess extends StatefulWidget {
-  final Location originalLocation;
+  final String locationName;
   final ForecastWeather forecastWeather;
   final ForecastDayWeather? forecast;
   final int index;
@@ -22,7 +21,7 @@ class WeatherCardSuccess extends StatefulWidget {
   final bool showhPa;
 
   const WeatherCardSuccess({
-    required this.originalLocation,
+    required this.locationName,
     required this.forecastWeather,
     required this.forecast,
     required this.index,
@@ -88,7 +87,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           ///
           if (widget.forecast == null) {
             return WeatherCardSummary(
-              originalLocation: widget.originalLocation,
+              locationName: widget.locationName,
               forecastWeather: widget.forecastWeather,
               isPhoneLocation: widget.isPhoneLocation,
               showCelsius: widget.showCelsius,
@@ -100,7 +99,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           ///
           if (widget.forecast != null) {
             return WeatherCardForecast(
-              originalLocation: widget.originalLocation,
+              locationName: widget.locationName,
               forecast: widget.forecast!,
               index: widget.index,
               isPhoneLocation: widget.isPhoneLocation,
@@ -118,7 +117,7 @@ class _WeatherCardSuccessState extends State<WeatherCardSuccess> {
           /// ERROR
           ///
           return WeatherCardError(
-            originalLocationName: widget.originalLocation.name,
+            locationName: widget.locationName,
             error: 'noForecastsOrSummary'.tr(),
             isPhoneLocation: widget.isPhoneLocation,
           );

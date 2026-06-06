@@ -1,3 +1,4 @@
 * Refactor initialization logic
 * Updates in notification logic
 * Update logic of phone location
+* UI updates

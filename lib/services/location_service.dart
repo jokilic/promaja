@@ -37,9 +37,7 @@ class LocationService {
 
       /// Permission is denied, request it
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission().timeout(
-          PromajaDurations.permissionTimeout,
-        );
+        permission = await Geolocator.requestPermission();
 
         /// Permission is denied, return error
         if (permission == LocationPermission.denied) {
@@ -57,7 +55,7 @@ class LocationService {
       /// Permissions are granted, access position
       final position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
-          timeLimit: PromajaDurations.permissionTimeout,
+          timeLimit: PromajaDurations.positionTimeout,
         ),
       );
 

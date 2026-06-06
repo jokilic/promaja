@@ -5,16 +5,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
 
 class WeatherLoading extends StatelessWidget {
-  final Location originalLocation;
   final bool isWeatherSummary;
 
   const WeatherLoading({
-    required this.originalLocation,
     required this.isWeatherSummary,
   });
 
@@ -52,19 +49,32 @@ class WeatherLoading extends StatelessWidget {
                   style: PromajaTextStyles.settingsSubtitle,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${originalLocation.name}, ${originalLocation.country}',
-                      ),
-                    ],
+              Animate(
+                onPlay: (controller) => controller.loop(
+                  reverse: true,
+                  min: 0.6,
+                ),
+                effects: [
+                  FadeEffect(
+                    curve: Curves.easeIn,
+                    duration: PromajaDurations.shimmerAnimation,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: PromajaTextStyles.settingsTitle,
+                ],
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
+                      height: 40,
+                      width: 256,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: PromajaColors.white.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -182,7 +192,10 @@ class WeatherLoading extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ...List.generate(10, (index) => const SizedBox.shrink()),
+              ...List.generate(
+                10,
+                (index) => const SizedBox.shrink(),
+              ),
 
               ///
               /// LAST UPDATED & LOCATION

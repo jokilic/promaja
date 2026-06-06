@@ -5,17 +5,16 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 
 class ListCardError extends StatelessWidget {
-  final Location originalLocation;
+  final String locationName;
   final bool isPhoneLocation;
   final String error;
   final Function() onTap;
 
   const ListCardError({
-    required this.originalLocation,
+    required this.locationName,
     required this.isPhoneLocation,
     required this.error,
     required this.onTap,
@@ -64,7 +63,7 @@ class ListCardError extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            originalLocation.name,
+                            locationName,
                             style: PromajaTextStyles.listLocation,
                           ),
                         ),

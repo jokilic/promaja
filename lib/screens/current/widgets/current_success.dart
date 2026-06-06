@@ -8,7 +8,6 @@ import '../../../constants/icons.dart';
 import '../../../constants/text_styles.dart';
 import '../../../models/current_weather/current_weather.dart';
 import '../../../models/custom_color/custom_color.dart';
-import '../../../models/location/location.dart';
 import '../../../services/hive_service.dart';
 import '../../../util/color.dart';
 import '../../../util/dependencies.dart';
@@ -20,7 +19,7 @@ import '../../../widgets/keep_alive_widget.dart';
 import '../current_controller.dart';
 
 class CurrentSuccess extends StatelessWidget {
-  final Location originalLocation;
+  final String locationName;
   final CurrentWeather currentWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
@@ -29,7 +28,7 @@ class CurrentSuccess extends StatelessWidget {
   final bool showhPa;
 
   const CurrentSuccess({
-    required this.originalLocation,
+    required this.locationName,
     required this.currentWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -116,7 +115,7 @@ class CurrentSuccess extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Text(
-                      originalLocation.name,
+                      locationName,
                       style: PromajaTextStyles.currentLocation,
                       textAlign: TextAlign.center,
                     ),

@@ -8,7 +8,6 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
 import '../../../../models/custom_color/custom_color.dart';
-import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_day_weather.dart';
 import '../../../../models/weather/hour_weather.dart';
 import '../../../../services/hive_service.dart';
@@ -22,7 +21,7 @@ import '../weather_card_hour/weather_card_individual_hour.dart';
 
 class WeatherCardForecast extends WatchingWidget {
   final ScrollController scrollController;
-  final Location originalLocation;
+  final String locationName;
   final ForecastDayWeather forecast;
   final int index;
   final bool isPhoneLocation;
@@ -40,7 +39,7 @@ class WeatherCardForecast extends WatchingWidget {
 
   const WeatherCardForecast({
     required this.scrollController,
-    required this.originalLocation,
+    required this.locationName,
     required this.forecast,
     required this.index,
     required this.isPhoneLocation,
@@ -145,7 +144,7 @@ class WeatherCardForecast extends WatchingWidget {
                           clipBehavior: Clip.none,
                           children: [
                             Text(
-                              originalLocation.name,
+                              locationName,
                               style: PromajaTextStyles.currentLocation,
                               textAlign: TextAlign.center,
                             ),

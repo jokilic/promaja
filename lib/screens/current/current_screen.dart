@@ -81,7 +81,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   bottom: getCurrentCardBottomPadding(context),
                 ),
                 child: CurrentError(
-                  originalLocationName: null,
+                  locationName: '---',
                   error: 'noCards'.tr(),
                   isPhoneLocation: false,
                 ),

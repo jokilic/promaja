@@ -77,36 +77,11 @@ class PhoneLocationService
       return;
     }
 
-    /// Fetch weather data for new phone coordinates
-    final response = await api.getCachedCurrentWeather(
-      query: '${refreshedPhoneLocation.location.lat},${refreshedPhoneLocation.location.lon}',
+    value = (
+      position: refreshedPhoneLocation.position,
+      error: null,
+      loading: false,
     );
-
-    /// Response successfully fetched
-    if (response.response != null && response.error == null) {
-      final phoneLocation = response.response!.location.copyWith(
-        isPhoneLocation: true,
-      );
-
-      /// Store API-normalized phone location in [Hive]
-      await replaceActivePhoneLocation(
-        location: phoneLocation,
-      );
-
-      value = (
-        position: refreshedPhoneLocation.position,
-        error: null,
-        loading: false,
-      );
-    }
-    /// Response returned an error
-    else {
-      value = (
-        position: refreshedPhoneLocation.position,
-        error: response.error?.error.message ?? response.genericError,
-        loading: false,
-      );
-    }
   }
 
   /// Gets phone position

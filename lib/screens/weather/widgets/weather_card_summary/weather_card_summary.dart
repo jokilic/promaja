@@ -6,20 +6,19 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/location/location.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
 import 'weather_card_summary_list_tile.dart';
 
 class WeatherCardSummary extends StatelessWidget {
-  final Location originalLocation;
+  final String locationName;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
 
   const WeatherCardSummary({
-    required this.originalLocation,
+    required this.locationName,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -74,7 +73,7 @@ class WeatherCardSummary extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '${originalLocation.name}, ${originalLocation.country}',
+                        text: locationName,
                       ),
                       if (isPhoneLocation) ...[
                         const WidgetSpan(

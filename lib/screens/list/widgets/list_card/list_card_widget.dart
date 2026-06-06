@@ -106,9 +106,11 @@ class ListCardWidgetState extends State<ListCardWidget> {
                   /// LOADING
                   ///
                   if (futureSnapshot.connectionState == ConnectionState.waiting) {
+                    final isPhoneLocation = widget.originalLocation.isPhoneLocation ?? false;
+
                     return ListCardLoading(
-                      originalLocationName: widget.originalLocation.name,
-                      isPhoneLocation: widget.originalLocation.isPhoneLocation ?? false,
+                      locationName: isPhoneLocation ? null : widget.originalLocation.name,
+                      isPhoneLocation: isPhoneLocation,
                       onTap: widget.onTap,
                     );
                   }
@@ -120,7 +122,7 @@ class ListCardWidgetState extends State<ListCardWidget> {
                     final error = futureSnapshot.error;
 
                     return ListCardError(
-                      originalLocation: widget.originalLocation,
+                      locationName: widget.originalLocation.name,
                       isPhoneLocation: widget.originalLocation.isPhoneLocation ?? false,
                       error: '$error',
                       onTap: () {},
@@ -137,10 +139,13 @@ class ListCardWidgetState extends State<ListCardWidget> {
                   ///
                   if (data?.response != null && data?.error == null) {
                     final currentWeather = data!.response!.current;
+                    final currentLocation = data.response!.location;
+
+                    final isPhoneLocation = widget.originalLocation.isPhoneLocation ?? false;
 
                     return ListCardSuccess(
-                      location: widget.originalLocation,
-                      isPhoneLocation: widget.originalLocation.isPhoneLocation ?? false,
+                      locationName: isPhoneLocation ? currentLocation.name : widget.originalLocation.name,
+                      isPhoneLocation: isPhoneLocation,
                       currentWeather: currentWeather,
                       onTap: widget.onTap,
                       showCelsius: widget.showCelsius,
@@ -151,7 +156,7 @@ class ListCardWidgetState extends State<ListCardWidget> {
                   /// ERROR WHILE FETCHING
                   ///
                   return ListCardError(
-                    originalLocation: widget.originalLocation,
+                    locationName: widget.originalLocation.name,
                     isPhoneLocation: widget.originalLocation.isPhoneLocation ?? false,
                     error: getErrorDescription(
                       errorCode: data?.error?.error.code ?? 0,

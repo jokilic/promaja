@@ -6,17 +6,16 @@ import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
 import '../../../../constants/icons.dart';
 import '../../../../constants/text_styles.dart';
-import '../../../../models/location/location.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
 
 class WeatherError extends StatelessWidget {
-  final Location originalLocation;
+  final String locationName;
   final String error;
   final bool isPhoneLocation;
 
   const WeatherError({
-    required this.originalLocation,
+    required this.locationName,
     required this.error,
     required this.isPhoneLocation,
   });
@@ -71,7 +70,7 @@ class WeatherError extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Text(
-                    originalLocation.name,
+                    locationName,
                     style: PromajaTextStyles.currentLocation,
                     textAlign: TextAlign.center,
                   ),

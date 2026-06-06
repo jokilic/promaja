@@ -6,7 +6,6 @@ import 'package:watch_it/watch_it.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../constants/durations.dart';
-import '../../../../models/location/location.dart';
 import '../../../../models/settings/appearance/weather_card_layout.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../services/hive_service.dart';
@@ -19,7 +18,7 @@ import '../weather_card/weather_card_error.dart';
 import '../weather_card/weather_card_success.dart';
 
 class WeatherSuccess extends WatchingStatefulWidget {
-  final Location originalLocation;
+  final String locationName;
   final ForecastWeather forecastWeather;
   final bool isPhoneLocation;
   final bool showCelsius;
@@ -28,7 +27,7 @@ class WeatherSuccess extends WatchingStatefulWidget {
   final bool showhPa;
 
   const WeatherSuccess({
-    required this.originalLocation,
+    required this.locationName,
     required this.forecastWeather,
     required this.isPhoneLocation,
     required this.showCelsius,
@@ -101,7 +100,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               bottom: getWeatherCardBottomPadding(context),
             ),
             child: WeatherCardError(
-              originalLocationName: widget.originalLocation.name,
+              locationName: widget.locationName,
               error: 'noCards'.tr(),
               isPhoneLocation: widget.isPhoneLocation,
             ),
@@ -123,7 +122,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
             },
             cardBuilder: (_, cardIndex) => WeatherCardSuccess(
               key: weatherCardLayout == WeatherCardLayout.stacked ? GlobalObjectKey(cardIndex) : null,
-              originalLocation: widget.originalLocation,
+              locationName: widget.locationName,
               forecastWeather: widget.forecastWeather,
               forecast: cardIndex == 0 ? null : widget.forecastWeather.forecastDays.elementAtOrNull(cardIndex - 1),
               index: cardIndex,

@@ -3,16 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/durations.dart';
-import '../../../models/location/location.dart';
 import '../../../util/color.dart';
 
 class CurrentLoading extends StatelessWidget {
-  final Location originalLocation;
-
-  const CurrentLoading({
-    required this.originalLocation,
-  });
-
   @override
   Widget build(BuildContext context) => Container(
     width: MediaQuery.sizeOf(context).width,
@@ -30,7 +23,10 @@ class CurrentLoading extends StatelessWidget {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ...List.generate(10, (index) => const SizedBox.shrink()),
+        ...List.generate(
+          10,
+          (index) => const SizedBox.shrink(),
+        ),
 
         ///
         /// LAST UPDATED & LOCATION

@@ -24,8 +24,7 @@ class PromajaDurations {
   static final weatherIconScaleDelay = 7.5.seconds;
   static final weatherIconScaleAnimation = 45.seconds;
   static final shimmerAnimation = 1500.milliseconds;
-  static final apiTimeout = 10.seconds;
+  static final apiTimeout = 8.seconds;
   static final apiCacheDuration = 10.minutes;
-  static final permissionTimeout = 10.seconds;
-  static final positionTimeout = 10.seconds;
+  static final positionTimeout = 8.seconds;
 }
