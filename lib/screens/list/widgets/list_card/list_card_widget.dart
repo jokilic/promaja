@@ -8,6 +8,7 @@ import '../../../../constants/durations.dart';
 import '../../../../constants/typedefs.dart';
 import '../../../../models/location/location.dart';
 import '../../../../services/api_service.dart';
+import '../../../../services/phone_location_service.dart';
 import '../../../../util/error.dart';
 import 'list_card_error.dart';
 import 'list_card_loading.dart';
@@ -46,6 +47,49 @@ class ListCardWidgetState extends State<ListCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isPhoneLocation = widget.originalLocation.isPhoneLocation ?? false;
+
+    if (isPhoneLocation) {
+      final phoneLocationState = watchIt<PhoneLocationService>().value;
+
+      if (phoneLocationState.loading) {
+        return SwipeActionCell(
+          key: widget.key!,
+          openAnimationCurve: Curves.easeIn,
+          closeAnimationCurve: Curves.easeIn,
+          trailingActions: [
+            SwipeAction(
+              onTap: widget.onTapDelete,
+              color: Colors.transparent,
+              backgroundRadius: 100,
+              content: Container(
+                height: 80,
+                width: double.infinity,
+                margin: const EdgeInsets.only(
+                  left: 8,
+                  right: 16,
+                ),
+                child: const Icon(
+                  Icons.delete_rounded,
+                  color: PromajaColors.white,
+                  size: 40,
+                ),
+              ),
+            ),
+          ],
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListCardLoading(
+              locationName: null,
+              isPhoneLocation: true,
+              onTap: widget.onTap,
+            ),
+          ),
+        );
+      }
+    }
+
     final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
       (api) => api.getCachedCurrentWeather(
         query: '${widget.originalLocation.lat},${widget.originalLocation.lon}',
@@ -106,8 +150,6 @@ class ListCardWidgetState extends State<ListCardWidget> {
                   /// LOADING
                   ///
                   if (futureSnapshot.connectionState == ConnectionState.waiting) {
-                    final isPhoneLocation = widget.originalLocation.isPhoneLocation ?? false;
-
                     return ListCardLoading(
                       locationName: isPhoneLocation ? null : widget.originalLocation.name,
                       isPhoneLocation: isPhoneLocation,
@@ -140,8 +182,6 @@ class ListCardWidgetState extends State<ListCardWidget> {
                   if (data?.response != null && data?.error == null) {
                     final currentWeather = data!.response!.current;
                     final currentLocation = data.response!.location;
-
-                    final isPhoneLocation = widget.originalLocation.isPhoneLocation ?? false;
 
                     return ListCardSuccess(
                       locationName: isPhoneLocation ? currentLocation.name : widget.originalLocation.name,

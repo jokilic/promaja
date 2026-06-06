@@ -5,6 +5,7 @@ import 'package:watch_it/watch_it.dart';
 import '../../../constants/typedefs.dart';
 import '../../../models/location/location.dart';
 import '../../../services/api_service.dart';
+import '../../../services/phone_location_service.dart';
 import '../../../util/error.dart';
 import 'current_error.dart';
 import 'current_loading.dart';
@@ -28,6 +29,19 @@ class CurrentWidget extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPhoneLocation = originalLocation.isPhoneLocation ?? false;
+
+    if (isPhoneLocation) {
+      final phoneLocationState = watchIt<PhoneLocationService>().value;
+
+      if (phoneLocationState.loading) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: CurrentLoading(),
+        );
+      }
+    }
+
     final futureSnapshot = watchFuture<APIService, CurrentWeatherResult>(
       (api) => api.getCachedCurrentWeather(
         query: '${originalLocation.lat},${originalLocation.lon}',
@@ -77,8 +91,6 @@ class CurrentWidget extends WatchingWidget {
 
             final currentWeather = data!.response!.current;
             final currentLocation = data.response!.location;
-
-            final isPhoneLocation = originalLocation.isPhoneLocation ?? false;
 
             return CurrentSuccess(
               locationName: isPhoneLocation ? currentLocation.name : originalLocation.name,

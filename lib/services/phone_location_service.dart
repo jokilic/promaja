@@ -36,6 +36,18 @@ class PhoneLocationService
   ///
 
   Future<void> init() {
+    final hasPhoneLocation = hive.getLocationsFromBox().any(
+      (location) => location.isPhoneLocation ?? false,
+    );
+
+    if (hasPhoneLocation) {
+      value = (
+        position: null,
+        error: null,
+        loading: true,
+      );
+    }
+
     /// Run phone location refresh after service registration so app startup is not blocked by GPS or API call
     unawaited(
       Future<void>.delayed(
@@ -96,6 +108,8 @@ class PhoneLocationService
       if (response.response != null && response.error == null && response.genericError == null) {
         await replaceActivePhoneLocation(
           location: response.response!.location.copyWith(
+            lat: refreshedPhoneLocation.location.lat,
+            lon: refreshedPhoneLocation.location.lon,
             isPhoneLocation: true,
           ),
         );
