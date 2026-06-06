@@ -3,3 +3,4 @@
 * Update logic of phone location
 * UI updates
 * Ignore scale animation when interacting with scrollable elements
+* Speed up animations
