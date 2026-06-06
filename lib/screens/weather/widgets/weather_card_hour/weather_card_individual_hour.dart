@@ -12,6 +12,7 @@ import '../../../../util/weather.dart';
 import '../../../../widgets/additional/additional_cvh.dart';
 import '../../../../widgets/additional/additional_pug.dart';
 import '../../../../widgets/additional/additional_wpf.dart';
+import '../../../../widgets/promaja_weather_card.dart';
 import '../../weather_controller.dart';
 
 class WeatherCardIndividualHour extends StatelessWidget {
@@ -220,43 +221,45 @@ class WeatherCardIndividualHour extends StatelessWidget {
           ///
           /// ADDITIONAL INFO
           ///
-          SizedBox(
-            height: 144,
-            child: PageView(
-              controller: weather.cardHourAdditionalPageController,
-              physics: const BouncingScrollPhysics(),
-              children: hourWeather != null
-                  ? [
-                      ///
-                      /// WIND, PRECIPITATION, FEELS LIKE
-                      ///
-                      AdditionalWPF(
-                        windDegree: hourWeather!.windDegree,
-                        windText: showKph ? '${hourWeather!.windKph.round()} km/h' : '${hourWeather!.windMph.round()} mi',
-                        precipitationText: showMm ? '${hourWeather!.precipMm.round()} mm' : '${hourWeather!.precipIn.round()} in',
-                        feelsLikeTemperature: showCelsius ? hourWeather!.feelsLikeC : hourWeather!.feelsLikeF,
-                        useAnimations: false,
-                      ),
+          PromajaWeatherCardScaleIgnore(
+            child: SizedBox(
+              height: 144,
+              child: PageView(
+                controller: weather.cardHourAdditionalPageController,
+                physics: const BouncingScrollPhysics(),
+                children: hourWeather != null
+                    ? [
+                        ///
+                        /// WIND, PRECIPITATION, FEELS LIKE
+                        ///
+                        AdditionalWPF(
+                          windDegree: hourWeather!.windDegree,
+                          windText: showKph ? '${hourWeather!.windKph.round()} km/h' : '${hourWeather!.windMph.round()} mi',
+                          precipitationText: showMm ? '${hourWeather!.precipMm.round()} mm' : '${hourWeather!.precipIn.round()} in',
+                          feelsLikeTemperature: showCelsius ? hourWeather!.feelsLikeC : hourWeather!.feelsLikeF,
+                          useAnimations: false,
+                        ),
 
-                      ///
-                      /// CLOUD, VISIBILITY, HUMIDITY
-                      ///
-                      AdditionalCVH(
-                        cloud: hourWeather!.cloud,
-                        visibilityText: showKph ? '${hourWeather!.visKm.round()} km' : '${hourWeather!.visMiles.round()} mi',
-                        humidity: hourWeather!.humidity,
-                      ),
+                        ///
+                        /// CLOUD, VISIBILITY, HUMIDITY
+                        ///
+                        AdditionalCVH(
+                          cloud: hourWeather!.cloud,
+                          visibilityText: showKph ? '${hourWeather!.visKm.round()} km' : '${hourWeather!.visMiles.round()} mi',
+                          humidity: hourWeather!.humidity,
+                        ),
 
-                      ///
-                      /// PRESSURE, UV, GUST
-                      ///
-                      AdditionalPUG(
-                        pressureText: showhPa ? '${hourWeather!.pressurehPa.round()} hPa' : '${hourWeather!.pressureIn} inHg',
-                        uv: hourWeather!.uv,
-                        gustText: showKph ? '${hourWeather!.gustKph.round()} km/h' : '${hourWeather!.gustMph.round()} mph',
-                      ),
-                    ]
-                  : [],
+                        ///
+                        /// PRESSURE, UV, GUST
+                        ///
+                        AdditionalPUG(
+                          pressureText: showhPa ? '${hourWeather!.pressurehPa.round()} hPa' : '${hourWeather!.pressureIn} inHg',
+                          uv: hourWeather!.uv,
+                          gustText: showKph ? '${hourWeather!.gustKph.round()} km/h' : '${hourWeather!.gustMph.round()} mph',
+                        ),
+                      ]
+                    : [],
+              ),
             ),
           ),
           const SizedBox(height: 8),

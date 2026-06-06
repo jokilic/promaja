@@ -9,6 +9,7 @@ import '../../../../constants/text_styles.dart';
 import '../../../../models/weather/forecast_weather.dart';
 import '../../../../util/color.dart';
 import '../../../../util/spacing.dart';
+import '../../../../widgets/promaja_weather_card.dart';
 import 'weather_card_summary_list_tile.dart';
 
 class WeatherCardSummary extends StatelessWidget {
@@ -114,32 +115,34 @@ class WeatherCardSummary extends StatelessWidget {
           /// SUMMARY FORECASTS
           ///
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: 24),
-              physics: const BouncingScrollPhysics(),
-              itemCount: forecastWeather.forecastDays.length,
-              itemBuilder: (_, index) {
-                final forecast = forecastWeather.forecastDays.elementAtOrNull(index);
+            child: PromajaWeatherCardScaleIgnore(
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 24),
+                physics: const BouncingScrollPhysics(),
+                itemCount: forecastWeather.forecastDays.length,
+                itemBuilder: (_, index) {
+                  final forecast = forecastWeather.forecastDays.elementAtOrNull(index);
 
-                if (forecast != null) {
-                  return Animate(
-                    delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
-                    effects: [
-                      FadeEffect(
-                        curve: Curves.easeIn,
-                        duration: PromajaDurations.fadeAnimation,
+                  if (forecast != null) {
+                    return Animate(
+                      delay: PromajaDurations.additionalWeatherDataAnimationDelay + (PromajaDurations.listInterval.inMilliseconds * index).milliseconds,
+                      effects: [
+                        FadeEffect(
+                          curve: Curves.easeIn,
+                          duration: PromajaDurations.fadeAnimation,
+                        ),
+                      ],
+                      child: WeatherCardSummaryListTile(
+                        forecast: forecast,
+                        onPressed: () {},
+                        showCelsius: showCelsius,
                       ),
-                    ],
-                    child: WeatherCardSummaryListTile(
-                      forecast: forecast,
-                      onPressed: () {},
-                      showCelsius: showCelsius,
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                return const SizedBox.shrink();
-              },
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ),
         ],

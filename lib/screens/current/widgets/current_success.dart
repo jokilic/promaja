@@ -16,6 +16,7 @@ import '../../../widgets/additional/additional_cvh.dart';
 import '../../../widgets/additional/additional_pug.dart';
 import '../../../widgets/additional/additional_wpf.dart';
 import '../../../widgets/keep_alive_widget.dart';
+import '../../../widgets/promaja_weather_card.dart';
 import '../current_controller.dart';
 
 class CurrentSuccess extends StatelessWidget {
@@ -208,43 +209,45 @@ class CurrentSuccess extends StatelessWidget {
             ///
             /// ADDITIONAL INFO
             ///
-            Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              height: 144,
-              child: PageView(
-                controller: current.cardAdditionalPageController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  ///
-                  /// WIND, PRECIPITATION, FEELS LIKE
-                  ///
-                  KeepAlivePage(
-                    child: AdditionalWPF(
-                      windDegree: currentWeather.windDegree,
-                      windText: showKph ? '${currentWeather.windKph.round()} km/h' : '${currentWeather.windMph.round()} mi',
-                      precipitationText: showMm ? '${currentWeather.precipMm.round()} mm' : '${currentWeather.precipIn.round()} in',
-                      feelsLikeTemperature: showCelsius ? currentWeather.feelsLikeC : currentWeather.feelsLikeF,
+            PromajaWeatherCardScaleIgnore(
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                height: 144,
+                child: PageView(
+                  controller: current.cardAdditionalPageController,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    ///
+                    /// WIND, PRECIPITATION, FEELS LIKE
+                    ///
+                    KeepAlivePage(
+                      child: AdditionalWPF(
+                        windDegree: currentWeather.windDegree,
+                        windText: showKph ? '${currentWeather.windKph.round()} km/h' : '${currentWeather.windMph.round()} mi',
+                        precipitationText: showMm ? '${currentWeather.precipMm.round()} mm' : '${currentWeather.precipIn.round()} in',
+                        feelsLikeTemperature: showCelsius ? currentWeather.feelsLikeC : currentWeather.feelsLikeF,
+                      ),
                     ),
-                  ),
 
-                  ///
-                  /// CLOUD, VISIBILITY, HUMIDITY
-                  ///
-                  AdditionalCVH(
-                    cloud: currentWeather.cloud,
-                    visibilityText: showKph ? '${currentWeather.visKm.round()} km' : '${currentWeather.visMiles.round()} mi',
-                    humidity: currentWeather.humidity,
-                  ),
+                    ///
+                    /// CLOUD, VISIBILITY, HUMIDITY
+                    ///
+                    AdditionalCVH(
+                      cloud: currentWeather.cloud,
+                      visibilityText: showKph ? '${currentWeather.visKm.round()} km' : '${currentWeather.visMiles.round()} mi',
+                      humidity: currentWeather.humidity,
+                    ),
 
-                  ///
-                  /// PRESSURE, UV, GUST
-                  ///
-                  AdditionalPUG(
-                    pressureText: showhPa ? '${currentWeather.pressurehPa.round()} hPa' : '${currentWeather.pressureIn} inHg',
-                    uv: currentWeather.uv,
-                    gustText: showKph ? '${currentWeather.gustKph.round()} km/h' : '${currentWeather.gustMph.round()} mph',
-                  ),
-                ],
+                    ///
+                    /// PRESSURE, UV, GUST
+                    ///
+                    AdditionalPUG(
+                      pressureText: showhPa ? '${currentWeather.pressurehPa.round()} hPa' : '${currentWeather.pressureIn} inHg',
+                      uv: currentWeather.uv,
+                      gustText: showKph ? '${currentWeather.gustKph.round()} km/h' : '${currentWeather.gustMph.round()} mph',
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

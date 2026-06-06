@@ -15,6 +15,7 @@ import '../../../../util/color.dart';
 import '../../../../util/dependencies.dart';
 import '../../../../util/spacing.dart';
 import '../../../../util/weather.dart';
+import '../../../../widgets/promaja_weather_card.dart';
 import '../../weather_controller.dart';
 import '../weather_card_hour/weather_card_hour_success.dart';
 import '../weather_card_hour/weather_card_individual_hour.dart';
@@ -343,40 +344,42 @@ class WeatherCardForecast extends WatchingWidget {
                     ///
                     /// HOURS
                     ///
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 24,
-                      ),
-                      height: 160,
-                      child: PageView.builder(
-                        key: ValueKey(index),
-                        controller: PageController(
-                          initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
+                    PromajaWeatherCardScaleIgnore(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 24,
                         ),
-                        itemCount: (forecast.hours.length / 4).round(),
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (_, pageViewIndex) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: List.generate(
-                            4,
-                            (listIndex) {
-                              final properIndex = (pageViewIndex * 4) + listIndex;
-                              final hourWeather = forecast.hours[properIndex];
+                        height: 160,
+                        child: PageView.builder(
+                          key: ValueKey(index),
+                          controller: PageController(
+                            initialPage: index == 1 ? (DateTime.now().hour / 4).floor() : 2,
+                          ),
+                          itemCount: (forecast.hours.length / 4).round(),
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (_, pageViewIndex) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(
+                              4,
+                              (listIndex) {
+                                final properIndex = (pageViewIndex * 4) + listIndex;
+                                final hourWeather = forecast.hours[properIndex];
 
-                              return WeatherCardHourSuccess(
-                                hourWeather: hourWeather,
-                                isActive: activeHourWeather == hourWeather,
-                                borderColor: backgroundColor,
-                                showCelsius: showCelsius,
-                                onPressed: () => weatherCardHourPressed(
+                                return WeatherCardHourSuccess(
                                   hourWeather: hourWeather,
-                                  activeHourWeather: activeHourWeather,
-                                  index: index,
-                                  scrollController: scrollController,
-                                ),
-                              );
-                            },
+                                  isActive: activeHourWeather == hourWeather,
+                                  borderColor: backgroundColor,
+                                  showCelsius: showCelsius,
+                                  onPressed: () => weatherCardHourPressed(
+                                    hourWeather: hourWeather,
+                                    activeHourWeather: activeHourWeather,
+                                    index: index,
+                                    scrollController: scrollController,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),

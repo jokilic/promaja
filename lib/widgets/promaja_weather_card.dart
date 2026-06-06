@@ -35,6 +35,24 @@ class PromajaWeatherCard extends StatefulWidget {
 class PromajaWeatherCardState extends State<PromajaWeatherCard> {
   var isInteracting = false;
 
+  bool shouldScaleForPointer(PointerDownEvent event) {
+    final hitTestResult = HitTestResult();
+
+    WidgetsBinding.instance.hitTestInView(
+      hitTestResult,
+      event.position,
+      event.viewId,
+    );
+
+    return !hitTestResult.path.any(
+      (entry) => entry.target is PromajaWeatherCardScaleIgnoreRenderObject,
+    );
+  }
+
+  void updateInteractionFromPointerDown(PointerDownEvent event) => updateInteraction(
+    shouldScaleForPointer(event),
+  );
+
   void updateInteraction(bool newIsInteracting) {
     if (isInteracting == newIsInteracting) {
       return;
@@ -76,7 +94,7 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
 
     if (widget.cardCount == 1 && widget.weatherCardLayout != WeatherCardLayout.stacked) {
       return Listener(
-        onPointerDown: (_) => updateInteraction(true),
+        onPointerDown: updateInteractionFromPointerDown,
         onPointerUp: (_) => updateInteraction(false),
         onPointerCancel: (_) => updateInteraction(false),
         child: Padding(
@@ -91,7 +109,7 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
 
     return switch (widget.weatherCardLayout) {
       WeatherCardLayout.stacked => Listener(
-        onPointerDown: (_) => updateInteraction(true),
+        onPointerDown: updateInteractionFromPointerDown,
         onPointerUp: (_) => updateInteraction(false),
         onPointerCancel: (_) => updateInteraction(false),
         child: CardSwiper(
@@ -114,11 +132,15 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
         ),
       ),
       WeatherCardLayout.horizontal || WeatherCardLayout.vertical => Listener(
-        onPointerDown: (_) => updateInteraction(true),
+        onPointerDown: updateInteractionFromPointerDown,
         onPointerUp: (_) => updateInteraction(false),
         onPointerCancel: (_) => updateInteraction(false),
         child: NotificationListener<ScrollNotification>(
           onNotification: (notification) {
+            if (notification.depth != 0) {
+              return false;
+            }
+
             if (notification is ScrollStartNotification) {
               updateInteraction(true);
             } else if (notification is ScrollEndNotification) {
@@ -153,4 +175,18 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
       ),
     };
   }
+}
+
+class PromajaWeatherCardScaleIgnore extends SingleChildRenderObjectWidget {
+  const PromajaWeatherCardScaleIgnore({
+    required super.child,
+  });
+
+  @override
+  PromajaWeatherCardScaleIgnoreRenderObject createRenderObject(BuildContext context) => PromajaWeatherCardScaleIgnoreRenderObject();
+}
+
+class PromajaWeatherCardScaleIgnoreRenderObject extends RenderProxyBox {
+  @override
+  bool hitTestSelf(Offset position) => true;
 }

@@ -2,3 +2,4 @@
 * Updates in notification logic
 * Update logic of phone location
 * UI updates
+* Ignore scale animation when interacting with scrollable elements
