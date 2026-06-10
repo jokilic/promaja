@@ -173,6 +173,8 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
           ),
         ),
       ),
+      // TODO: Implement
+      WeatherCardLayout.flip => const SizedBox.shrink(),
     };
   }
 }

@@ -168,6 +168,7 @@
     "appearanceWeatherCardLayoutStacked": "Složene kartice",
     "appearanceWeatherCardLayoutHorizontal": "Vodoravne kartice",
     "appearanceWeatherCardLayoutVertical": "Okomite kartice",
+    "appearanceWeatherCardLayoutFlip": "Knjižne kartice",
     "appearanceWeatherCardLayoutSubtitle": "Način prikaza vremenskih kartica",
     "appearanceWeatherSummaryFirstTitle": "Prvo pregled vremena",
     "appearanceWeatherSummaryFirstSubtitle": "Tijekom otvaranja vremenske prognoze, prikaži pregled vremena za sve dostupne dane",

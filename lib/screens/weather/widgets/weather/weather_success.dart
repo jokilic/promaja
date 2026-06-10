@@ -71,6 +71,8 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
                 duration: PromajaDurations.cardSwiperAnimation,
                 curve: Curves.easeIn,
               );
+            case WeatherCardLayout.flip:
+            // TODO: Implement
           }
         },
       );
