@@ -1,2 +1,2 @@
 * Small notification logic updates
-*
+* Upgrade dependencies
