@@ -1,6 +1,5 @@
 // ignore_for_file: use_setters_to_change_properties
 
-import 'package:flip_page/flip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get_it/get_it.dart';
@@ -18,7 +17,6 @@ class CurrentController extends ValueNotifier<int> implements Disposable {
   void onDispose() {
     cardSwiperController.dispose();
     pageController.dispose();
-    flipPageController.dispose();
     cardAdditionalPageController.dispose();
   }
 
@@ -30,7 +28,6 @@ class CurrentController extends ValueNotifier<int> implements Disposable {
   late final pageController = PageController(
     initialPage: weatherCardPageLoopBase,
   );
-  late final flipPageController = FlipPageController();
   late final cardAdditionalPageController = PageController();
 
   ///

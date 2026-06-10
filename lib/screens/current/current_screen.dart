@@ -96,7 +96,6 @@ class _CurrentScreenState extends State<CurrentScreen> {
                 ),
                 cardSwiperController: current.cardSwiperController,
                 pageController: current.pageController,
-                flipPageController: current.flipPageController,
                 onIndexChanged: (index) => current.cardSwiped(
                   newIndex: index,
                 ),
