@@ -149,13 +149,19 @@ class NotificationService {
   }
 
   /// Shows a notification
-  Future<void> showNotification({
+  Future<bool> showNotification({
     required String title,
     required String text,
     required NotificationType notificationType,
     Location? location,
   }) async {
     try {
+      final notificationsPlugin = flutterLocalNotificationsPlugin;
+
+      if (notificationsPlugin == null) {
+        return false;
+      }
+
       final bigTextStyleInformation = BigTextStyleInformation(
         text,
         contentTitle: title,
@@ -192,14 +198,18 @@ class NotificationService {
         notificationType: notificationType,
       ).toJson();
 
-      await flutterLocalNotificationsPlugin?.show(
+      await notificationsPlugin.show(
         id: notificationType.index,
         title: title,
         body: text,
         notificationDetails: notificationDetails,
         payload: payload,
       );
-    } catch (_) {}
+
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Shows a test notification
@@ -293,7 +303,7 @@ class NotificationService {
             /// Forecast weather is successfully fetched
             if (forecastWeather.response != null) {
               /// Show notification
-              await triggerForecastNotification(
+              final notificationShown = await triggerForecastNotification(
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: false,
@@ -301,17 +311,19 @@ class NotificationService {
                 isPhoneLocation: isPhoneLocation,
               );
 
-              /// Store new value of `NotificationLastShown` in [Hive]
-              final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+              if (notificationShown) {
+                /// Store new value of `NotificationLastShown` in [Hive]
+                final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
 
-              final newNotificationLastShown = NotificationLastShown(
-                morningNotificationLastShown: DateTime.now(),
-                eveningNotificationLastShown: oldNotificationLastShown?.eveningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
-              );
+                final newNotificationLastShown = NotificationLastShown(
+                  morningNotificationLastShown: DateTime.now(),
+                  eveningNotificationLastShown: oldNotificationLastShown?.eveningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
+                );
 
-              await hive.addNotificationLastShownToBox(
-                notificationLastShown: newNotificationLastShown,
-              );
+                await hive.addNotificationLastShownToBox(
+                  notificationLastShown: newNotificationLastShown,
+                );
+              }
             }
           }
         }
@@ -336,7 +348,7 @@ class NotificationService {
             /// Forecast weather is successfully fetched
             if (forecastWeather.response != null) {
               /// Show notification
-              await triggerForecastNotification(
+              final notificationShown = await triggerForecastNotification(
                 forecastWeather: forecastWeather.response!,
                 showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
                 isEvening: true,
@@ -344,17 +356,19 @@ class NotificationService {
                 isPhoneLocation: isPhoneLocation,
               );
 
-              /// Store new value of `NotificationLastShown` in [Hive]
-              final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
+              if (notificationShown) {
+                /// Store new value of `NotificationLastShown` in [Hive]
+                final oldNotificationLastShown = hive.getNotificationLastShownFromBox();
 
-              final newNotificationLastShown = NotificationLastShown(
-                morningNotificationLastShown: oldNotificationLastShown?.morningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
-                eveningNotificationLastShown: DateTime.now(),
-              );
+                final newNotificationLastShown = NotificationLastShown(
+                  morningNotificationLastShown: oldNotificationLastShown?.morningNotificationLastShown ?? DateTime.fromMillisecondsSinceEpoch(0),
+                  eveningNotificationLastShown: DateTime.now(),
+                );
 
-              await hive.addNotificationLastShownToBox(
-                notificationLastShown: newNotificationLastShown,
-              );
+                await hive.addNotificationLastShownToBox(
+                  notificationLastShown: newNotificationLastShown,
+                );
+              }
             }
           }
         }
@@ -435,7 +449,7 @@ class NotificationService {
   }
 
   /// Triggers forecast notification with proper data
-  Future<void> triggerForecastNotification({
+  Future<bool> triggerForecastNotification({
     required ResponseForecastWeather forecastWeather,
     required bool showCelsius,
     required bool isEvening,
@@ -502,14 +516,17 @@ class NotificationService {
                       ],
               );
 
-        await showNotification(
+        return showNotification(
           title: title,
           text: text,
           notificationType: isEvening ? NotificationType.evening : NotificationType.morning,
           location: location,
         );
       }
-    } catch (_) {}
+      return false;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Checks when last notification was triggered and returns `true` if it's more than 20 hours
