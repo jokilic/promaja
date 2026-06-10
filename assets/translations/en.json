@@ -168,7 +168,6 @@
     "appearanceWeatherCardLayoutStacked": "Stacked cards",
     "appearanceWeatherCardLayoutHorizontal": "Horizontal cards",
     "appearanceWeatherCardLayoutVertical": "Vertical cards",
-    "appearanceWeatherCardLayoutFlip": "Book cards",
     "appearanceWeatherCardLayoutSubtitle": "Display mode of weather cards",
     "appearanceWeatherSummaryFirstTitle": "Weather summary first",
     "appearanceWeatherSummaryFirstSubtitle": "When opening weather section, show weather summary for all available days",

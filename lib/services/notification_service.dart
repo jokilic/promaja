@@ -628,8 +628,6 @@ class NotificationService {
                     duration: PromajaDurations.cardSwiperAnimation,
                     curve: Curves.easeIn,
                   );
-                case WeatherCardLayout.flip:
-                // TODO: Implement
               }
             }
 
