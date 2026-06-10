@@ -1,3 +1,4 @@
+import 'package:flip_page/flip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get_it/get_it.dart';
@@ -32,6 +33,7 @@ class WeatherController
   void onDispose() {
     cardSwiperController.dispose();
     pageController.dispose();
+    flipPageController.dispose();
     cardScrollController.dispose();
     cardHourAdditionalPageController.dispose();
   }
@@ -44,6 +46,7 @@ class WeatherController
   late final pageController = PageController(
     initialPage: weatherCardPageLoopBase,
   );
+  late final flipPageController = FlipPageController();
   late final cardScrollController = ScrollController();
   late final cardHourAdditionalPageController = PageController();
 

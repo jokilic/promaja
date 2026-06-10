@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:flip_page/flip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
+import '../constants/colors.dart';
 import '../constants/durations.dart';
 import '../models/settings/appearance/weather_card_layout.dart';
 
@@ -14,6 +16,7 @@ class PromajaWeatherCard extends StatefulWidget {
   final EdgeInsets padding;
   final CardSwiperController cardSwiperController;
   final PageController pageController;
+  final FlipPageController flipPageController;
   final Function(int newIndex) onIndexChanged;
   final IndexedWidgetBuilder cardBuilder;
 
@@ -24,6 +27,7 @@ class PromajaWeatherCard extends StatefulWidget {
     required this.padding,
     required this.cardSwiperController,
     required this.pageController,
+    required this.flipPageController,
     required this.onIndexChanged,
     required this.cardBuilder,
   });
@@ -72,6 +76,8 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
     curve: Curves.easeIn,
     child: child,
   );
+
+  int getValidCardIndex(int cardIndex) => cardIndex.clamp(0, widget.cardCount - 1).toInt();
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +179,34 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
           ),
         ),
       ),
-      // TODO: Implement
-      WeatherCardLayout.flip => const SizedBox.shrink(),
+      WeatherCardLayout.flip => Listener(
+        onPointerDown: updateInteractionFromPointerDown,
+        onPointerUp: (_) => updateInteraction(false),
+        onPointerCancel: (_) => updateInteraction(false),
+        child: Padding(
+          padding: widget.padding,
+          child: FlipPage(
+            controller: widget.flipPageController,
+            initialPage: getValidCardIndex(widget.activeIndex),
+            animationDuration: PromajaDurations.cardSwiperAnimation,
+            animationCurve: Curves.easeIn,
+            edgeHitZoneFraction: 1,
+            backTintColor: PromajaColors.black.withValues(alpha: 0.4),
+            shadowColor: PromajaColors.black.withValues(alpha: 0.25),
+            onPageChanged: (cardIndex) {
+              updateInteraction(false);
+              widget.onIndexChanged(cardIndex);
+            },
+            pages: [
+              for (var cardIndex = 0; cardIndex < cards.length; cardIndex++)
+                buildScaledCard(
+                  cardIndex: cardIndex,
+                  child: cards[cardIndex],
+                ),
+            ],
+          ),
+        ),
+      ),
     };
   }
 }

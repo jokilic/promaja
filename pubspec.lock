@@ -297,14 +297,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  flip_page:
-    dependency: "direct main"
-    description:
-      name: flip_page
-      sha256: d9c4518dfb4b4eb1d98e2c351fcb389b670ddd114ed9c113c9b373d7645bfc46
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -744,6 +736,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  page_flip:
+    dependency: "direct main"
+    description:
+      name: page_flip
+      sha256: e5bdcaa7d0fdff09ecdd8bd8fd4718ba3ec1b0d237de57a07b9c0f4d522cb387
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.5+1"
   path:
     dependency: transitive
     description:

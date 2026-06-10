@@ -629,7 +629,7 @@ class NotificationService {
                     curve: Curves.easeIn,
                   );
                 case WeatherCardLayout.flip:
-                // TODO: Implement
+                  await current.flipPageController.animateTo(locationIndex);
               }
             }
 

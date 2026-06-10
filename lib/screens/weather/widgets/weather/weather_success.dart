@@ -72,7 +72,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
                 curve: Curves.easeIn,
               );
             case WeatherCardLayout.flip:
-            // TODO: Implement
+              weather.flipPageController.animateTo(1);
           }
         },
       );
@@ -117,6 +117,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
             ),
             cardSwiperController: weather.cardSwiperController,
             pageController: weather.pageController,
+            flipPageController: weather.flipPageController,
             onIndexChanged: (index) {
               weather.cardSwiped(
                 newIndex: index,
