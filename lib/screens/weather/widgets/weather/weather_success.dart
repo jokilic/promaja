@@ -61,7 +61,7 @@ class _WeatherSuccessState extends State<WeatherSuccess> {
               weather.cardSwiperController.swipe(
                 CardSwiperDirection.right,
               );
-            case WeatherCardLayout.horizontal || WeatherCardLayout.vertical || WeatherCardLayout.cube:
+            case WeatherCardLayout.horizontal || WeatherCardLayout.vertical:
               weather.pageController.animateToPage(
                 getWeatherCardLoopedPage(
                   pageController: weather.pageController,

@@ -19,8 +19,6 @@ class WeatherCardLayoutAdapter extends TypeAdapter<WeatherCardLayout> {
         return WeatherCardLayout.horizontal;
       case 2:
         return WeatherCardLayout.vertical;
-      case 3:
-        return WeatherCardLayout.cube;
       default:
         return WeatherCardLayout.stacked;
     }
@@ -35,8 +33,6 @@ class WeatherCardLayoutAdapter extends TypeAdapter<WeatherCardLayout> {
         writer.writeByte(1);
       case WeatherCardLayout.vertical:
         writer.writeByte(2);
-      case WeatherCardLayout.cube:
-        writer.writeByte(3);
     }
   }
 
