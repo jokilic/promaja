@@ -105,12 +105,14 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
               alignment: Alignment.center,
               transform: Matrix4.identity()
                 ..setEntry(3, 2, 0.001)
-                ..translate(0.0, -clampedDifference * height)
-                ..translate(0.0, 0.0, height / 2)
+                ..translateByDouble(0, -clampedDifference * height, 0, 1)
+                ..translateByDouble(0, 0, height / 2, 1)
                 ..rotateX(clampedDifference * (pi / 2))
-                ..translate(0.0, 0.0, -height / 2),
+                ..translateByDouble(0, 0, -height / 2, 1),
               child: Padding(
-                padding: EdgeInsets.all(24 * scrollProgress),
+                padding: EdgeInsets.symmetric(
+                  vertical: 96 * scrollProgress,
+                ),
                 child: child,
               ),
             ),
@@ -122,8 +124,6 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
 
   @override
   Widget build(BuildContext context) {
-    /// [flutter_card_swiper] calls `cardBuilder` while a card is dragged, so keep the
-    /// card widget instances stable for the duration of this build
     final cards = List.generate(
       widget.cardCount,
       (index) => widget.cardBuilder(
