@@ -618,7 +618,7 @@ class NotificationService {
                     current.cardSwiperController.swipe(CardSwiperDirection.right);
                     await Future.delayed(PromajaDurations.cardSwiperAnimation);
                   }
-                case WeatherCardLayout.horizontal || WeatherCardLayout.vertical:
+                case WeatherCardLayout.horizontal || WeatherCardLayout.vertical || WeatherCardLayout.cube:
                   await current.pageController.animateToPage(
                     getWeatherCardLoopedPage(
                       pageController: current.pageController,
