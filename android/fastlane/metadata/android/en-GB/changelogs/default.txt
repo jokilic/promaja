@@ -1,2 +1,3 @@
+* 3D-like animation for cards
 * Small notification logic updates
 * Upgrade dependencies

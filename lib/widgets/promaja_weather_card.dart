@@ -73,10 +73,70 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
     child: child,
   );
 
+  double pageOffsetFor(int pageIndex) {
+    final currentPage = widget.pageController.hasClients
+        ? widget.pageController.page ?? widget.pageController.initialPage.toDouble()
+        : widget.pageController.initialPage.toDouble();
+
+    return (pageIndex - currentPage).clamp(-1.0, 1.0).toDouble();
+  }
+
+  Alignment cubeAlignmentFor({
+    required double pageOffset,
+    required bool isHorizontal,
+  }) {
+    if (isHorizontal) {
+      return pageOffset < 0 ? Alignment.centerRight : Alignment.centerLeft;
+    }
+
+    return pageOffset < 0 ? Alignment.bottomCenter : Alignment.topCenter;
+  }
+
+  Widget buildTransformedPageCard({
+    required int pageIndex,
+    required int cardIndex,
+    required Widget child,
+  }) => AnimatedBuilder(
+    animation: widget.pageController,
+    child: buildScaledCard(
+      cardIndex: cardIndex,
+      child: child,
+    ),
+    builder: (_, child) {
+      final pageOffset = pageOffsetFor(pageIndex);
+
+      final isHorizontal = widget.weatherCardLayout == WeatherCardLayout.horizontal;
+
+      final distanceFromCenter = pageOffset.abs();
+      final rotation = pageOffset * pi / 2;
+
+      final separation = sin(distanceFromCenter * pi) * 12;
+      final cubeTransform = Matrix4.identity()
+        ..setEntry(3, 2, 0.0014)
+        ..translate(
+          isHorizontal ? pageOffset.sign * separation : 0.0,
+          isHorizontal ? 0.0 : pageOffset.sign * separation,
+        );
+
+      if (isHorizontal) {
+        cubeTransform.rotateY(-rotation);
+      } else {
+        cubeTransform.rotateX(rotation);
+      }
+
+      return Transform(
+        alignment: cubeAlignmentFor(
+          pageOffset: pageOffset,
+          isHorizontal: isHorizontal,
+        ),
+        transform: cubeTransform,
+        child: child,
+      );
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
-    /// [flutter_card_swiper] calls `cardBuilder` while a card is dragged, so keep the
-    /// card widget instances stable for the duration of this build
     final cards = List.generate(
       widget.cardCount,
       (index) => widget.cardBuilder(
@@ -164,7 +224,8 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
               itemBuilder: (_, pageIndex) {
                 final cardIndex = (pageIndex - widget.pageController.initialPage) % widget.cardCount;
 
-                return buildScaledCard(
+                return buildTransformedPageCard(
+                  pageIndex: pageIndex,
                   cardIndex: cardIndex,
                   child: cards[cardIndex],
                 );
