@@ -1,3 +1,4 @@
 * 3D-like animation for cards
 * Small notification logic updates
+* Small color update in TextField
 * Upgrade dependencies

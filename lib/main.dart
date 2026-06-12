@@ -99,6 +99,10 @@ class PromajaApp extends StatelessWidget {
           colorScheme: const ColorScheme.dark(
             surface: PromajaColors.black,
           ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: PromajaColors.black,
+            selectionHandleColor: PromajaColors.indigo,
+          ),
         ),
       ),
     ),
