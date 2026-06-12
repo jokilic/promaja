@@ -110,12 +110,15 @@ class PromajaWeatherCardState extends State<PromajaWeatherCard> {
       final distanceFromCenter = pageOffset.abs();
       final rotation = pageOffset * pi / 2;
 
-      final separation = sin(distanceFromCenter * pi) * 12;
+      final separation = sin(distanceFromCenter * pi) * 24;
+
       final cubeTransform = Matrix4.identity()
         ..setEntry(3, 2, 0.0014)
-        ..translate(
+        ..translateByDouble(
           isHorizontal ? pageOffset.sign * separation : 0.0,
           isHorizontal ? 0.0 : pageOffset.sign * separation,
+          0,
+          1,
         );
 
       if (isHorizontal) {
