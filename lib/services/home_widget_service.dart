@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 
-import '../constants/durations.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
@@ -97,20 +96,11 @@ class HomeWidgetService {
 
       final settings = hive.getPromajaSettingsFromBox();
 
-      var calculatedLocation = settings.widget.location;
+      final calculatedLocation = settings.widget.location;
 
       /// Widgets are enabled & location exists
       if (widgets.isNotEmpty && calculatedLocation != null) {
         final isPhoneLocation = calculatedLocation.isPhoneLocation ?? false;
-
-        /// Refresh coordinates before fetching weather for the phone location
-        if (isPhoneLocation) {
-          calculatedLocation = await location.refreshPhoneLocation(
-            passedLocation: calculatedLocation,
-            useLastKnownPositionFirst: true,
-            timeout: PromajaDurations.backgroundPositionTimeout,
-          );
-        }
 
         ///
         /// Current weather

@@ -250,24 +250,11 @@ class NotificationService {
 
       final notificationsEnabled = notificationSettings.hourlyNotification || notificationSettings.morningNotification || notificationSettings.eveningNotification;
 
-      var calculatedLocation = notificationSettings.location;
+      final calculatedLocation = notificationSettings.location;
 
       /// Notifications are enabled & location exists
       if (notificationsEnabled && calculatedLocation != null) {
         final isPhoneLocation = calculatedLocation.isPhoneLocation ?? false;
-        var isStalePhoneLocation = false;
-
-        /// Refresh coordinates before fetching weather for the phone location
-        if (isPhoneLocation) {
-          final refreshedPhoneLocation = await location.refreshPhoneLocationWithPosition(
-            passedLocation: calculatedLocation,
-            useLastKnownPositionFirst: true,
-            timeout: PromajaDurations.backgroundPositionTimeout,
-          );
-
-          calculatedLocation = refreshedPhoneLocation.location;
-          isStalePhoneLocation = refreshedPhoneLocation.position == null;
-        }
 
         ///
         /// Hourly notification is active, fetch current weather and show it
@@ -285,7 +272,6 @@ class NotificationService {
               showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
               location: calculatedLocation,
               isPhoneLocation: isPhoneLocation,
-              isStalePhoneLocation: isStalePhoneLocation,
             );
           }
         }
@@ -316,7 +302,6 @@ class NotificationService {
                 isEvening: false,
                 location: calculatedLocation,
                 isPhoneLocation: isPhoneLocation,
-                isStalePhoneLocation: isStalePhoneLocation,
               );
 
               if (notificationShown) {
@@ -362,7 +347,6 @@ class NotificationService {
                 isEvening: true,
                 location: calculatedLocation,
                 isPhoneLocation: isPhoneLocation,
-                isStalePhoneLocation: isStalePhoneLocation,
               );
 
               if (notificationShown) {
@@ -418,11 +402,10 @@ class NotificationService {
     required bool showCelsius,
     required Location location,
     required bool isPhoneLocation,
-    required bool isStalePhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = '${isPhoneLocation ? currentWeather.location.name : location.name}${isStalePhoneLocation ? '*' : ''}';
+      final locationName = isPhoneLocation ? currentWeather.location.name : location.name;
 
       final temp = showCelsius ? '${currentWeather.current.tempC.round()}°C' : '${currentWeather.current.tempF.round()}°F';
 
@@ -465,11 +448,10 @@ class NotificationService {
     required bool isEvening,
     required Location location,
     required bool isPhoneLocation,
-    required bool isStalePhoneLocation,
   }) async {
     try {
       /// Store relevant values in variables
-      final locationName = '${isPhoneLocation ? forecastWeather.location.name : location.name}${isStalePhoneLocation ? '*' : ''}';
+      final locationName = isPhoneLocation ? forecastWeather.location.name : location.name;
 
       final time = DateTime.now().add(
         isEvening ? const Duration(days: 1) : Duration.zero,
