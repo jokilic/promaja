@@ -116,12 +116,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 FlutterNativeSplash.remove();
 
                 final forecastWeather = data!.response!.forecast;
-                final forecastLocation = data.response!.location;
-
-                final isPhoneLocation = widget.originalLocation?.isPhoneLocation ?? false;
 
                 return WeatherSuccess(
-                  locationName: isPhoneLocation ? forecastLocation.name : widget.originalLocation!.name,
+                  locationName: widget.originalLocation!.name,
                   forecastWeather: forecastWeather,
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
