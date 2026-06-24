@@ -67,10 +67,12 @@ Future<void> initializeBeforeAppStart() async {
   await setDisplayMode();
 
   /// Initialize localization
-  await initializeLocalization();
+  final locale = await initializeLocalization();
 
   /// Initialize services
-  await initializeServices();
+  await initializeServices(
+    languageCode: locale.languageCode,
+  );
 }
 
 class PromajaApp extends StatelessWidget {

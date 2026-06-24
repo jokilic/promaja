@@ -75,7 +75,9 @@ Future<void> promajaBackgroundCallback() async {
     final locale = await initializeLocalization();
 
     /// Initialize services used for background work
-    await initializeServicesBackground();
+    await initializeServicesBackground(
+      languageCode: locale.languageCode,
+    );
 
     ///
     /// Notifications

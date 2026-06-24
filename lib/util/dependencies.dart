@@ -147,15 +147,20 @@ void registerNotificationService() {
 }
 
 /// Registers home widget service
-void registerHomeWidgetService() {
+void registerHomeWidgetService({required String languageCode}) {
   /// HomeWidget
   if (!getIt.isRegistered<HomeWidgetService>()) {
     getIt.registerSingletonAsync(
-      () async => HomeWidgetService(
-        hive: getIt.get<HiveService>(),
-        api: getIt.get<APIService>(),
-        location: getIt.get<LocationService>(),
-      ),
+      () async {
+        final homeWidget = HomeWidgetService(
+          hive: getIt.get<HiveService>(),
+          api: getIt.get<APIService>(),
+          location: getIt.get<LocationService>(),
+          languageCode: languageCode,
+        );
+        await homeWidget.init();
+        return homeWidget;
+      },
       dependsOn: [HiveService, APIService, LocationService],
     );
   }
@@ -175,7 +180,7 @@ void registerScreenService() {
 }
 
 /// Initialize services
-Future<void> initializeServices() async {
+Future<void> initializeServices({required String languageCode}) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   registerCoreServices();
@@ -184,7 +189,9 @@ Future<void> initializeServices() async {
   if (isMobile) {
     registerBackgroundFetchService();
     registerNotificationService();
-    registerHomeWidgetService();
+    registerHomeWidgetService(
+      languageCode: languageCode,
+    );
   }
 
   registerScreenService();
@@ -194,14 +201,16 @@ Future<void> initializeServices() async {
 }
 
 /// Initialize only services needed by background notifications and widgets
-Future<void> initializeServicesBackground() async {
+Future<void> initializeServicesBackground({required String languageCode}) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   registerCoreServices();
 
   if (isMobile) {
     registerNotificationService();
-    registerHomeWidgetService();
+    registerHomeWidgetService(
+      languageCode: languageCode,
+    );
   }
 
   /// Wait for initialization to finish

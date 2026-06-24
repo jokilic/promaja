@@ -13,6 +13,7 @@ import '../../models/settings/units/pressure_unit.dart';
 import '../../models/settings/units/temperature_unit.dart';
 import '../../services/api_service.dart';
 import '../../services/hive_service.dart';
+import '../../services/phone_location_service.dart';
 import '../../util/dependencies.dart';
 import '../../util/error.dart';
 import '../../widgets/promaja_navigation_bar.dart';
@@ -50,6 +51,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final hive = getIt.get<HiveService>();
+    final settings = hive.getPromajaSettingsFromBox();
+
+    final isPhoneLocation = widget.originalLocation?.isPhoneLocation ?? false;
+
+    if (isPhoneLocation) {
+      final phoneLocationState = watchIt<PhoneLocationService>().value;
+
+      if (phoneLocationState.loading) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: WeatherLoading(
+            isWeatherSummary: settings.appearance.weatherSummaryFirst,
+          ),
+        );
+      }
+    }
+
     final futureSnapshot = watchFuture<APIService, ForecastWeatherResult>(
       (api) => api.getCachedForecastWeather(
         query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
@@ -61,9 +80,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
         genericError: null,
       ),
     );
-
-    final hive = getIt.get<HiveService>();
-    final settings = hive.getPromajaSettingsFromBox();
 
     return Scaffold(
       extendBody: true,
@@ -116,9 +132,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 FlutterNativeSplash.remove();
 
                 final forecastWeather = data!.response!.forecast;
+                final forecastLocation = data.response!.location;
 
                 return WeatherSuccess(
-                  locationName: widget.originalLocation!.name,
+                  locationName: isPhoneLocation ? forecastLocation.name : widget.originalLocation!.name,
                   forecastWeather: forecastWeather,
                   isPhoneLocation: widget.originalLocation?.isPhoneLocation ?? false,
                   showCelsius: settings.unit.temperature == TemperatureUnit.celsius,

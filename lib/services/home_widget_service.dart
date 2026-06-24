@@ -24,22 +24,42 @@ class HomeWidgetService {
   final HiveService hive;
   final APIService api;
   final LocationService location;
+  final String languageCode;
 
   HomeWidgetService({
     required this.hive,
     required this.api,
     required this.location,
-  })
+    required this.languageCode,
+  });
+
   ///
   /// INIT
   ///
-  {
-    HomeWidget.setAppGroupId('group.promaja.widget');
+
+  Future<void> init() async {
+    await HomeWidget.setAppGroupId('group.promaja.widget');
+    await updateInstalledWidgets(
+      languageCode: languageCode,
+    );
   }
 
   ///
   /// METHODS
   ///
+
+  /// Updates widgets if there are any emabled
+  Future<void> updateInstalledWidgets({required String languageCode}) async {
+    try {
+      final widgets = await HomeWidget.getInstalledWidgets();
+
+      if (widgets.isNotEmpty) {
+        await handleWidget(
+          languageCode: languageCode,
+        );
+      }
+    } catch (_) {}
+  }
 
   /// Renders new `HomeWidget` & updates it
   Future<void> createHomeWidget(Widget widget) async {
