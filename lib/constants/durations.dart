@@ -27,4 +27,5 @@ class PromajaDurations {
   static final apiTimeout = 8.seconds;
   static final apiCacheDuration = 10.minutes;
   static final positionTimeout = 8.seconds;
+  static final backgroundPositionTimeout = 30.seconds;
 }

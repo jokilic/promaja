@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/durations.dart';
 import '../constants/icons.dart';
 import '../models/current_weather/response_current_weather.dart';
 import '../models/custom_color/custom_color.dart';
@@ -86,6 +87,8 @@ class HomeWidgetService {
         if (isPhoneLocation) {
           calculatedLocation = await location.refreshPhoneLocation(
             passedLocation: calculatedLocation,
+            useLastKnownPositionFirst: true,
+            timeout: PromajaDurations.backgroundPositionTimeout,
           );
         }
 

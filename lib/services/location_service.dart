@@ -18,7 +18,10 @@ class LocationService {
   ///
 
   /// Determine the current position of the device
-  Future<({Position? position, String? error})> getPosition() async {
+  Future<({Position? position, String? error})> getPosition({
+    bool useLastKnownPositionFirst = false,
+    Duration? timeout,
+  }) async {
     try {
       bool serviceEnabled;
       LocationPermission permission;
@@ -52,10 +55,18 @@ class LocationService {
         return (position: null, error: error);
       }
 
+      if (useLastKnownPositionFirst) {
+        final lastKnownPosition = await Geolocator.getLastKnownPosition();
+
+        if (lastKnownPosition != null) {
+          return (position: lastKnownPosition, error: null);
+        }
+      }
+
       /// Permissions are granted, access position
       final position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
-          timeLimit: PromajaDurations.positionTimeout,
+          timeLimit: timeout ?? PromajaDurations.positionTimeout,
         ),
       );
 
@@ -69,9 +80,13 @@ class LocationService {
   /// Refreshes the stored phone location and returns the location to use for notifications & widgets
   Future<Location> refreshPhoneLocation({
     required Location passedLocation,
+    bool useLastKnownPositionFirst = false,
+    Duration? timeout,
   }) async {
     final refreshedPhoneLocation = await refreshPhoneLocationWithPosition(
       passedLocation: passedLocation,
+      useLastKnownPositionFirst: useLastKnownPositionFirst,
+      timeout: timeout,
     );
 
     return refreshedPhoneLocation.location;
@@ -80,8 +95,13 @@ class LocationService {
   /// Refreshes the stored phone location and also returns the GPS result
   Future<({Location location, Position? position, String? error})> refreshPhoneLocationWithPosition({
     required Location passedLocation,
+    bool useLastKnownPositionFirst = false,
+    Duration? timeout,
   }) async {
-    final position = await getPosition();
+    final position = await getPosition(
+      useLastKnownPositionFirst: useLastKnownPositionFirst,
+      timeout: timeout,
+    );
 
     /// Keep using the last stored position when GPS refresh fails
     if (position.position == null) {

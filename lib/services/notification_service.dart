@@ -261,6 +261,8 @@ class NotificationService {
         if (isPhoneLocation) {
           final refreshedPhoneLocation = await location.refreshPhoneLocationWithPosition(
             passedLocation: calculatedLocation,
+            useLastKnownPositionFirst: true,
+            timeout: PromajaDurations.backgroundPositionTimeout,
           );
 
           calculatedLocation = refreshedPhoneLocation.location;
