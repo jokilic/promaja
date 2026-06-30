@@ -306,4 +306,10 @@ class PromajaTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w500,
   );
+  static const cardColorsSheetButton = TextStyle(
+    fontFamily: 'ProductSans',
+    color: PromajaColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+  );
 }

@@ -2,4 +2,5 @@
 * Don't refresh phone location on notifications and widgets
 * Widget updates
 * Location name updates
+* Update UI & colors of color picker sheet
 * Upgrade dependencies

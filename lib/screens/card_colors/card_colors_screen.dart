@@ -32,7 +32,7 @@ class _CardColorsScreenState extends State<CardColorsScreen> {
     await showModalBottomSheet(
       context: context,
       elevation: 0,
-      backgroundColor: PromajaColors.white,
+      backgroundColor: PromajaColors.black,
       builder: (context) => ListView(
         physics: const BouncingScrollPhysics(),
         children: [
@@ -72,11 +72,18 @@ class _CardColorsScreenState extends State<CardColorsScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  foregroundColor: PromajaColors.black,
+                  foregroundColor: PromajaColors.white,
                   backgroundColor: Colors.transparent,
                 ),
-                icon: const Icon(Icons.undo_rounded),
-                label: Text('revert'.tr()),
+                icon: const Icon(
+                  Icons.undo_rounded,
+                  color: PromajaColors.white,
+                  size: 26,
+                ),
+                label: Text(
+                  'revert'.tr(),
+                  style: PromajaTextStyles.cardColorsSheetButton,
+                ),
               ),
 
               ///
@@ -98,11 +105,18 @@ class _CardColorsScreenState extends State<CardColorsScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  foregroundColor: PromajaColors.black,
+                  foregroundColor: PromajaColors.white,
                   backgroundColor: Colors.transparent,
                 ),
-                icon: const Icon(Icons.done_rounded),
-                label: Text('save'.tr()),
+                icon: const Icon(
+                  Icons.done_rounded,
+                  color: PromajaColors.white,
+                  size: 26,
+                ),
+                label: Text(
+                  'save'.tr(),
+                  style: PromajaTextStyles.cardColorsSheetButton,
+                ),
               ),
             ],
           ),
