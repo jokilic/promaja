@@ -55,31 +55,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final settings = hive.getPromajaSettingsFromBox();
 
     final isPhoneLocation = widget.originalLocation?.isPhoneLocation ?? false;
+    final isPhoneLocationLoading = isPhoneLocation && watchIt<PhoneLocationService>().value.loading;
 
-    if (isPhoneLocation) {
-      final phoneLocationState = watchIt<PhoneLocationService>().value;
-
-      if (phoneLocationState.loading) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: WeatherLoading(
-            isWeatherSummary: settings.appearance.weatherSummaryFirst,
-          ),
-        );
-      }
-    }
-
-    final futureSnapshot = watchFuture<APIService, ForecastWeatherResult>(
-      (api) => api.getCachedForecastWeather(
-        query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
-        days: 7,
-      ),
-      initialValue: (
-        response: null,
-        error: null,
-        genericError: null,
-      ),
-    );
+    final futureSnapshot = isPhoneLocationLoading
+        ? null
+        : watchFuture<APIService, ForecastWeatherResult>(
+            (api) => api.getCachedForecastWeather(
+              query: '${widget.originalLocation?.lat},${widget.originalLocation?.lon}',
+              days: 7,
+            ),
+            initialValue: (
+              response: null,
+              error: null,
+              genericError: null,
+            ),
+          );
 
     return Scaffold(
       extendBody: true,
@@ -94,13 +84,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: Builder(
           builder: (context) {
             ///
+            /// PHONE LOCATION IS REFRESHING
+            ///
+            if (isPhoneLocationLoading) {
+              return WeatherLoading(
+                isWeatherSummary: settings.appearance.weatherSummaryFirst,
+              );
+            }
+
+            final activeFutureSnapshot = futureSnapshot!;
+
+            ///
             /// LOCATION EXISTS
             ///
             if (widget.originalLocation != null) {
               ///
               /// LOADING
               ///
-              if (futureSnapshot.connectionState == ConnectionState.waiting) {
+              if (activeFutureSnapshot.connectionState == ConnectionState.waiting) {
                 return WeatherLoading(
                   isWeatherSummary: settings.appearance.weatherSummaryFirst,
                 );
@@ -109,8 +110,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ///
               /// ERROR
               ///
-              if (futureSnapshot.hasError) {
-                final error = futureSnapshot.error;
+              if (activeFutureSnapshot.hasError) {
+                final error = activeFutureSnapshot.error;
 
                 return WeatherError(
                   locationName: widget.originalLocation!.name,
@@ -122,7 +123,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ///
               /// SUCCESS
               ///
-              final data = futureSnapshot.data;
+              final data = activeFutureSnapshot.data;
 
               ///
               /// DATA SUCCESSFULLY FETCHED

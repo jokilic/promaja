@@ -98,6 +98,7 @@ class LocationService {
     );
 
     final locations = hive.getLocationsFromBox();
+
     final phoneLocationIndex = locations.indexWhere(
       (location) => location.isPhoneLocation ?? false,
     );
