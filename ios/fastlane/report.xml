@@ -5,29 +5,42 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: update_fastlane" time="0.022597">
+      <testcase classname="fastlane.lanes" name="0: update_fastlane" time="0.03262">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.000123">
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.000136">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: puro flutter clean" time="9.870297">
+      <testcase classname="fastlane.lanes" name="2: puro flutter clean" time="8.761716">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: puro flutter pub get" time="2.930153">
+      <testcase classname="fastlane.lanes" name="3: puro flutter pub get" time="2.726666">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: puro flutter build ipa" time="5.461543">
+      <testcase classname="fastlane.lanes" name="4: puro flutter build ipa" time="88.326953">
         
-          <failure message="/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/actions/actions_helper.rb:67:in &apos;Fastlane::Actions.execute_action&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/fast_file.rb:224:in &apos;Fastlane::FastFile.sh&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/fast_file.rb:216:in &apos;Fastlane::FastFile#sh&apos;&#10;Fastfile:12:in &apos;block (2 levels) in Fastlane::FastFile#parsing_binding&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/lane.rb:41:in &apos;Fastlane::Lane#call&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:49:in &apos;block in Fastlane::Runner#execute&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:45:in &apos;Dir.chdir&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:45:in &apos;Fastlane::Runner#execute&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/lane_manager.rb:46:in &apos;Fastlane::LaneManager.cruise_lane&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/command_line_handler.rb:34:in &apos;Fastlane::CommandLineHandler.handle&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:110:in &apos;block (2 levels) in Fastlane::CommandsGenerator#run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/commander-4.6.0/lib/commander/command.rb:187:in &apos;Commander::Command#call&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/commander-4.6.0/lib/commander/command.rb:157:in &apos;Commander::Command#run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/commander-4.6.0/lib/commander/runner.rb:444:in &apos;Commander::Runner#run_active_command&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in &apos;Commander::Runner#run!&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/commander-4.6.0/lib/commander/delegates.rb:18:in &apos;Commander::Delegates#run!&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:363:in &apos;Fastlane::CommandsGenerator#run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:43:in &apos;Fastlane::CommandsGenerator.start&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/fastlane/lib/fastlane/cli_tools_distributor.rb:132:in &apos;Fastlane::CLIToolsDistributor.take_off&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/gems/fastlane-2.234.0/bin/fastlane:23:in &apos;&lt;top (required)&gt;&apos;&#10;/opt/homebrew/lib/ruby/site_ruby/4.0.0/rubygems.rb:304:in &apos;Kernel#load&apos;&#10;/opt/homebrew/lib/ruby/site_ruby/4.0.0/rubygems.rb:304:in &apos;Gem.activate_and_load_bin_path&apos;&#10;/opt/homebrew/Cellar/fastlane/2.234.0/libexec/bin/fastlane:25:in &apos;&lt;main&gt;&apos;&#10;&#10;Exit status of command &apos;puro flutter build ipa&apos; was 1 instead of 0.&#10;Changing current working directory to: /Users/josipkilic/Projects/promaja&#10;The following plugins do not support Swift Package Manager for ios:&#10;  - flutter_web_browser&#10;This will become an error in a future version of Flutter. Please contact the plugin maintainers to request Swift Package Manager adoption.&#10;Archiving com.josipkilic.promaja...&#10;To ensure your app continues to launch on upcoming iOS versions, UIScene lifecycle support will soon be required. Please see https://flutter.dev/to/uiscene-migration for the migration guide.&#10;&#10;Automatically signing iOS for device deployment using specified development team in Xcode project: QDS42PXGRU&#10;The following target(s) do not support arm64 architecture, which is a requirement for Apple Silicon iOS 26+ simulators:&#10;  - background_fetch (Flutter plugin)&#10;  - Flutter (transitive dependency of Flutter plugin background_fetch)&#10;  - flutter_local_notifications (Flutter plugin)&#10;  - flutter_local_notifications-flutter_local_notifications_privacy&#10;  - flutter_web_browser (Flutter plugin)&#10;  - geolocator_apple (Flutter plugin)&#10;  - geolocator_apple-geolocator_apple_privacy&#10;  - home_widget (Flutter plugin)&#10;  - package_info_plus (Flutter plugin)&#10;  - package_info_plus-package_info_plus_privacy&#10;  - shared_preferences_foundation (Flutter plugin)&#10;  - shared_preferences_foundation-shared_preferences_foundation_privacy&#10;  - TSBackgroundFetch (transitive dependency of Flutter plugin background_fetch)&#10;  - url_launcher_ios (Flutter plugin)&#10;  - url_launcher_ios-url_launcher_ios_privacy&#10;  - background_fetch (Flutter plugin)&#10;&#10;Please contact plugin maintainers to request arm64 support to continue to be able to use the plugin on a simulator.&#10;Warning: CocoaPods is installed but broken. Skipping pod install.&#10;  You appear to have CocoaPods installed but it is not working.&#10;  This can happen if the version of Ruby that CocoaPods was installed with is different from the one being used to invoke it.&#10;  This can usually be fixed by re-installing CocoaPods.&#10;For re-installation instructions, see https://guides.cocoapods.org/using/getting-started.html#installation&#10;&#10;CocoaPods not installed or not in valid state.&#10;" />
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: app_store_connect_api_key" time="0.004968">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: deliver" time="428.759827">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: notification" time="1.808434">
         
       </testcase>
     
