@@ -24,12 +24,16 @@ class HomeWidgetService {
   final APIService api;
   final LocationService location;
   final String languageCode;
+  final Future<void>? initialPhoneLocationRefresh;
+  final bool updateInstalledWidgetsOnInit;
 
   HomeWidgetService({
     required this.hive,
     required this.api,
     required this.location,
     required this.languageCode,
+    required this.updateInstalledWidgetsOnInit,
+    this.initialPhoneLocationRefresh,
   });
 
   ///
@@ -38,6 +42,24 @@ class HomeWidgetService {
 
   Future<void> init() async {
     await HomeWidget.setAppGroupId('group.promaja.widget');
+
+    /// Background work explicitly updates the widget after all services are initialized
+    if (!updateInstalledWidgetsOnInit) {
+      return;
+    }
+
+    /// Update after the foreground GPS refresh so startup cannot render stale phone coordinates
+    if (initialPhoneLocationRefresh != null) {
+      unawaited(
+        initialPhoneLocationRefresh!.then(
+          (_) => updateInstalledWidgets(
+            languageCode: languageCode,
+          ),
+        ),
+      );
+      return;
+    }
+
     await updateInstalledWidgets(
       languageCode: languageCode,
     );
@@ -48,48 +70,61 @@ class HomeWidgetService {
   ///
 
   /// Updates widgets if there are any emabled
-  Future<void> updateInstalledWidgets({required String languageCode}) async {
+  Future<bool> updateInstalledWidgets({required String languageCode}) async {
     try {
       final widgets = await HomeWidget.getInstalledWidgets();
 
       if (widgets.isNotEmpty) {
-        await handleWidget(
+        return handleWidget(
           languageCode: languageCode,
         );
       }
     } catch (_) {}
+
+    return false;
   }
 
   /// Renders new `HomeWidget` & updates it
-  Future<void> createHomeWidget(Widget widget) async {
-    await renderHomeWidget(widget);
-    await updateHomeWidget();
+  Future<bool> createHomeWidget(Widget widget) async {
+    final rendered = await renderHomeWidget(widget);
+
+    if (!rendered) {
+      return false;
+    }
+
+    return updateHomeWidget();
   }
 
   /// Renders a Flutter widget  as a `HomeWidget`
-  Future<void> renderHomeWidget(Widget widget) async {
+  Future<bool> renderHomeWidget(Widget widget) async {
     try {
       await HomeWidget.renderFlutterWidget(
         widget,
         key: 'filePath',
       );
-    } catch (_) {}
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Updates `HomeWidget`
-  Future<void> updateHomeWidget() async {
+  Future<bool> updateHomeWidget() async {
     try {
-      await HomeWidget.updateWidget(
-        name: 'WidgetView',
-        androidName: 'WidgetView',
-        iOSName: 'PromajaWidget',
-        qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
-      );
-    } catch (_) {}
+      return await HomeWidget.updateWidget(
+            name: 'WidgetView',
+            androidName: 'WidgetView',
+            iOSName: 'PromajaWidget',
+            qualifiedAndroidName: 'com.josipkilic.promaja.WidgetView',
+          ) ??
+          false;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Handles widget logic, depending on `WidgetSettings`
-  Future<void> handleWidget({required String languageCode}) async {
+  Future<bool> handleWidget({required String languageCode}) async {
     try {
       /// Check if user uses widgets
       final widgets = await HomeWidget.getInstalledWidgets();
@@ -98,58 +133,65 @@ class HomeWidgetService {
 
       final calculatedLocation = settings.widget.location;
 
-      /// Widgets are enabled & location exists
-      if (widgets.isNotEmpty && calculatedLocation != null) {
-        final isPhoneLocation = calculatedLocation.isPhoneLocation ?? false;
+      if (widgets.isEmpty || calculatedLocation == null) {
+        return false;
+      }
 
-        ///
-        /// Current weather
-        ///
-        if (settings.widget.weatherType == WeatherType.current) {
-          /// Fetch current weather
-          final currentWeather = await api.getCachedCurrentWeather(
-            query: '${calculatedLocation.lat},${calculatedLocation.lon}',
-          );
+      final isPhoneLocation = calculatedLocation.isPhoneLocation ?? false;
 
-          /// Current weather is successfully fetched
-          if (currentWeather.response != null) {
-            await triggerCurrentWidget(
-              response: currentWeather.response!,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: calculatedLocation,
-              languageCode: languageCode,
-              isPhoneLocation: isPhoneLocation,
-            );
-          }
+      ///
+      /// Current weather
+      ///
+      if (settings.widget.weatherType == WeatherType.current) {
+        /// Fetch current weather
+        final currentWeather = await api.getCachedCurrentWeather(
+          query: '${calculatedLocation.lat},${calculatedLocation.lon}',
+        );
+
+        /// Current weather is successfully fetched
+        if (currentWeather.response == null) {
+          return false;
         }
 
-        ///
-        /// Forecast weather
-        ///
-        if (settings.widget.weatherType == WeatherType.forecast) {
-          /// Fetch today's forecast
-          final forecastWeather = await api.getCachedForecastWeather(
-            query: '${calculatedLocation.lat},${calculatedLocation.lon}',
-            days: 1,
-          );
+        return triggerCurrentWidget(
+          response: currentWeather.response!,
+          showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+          location: calculatedLocation,
+          languageCode: languageCode,
+          isPhoneLocation: isPhoneLocation,
+        );
+      }
 
-          /// Forecast weather is successfully fetched
-          if (forecastWeather.response != null) {
-            await triggerForecastWidget(
-              response: forecastWeather.response!,
-              showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
-              location: calculatedLocation,
-              languageCode: languageCode,
-              isPhoneLocation: isPhoneLocation,
-            );
-          }
+      ///
+      /// Forecast weather
+      ///
+      if (settings.widget.weatherType == WeatherType.forecast) {
+        /// Fetch today's forecast
+        final forecastWeather = await api.getCachedForecastWeather(
+          query: '${calculatedLocation.lat},${calculatedLocation.lon}',
+          days: 1,
+        );
+
+        /// Forecast weather is successfully fetched
+        if (forecastWeather.response == null) {
+          return false;
         }
+
+        return triggerForecastWidget(
+          response: forecastWeather.response!,
+          showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
+          location: calculatedLocation,
+          languageCode: languageCode,
+          isPhoneLocation: isPhoneLocation,
+        );
       }
     } catch (_) {}
+
+    return false;
   }
 
   /// Triggers widget with current weather
-  Future<void> triggerCurrentWidget({
+  Future<bool> triggerCurrentWidget({
     required ResponseCurrentWeather response,
     required bool showCelsius,
     required Location location,
@@ -213,12 +255,14 @@ class HomeWidgetService {
       );
 
       /// Update [HomeWidget]
-      await createHomeWidget(widget);
-    } catch (_) {}
+      return createHomeWidget(widget);
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Triggers widget with forecast weather
-  Future<void> triggerForecastWidget({
+  Future<bool> triggerForecastWidget({
     required ResponseForecastWeather response,
     required bool showCelsius,
     required Location location,
@@ -309,8 +353,10 @@ class HomeWidgetService {
         );
 
         /// Update [HomeWidget]
-        await createHomeWidget(widget);
+        return createHomeWidget(widget);
       }
     } catch (_) {}
+
+    return false;
   }
 }

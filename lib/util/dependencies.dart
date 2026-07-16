@@ -147,7 +147,11 @@ void registerNotificationService() {
 }
 
 /// Registers home widget service
-void registerHomeWidgetService({required String languageCode}) {
+void registerHomeWidgetService({
+  required String languageCode,
+  required bool waitForPhoneLocationRefresh,
+  required bool updateInstalledWidgetsOnInit,
+}) {
   /// HomeWidget
   if (!getIt.isRegistered<HomeWidgetService>()) {
     getIt.registerSingletonAsync(
@@ -157,11 +161,18 @@ void registerHomeWidgetService({required String languageCode}) {
           api: getIt.get<APIService>(),
           location: getIt.get<LocationService>(),
           languageCode: languageCode,
+          initialPhoneLocationRefresh: waitForPhoneLocationRefresh ? getIt.get<PhoneLocationService>().initialRefresh : null,
+          updateInstalledWidgetsOnInit: updateInstalledWidgetsOnInit,
         );
         await homeWidget.init();
         return homeWidget;
       },
-      dependsOn: [HiveService, APIService, LocationService],
+      dependsOn: [
+        HiveService,
+        APIService,
+        LocationService,
+        if (waitForPhoneLocationRefresh) PhoneLocationService,
+      ],
     );
   }
 }
@@ -191,6 +202,8 @@ Future<void> initializeServices({required String languageCode}) async {
     registerNotificationService();
     registerHomeWidgetService(
       languageCode: languageCode,
+      waitForPhoneLocationRefresh: true,
+      updateInstalledWidgetsOnInit: true,
     );
   }
 
@@ -210,6 +223,8 @@ Future<void> initializeServicesBackground({required String languageCode}) async 
     registerNotificationService();
     registerHomeWidgetService(
       languageCode: languageCode,
+      waitForPhoneLocationRefresh: false,
+      updateInstalledWidgetsOnInit: false,
     );
   }
 

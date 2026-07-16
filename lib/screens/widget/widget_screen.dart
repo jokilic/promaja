@@ -128,11 +128,15 @@ class WidgetScreen extends WatchingWidget {
               ///
               SettingsListTile(
                 onTap: () async {
-                  await homeWidget.handleWidget(
+                  final widgetUpdated = await homeWidget.handleWidget(
                     languageCode: context.locale.languageCode,
                   );
 
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+                  if (!widgetUpdated) {
+                    return;
+                  }
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

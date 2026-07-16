@@ -21,6 +21,8 @@ class PhoneLocationService
   final APIService api;
   final LocationService location;
 
+  late final Future<void> initialRefresh;
+
   PhoneLocationService({
     required this.hive,
     required this.api,
@@ -48,13 +50,12 @@ class PhoneLocationService
       );
     }
 
-    /// Run phone location refresh after service registration so app startup is not blocked by GPS or API call
-    unawaited(
-      Future<void>.delayed(
-        Duration.zero,
-        refreshPhoneLocation,
-      ),
+    /// Expose the initial refresh so dependent services can wait for fresh coordinates without blocking app startup
+    initialRefresh = Future<void>.delayed(
+      Duration.zero,
+      refreshPhoneLocation,
     );
+    unawaited(initialRefresh);
 
     return Future.value();
   }
