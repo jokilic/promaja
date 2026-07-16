@@ -19,34 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <ImageView
-            android:layout_width="56dp"
-            android:layout_height="48dp"
+            android:layout_width="36dp"
+            android:layout_height="32dp"
             android:contentDescription="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/app_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/widget_placeholder_title"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="@string/widget_placeholder_message"
-            android:textColor="#CCFFFFFF"
-            android:textSize="12sp" />
 
     </LinearLayout>
 
