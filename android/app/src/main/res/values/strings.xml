@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_placeholder_title">Promaja</string>
+    <string name="widget_placeholder_message">Press to start</string>
+    <string name="widget_weather_content_description">Current weather</string>
+</resources>
