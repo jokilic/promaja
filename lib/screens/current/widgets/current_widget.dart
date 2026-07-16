@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../constants/typedefs.dart';
@@ -86,9 +85,6 @@ class CurrentWidget extends WatchingWidget {
           /// DATA SUCCESSFULLY FETCHED
           ///
           if (data?.response != null && data?.error == null) {
-            /// Remove splash screen
-            FlutterNativeSplash.remove();
-
             final currentWeather = data!.response!.current;
             final currentLocation = data.response!.location;
 

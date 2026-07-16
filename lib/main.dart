@@ -19,17 +19,31 @@ Future<void> main() async {
   /// Initialize Flutter related tasks
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-  /// Keep splash until first data is fetched
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  /// Keep splash until the first Flutter frame is ready
+  FlutterNativeSplash.preserve(
+    widgetsBinding: widgetsBinding,
+  );
 
-  /// Remove splash if data is fetching more than 5 seconds
+  /// Remove splash after 5 seconds as a safety fallback
   Timer(
     const Duration(seconds: 5),
     FlutterNativeSplash.remove,
   );
 
-  /// Initialize everything before starting app
-  await initializeBeforeAppStart();
+  /// Initialize services before UI
+  final languageCode = await initializeServicesBeforeAppStart();
+
+  /// Start UI and inizialize other services
+  WidgetsBinding.instance.addPostFrameCallback(
+    (_) {
+      FlutterNativeSplash.remove();
+      unawaited(
+        initializeServicesAfterAppStart(
+          languageCode: languageCode,
+        ),
+      );
+    },
+  );
 
   /// Run `Promaja`
   runApp(
@@ -46,8 +60,8 @@ Future<void> main() async {
   );
 }
 
-/// Initialize all functionality before starting app
-Future<void> initializeBeforeAppStart() async {
+/// Initializes functionality required before starting the app + return `languageCode`
+Future<String> initializeServicesBeforeAppStart() async {
   /// Override the default error widget
   ErrorWidget.builder = (details) => PromajaErrorWidget(
     error: details.exceptionAsString(),
@@ -70,9 +84,11 @@ Future<void> initializeBeforeAppStart() async {
   final locale = await initializeLocalization();
 
   /// Initialize services
-  await initializeServices(
+  await initializeMainServices(
     languageCode: locale.languageCode,
   );
+
+  return locale.languageCode;
 }
 
 class PromajaApp extends StatelessWidget {

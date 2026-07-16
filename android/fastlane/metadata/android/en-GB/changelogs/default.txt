@@ -1,2 +1,3 @@
+* Update initialization logic
 * Update initial widget
 * Small logic updates in handling widgets

@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../constants/durations.dart';
@@ -129,9 +128,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
               /// DATA SUCCESSFULLY FETCHED
               ///
               if (data?.response != null && data?.error == null) {
-                /// Remove splash screen
-                FlutterNativeSplash.remove();
-
                 final forecastWeather = data!.response!.forecast;
                 final forecastLocation = data.response!.location;
 

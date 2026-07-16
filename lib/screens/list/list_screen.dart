@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../constants/durations.dart';
@@ -29,9 +28,6 @@ class _ListScreenState extends State<ListScreen> {
         api: getIt.get<APIService>(),
       ),
     );
-
-    /// Remove splash screen
-    FlutterNativeSplash.remove();
   }
 
   @override

@@ -94,21 +94,16 @@ void registerCoreServices() {
   }
 }
 
-/// Registers phone location service and starts its refresh logic
+/// Registers phone location service without starting its refresh logic
 void registerPhoneLocationService() {
   /// PhoneLocation
   if (!getIt.isRegistered<PhoneLocationService>()) {
-    getIt.registerSingletonAsync(
-      () async {
-        final phoneLocation = PhoneLocationService(
-          hive: getIt.get<HiveService>(),
-          api: getIt.get<APIService>(),
-          location: getIt.get<LocationService>(),
-        );
-        await phoneLocation.init();
-        return phoneLocation;
-      },
-      dependsOn: [HiveService, APIService, LocationService],
+    getIt.registerSingleton(
+      PhoneLocationService(
+        hive: getIt.get<HiveService>(),
+        api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
+      ),
     );
   }
 }
@@ -117,12 +112,8 @@ void registerPhoneLocationService() {
 void registerBackgroundFetchService() {
   /// BackgroundFetch
   if (!getIt.isRegistered<BackgroundFetchService>()) {
-    getIt.registerSingletonAsync(
-      () async {
-        final backgroundFetch = BackgroundFetchService();
-        await backgroundFetch.init();
-        return backgroundFetch;
-      },
+    getIt.registerSingleton(
+      BackgroundFetchService(),
     );
   }
 }
@@ -131,17 +122,12 @@ void registerBackgroundFetchService() {
 void registerNotificationService() {
   /// Notification
   if (!getIt.isRegistered<NotificationService>()) {
-    getIt.registerSingletonAsync(
-      () async {
-        final notification = NotificationService(
-          hive: getIt.get<HiveService>(),
-          api: getIt.get<APIService>(),
-          location: getIt.get<LocationService>(),
-        );
-        await notification.init();
-        return notification;
-      },
-      dependsOn: [HiveService, APIService, LocationService],
+    getIt.registerSingleton(
+      NotificationService(
+        hive: getIt.get<HiveService>(),
+        api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
+      ),
     );
   }
 }
@@ -154,25 +140,15 @@ void registerHomeWidgetService({
 }) {
   /// HomeWidget
   if (!getIt.isRegistered<HomeWidgetService>()) {
-    getIt.registerSingletonAsync(
-      () async {
-        final homeWidget = HomeWidgetService(
-          hive: getIt.get<HiveService>(),
-          api: getIt.get<APIService>(),
-          location: getIt.get<LocationService>(),
-          languageCode: languageCode,
-          initialPhoneLocationRefresh: waitForPhoneLocationRefresh ? getIt.get<PhoneLocationService>().initialRefresh : null,
-          updateInstalledWidgetsOnInit: updateInstalledWidgetsOnInit,
-        );
-        await homeWidget.init();
-        return homeWidget;
-      },
-      dependsOn: [
-        HiveService,
-        APIService,
-        LocationService,
-        if (waitForPhoneLocationRefresh) PhoneLocationService,
-      ],
+    getIt.registerSingleton(
+      HomeWidgetService(
+        hive: getIt.get<HiveService>(),
+        api: getIt.get<APIService>(),
+        location: getIt.get<LocationService>(),
+        languageCode: languageCode,
+        initialPhoneLocationRefresh: waitForPhoneLocationRefresh ? getIt.get<PhoneLocationService>().initialRefresh : null,
+        updateInstalledWidgetsOnInit: updateInstalledWidgetsOnInit,
+      ),
     );
   }
 }
@@ -190,11 +166,17 @@ void registerScreenService() {
   }
 }
 
-/// Initialize services
-Future<void> initializeServices({required String languageCode}) async {
+/// Initializes services before UI
+Future<void> initializeMainServices({required String languageCode}) async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   registerCoreServices();
+  registerScreenService();
+
+  /// Hive and the initial screen must be ready before the app is started
+  await getIt.allReady();
+
+  /// Register lightweight service so screens can access them immediately
   registerPhoneLocationService();
 
   if (isMobile) {
@@ -202,15 +184,52 @@ Future<void> initializeServices({required String languageCode}) async {
     registerNotificationService();
     registerHomeWidgetService(
       languageCode: languageCode,
-      waitForPhoneLocationRefresh: true,
-      updateInstalledWidgetsOnInit: true,
+      waitForPhoneLocationRefresh: false,
+      updateInstalledWidgetsOnInit: false,
     );
   }
+}
 
-  registerScreenService();
+/// Initializes non-critical services after UI
+Future<void> initializeServicesAfterAppStart({required String languageCode}) async {
+  final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+  final phoneLocation = getIt.get<PhoneLocationService>();
 
-  /// Wait for initialization to finish
-  await getIt.allReady();
+  /// Start GPS refresh
+  await runLateInitialization(
+    phoneLocation.init,
+  );
+
+  if (!isMobile) {
+    return;
+  }
+
+  final backgroundFetch = getIt.get<BackgroundFetchService>();
+  final notification = getIt.get<NotificationService>();
+  final homeWidget = getIt.get<HomeWidgetService>();
+
+  await Future.wait([
+    runLateInitialization(
+      backgroundFetch.init,
+    ),
+    runLateInitialization(
+      notification.init,
+    ),
+    runLateInitialization(() async {
+      await homeWidget.init();
+      await phoneLocation.initialRefresh;
+      await homeWidget.updateInstalledWidgets(
+        languageCode: languageCode,
+      );
+    }),
+  ]);
+}
+
+/// Prevents initialization failure from affecting other startup work
+Future<void> runLateInitialization(Future<void> Function() initialize) async {
+  try {
+    await initialize();
+  } catch (_) {}
 }
 
 /// Initialize only services needed by background notifications and widgets
@@ -219,6 +238,9 @@ Future<void> initializeServicesBackground({required String languageCode}) async 
 
   registerCoreServices();
 
+  /// Background work requires core storage and API services before registration
+  await getIt.allReady();
+
   if (isMobile) {
     registerNotificationService();
     registerHomeWidgetService(
@@ -226,10 +248,12 @@ Future<void> initializeServicesBackground({required String languageCode}) async 
       waitForPhoneLocationRefresh: false,
       updateInstalledWidgetsOnInit: false,
     );
-  }
 
-  /// Wait for initialization to finish
-  await getIt.allReady();
+    await Future.wait([
+      getIt.get<NotificationService>().init(),
+      getIt.get<HomeWidgetService>().init(),
+    ]);
+  }
 }
 
 /// Initialize only services needed to handle notifications
@@ -237,15 +261,15 @@ Future<void> initializeServicesNotificationTap() async {
   final isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
 
   registerCoreServices();
+  registerScreenService();
+
+  /// Notification handling needs persisted data and navigation state
+  await getIt.allReady();
 
   if (isMobile) {
     registerNotificationService();
+    await getIt.get<NotificationService>().init();
   }
-
-  registerScreenService();
-
-  /// Wait for initialization to finish
-  await getIt.allReady();
 }
 
 /// Initialize [EasyLocalization] and return the active locale
