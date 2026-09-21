@@ -42,12 +42,11 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
 
     target.build_configurations.each do |config|
-      # 1. Ensure deployment target matches (minimum 14.0 for KMP compatibility)
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      # Match the app's minimum iOS version supported by Xcode
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
 
-      # 2. Fix Apple Silicon Simulator architecture issues
-      # This prevents "Undefined symbol: _OBJC_CLASS_$_..." errors when running on M1/M2/M3 Macs
-      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'i386 arm64'
+      # Keep ARM64 enabled for Apple Silicon simulators
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'i386'
     end
   end
 end

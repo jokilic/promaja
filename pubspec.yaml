@@ -1,7 +1,7 @@
 name: promaja
 description: Weather app made in Flutter.
 publish_to: 'none'
-version: 3.3.0+330
+version: 3.2.2+322
 
 #
 # DEPLOYING APP
