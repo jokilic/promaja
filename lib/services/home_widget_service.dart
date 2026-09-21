@@ -75,7 +75,7 @@ class HomeWidgetService {
       final widgets = await HomeWidget.getInstalledWidgets();
 
       if (widgets.isNotEmpty) {
-        return handleWidget(
+        return await handleWidget(
           languageCode: languageCode,
         );
       }
@@ -153,7 +153,7 @@ class HomeWidgetService {
           return false;
         }
 
-        return triggerCurrentWidget(
+        return await triggerCurrentWidget(
           response: currentWeather.response!,
           showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
           location: calculatedLocation,
@@ -177,7 +177,7 @@ class HomeWidgetService {
           return false;
         }
 
-        return triggerForecastWidget(
+        return await triggerForecastWidget(
           response: forecastWeather.response!,
           showCelsius: settings.unit.temperature == TemperatureUnit.celsius,
           location: calculatedLocation,
@@ -255,7 +255,7 @@ class HomeWidgetService {
       );
 
       /// Update [HomeWidget]
-      return createHomeWidget(widget);
+      return await createHomeWidget(widget);
     } catch (_) {
       return false;
     }
@@ -353,7 +353,7 @@ class HomeWidgetService {
         );
 
         /// Update [HomeWidget]
-        return createHomeWidget(widget);
+        return await createHomeWidget(widget);
       }
     } catch (_) {}
 

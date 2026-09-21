@@ -509,7 +509,7 @@ class NotificationService {
                       ],
               );
 
-        return showNotification(
+        return await showNotification(
           title: title,
           text: text,
           notificationType: isEvening ? NotificationType.evening : NotificationType.morning,
