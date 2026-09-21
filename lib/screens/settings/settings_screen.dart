@@ -160,6 +160,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               ///
+              /// SOURCE
+              ///
+              // SettingsListTile(
+              //   onTap: () => Navigator.of(context).push(
+              //     MaterialPageRoute(
+              //       builder: (context) => SourceScreen(),
+              //     ),
+              //   ),
+              //   icon: PromajaIcons.arrow,
+              //   title: 'Source',
+              //   subtitle: 'Bla bla bla',
+              // ),
+
+              ///
               /// CONTACT
               ///
               SettingsListTile(
