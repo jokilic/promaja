@@ -27,6 +27,15 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+
+    // Override flutter_web_browser's SDK 31 after its build script configures Android
+    if (project.name == 'flutter_web_browser') {
+        project.pluginManager.withPlugin('com.android.library') {
+            project.extensions.getByName('androidComponents').finalizeDsl { androidDsl ->
+                androidDsl.compileSdk = rootProject.ext.compileSdkVersion
+            }
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(':app')
