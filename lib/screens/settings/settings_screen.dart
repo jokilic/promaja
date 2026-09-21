@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -194,6 +195,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 indent: 120,
                 endIndent: 120,
                 color: PromajaColors.white,
+              ),
+              const SizedBox(height: 16),
+
+              ///
+              /// POWERED BY WEATHER API
+              ///
+              Text.rich(
+                TextSpan(
+                  text: 'Powered by ',
+                  children: [
+                    TextSpan(
+                      text: 'WeatherAPI.com',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => openUrlExternalBrowser(
+                          context,
+                          url: 'https://www.weatherapi.com',
+                        ),
+                      style: PromajaTextStyles.settingsText.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+                style: PromajaTextStyles.settingsText,
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
 
